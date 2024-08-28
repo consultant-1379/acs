@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
+	Copyright (c) 2023 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Sep 1, 2023 4:02:06 PM using:
+	* com.ericsson.ecim.m2m 3.14.0.202105061142
+	* com.ericsson.ecim.dsl 3.14.0.202105061142
+	* com.ericsson.ecim.edm 3.14.0.202105061142
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>K</dtdVersion>
+    <momMetaData>
+        <momTitle>System Backups and Restore Management Funciton</momTitle>
+        <momSubTitle/>
+        <momIdentity>
+            <docNum>19089-CXA 117 0054/18</docNum>
+            <docLang>English</docLang>
+            <docRev>A</docRev>
+            <docDate>2023-08-04</docDate>
+        </momIdentity>
+    </momMetaData>
+    <mim author="" contact="" correction="0" date="2023-08-04" docNo="19089-CXA 117 0054/18" name="SystemBrM" namespace="urn:com:ericsson:ecim:SystemBrM" namespacePrefix="systembrm" organization="" release="0" revision="" version="1">
+        <description>System BrM Root Class.</description>
+        <domainExtension domain="ECIM">
+            <extension name="ecimMomName" value="ECIM_BrM"/>
+            <extension name="ecimMomVersion" value="3"/>
+            <extension name="ecimMomRelease" value="1"/>
+            <extension name="ecimMomCorrection" value="0"/>
+            <extension name="immNamespace" value="MOM_NAME"/>
+        </domainExtension>
+        <implements correction="0" name="ECIM_BrM" release="1" version="3"/>
+        <modelFeatures modelType="Template">
+            <modelFeature featureType="basic" name="CPI_HIDDEN"/>
+        </modelFeatures>
+        <struct name="AsyncActionProgress">
+            <description>Provides the progress report of an asynchronous action.</description>
+            <structMember name="actionName">
+                <description>The name of the invoked asynchronous action.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <string/>
+            </structMember>
+            <structMember name="additionalInfo">
+                <description>Used for logging significant messages during execution of an action.</description>
+                <sequence>
+                    <string/>
+                    <minLength>0</minLength>
+                </sequence>
+            </structMember>
+            <structMember name="progressInfo">
+                <description>Textual information describing the actual state of the execution of the action.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <string/>
+            </structMember>
+            <structMember name="progressPercentage">
+                <description>Progress of the action. 
+The range is between 0 and 100.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <uint8/>
+            </structMember>
+            <structMember name="result">
+                <description>Provides the result state of a completed action.
+This field has the value NOT_AVAILABLE if the action is not finished.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <enumRef name="ActionResultType">
+                    <mimName>SystemBrM</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="resultInfo">
+                <description>Provides textual description of the outcome/result of the action.
+It can contain an error message if the action is failed.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <string/>
+            </structMember>
+            <structMember name="state">
+                <description>Current state of the action</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <enumRef name="ActionStateType">
+                    <mimName>SystemBrM</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="actionId">
+                <description>Uniquely identifies the invoked action.</description>
+                <uint16/>
+            </structMember>
+            <structMember name="timeActionStarted">
+                <description>Provides the date and time when the current action was started.</description>
+                <derivedDataTypeRef name="DateTime">
+                    <mimName>SystemBrM</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="timeActionCompleted">
+                <description>Provides the date and time when the current action was completed (successfully or unsuccessfully).</description>
+                <derivedDataTypeRef name="DateTime">
+                    <mimName>SystemBrM</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="timeOfLastStatusUpdate">
+                <description>Provides the date and time when the struct member state was last updated.</description>
+                <derivedDataTypeRef name="DateTime">
+                    <mimName>SystemBrM</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+        </struct>
+        <enum name="ActionStateType">
+            <description>Lists the action states.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <enumMember name="CANCELLING">
+                <description>Cancellation is in progress.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="RUNNING">
+                <description>The execution of the action is currently in progress.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="FINISHED">
+                <description>The action is finished.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="CANCELLED">
+                <description>The action has been cancelled and cancellation has been done.</description>
+                <value>4</value>
+            </enumMember>
+        </enum>
+        <enum name="SystemBackupType">
+            <description>Lists the possible system backup types.</description>
+            <enumMember name="ALL">
+                <value>0</value>
+            </enumMember>
+            <enumMember name="APG">
+                <value>1</value>
+            </enumMember>
+            
+            
+            
+            
+        </enum>
+        <enum name="BasicAdmState">
+            <description>Basic administrative states for a resource.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <enumMember name="LOCKED">
+                <description> The resource is administratively prohibited from performing services for its users.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="UNLOCKED">
+                <description>The resource is administratively permitted to perform services for its users.
+This is independent of its inherent operability.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="ActionResultType">
+            <description>Lists the different results of an action.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <enumMember name="SUCCESS">
+                <description>The asynchronous action ended with success.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="FAILURE">
+                <description>The asynchronous action ended with failure.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="NOT_AVAILABLE">
+                <description>No result is available yet.</description>
+                <value>3</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="EcimPasswordString">
+            <description>Holds the password string.</description>
+            <baseType>
+                <string>
+                    <validValues>^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[-._!"`'#%&amp;,:;&lt;&gt;=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]).{8,}$</validValues>
+                    <isPassphrase/>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="A strong password's basic rules are&#10;&#10;Should contain at least a capital letter&#10;Should contain at least a small letter&#10;Should contain at least a number&#10;Should contain at least a special character&#10;And minimum length of 8 characters&#10;" format="posix_ere" name="Pattern Constraint"><![CDATA[^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]).{8,}$]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="DateTime">
+            <description>Represents the international standard for the representation of date and time ( ISO 8601).
+The string format is "YYYY-MM-DDThh:mm:ss.SSSZ" (excluding quotes).
+A DateTime string consists of a date part, a time part, and an optional time zone information part. The time zone part may be a "Z", representing the Coordinated Universal Time (UTC) time zone (equals to +00) or a time zone offset (for example, +02:00).
+If the time zone part is not present, the DateTime value represents local time.
+
+The following pattern describes the DateTime format:
+YYYY-MM-DDThh:mm:ss[.S+][Z|+-hh:mm]
+Where:
+YYYY = Four digit year
+MM = Two digit month (01=January, and so on)
+DD = Two digit day of month (01 through 31)
+T = Time designator (shows start of time component)
+hh = Two digits of hour (00 through 23, AM/PM not allowed)
+mm = Two digits of minute (00 through 59)
+ss = Two digits of second (00 through 59, leap second not allowed)
+S+ = One or more digits of decimal fraction of a second
+Z = Time is UTC
++- = + or - character indicating positive or negative offset to UTC
+
+DateTime values are compliant with ISO 8601 "Representation of dates and times" but are restricted according to RFC 3339 "Date and Time on the Internet: Timestamps". The DateTime format is further restricted as follows:
+- T and Z designators are upper case.
+- . (dot) is used to indicate start of fractions of seconds (ISO 8601 also allows comma)</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>19</min>
+                        <max>31</max>
+                    </lengthRange>
+                    <stringLength>
+                        <subrange>
+                            <min>19</min>
+                            <max>31</max>
+                        </subrange>
+                    </stringLength>
+                    <validValues>^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])([\.][0-9]+){0,1}(([\+|\-](0[0-9]|1[0-9]|2[0-4])(:[0-5][0-9])?)|(Z)?)$</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="Must be of the format YYYY-MM-DDTHH:MM:SS[.S+][Z|+-hh:mm] where T separates the time and the date parts and Z indicates the time zone in relation to UTC. Example 2000-08-01T17:17:34.1+01:00." format="posix_ere" name="Pattern Constraint"><![CDATA[^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])([\.][0-9]+){0,1}(([\+|\-](0[0-9]|1[0-9]|2[0-4])(:[0-5][0-9])?)|(Z)?)$]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <class name="SystemBrM">
+            <description>Represents the root MOC for System Backups and Restore Management function MOM.
+It allows to configure system backups function.
+
+The setting of one or more attributes can fail due to  following reason:
+-Invalid Transfer Queue: This message appears when the transfer queue entered is not defined or not valid.
+-System Backup operation ongoing : This message appears if any system backup operation is ongoing at that time.
+-Backup password not defined - This message appears when backup user label is defined without backup Password.
+-Backup user label not defined - This message appears when backup password is defined without backup user label.</description>
+            <root/>
+            <action name="createBackupAndExport">
+                <description>Create the system backup and exports towards external server defined by transfer queue.
+This is an asynchronus action: progress and result are reported in the progressReport attribute.
+
+This action considers APG system backup as secured if attributes backupPassword and backupUserLabel were defined in MO.
+
+The action can fail due to one of the following reasons:
+-Invalid system backup type specified: Action fails if an invalid system backup type is specified in this system configuration.
+-System Backup operation ongoing: Action fails if any manual or scheduled backup operation is ongoing at that time.
+
+</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="0"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <parameter name="systemBackupType">
+                    <description>Indicates the system backup type for which the backup to be created.
+
+Default value is ALL which indicates system backups.</description>
+                    <domainExtension domain="ECIM">
+                        <extension name="isNillable" value="true"/>
+                    </domainExtension>
+                    <isNillable/>
+                    <in/>
+                    <dataType>
+                        <enumRef name="SystemBackupType">
+                            <defaultValue>ALL</defaultValue>
+                            <mimName>SystemBrM</mimName>
+                        </enumRef>
+                    </dataType>
+                </parameter>
+            </action>
+            <attribute name="systemBrMId">
+                <description>Holds the name used when identifying the MO. 
+The only allowed value is '1'.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="reportProgress">
+                <description>Specifies the execution status and result of the ongoing (asynchronous) action.
+The reason for action failure will be shown in sub-attribute resultInfo.&#13;
+            </description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="AsyncActionProgress">
+                        <mimName>SystemBrM</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="transferQueue">
+                <description>Specifies the identifier of the transfer queue to be used to transfer system backup files to the external server.
+It is the name of a transfer queue already defined through Data Transfer Management function.
+Only initiating file based transfer is supported.</description>
+                <mandatory/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="transferQueueDn">
+                <description>Specifies the DN associated to the tranfer queue specified via attribute transferQueue.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="backupPassword">
+                <description>This attribute is used to store password for the secured backup.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="EcimPasswordString">
+                        <mimName>SystemBrM</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="backupUserLabel">
+                <description>This attribute is used to show user information for the secured backup.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="SystemBrmBackupScheduler">
+            <description>Represents the System Backups scheduler function. </description>
+            <attribute name="lastScheduledEventTime">
+                <description>Specifies the timestamp of the last scheduled backup.  </description>
+                <readOnly/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>SystemBrM</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="systemBrmBackupSchedulerId">
+                <description>The value component of the RDN.
+The only allowed value is '1'.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="reportProgress">
+                <description>Specifies the execution status and result of the last executed scheduled periodic event.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="AsyncActionProgress">
+                        <mimName>SystemBrM</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="adminState">
+                <description>Administrative state of the scheduler.</description>
+                <dataType>
+                    <enumRef name="BasicAdmState">
+                        <defaultValue>LOCKED</defaultValue>
+                        <mimName>SystemBrM</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="nextScheduledEventTime">
+                <description>Specifies the timestamp of the next scheduled event to occur.</description>
+                <readOnly/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>SystemBrM</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="SystemBrmPeriodicEvent">
+            <description>Represents a time interval based event for executing system backup job periodically.
+&#13;
+This construct can be used to configure a periodic scheduled backup event by specifying the number of months, weeks, days, hours, or minutes. For instance, in order to configure a scheduled backup event to occur every 12 hours, the following setup must be done:&#13;
+&#13;
+hours=12&#13;
+&#13;
+Note: If an event is configured to execute on 30th of every month from January, then the event will be executed on 30th of january and next execution will be on 28th/29th of february as february has only 28/29 days.&#13;
+&#13;
+The default start time for calculating scheduled execution is assumed to be the current system time. A different start time can be set using the startTime attribute.&#13;
+Attribute stopTime can be used to decide when the scheduling stops. Note that the default value of stopTime is the end of the year 2099.&#13;
+&#13;
+One or more attributes setting can fail due to one of the following reasons:&#13;
+- Start time has expired : This message appears when the specified 'startTime' has already expired.&#13;
+- Stop time has expired : This message appears when the specified 'stopTime' has already expired.&#13;
+- Stop time not valid : This message appears when the specified 'stopTime' is before the specified 'startTime'.&#13;
+- Invalid scheduled time : This message appears when the specified 'startTime' or 'stopTime' is not valid.&#13;
+- Invalid time zone : This message appears when the specified 'startTime' or 'stopTime' has an invalid time zone.</description>
+            <attribute name="systemBrmPeriodicEventId">
+                <description>The value component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="days">
+                <description>Specifies the frequency of the job execution in number of days.</description>
+                <dataType>
+                    <uint8>
+                        <defaultValue>0</defaultValue>
+                    </uint8>
+                </dataType>
+            </attribute>
+            <attribute name="hours">
+                <description>Specifies the frequency of the job execution in number of hours.</description>
+                <mandatory/>
+                <dataType>
+                    <uint8/>
+                </dataType>
+            </attribute>
+            <attribute name="minutes">
+                <description>Specifies the frequency of the job execution in number of minutes.</description>
+                <dataType>
+                    <uint8>
+                        <defaultValue>0</defaultValue>
+                    </uint8>
+                </dataType>
+            </attribute>
+            <attribute name="months">
+                <description>Specifies the frequency of the job execution in number of months.</description>
+                <dataType>
+                    <uint8>
+                        <defaultValue>0</defaultValue>
+                    </uint8>
+                </dataType>
+            </attribute>
+            <attribute name="weeks">
+                <description>Specifies the frequency of the job execution in number of weeks.</description>
+                <dataType>
+                    <uint8>
+                        <defaultValue>0</defaultValue>
+                    </uint8>
+                </dataType>
+            </attribute>
+            <attribute name="startTime">
+                <description>Specifies the start date and time of a periodic event execution.
+The execution of an event will be initiated at this time and the execution continues  periodically. It is an optional attribute and if not specified, the implementation uses the current system time as the default value.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>SystemBrM</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="stopTime">
+                <description>Specifies the date and time at which periodic event execution must be stopped.
+This attribute is optional and if not specified, by default value will be the end of the year 2099.</description>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <defaultValue>2099-12-31T23:59:59.000Z</defaultValue>
+                        <mimName>SystemBrM</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            
+        </class>
+        <relationship name="SystemBrmBackupScheduler_to_SystemBrmPeriodicEvent">
+            <description>Represents a time interval based event for executing one bakcup job periodically.
+A periodic scheduled backup job is executed at specified number of months, weeks, days, hours, or minutes.</description>
+            <containment>
+                <parent>
+                    <hasClass name="SystemBrmBackupScheduler">
+                        <mimName>SystemBrM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="SystemBrmPeriodicEvent">
+                        <mimName>SystemBrM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="SystemBrM_to_SystemBrmBackupScheduler">
+            <containment>
+                <parent>
+                    <hasClass name="SystemBrM">
+                        <mimName>SystemBrM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="SystemBrmBackupScheduler">
+                        <mimName>SystemBrM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </mim>
+    <interMim>
+        <relationship name="SystemHandling_to_SystemBrM">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="SystemHandling">
+                        <mimName>AxeFunctions</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="SystemBrM">
+                        <mimName>SystemBrM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

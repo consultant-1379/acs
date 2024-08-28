@@ -1,0 +1,5 @@
+T:\ntacs\emf_cnz\emf_cxc\bin\acs_emfserverd
+T:\ntacs\emf_cnz\emf_cxc\bin\emfcopy
+T:\ntacs\emf_cnz\emf_cxc\bin\emfget
+T:\ntacs\emf_cnz\emf_cxc\bin\emfinfo
+T:\ntacs\emf_cnz\emf_cxc\packages\rpm\ACS_EMF-CXC1371345-R1A03.x86_64.rpm

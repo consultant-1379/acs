@@ -1,0 +1,93 @@
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2016 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# models.info
+##
+# Description:
+#       Configuration file used to perform IMM model changes during software upgrade for USAFM block.
+##
+##
+# Changelog:
+# - 2016-03-15 - Ramakrishna Maturu (XRAMMAT) 
+#       First version
+##
+# APG43L 4.2 
+VERSION: CXC1371523_14-R1A03
+log "No model changes in USAFMBIN CXC1371523_14-R1A03"
+
+# APG43L 4.2
+VERSION: CXC1371523_14-R1A02
+log "No model changes in USAFMBIN CXC1371523_14-R1A02"
+
+# APG43L 4.2
+VERSION: CXC1371523_14-R1A01
+log "No model changes in USAFMBIN CXC1371523_14-R1A01"
+
+# APG43L 4.0
+VERSION: CXC1371523_12-R1B
+log "No model changes in USAFMBIN CXC1371523_12-R1B"
+
+VERSION: CXC1371523_12-R1A04
+log "No model changes in USAFMBIN CXC1371523_12-R1A04"
+
+VERSION: CXC1371523_12-R1A03
+log "No model changes in USAFMBIN CXC1371523_12-R1A03"
+
+# APG43L 4.0
+VERSION: CXC1371523_12-R1A02
+log "No model changes in USAFMBIN CXC1371523_12-R1A02"
+
+# APG43L 3.9
+VERSION: CXC1371523_12-R1A01
+log "No model changes in USAFMBIN CXC1371523_12-R1A01"
+
+# APG43L 3.8
+VERSION: CXC1371523_11-R1A01
+log "No model changes in USAFMBIN CXC1371523_11-R1A01"
+
+# Adaptations to SwM2.0
+VERSION: CXC1371523_9-R1A04
+VERSION: CXC1371523_9-R1A03
+VERSION: CXC1371523_9-R1A02
+VERSION: CXC1371523_9-R1A01
+
+VERSION: CXC1371523_5-R1B
+log "No model changes in USAFMBIN CXC1371523_5-R1B"
+
+VERSION: CXC1371523_5-R1A06
+log "No model changes in USAFMBIN CXC1371523_5-R1A06"
+
+VERSION: CXC1371523_5-R1A05
+log "No model changes in USAFMBIN CXC1371523_5-R1A05"
+
+VERSION: CXC1371523_5-R1A04
+log "No model changes in USAFMBIN CXC1371523_5-R1A04"
+
+VERSION: CXC1371523_5-R1A03
+log "No model changes in USAFMBIN CXC1371523_5-R1A03"
+
+VERSION: CXC1371523_5-R1A02
+log "No model changes in USAFMBIN CXC1371523_5-R1A02"
+
+VERSION: CXC1371523_5-R1A01
+log "No model changes in USAFMBIN CXC1371523_5-R1A01"
+
+VERSION: CXC1371523-R1A05
+log "No model changes in USAFMBIN CXC1371523-R1A05"
+
+VERSION: CXC1371523-R1A04
+log "No model changes in USAFMBIN CXC1371523-R1A04"
+
+VERSION: CXC1371523-R1A03
+log "No model changes in USAFMBIN CXC1371523-R1A03"
+
+VERSION: CXC1371523-R1A02
+log "No model changes in USAFMBIN CXC1371523-R1A02"
+
+VERSION: CXC1371523-R1A01
+log "No model changes in USAFMBIN CXC1371523-R1A01"
+
+VERSION: CXC1371480-R1D
+log "No model changes in USAFMBIN CXC1371480-R1D"

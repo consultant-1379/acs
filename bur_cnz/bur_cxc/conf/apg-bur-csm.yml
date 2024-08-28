@@ -1,0 +1,27 @@
+csm-version: '1.0'
+components:
+- uid: acs.bur
+  name: acs-bur
+  description: ACS BUR component
+  availability-manager: NONE
+  software:
+    sdp: ERIC-ACS_BURBIN-CXC1371536
+  supersedes:
+  - software: ERIC-ACS_BURBIN-CXC1371536
+  constraints:
+    installation:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+    upgrade:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+  meta-data:
+    component-version: 18.0.2-0
+    deliverable:
+      deployment-package: acs_bur-18.0.2-0-deployment-CXC1371536.tar.gz
+      runtime-package: acs_bur-18.0.2-0-runtime-CXC1371536.tar.gz
+    software:
+    - file-name: ACS_BURBIN-CXC1371536_18-R1C.x86_64.sdp
+      bundle-name: ERIC-ACS_BURBIN-CXC1371536_18-R1C

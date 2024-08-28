@@ -1,0 +1,211 @@
+#!/bin/bash
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2013 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# Name:
+#       ipsecls
+# Description:
+#       This command lists the IPSec configuration status.
+#
+# Usage: 
+#	ipsecls [-l2]
+#
+##
+
+installPath="/opt/ap/acs/bin/"
+source $installPath"ipsec_commons"
+
+apos_common="${AP_HOME:-/opt/ap}/apos/conf/apos_common.sh"
+source $apos_common
+
+################
+# Main Program #
+################
+log "START: <$0 $*>"
+
+#Flag settings for options checks
+v4index=0
+v6index=0
+index=0
+lflag=""
+Vflag=""
+ipversion=""
+declare -A ipsecConnections
+options="-l2" 
+
+#Array to save constant values for printing
+declare -A ipseclsList
+
+ipseclsList["authentication"]="Authentication Mode"
+ipseclsList["remoteIP"]="Remote host address"
+ipseclsList["ipsecParam"]="Local host address" 
+ipseclsList["type"]="Mode"
+ipseclsList["protocol"]="IPsec protocol"
+ipseclsList["lifetime"]="Lifetime"
+ipseclsList["remoteCertDn"]="Remote Dn"
+ipseclsList["nodeCredentialId"]="Node Credential Id"
+ipseclsList["trustCategoryId"]="Trust Category Id"
+
+
+function usage() {
+    echo -e "\nIncorrect usage" >&2
+	echo -e "Usage: ipsecls [-l2]
+       ipsecls [-v]" >&2
+}
+
+function fetchImmAttrValue() {
+        
+	attrData=`immlist -a $2 ipsecConnectionId=$1,acsSecurityMId=1`
+
+        if [[ "$2" == "remoteCertDn" ]]
+        then
+		attrValue=`echo ${attrData:13}`
+        else
+                attrValue=`cut -d'=' -f2 <<< $attrData`
+        fi
+
+        if [[ ! -z $attrValue && ! $attrValue == 0 ]]
+        then
+		printValues $attrValue "${ipseclsList[$2]}"
+	else
+		printValues "na" "${ipseclsList[$2]}"
+	fi
+}
+
+function printValues() {
+	awk -v var="$1" -v name="$2" 'BEGIN {
+	printf("%-24s : %-40s\n",name,var) }'
+}
+
+function ipseclsOutput()
+{
+    connNamesList=("$@")
+    numOfPolicies=${#connNamesList[@]}
+
+    if [[ "$numOfPolicies" == "0" ]] ; then
+	echo -e "\nNone"
+    fi
+	
+    for connName in "${connNamesList[@]}"
+    do
+	#Policy name
+        awk -v var="$connName" 'BEGIN {
+        printf("\n%-24s : %-40s\n","Policy name",var) }'
+
+        #Local host address
+	fetchImmAttrValue $connName "ipsecParam"
+        
+        #Remote host address
+        fetchImmAttrValue $connName "remoteIP"
+
+        #Mode
+        fetchImmAttrValue $connName "type"
+
+        #IPsec protocol
+        protocolData=`immlist -a "protocol" ipsecConnectionId=$connName,acsSecurityMId=1`
+        protocol=`cut -d'=' -f2 <<< $protocolData`
+        printValues $protocol "IPsec Protocol"
+
+        if [[ ! -z $lflag ]]
+        then
+            #Authentication method
+            fetchImmAttrValue $connName "authentication"
+
+            #Encryption algorithm
+            protocolInfo=`cut -d'=' -f3 <<< $protocolData`
+            encryptionAlg=`cut -d'-' -f1 <<< $protocolInfo`
+            printValues $encryptionAlg "Encryption algorithm"
+
+            #Integrity algorithm
+            hashAlg=`cut -d'-' -f2 <<< $protocolInfo`
+            printValues $hashAlg "Integrity algorithm"
+
+            #DH group
+            dhGroup=`cut -d'-' -f3 <<< $protocolInfo`
+            printValues $dhGroup "DH group"
+
+            #ESN Mode
+            esnMode=`cut -d'-' -f4 <<< $protocolInfo`
+            if [[ ! $esnMode == "noesn" ]]
+            then
+                printValues "Yes" "ESN mode"
+            else
+                printValues "No" "ESN mode"
+            fi
+
+            ikeEncrpytData=`immlist -a "ikeEncryptAlg" ipsecConnectionId=$connName,acsSecurityMId=1`
+            ikeProtocolCheck=`cut -d'=' -f2 <<< $ikeEncrpytData`
+
+            if [[ ! -z $ikeProtocolCheck ]]
+            then
+                #IKE Encryption algorithm
+                ikeEncryptionAlg=`cut -d'-' -f1 <<< $ikeProtocolCheck`
+                printValues $ikeEncryptionAlg "IKE Encryption algorithm"
+
+                #IKE Integrity algorithm
+                ikeHashAlg=`cut -d'-' -f2 <<< $ikeProtocolCheck`
+                printValues $ikeHashAlg "IKE Integrity algorithm"
+
+                #IKE DH Group
+                ikeDhGroup=`cut -d'-' -f3 <<< $ikeProtocolCheck`
+                printValues $ikeDhGroup "IKE DH group"
+            fi
+
+            #Remote Cert Dn
+            fetchImmAttrValue $connName "remoteCertDn"
+
+            #Node Credential Iid
+            fetchImmAttrValue $connName "nodeCredentialId"
+
+            #Trust Category Id
+            fetchImmAttrValue $connName "trustCategoryId"
+        
+       	    #Lifetime
+            fetchImmAttrValue $connName "lifetime"
+        fi
+    done
+
+    echo -e ""
+}
+
+parameters=($@)
+num_parameters=${#parameters[@]}
+i=0
+
+while [ $i -lt $num_parameters ] ; do
+    case ${parameters[$i]} in
+        -l2 ) [ $lflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+                lflag=true
+        ;;
+        * ) ipsec_exit $EXIT_INCORRECT_USAGE 
+   esac
+    (( i = $i + 1 ))
+done
+
+INFO "Checking for Node state"
+ipsec_exitnotactive
+
+echo -e "\nIP Security Policies"
+
+#Get connection names from /etc/ipsec.conf file
+connNameList=`grep -i "^conn" $STRONGSWAN_CFGFILE`
+
+if [[ $? -eq 0 ]]
+then
+    while IFS= read -r name
+    do
+	tempConnName=`cut -d' ' -f2 <<< $name`
+	ipsecConnections[$index]=$tempConnName
+	(( index = $index + 1 ))		
+
+    done <<< "$connNameList"
+
+    ipseclsOutput "${ipsecConnections[@]}"
+else
+    echo -e "\nNone\n"
+fi
+
+log "END: <$0 $*>"
+

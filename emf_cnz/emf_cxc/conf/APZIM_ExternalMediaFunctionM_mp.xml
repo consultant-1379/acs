@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
+	Copyright (c) 2020 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Dec 14, 2020 9:58:27 AM using:
+	* com.ericsson.ecim.m2m 3.13.0.202006261811
+	* com.ericsson.ecim.dsl 3.13.0.202006261811
+	* com.ericsson.ecim.edm 3.13.0.202006261811
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>K</dtdVersion>
+    <momMetaData>
+        <momTitle>Managed Object Model for External Media Management Function</momTitle>
+        <momSubTitle/>
+        <momIdentity>
+            <docNum>19089-CXA 117 0047/5</docNum>
+            <docLang>Uen</docLang>
+            <docRev>B</docRev>
+            <docDate>2020-12-14</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>XHARBAV</signature>
+        </createdBy>
+    </momMetaData>
+    <mim author="Harika Bavana" contact="XHARBAV" correction="0" date="2020-12-14" docNo="" name="AxeExternalMedia" namespace="urn:com:ericsson:ecim:AxeExternalMedia" namespacePrefix="axeexternalmedia" organization="" release="2" revision="" version="4">
+        <description>External Media Management function MOM.</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="MOM_NAME"/>
+        </domainExtension>
+        <modelFeatures modelType="Template">
+            <modelFeature featureType="basic" name="CPI_HIDDEN"/>
+        </modelFeatures>
+        <struct name="ExternalMediaActionProgress">
+            <description>Represents the structure used to store the action result Information.</description>
+            <structMember name="actionName">
+                <description>Specifies the name of the invoked action.
+e.g exportToMedia(),formatAndExportToMedia(),importFromMedia() on ExternalMedia MO</description>
+                <enumRef name="ActionType">
+                    <mimName>AxeExternalMedia</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="result">
+                <description>Specifies the result of completed action.</description>
+                <enumRef name="OperationResult">
+                    <mimName>AxeExternalMedia</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="resultInfo">
+                <description>Specifies the textual description of outcome of the operation.
+e.g it contains error message in case of action failure.</description>
+                <string/>
+            </structMember>
+            <structMember name="actionStartTime">
+                <description>Specifies the end time of action.</description>
+                <derivedDataTypeRef name="DateTimeWithoutOffset">
+                    <mimName>AxeExternalMedia</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="actionEndTime">
+                <description>Specifies the end time of action.</description>
+                <derivedDataTypeRef name="DateTimeWithoutOffset">
+                    <mimName>AxeExternalMedia</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="lastUpdatedTime">
+                <description>Specifies the updated time for action.
+Info like actionEndTime,actionstartTime,actionName,result and resultinfo.
+</description>
+                <derivedDataTypeRef name="DateTimeWithoutOffset">
+                    <mimName>AxeExternalMedia</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="state">
+                <description>Specifies the state of the invoked action.</description>
+                <enumRef name="ActionState">
+                    <mimName>AxeExternalMedia</mimName>
+                </enumRef>
+            </structMember>
+        </struct>
+        <enum name="OperState">
+            <description>Operational states of a resource.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <enumMember name="DISABLED">
+                <description>The resource is  totally inoperable.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="ENABLED">
+                <description>The resource is partially or fully operable.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="ActionState">
+            <description>This represents valid types of states in external media operations.</description>
+            <enumMember name="RUNNING">
+                <description>The value used to represent state of action is running.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="FINISHED">
+                <description>The value used to represent state of action is finished.</description>
+                <value>3</value>
+            </enumMember>
+        </enum>
+        <enum name="OperationResult">
+            <description>This represents valid results in external media operations.</description>
+            <enumMember name="SUCCESS">
+                <description>The value used to represent result of action is success.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="FAILURE">
+                <description>The value used to represent result of action is failed.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="NOT_AVAILABLE">
+                <description>The value used to represent status of action is not available.</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        
+        <enum name="ActionType">
+            <description>Represents current invoked action.</description>
+            <enumMember name="EXPORT_TO_MEDIA">
+                <description>An export from AP to media is ongoing.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="FORMAT_AND_EXPORT_TO_MEDIA">
+                <description>An export from AP to media, contextually erased, is ongoing.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="IMPORT_FROM_MEDIA">
+                <description>An import from media to AP is ongoing.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="LOCK_MEDIA">
+                <description>Enabling media access is ongoing.</description>
+                <value>4</value>
+            </enumMember>
+            <enumMember name="UNLOCK_MEDIA">
+                <description>Disabling media access is ongoing.</description>
+                <value>5</value>
+            </enumMember>
+        </enum>
+        <enum name="ExternalMediaType">
+            <description>Specifies type of the external media. 
+</description>
+            <enumMember name="DVDMINUSR">
+                <description>Used media is DVD-R. </description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="DVDPLUSR">
+                <description>Used media is DVD+R.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="DVDPLUSRW">
+                <description>Used media is DVD+RW.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="DVDMINUSRW">
+                <description>Used media is DVD-RW.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="THUMBDRIVE">
+                <description>Used media is THUMBDRIVE.</description>
+                <value>4</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="DateTimeWithoutOffset">
+            <description>Represents the international standard for the representation of local date and time (ISO 8601).
+The following pattern describes the DateTimeWithoutOffset format:
+YYYY-MM-DDThh:mm:ss[.S+]
+Where:
+YYYY    = Four digit year
+MM      = Two digit month (01=January, and so on)
+DD      = Two digit day of month (01 through 31)
+T       = Time designator (shows start of time component)
+hh      = Two digits of hour (00 through 23, AM/PM not allowed)
+mm      = Two digits of minute (00 through 59)
+ss      = Two digits of second (00 through 59, leap second not allowed)
+S+      = One or more digits of decimal fraction of a second
+
+DateTimeWithoutOffset values are compliant with ISO 8601 "Representation of dates and times" but are restricted according to RFC 3339 "Date and Time on the Internet: Timestamps". The DateTimeWithoutOffset format is further restricted as follows:
+- T designator is upper case.
+- . (dot) is used to indicate start of fractions of seconds (ISO 8601 also allows comma)</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>19</min>
+                        <max>19</max>
+                    </lengthRange>
+                    <stringLength>
+                        <subrange>
+                            <min>19</min>
+                            <max>19</max>
+                        </subrange>
+                    </stringLength>
+                    <validValues>^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])([\.][0-9]+){0,1}$</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="Must be of the format YYYY-MM-DDTHH:MM:SS[.S+] where T separates the time and the date parts. Example 2000-08-01T17:17:34.1. " format="posix_ere" name="Pattern Constraint"><![CDATA[^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])([\.][0-9]+){0,1}$]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <class name="ExternalMediaM">
+            <description>Represents the root MOC for  External Media Management function MOM.
+The function allows moving data to/from an external media:
+ like a DVD,Thumb Drive from/to APG file system. 
+It supports following actions:
+
+1) Export to media - Copies of file(s)/folder(s) from APG file system to the media. 
+
+2) Format and export to media -Clears the media contents:
+       Copies files from the APG file system to media. 
+
+3) Import from media - Copies of file(s)/folder(s) from the media to APG file system. 
+
+4) Fetch media information - Fetches information related to external media.
+
+All above operations require that the External Media Management function state is enabled.
+
+Function state can be changed using the following 2 actions:
+
+1) Unlock media - Enables External Media Management function by mounting the external media contents.
+                           Media contents are mounted to folder /media in APG file system. 
+
+2) Lock media - Disables External Media  function by unmounting the external media contents.
+                        Media contents are unmounted from folder /media in APG file system.
+ 
+</description>
+            <systemCreated/>
+            <root/>
+            <action name="exportToMedia">
+                <description>Exports specified list of file(s) or folder(s) from the APG file system to media.
+
+Specified file(s) or folder(s) are taken from the predefined folder "media" in the AP file system and copied to media maintaining the same folder structure. 
+This action is applicable for both readonly and rewritable media. Once copy starts the result is shown in attribute resultOfOperation.
+
+The action can fail due to one of the following reasons: 
+         - External media access is not enabled: When attribute OperationalState is in DISABLED state.
+	 - Invalid Argument: Invalid argument supplied by the user e.g. file not found or invalid label.
+         - Media drive is busy: When exportToMedia is initiated before completion of previously executed action.
+         - No external media board available: When Media board is not present.
+	 - No Media in Media Drive: Media Drive has no media.
+         - Operation is already in progress: When exportToMedia is initiated before completion of previous exportToMedia.
+         - Unable to connect to server: When connected DVD is not reachable.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="3"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <parameter name="label">
+                    <description>Specifies the label (for example volume name) given to external media during export operation.
+
+Label can be set to external media only during first copy operation. It is not possible to set label on external media in subsequent append operations.
+
+For rewritable media (i.e for DVD+RW or DVD-RW), label can be set during every copy operation.
+For readonly media (i.e for DVD+R or DVD-R), label can be set only during first copy operation. It is not possible to set label on these media in subsequent append operations.</description>
+                    <domainExtension domain="ECIM">
+                        <extension name="isNillable" value="true"/>
+                    </domainExtension>
+                    <isNillable/>
+                    <in/>
+                    <dataType>
+                        <string/>
+                    </dataType>
+                </parameter>
+                <parameter name="fileList">
+                    <description>Specifies the list of file(s)/folder(s) path that has to be copied to the media.
+In case of multiple files/folders to be copied, each file/folder path must be ";" separated within the complete string.</description>
+                    <in/>
+                    <dataType>
+                        <string/>
+                    </dataType>
+                </parameter>
+            </action>
+            <action name="refreshMediaInfo">
+                <description>Fetches information related to external media.
+This information includes type of media, total, free and used spaces of media.
+Attributes mediaType, totalSizeOfMedia, freeSpaceOnMedia, totalSizeOnMedia attributes are updated with the latest data after completion of action. 
+
+The action can fail due to one of the following reasons:
+- External media access is not enabled: When OperationalState is in DISABLED state.
+- Media drive is busy: When refreshMediaInfo is initiated before completion of previously executed action.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="13"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <action name="importFromMedia">
+                <description>Imports file(s)/folder(s) from the media to APG file system. 
+Specified file(s) or folder(s) are copied from media to the predefined folder "media" in the APG file system. 
+
+Once copy starts the result is shown in attribute resultOfOperation.
+
+The action can fail due to one of the following reasons: 
+         - External media access is not enabled: When OperationalState is in DISABLED state.
+         - No external media board available: When Media board is not present.
+	 - No Media in Media Drive: Media Drive has no media.
+         - Operation is already in progress: When importFromMedia is initiated before completion of previous importFromMedia.
+	 - Media drive is busy: Media drive is busy with some other operation.
+	 - Invalid Argument: Invalid argument supplied by the user e.g file not found.
+	 - Media empty, copy is not possible: When media is empty. </description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="75"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <parameter name="overwriteEnable">
+                    <description>Specifies enable/disable of overwrite during copy operation.
+If true, file/folder is overwritten in destination folder if a file/folder with same name exists. If false, file/folder is not overwritten in destination folder if a file/folder with same name exists and the copy operation fails.</description>
+                    <in/>
+                    <dataType>
+                        <boolean>
+                            <defaultValue>false</defaultValue>
+                        </boolean>
+                    </dataType>
+                </parameter>
+                <parameter name="destinationFolder">
+                    <description>Specifies complete path of destination folder that is being used for import from media operation.
+</description>
+                    <in/>
+                    <dataType>
+                        <string/>
+                    </dataType>
+                </parameter>
+                <parameter name="fileList">
+                    <description>Specifies the list of files/folders path that has to be copied from the media.
+In case of multiple files/folders to be copied,each file/folder path must be ";" separated within the complete string.
+</description>
+                    <domainExtension domain="ECIM">
+                        <extension name="isNillable" value="true"/>
+                    </domainExtension>
+                    <isNillable/>
+                    <in/>
+                    <dataType>
+                        <string/>
+                    </dataType>
+                </parameter>
+            </action>
+            <action name="formatAndExportToMedia">
+                <description>Formats the media and copies specified list of file from the AP file system to media.
+Specified file(s) or folder(s) are taken from the predefined folder "media" in the APG file system.
+Above files are copied to media maintaining the same folder structure after erasing the media contents.
+This action is applicable only for rewritable media. 
+Once copy starts the result is shown in attribute resultOfOperation.
+
+The action can fail due to one of the following reasons: 
+         - External media access is not enabled: When OperationalState is in DISABLED state.
+         - Invalid Argument: Invalid argument supplied by the user e.g file not found or invalid label.
+         - Media drive is busy: When formatAndExportToMedia is initiated:
+            before completion of previously executed action.
+         - No external media board available: When Media board is not present.
+	 - No Media in Media Drive: Media Drive has no media.
+         - Operation is already in progress: When formatAndExportToMedia is initiated:
+               before previous action is  completed.
+         - Overwriting data to this media is not supported: When Media media is readonly.
+         - Unable to connect to server: When connected DVD is not reachable.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="4"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <parameter name="label">
+                    <description>Specifies the label (for example volume name) given to external media during copy operation.</description>
+                    <domainExtension domain="ECIM">
+                        <extension name="isNillable" value="true"/>
+                    </domainExtension>
+                    <isNillable/>
+                    <in/>
+                    <dataType>
+                        <string/>
+                    </dataType>
+                </parameter>
+                <parameter name="fileList">
+                    <description>Specifies the list of file(s)/folder(s) path that has to be copied to the media.
+In case of multiple files/folders to be copied, each file/folder path must be ";" separated within the complete string.</description>
+                    <in/>
+                    <dataType>
+                        <string/>
+                    </dataType>
+                </parameter>
+            </action>
+            <action name="lockMedia">
+                <description>Disables External Media Management function by unmounting the external media.
+Clears the predefined folder /media on APG file system. 
+
+The attribute operationalState is set to DISABLED after successful action completion. 
+This is asynchronous action and result is updated in attribute resultOfOperation.
+
+The action can fail due to one of the following reasons: 
+- Operation is already in progress: When this action is initiated before completion of previous one.
+- Media drive is busy: When this action is initiated before completion of another ongoing action.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="8"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <action name="unlockMedia">
+                <description>Enables External Media Management function by mounting the external media.
+Making the related file system visible in the predefined folder /media on APG file system.
+
+The attribute operationalState is set to ENABLED after successful action completion.
+This is asynchronous action and result is updated in attribute resultOfOperation.
+
+The action can fail due to one of the following reasons: 
+- Media drive is busy: When this action is initiated before completion of another ongoing action.
+- No external media board available: When Media board is not present.
+- No Media in Media Drive: Media Drive has no media or corrupted.
+- Operation is already in progress: When this action is initiated before completion of a previous one.
+- Unlocking failed due to media already mounted on the other AP: When DVD is already mounted to the other AP. 
+- Unlocking Failed due to mount failure: The mount failed in case of thumb drive. 
+
+</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="7"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <parameter name="formatEnable">
+                    <description>Specifies enable/disable of format during unlock operation.
+If true, the external media (thumb drive) will get format and then mount to the predefined folder /media on APG file system. If false, mounts the external media  to /media on APG file system.</description>
+                    <in/>
+                    <dataType>
+                        <boolean>
+                            <defaultValue>false</defaultValue>
+                        </boolean>
+                    </dataType>
+                </parameter>
+            </action>
+            <attribute name="externalMediaMId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="freeSpaceOnMedia">
+                <description>Specifies the avaiable free space on external media.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <uint16/>
+                </dataType>
+            </attribute>
+            <attribute name="lastUpdatedTime">
+                <description>Specifies the updated time for media attributes.
+Attributes like mediaType,ownerOfMedia, totalSizeOfMedia, usedSpaceOnMedia,freeSpaceOnMedia. </description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTimeWithoutOffset">
+                        <mimName>AxeExternalMedia</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="mediaType">
+                <description>Specifies type of the external media.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="ExternalMediaType">
+                        <mimName>AxeExternalMedia</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="totalSizeOfMedia">
+                <description>Specifies the total size of external media in KB.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <uint32/>
+                </dataType>
+            </attribute>
+            <attribute name="usedSpaceOnMedia">
+                <description>Specifies the used space of external media in percentage (%).</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <uint16/>
+                </dataType>
+            </attribute>
+            <attribute name="resultOfOperation">
+                <description>Specifies the result of external media operation.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="ExternalMediaActionProgress">
+                        <mimName>AxeExternalMedia</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="operationalState">
+                <description>Specifies the operational state of External Media Management function.
+It can assume one of the following values:
+DISABLED: The external media cannot be accessed. 
+The predefined folder "/media" on APG file system is empty.
+ENABLED: The external media can be accessed.
+The predefined folder "/media" on APG file system shows the related file system.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="OperState">
+                        <mimName>AxeExternalMedia</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            
+        </class>
+        
+        
+    </mim>
+    <interMim>
+        <relationship name="DataOutputHandling_to_ExternalMediaM">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="DataOutputHandling">
+                        <mimName>AxeFunctions</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ExternalMediaM">
+                        <mimName>AxeExternalMedia</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

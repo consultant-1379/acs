@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--xtools2_universal_type_manager-->
+<?com.ibm.xtools.emf.core.signature <signature id="com.ibm.xtools.uml.msl.model" version="7.0.0"><feature description="" name="com.ibm.xtools.ruml.feature" url="" version="7.0.0"/></signature>?>
+<?com.ibm.xtools.emf.core.signature <signature id="com.ibm.xtools.mmi.ui.signatures.diagram" version="7.0.0"><feature description="" name="Rational Modeling Platform (com.ibm.xtools.rmp)" url="" version="7.0.0"/></signature>?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CoreMWProfile="http:///schemas/CoreMWProfile/_tdRL4IFUEeCV1tO_b-GGTA/24" xmlns:Default="http:///schemas/Default/1" xmlns:ECIMBaseProfile="http:///schemas/ECIMBaseProfile/_vBdY0MmdEeCPOvLdQEQ_oA/559" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.1/notation" xmlns:uml="http://www.eclipse.org/uml2/2.1.0/UML" xmlns:umlnotation="http://www.ibm.com/xtools/1.5.2/Umlnotation" xsi:schemaLocation="http:///schemas/CoreMWProfile/_tdRL4IFUEeCV1tO_b-GGTA/24 pathmap://COREMW_PROFILE/CoreMW_Profile.epx#_tdt30IFUEeCV1tO_b-GGTA?CoreMW%20Profile/CoreMWProfile? http:///schemas/Default/1 pathmap://UML2_MSL_PROFILES/Default.epx#_IN8k8MmBEdqBcN1R6EvWUw?Default/Default? http:///schemas/ECIMBaseProfile/_vBdY0MmdEeCPOvLdQEQ_oA/559 pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.epx#_vBw60MmdEeCPOvLdQEQ_oA?ECIM%20Base%20Profile/ECIMBaseProfile?">
+  <uml:Model xmi:id="_NRAMoAwOEdmFcaeZXPdWAQ" name="APZIM_ClockSync" clientDependency="_OS1OUIXLEd-lToFzlKoOsA">
+    <eAnnotations xmi:id="_NRAMoQwOEdmFcaeZXPdWAQ" source="uml2.diagrams"/>
+    <eAnnotations xmi:id="_YQXU0Y3YEeG78azzPhKTXg" source="com.ibm.xtools.common.ui.reduction.editingCapabilities">
+      <details xmi:id="_YQXU0o3YEeG78azzPhKTXg" key="com.ericsson.ecim.coremw.dsl.uireduction.activity" value="2"/>
+    </eAnnotations>
+    <ownedComment xmi:id="_l4APMI3YEeG78azzPhKTXg">
+      <body>ECIM model for ClockSync functionality</body>
+    </ownedComment>
+    <packageImport xmi:id="_8JbBoIW5Ed-FBpQGdJXi3g">
+      <importedPackage xmi:type="uml:Model" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_iT7qACCSEd-Egr3-YAWs7Q?EcimDataType?"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_OS1OUIXLEd-lToFzlKoOsA" name="" client="_NRAMoAwOEdmFcaeZXPdWAQ">
+      <supplier xmi:type="uml:Model" href="pathmap://ECIM_COREMW_GUIDELIB/ECIM_Core_MW_Guidelines.emx#_5vlRYnhQEd-OM9oMWC6jJQ?ECIM%20Core%20MW%20Guidelines?"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_c-lXcI3YEeG78azzPhKTXg" name="APZIM_ClockSync">
+      <eAnnotations xmi:id="_c-lXcY3YEeG78azzPhKTXg" source="uml2.diagrams">
+        <contents xmi:type="notation:Diagram" xmi:id="_c-lXco3YEeG78azzPhKTXg" type="Class" name="clockSyncClassDiagram">
+          <children xmi:id="_c-lXc43YEeG78azzPhKTXg" element="_c-lXuI3YEeG78azzPhKTXg">
+            <children xmi:id="_c-lXdI3YEeG78azzPhKTXg" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_c-lXdY3YEeG78azzPhKTXg" width="1320" height="1320"/>
+            </children>
+            <children xmi:id="_c-lXdo3YEeG78azzPhKTXg" type="Stereotype"/>
+            <children xmi:id="_c-lXd43YEeG78azzPhKTXg" type="Name"/>
+            <children xmi:id="_c-lXeI3YEeG78azzPhKTXg" type="Parent"/>
+            <children xmi:id="_c-lXeY3YEeG78azzPhKTXg" type="AttributeCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_c-lXeo3YEeG78azzPhKTXg" filtering="Manual" filteredObjects="_c-lXv43YEeG78azzPhKTXg _c-lXxI3YEeG78azzPhKTXg _c-lXyY3YEeG78azzPhKTXg _c-lXzo3YEeG78azzPhKTXg"/>
+            </children>
+            <children xmi:id="_c-lXe43YEeG78azzPhKTXg" type="OperationCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_c-lXfI3YEeG78azzPhKTXg"/>
+            </children>
+            <children xmi:id="_c-lXfY3YEeG78azzPhKTXg" visible="false" type="SignalCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_c-lXfo3YEeG78azzPhKTXg"/>
+            </children>
+            <children xmi:id="_c-lXf43YEeG78azzPhKTXg" visible="false" type="StructureCompartment">
+              <styles xmi:type="umlnotation:UMLShapeCompartmentStyle" xmi:id="_c-lXgI3YEeG78azzPhKTXg"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_c-lXgY3YEeG78azzPhKTXg" fontName="Sans" showStereotype="Label"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_c-lXgo3YEeG78azzPhKTXg" x="6156" y="9072"/>
+          </children>
+          <children xmi:id="_c-lXg43YEeG78azzPhKTXg">
+            <children xmi:id="_c-lXhI3YEeG78azzPhKTXg" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_c-lXhY3YEeG78azzPhKTXg" width="1320" height="1320"/>
+            </children>
+            <children xmi:id="_c-lXho3YEeG78azzPhKTXg" type="Stereotype"/>
+            <children xmi:id="_c-lXh43YEeG78azzPhKTXg" type="Name"/>
+            <children xmi:id="_c-lXiI3YEeG78azzPhKTXg" type="Parent"/>
+            <children xmi:id="_c-lXiY3YEeG78azzPhKTXg" type="AttributeCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_c-lXio3YEeG78azzPhKTXg"/>
+            </children>
+            <children xmi:id="_c-lXi43YEeG78azzPhKTXg" type="OperationCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_c-lXjI3YEeG78azzPhKTXg"/>
+            </children>
+            <children xmi:id="_c-lXjY3YEeG78azzPhKTXg" visible="false" type="SignalCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_c-lXjo3YEeG78azzPhKTXg"/>
+            </children>
+            <children xmi:id="_c-lXj43YEeG78azzPhKTXg" visible="false" type="StructureCompartment">
+              <styles xmi:type="umlnotation:UMLShapeCompartmentStyle" xmi:id="_c-lXkI3YEeG78azzPhKTXg"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_c-lXkY3YEeG78azzPhKTXg" fontName="Sans" showStereotype="Label"/>
+            <element xmi:type="uml:Class" href="platform:/resource/Models/MODELS/APZIM/APZIM_ApzFunctionsTop/ApzFunctions.efx#_hfw4sIrDEeCGs9J6pbQSYw?MODELS/ApzMoM/ApzFunctions?"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_c-lXko3YEeG78azzPhKTXg" x="4212" y="1296"/>
+          </children>
+          <styles xmi:type="umlnotation:UMLDiagramStyle" xmi:id="_c-lXk43YEeG78azzPhKTXg"/>
+          <element xsi:nil="true"/>
+          <edges xmi:id="_c-lXlI3YEeG78azzPhKTXg" element="_c-lX043YEeG78azzPhKTXg" source="_c-lXc43YEeG78azzPhKTXg" target="_c-lXg43YEeG78azzPhKTXg">
+            <children xmi:id="_c-lXlY3YEeG78azzPhKTXg" type="NameLabel">
+              <children xmi:id="_c-lXlo3YEeG78azzPhKTXg" type="Stereotype"/>
+              <children xmi:id="_c-lXl43YEeG78azzPhKTXg" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_c-lXmI3YEeG78azzPhKTXg" y="-238"/>
+            </children>
+            <children xmi:id="_c-lXmY3YEeG78azzPhKTXg" type="ToMultiplicityLabel" element="_c-lX1I3YEeG78azzPhKTXg">
+              <children xmi:id="_c-lXmo3YEeG78azzPhKTXg" type="ToMultiplicity"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_c-lXm43YEeG78azzPhKTXg" y="508"/>
+            </children>
+            <children xmi:id="_c-lXnI3YEeG78azzPhKTXg" type="ToRoleLabel" element="_c-lX1I3YEeG78azzPhKTXg">
+              <children xmi:id="_c-lXnY3YEeG78azzPhKTXg" type="ToRole"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_c-lXno3YEeG78azzPhKTXg" x="519" y="-504"/>
+            </children>
+            <children xmi:id="_c-lXn43YEeG78azzPhKTXg" type="FromMultiplicityLabel" element="_c-lXvI3YEeG78azzPhKTXg">
+              <children xmi:id="_c-lXoI3YEeG78azzPhKTXg" type="FromMultiplicity"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_c-lXoY3YEeG78azzPhKTXg" y="508"/>
+            </children>
+            <children xmi:id="_c-lXoo3YEeG78azzPhKTXg" type="FromRoleLabel" element="_c-lXvI3YEeG78azzPhKTXg">
+              <children xmi:id="_c-lXo43YEeG78azzPhKTXg" type="FromRole"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_c-lXpI3YEeG78azzPhKTXg" x="-568" y="-129"/>
+            </children>
+            <children xmi:id="_c-lXpY3YEeG78azzPhKTXg" type="ToQualifierLabel" element="_c-lX1I3YEeG78azzPhKTXg">
+              <children xmi:id="_c-lXpo3YEeG78azzPhKTXg" type="QualifierCompartment">
+                <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_c-lXp43YEeG78azzPhKTXg"/>
+              </children>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_c-lXqI3YEeG78azzPhKTXg" y="-238"/>
+            </children>
+            <children xmi:id="_c-lXqY3YEeG78azzPhKTXg" type="FromQualifierLabel" element="_c-lXvI3YEeG78azzPhKTXg">
+              <children xmi:id="_c-lXqo3YEeG78azzPhKTXg" type="QualifierCompartment">
+                <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_c-lXq43YEeG78azzPhKTXg"/>
+              </children>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_c-lXrI3YEeG78azzPhKTXg" y="-238"/>
+            </children>
+            <children xmi:id="_c-lXrY3YEeG78azzPhKTXg" type="ToConstraintLabel" element="_c-lX1I3YEeG78azzPhKTXg">
+              <children xmi:id="_c-lXro3YEeG78azzPhKTXg" type="ToConstraintCompartment">
+                <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_c-lXr43YEeG78azzPhKTXg"/>
+              </children>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_c-lXsI3YEeG78azzPhKTXg" y="1354"/>
+            </children>
+            <children xmi:id="_c-lXsY3YEeG78azzPhKTXg" type="FromConstraintLabel" element="_c-lXvI3YEeG78azzPhKTXg">
+              <children xmi:id="_c-lXso3YEeG78azzPhKTXg" type="FromConstraintCompartment">
+                <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_c-lXs43YEeG78azzPhKTXg"/>
+              </children>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_c-lXtI3YEeG78azzPhKTXg" y="1354"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_c-lXtY3YEeG78azzPhKTXg" fontName="Sans" lineWidth="1" showStereotype="Text"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_c-lXto3YEeG78azzPhKTXg" points="[0, 0, 0, 0]$[0, 0, 0, 0]"/>
+          </edges>
+        </contents>
+      </eAnnotations>
+      <ownedComment xmi:id="_c-lXt43YEeG78azzPhKTXg">
+        <body>This is clockSync ECIM MOM</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="_c-lXuI3YEeG78azzPhKTXg" name="ClockSync">
+        <ownedComment xmi:id="_c-lXuY3YEeG78azzPhKTXg">
+          <body>ClockSync provides the following functionalities :
+
+CP - AP clock synchronization :
+
+a) Periodically query CP for current date and time.
+b) After recieving date and time ,
+If the time difference between AP and CP is less than a maximumDeviation, the AP time is synchronised to CP time.
+If the time difference between AP and CP is greater than maximumDeviation, alarm is raised.
+</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_c-lXuo3YEeG78azzPhKTXg" name="clockSyncId" isReadOnly="true">
+          <ownedComment xmi:id="_c-lXu43YEeG78azzPhKTXg">
+            <body>This is a key attribute in clockSync class</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_c-lXvI3YEeG78azzPhKTXg" name="clockSync_to_ApzFunctions" visibility="public" association="_c-lX043YEeG78azzPhKTXg">
+          <type xmi:type="uml:Class" href="platform:/resource/Models/MODELS/APZIM/APZIM_ApzFunctionsTop/ApzFunctions.efx#_hfw4sIrDEeCGs9J6pbQSYw?MODELS/ApzMoM/ApzFunctions?"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_c-lXvY3YEeG78azzPhKTXg" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_c-lXvo3YEeG78azzPhKTXg" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_c-lXv43YEeG78azzPhKTXg" name="cycleTime">
+          <ownedComment xmi:id="_c-lXwI3YEeG78azzPhKTXg">
+            <body>This parameter specifies frequency in seconds with which clocksync queries the CP for CPtime.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_DxVN4CCTEd-Egr3-YAWs7Q?EcimDataType/EcimUInt32?"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_c-lXwY3YEeG78azzPhKTXg" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_c-lXwo3YEeG78azzPhKTXg"/>
+          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_c-lXw43YEeG78azzPhKTXg" value="600"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_c-lXxI3YEeG78azzPhKTXg" name="maximumCalltime">
+          <ownedComment xmi:id="_c-lXxY3YEeG78azzPhKTXg">
+            <body>This parameter specifies the maximum response time for CP clock data request in microseconds.
+If response for CP clock data exceeds maximumCallTime, the CP time is not used for synchronisation and an event is raised.
+If response for CP clock data exceeds maximumCallTime for 10 consecutive times, alarm is raised.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_DxVN4CCTEd-Egr3-YAWs7Q?EcimDataType/EcimUInt32?"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_c-lXxo3YEeG78azzPhKTXg" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_c-lXx43YEeG78azzPhKTXg"/>
+          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_c-lXyI3YEeG78azzPhKTXg" value="500000"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_c-lXyY3YEeG78azzPhKTXg" name="maximumDeviation">
+          <ownedComment xmi:id="_c-lXyo3YEeG78azzPhKTXg">
+            <body>This parameter specifies maximum deviation time between AP and CP time for synchronisation in microseconds.
+If the time difference between AP and CP time is above the minimumDeviation and lessthan the maximumDeviation value, AP time will synchronised with CP time
+If the time difference between AP and CP time is exceeds the maximumDeviation value, an alarm is raised.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_DxVN4CCTEd-Egr3-YAWs7Q?EcimDataType/EcimUInt32?"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_c-lXy43YEeG78azzPhKTXg" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_c-lXzI3YEeG78azzPhKTXg"/>
+          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_c-lXzY3YEeG78azzPhKTXg" value="600"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_c-lXzo3YEeG78azzPhKTXg" name="minimumDeviation">
+          <ownedComment xmi:id="_c-lXz43YEeG78azzPhKTXg">
+            <body>This parameter specifies minimum time deviation between AP and CP time for synchronisation in seconds.
+If difference between CP and AP time is above the minimumDeviation and lessthan the maximumDeviation value, AP time will be synchronised with CP time.
+If difference between CP and AP time is lessthan minimumDeviation value, there will be no synchronisation in AP time</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_DxVN4CCTEd-Egr3-YAWs7Q?EcimDataType/EcimUInt32?"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_c-lX0I3YEeG78azzPhKTXg" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_c-lX0Y3YEeG78azzPhKTXg"/>
+          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_c-lX0o3YEeG78azzPhKTXg" value="50000"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_c-lX043YEeG78azzPhKTXg" name="" memberEnd="_c-lXvI3YEeG78azzPhKTXg _c-lX1I3YEeG78azzPhKTXg">
+        <ownedEnd xmi:id="_c-lX1I3YEeG78azzPhKTXg" name="APZFunctions_to_clockSync" visibility="public" type="_c-lXuI3YEeG78azzPhKTXg" aggregation="composite" association="_c-lX043YEeG78azzPhKTXg">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_c-lX1Y3YEeG78azzPhKTXg" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_c-lX1o3YEeG78azzPhKTXg" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_c-lX143YEeG78azzPhKTXg" name="clockSyncObj">
+        <eAnnotations xmi:id="_c-lX2I3YEeG78azzPhKTXg" source="uml2.diagrams">
+          <contents xmi:type="notation:Diagram" xmi:id="_c-lX2Y3YEeG78azzPhKTXg" type="Object" name="clockSyncInstanceDiagram">
+            <children xmi:id="_c-lX2o3YEeG78azzPhKTXg" element="_c-lX543YEeG78azzPhKTXg">
+              <children xmi:id="_c-lX243YEeG78azzPhKTXg" type="ImageCompartment">
+                <layoutConstraint xmi:type="notation:Size" xmi:id="_c-lX3I3YEeG78azzPhKTXg" width="1320" height="1320"/>
+              </children>
+              <children xmi:id="_c-lX3Y3YEeG78azzPhKTXg" type="Stereotype"/>
+              <children xmi:id="_c-lX3o3YEeG78azzPhKTXg" type="Name"/>
+              <children xmi:id="_c-lX343YEeG78azzPhKTXg" type="Parent"/>
+              <children xmi:id="_c-lX4I3YEeG78azzPhKTXg" type="ValueSpecification"/>
+              <children xmi:id="_c-lX4Y3YEeG78azzPhKTXg" type="TaggedValueSet"/>
+              <children xmi:id="_c-lX4o3YEeG78azzPhKTXg" type="SlotCompartment">
+                <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_c-lX443YEeG78azzPhKTXg"/>
+              </children>
+              <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_c-lX5I3YEeG78azzPhKTXg" fontName="Sans" showStereotype="Label"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_c-lX5Y3YEeG78azzPhKTXg" x="15200" y="4256"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLDiagramStyle" xmi:id="_c-lX5o3YEeG78azzPhKTXg"/>
+            <element xsi:nil="true"/>
+          </contents>
+        </eAnnotations>
+        <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_c-lX543YEeG78azzPhKTXg" name="clockSyncInstnace" classifier="_c-lXuI3YEeG78azzPhKTXg">
+          <slot xmi:id="_c-lX6I3YEeG78azzPhKTXg" definingFeature="_c-lXuo3YEeG78azzPhKTXg">
+            <value xmi:type="uml:LiteralString" xmi:id="_c-lX6Y3YEeG78azzPhKTXg" value="1">
+              <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+            </value>
+          </slot>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:id="_UeIAINCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAIdCzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML_PROFILES/Standard.profile.uml#_yzU58YinEdqtvbnfB2L_5w"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:id="_UeIAItCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAI9CzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML2_MSL_PROFILES/Default.epx#_IN8k8MmBEdqBcN1R6EvWUw?Default/Default?"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML2_MSL_PROFILES/Default.epx#_a_S3wNWLEdiy4IqP8whjFA?Default?"/>
+    </profileApplication>
+    <profileApplication xmi:id="_UeIAJNCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAJdCzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML2_MSL_PROFILES/Deployment.epx#_IrdAUMmBEdqBcN1R6EvWUw?Deployment/Deployment?"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML2_MSL_PROFILES/Deployment.epx#_vjbuwOvHEdiDX5bji0iVSA?Deployment?"/>
+    </profileApplication>
+    <profileApplication xmi:id="_cikwQHVqEeCBgp9CYCosRQ">
+      <eAnnotations xmi:id="_ciq24HVqEeCBgp9CYCosRQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.epx#_vBw60MmdEeCPOvLdQEQ_oA?ECIM%20Base%20Profile/ECIMBaseProfile?"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.epx#_cUcakNQkEd63X4o72aQidQ?ECIM%20Base%20Profile?"/>
+    </profileApplication>
+    <profileApplication xmi:id="_YRNCUI3YEeG78azzPhKTXg">
+      <eAnnotations xmi:id="_YUFXMI3YEeG78azzPhKTXg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://COREMW_PROFILE/CoreMW_Profile.epx#_tdt30IFUEeCV1tO_b-GGTA?CoreMW%20Profile/CoreMWProfile?"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://COREMW_PROFILE/CoreMW_Profile.epx#_Br2_QBSXEd-ZjqYFUyJzOw?CoreMW%20Profile?"/>
+    </profileApplication>
+  </uml:Model>
+  <ECIMBaseProfile:EcimModel xmi:id="_cqA1AHVqEeCBgp9CYCosRQ" base_Model="_NRAMoAwOEdmFcaeZXPdWAQ"/>
+  <ECIMBaseProfile:EcimMom xmi:id="_c-nzsI3YEeG78azzPhKTXg" hideGroupName="" specification="" base_Package="_c-lXcI3YEeG78azzPhKTXg" author="XHARBAV" contact="" date="21/02/2012" docNo="" revision="1" version="0" release="1" organization=""/>
+  <Default:Documentation xmi:id="_c-nzsY3YEeG78azzPhKTXg" base_Comment="_c-lXt43YEeG78azzPhKTXg"/>
+  <ECIMBaseProfile:EcimRootMoClass xmi:id="_c-nzso3YEeG78azzPhKTXg" hideGroupName="" specification="" base_Class="_c-lXuI3YEeG78azzPhKTXg"/>
+  <CoreMWProfile:CmwClass xmi:id="_c-nzs43YEeG78azzPhKTXg" base_Class="_c-lXuI3YEeG78azzPhKTXg"/>
+  <Default:Documentation xmi:id="_c-nztI3YEeG78azzPhKTXg" base_Comment="_c-lXuY3YEeG78azzPhKTXg"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_c-nztY3YEeG78azzPhKTXg" hideGroupName="" specification="" unit="" base_Property="_c-lXuo3YEeG78azzPhKTXg"/>
+  <Default:Documentation xmi:id="_c-nzto3YEeG78azzPhKTXg" base_Comment="_c-lXu43YEeG78azzPhKTXg"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_c-nzt43YEeG78azzPhKTXg" hideGroupName="APGHIDDEN" specification="" statusInformation="" unit="" base_Property="_c-lXv43YEeG78azzPhKTXg"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_c-nzuI3YEeG78azzPhKTXg" base_Property="_c-lXv43YEeG78azzPhKTXg" isConfigurable="true"/>
+  <Default:Documentation xmi:id="_c-nzuY3YEeG78azzPhKTXg" base_Comment="_c-lXwI3YEeG78azzPhKTXg"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_c-nzuo3YEeG78azzPhKTXg" hideGroupName="APGHIDDEN" specification="" statusInformation="" unit="" base_Property="_c-lXxI3YEeG78azzPhKTXg"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_c-oawI3YEeG78azzPhKTXg" base_Property="_c-lXxI3YEeG78azzPhKTXg" isConfigurable="true"/>
+  <Default:Documentation xmi:id="_c-oawY3YEeG78azzPhKTXg" base_Comment="_c-lXxY3YEeG78azzPhKTXg"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_c-oawo3YEeG78azzPhKTXg" hideGroupName="APGHIDDEN" specification="" statusInformation="" unit="" base_Property="_c-lXyY3YEeG78azzPhKTXg"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_c-oaw43YEeG78azzPhKTXg" base_Property="_c-lXyY3YEeG78azzPhKTXg" isConfigurable="true"/>
+  <Default:Documentation xmi:id="_c-oaxI3YEeG78azzPhKTXg" base_Comment="_c-lXyo3YEeG78azzPhKTXg"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_c-oaxY3YEeG78azzPhKTXg" hideGroupName="APGHIDDEN" specification="" statusInformation="" unit="" base_Property="_c-lXzo3YEeG78azzPhKTXg"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_c-oaxo3YEeG78azzPhKTXg" base_Property="_c-lXzo3YEeG78azzPhKTXg" isConfigurable="true"/>
+  <Default:Documentation xmi:id="_c-oax43YEeG78azzPhKTXg" base_Comment="_c-lXz43YEeG78azzPhKTXg"/>
+  <ECIMBaseProfile:EcimContribution xmi:id="_c-oayI3YEeG78azzPhKTXg" hideGroupName="" specification="" statusInformation="" base_Association="_c-lX043YEeG78azzPhKTXg"/>
+  <ECIMBaseProfile:EcimInstancePackage xmi:id="_c-oayY3YEeG78azzPhKTXg" base_Package="_c-lX143YEeG78azzPhKTXg"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_c-oayo3YEeG78azzPhKTXg" base_InstanceSpecification="_c-lX543YEeG78azzPhKTXg"/>
+  <Default:Documentation xmi:id="_l4DSgI3YEeG78azzPhKTXg" base_Comment="_l4APMI3YEeG78azzPhKTXg"/>
+</xmi:XMI>

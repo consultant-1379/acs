@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+	Copyright (c) 2022 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Mar 3, 2022 12:02:56 PM using:
+	* com.ericsson.ecim.coremw.m2m 3.13.0.202006261811
+	* com.ericsson.ecim.coremw.dsl 3.13.0.202006261811
+	* com.ericsson.ecim.coremw.imm 3.13.0.202006261811
+--><imm:IMM-contents xmlns:imm="http://www.saforum.org/IMMSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd">
+    <object class="ACSSecurityM">
+        <dn>acsSecurityMId=1</dn>
+    </object>
+    <object class="AsecAdmin">
+        <dn>asecAdminId=1,acsSecurityMId=1</dn>
+    </object>
+    <object class="AsecErrorClass">
+        <dn>asecErrorClassId=1,acsSecurityMId=1</dn>
+        <attr>
+            <name>errorId</name>
+            <value>0</value>
+        </attr>
+        <attr>
+            <name>errorTextId</name>
+            <value>0</value>
+        </attr>
+    </object>
+    <object class="ASECConfigData">
+        <dn>asecConfigdataId=FTP,acsSecurityMId=1</dn>
+        <attr>
+            <name>state</name>
+            <value>DROP</value>
+        </attr>
+        <attr>
+            <name>protocolName</name>
+            <value>FTP</value>
+        </attr>
+    </object>
+    <object class="ASECConfigData">
+        <dn>asecConfigdataId=MTS,acsSecurityMId=1</dn>
+        <attr>
+            <name>state</name>
+            <value>DROP</value>
+        </attr>
+        <attr>
+            <name>protocolName</name>
+            <value>MTS</value>
+        </attr>
+    </object>
+    <object class="ASECConfigData">
+        <dn>asecConfigdataId=TELNET,acsSecurityMId=1</dn>
+        <attr>
+            <name>state</name>
+            <value>DROP</value>
+        </attr>
+        <attr>
+            <name>protocolName</name>
+            <value>TELNET</value>
+        </attr>
+    </object>
+    <object class="ASECConfigData">
+        <dn>asecConfigdataId=SSHCBC,acsSecurityMId=1</dn>
+        <attr>
+            <name>state</name>
+            <value>DROP</value>
+        </attr>
+        <attr>
+            <name>protocolName</name>
+            <value>SSHCBC</value>
+        </attr>
+    </object>
+    <object class="AsecGsnhConfigData">
+        <dn>asecGsnhConfigDataId=GSNH,acsSecurityMId=1</dn>
+        <attr>
+            <name>security</name>
+            <value>disabled</value>
+        </attr>
+        <attr>
+            <name>nodeCredentialId</name>
+            <value>-1</value>
+        </attr>
+        <attr>
+            <name>trustCategoryId</name>
+            <value>-1</value>
+        </attr>
+        <attr>
+            <name>confCiphersList</name>
+            <value/>
+        </attr>
+        <attr>
+            <name>enabledTLSversion</name>
+            <value/>
+        </attr>
+        <attr>
+            <name>enabledCiphersList</name>
+            <value/>
+        </attr>
+        <attr>
+            <name>isRestartTriggered</name>
+            <value>0</value>
+        </attr>
+        <attr>
+            <name>confTLSversion</name>
+            <value/>
+        </attr>
+    </object>
+</imm:IMM-contents>

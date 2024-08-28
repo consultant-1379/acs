@@ -1,0 +1,131 @@
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2014 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# models.info
+##
+# Description:
+#       Configuration file used to perform IMM model changes during software upgrade for DSD block.
+##
+##
+# Changelog:
+# - 2014-02-10 - Alessio Cascone (XCASALE) 
+#       First version
+#
+# - 2014-07-10 - Alessio Cascone (XCASALE) 
+#       Added update path from APG43L 1.1.9
+##
+# APG43L 5.3.0 - No model changes
+VERSION: CXC1371444_9-R1N
+log "No model changes in CXC1371444_9-R1N"
+
+# APG43L 5.2 - No model changes
+VERSION: CXC1371444_9-R1M
+log "No model changes in CXC1371444_9-R1M"
+
+# APG43L 5.1.1 - No model changes
+VERSION: CXC1371444_9-R1L
+log "No model changes in CXC1371444_9-R1L"
+
+# APG43L 4.1 LSV03 - No model changes
+VERSION: CXC1371444_9-R1K
+log "No model changes in CXC1371444_9-R1K"
+
+# Reverting UFR changes
+VERSION: CXC1371444_9-R1J
+log "No model changes in CXC1371444_9-R1J"
+
+# APG43L 4.0 LSV07 - No model changes
+VERSION: CXC1371444_9-R1H
+log "No model changes in CXC1371444_9-R1H"
+
+# APG43L 4.0 LSV06 - No model changes
+VERSION: CXC1371444_9-R1G
+log "No model changes in CXC1371444_9-R1G"
+
+# APG43L 4.0 LSV05 - No model changes
+VERSION: CXC1371444_9-R1F
+log "No model changes in CXC1371444_9-R1F"
+
+# APG43L 3.8.1 - No model changes
+VERSION: CXC1371444_9-R1E
+log "No model changes in CXC1371444_9-R1E"
+
+# APG43L 3.8.0 LSV03 - No model changes
+VERSION: CXC1371444_9-R1D
+log "No model changes in CXC1371444_9-R1D"
+
+# APG43L 3.7.0 LSV07 - No model changes
+VERSION: CXC1371444_9-R1C
+log "No model changes in CXC1371444_5-R1C"
+
+VERSION: CXC1371444_9-R1B
+log "No model changes in CXC1371444_5-R1B"
+
+# Adaptations to SwM2.0
+VERSION: CXC1371444_9-R1A05
+VERSION: CXC1371444_9-R1A04
+VERSION: CXC1371444_9-R1A03
+VERSION: CXC1371444_9-R1A02
+VERSION: CXC1371444_9-R1A01
+
+# APG43L 3.2.0 - SLES12 - No model changes
+VERSION: CXC1371444_5-R1A02
+log "No model changes in CXC1371444_5-R1A02"
+
+# APG43L 3.2.0 - SLES12 - No model changes
+VERSION: CXC1371444_5-R1A01
+log "No model changes in CXC1371444_5-R1A01"
+
+# APG43L 2.0 - CM004 - No model changes
+VERSION: CXC1371444-R1B
+log "No model changes in CXC1371444-R1B"
+
+# APG43L 2.0 - LSV33 - No model changes
+VERSION: CXC1371444-R1A25
+log "No model changes in CXC1371444-R1A25"
+
+# APG43L 2.0 - LSV32_PREL - No model changes
+VERSION: CXC1371444-R1A24
+log "No model changes in CXC1371444-R1A24"
+
+# APG43L 2.0 - LSV28.1 - No model changes
+VERSION: CXC1371444-R1A23
+log "No model changes in CXC1371444-R1A23"
+
+# APG43L 2.0 - LSV28 - No model changes
+VERSION: CXC1371444-R1A22
+log "No model changes in CXC1371444-R1A22"
+
+# APG43L 2.0 - LSV27 - No model changes
+VERSION: CXC1371444-R1A21
+log "No model changes in CXC1371444-R1A21"
+
+ APG43L 2.0 - LSV27_PREL - No model changes
+VERSION: CXC1371444-R1A20
+log "No model changes in CXC1371444-R1A20"
+
+# APG43L 2.0 - LSV26 - No model changes
+VERSION: CXC1371444-R1A19
+log "No model changes in CXC1371444-R1A19"
+
+# APG43L 2.0 - LSV25 - No model changes
+VERSION: CXC1371444-R1A18
+log "No model changes in CXC1371444-R1A18"
+
+# APG43L 2.0 - LSV24 - No model changes
+VERSION: CXC1371444-R1A17
+log "No model changes in CXC1371444-R1A17"
+
+# APG43L 2.0 - LSV22 - No model changes
+VERSION: CXC1371444-R1A16
+log "No model changes in CXC1371444-R1A16"
+
+# APG43L 2.0 - LSV21_PREL - No model changes
+VERSION: CXC1371444-R1A15
+log "No model changes in CXC1371444-R1A15"
+
+# APG43L 1.1.9 - No model changes
+VERSION: CXC1371326-R1G
+log "No model changes in CXC1371326-R1G"

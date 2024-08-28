@@ -1,0 +1,1610 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
+	Copyright (c) 2021 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Jul 2, 2021 4:01:17 PM using:
+	* com.ericsson.ecim.m2m 3.14.0.202105061142
+	* com.ericsson.ecim.dsl 3.14.0.202105061142
+	* com.ericsson.ecim.edm 3.14.0.202105061142
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>K</dtdVersion>
+    <momMetaData>
+        <momTitle>Managed Object Model for Health Check Management Function</momTitle>
+        <momSubTitle/>
+        <momIdentity>
+            <docNum>19089-CXA 117 0020/12</docNum>
+            <docLang>Uen</docLang>
+            <docRev>C</docRev>
+            <docDate>2021-07-02</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>XPRAMDU</signature>
+        </createdBy>
+    </momMetaData>
+    <mim author="Prameela Vanga" contact="XPRAMDU" correction="1" date="2021-07-02" docNo="19089-CXA 117 0020/12" name="HealthCheck" namespace="urn:com:ericsson:ecim:HealthCheck" namespacePrefix="healthcheck" organization="" release="1" revision="C" version="2">
+        <description>AXE Health Check Management function MOM.</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="MOM_NAME"/>
+        </domainExtension>
+        <modelFeatures modelType="Template">
+            <modelFeature featureType="basic" name="CPI_HIDDEN"/>
+        </modelFeatures>
+        <struct name="AsyncActionProgress">
+            <description>Provides the progress report of an asynchronous action.</description>
+            <structMember name="actionName">
+                <description>The name of the invoked asynchronous action.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <string/>
+            </structMember>
+            <structMember name="additionalInfo">
+                <description>Used for logging significant messages during execution of an action.&#13;
+ </description>
+                <sequence>
+                    <string/>
+                    <minLength>0</minLength>
+                </sequence>
+            </structMember>
+            <structMember name="progressInfo">
+                <description>Textual information describing the actual state of the execution of the action.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <string/>
+            </structMember>
+            <structMember name="progressPercentage">
+                <description>Progress of the action. &#13;
+The range is between 0 and 100.&#13;
+&#13;
+</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <uint8/>
+            </structMember>
+            <structMember name="result">
+                <description>Provides the result state of a completed action.&#13;
+This field has the value NOT_AVAILABLE if the action is not finished.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <enumRef name="ActionResultType">
+                    <mimName>HealthCheck</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="resultInfo">
+                <description>Provides textual description of the outcome/result of the action.
+It can contain an error message if the action failed.&#13;
+&#13;
+</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <string/>
+            </structMember>
+            <structMember name="state">
+                <description>Current state of the action.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <enumRef name="ActionStateType">
+                    <mimName>HealthCheck</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="actionId">
+                <description>Uniquely identifies the invoked action.</description>
+                <uint16/>
+            </structMember>
+            <structMember name="timeActionStarted">
+                <description>Provides the date and time when the current action was started.</description>
+                <derivedDataTypeRef name="DateTimeWithoutOffset">
+                    <mimName>HealthCheck</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="timeActionCompleted">
+                <description>Provides the date and time when the action was completed (successfully or unsuccessfully).</description>
+                <derivedDataTypeRef name="DateTimeWithoutOffset">
+                    <mimName>HealthCheck</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="timeOfLastStatusUpdate">
+                <description>Provides the date and time when the struct member state was last updated.</description>
+                <derivedDataTypeRef name="DateTimeWithoutOffset">
+                    <mimName>HealthCheck</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+        </struct>
+        <enum name="SuccessPrintouts">
+            <description>This enum is used for the attribute 'successPrintouts'.</description>
+            <enumMember name="ENABLED">
+                <description>This enum value represents that the logs of successfully executed commands are stored on disk.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="DISABLED">
+                <description>This enum value represents that the logs of successfully executed commands are not stored on disk.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="Compression">
+            <description>Specifies if the compression is enabled or not.</description>
+            <enumMember name="ENABLED">
+                <description>Compression is enabled.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="DISABLED">
+                <description>Compression is disabled.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="DayOfWeek">
+            <description>This enumeration is used for the attribute 'dayOfWeek'.</description>
+            <enumMember name="ALL">
+                <description>This enum value represents all the days in a week.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="MONDAY">
+                <description>This enum value represents monday.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="TUESDAY">
+                <description>This enum value represents tuesday.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="WEDNESDAY">
+                <description>This enum value represents wednesday.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="THURSDAY">
+                <description>This enum value represents thursday.</description>
+                <value>4</value>
+            </enumMember>
+            <enumMember name="FRIDAY">
+                <description>This enum value represents friday.</description>
+                <value>5</value>
+            </enumMember>
+            <enumMember name="SATURDAY">
+                <description>This enum value represents saturday.</description>
+                <value>6</value>
+            </enumMember>
+            <enumMember name="SUNDAY">
+                <description>This enum value represents sunday.</description>
+                <value>7</value>
+            </enumMember>
+        </enum>
+        <enum name="ActionResultType">
+            <description>Lists the different results of an action.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <enumMember name="SUCCESS">
+                <description>The asynchronous action ended with success.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="FAILURE">
+                <description>The asynchronous action ended with failure.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="NOT_AVAILABLE">
+                <description>No result is available yet.</description>
+                <value>3</value>
+            </enumMember>
+        </enum>
+        <enum name="RuleSeverity">
+            <description>Specifies the severity of a rule.</description>
+            <enumMember name="CRITICAL">
+                <description>Indicates a rule which failure is critical for ME healthness.
+</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="WARNING">
+                <description>Indicates a rule which failure is a warning for ME healthness.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="RuleResult">
+            <description>Indicates the result of an executed rule.</description>
+            <enumMember name="OK">
+                <description>The result of the rule is as expected.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="NOK">
+                <description>The result of the rule is not as expected.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="NOT_AVAILABLE">
+                <description>The result of a rule is not available.</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="AdmState">
+            <description>Administrative state of a resource.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <enumMember name="LOCKED">
+                <description>The resource is administratively prohibited from performing services for its users.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="UNLOCKED">
+                <description>The resource is administratively permitted to perform services for its users.
+This is independent of its inherent operability.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="SHUTTINGDOWN">
+                <description>Use of the resource is administratively permitted to existing instances of use only.
+While the system remains in the shutting down state the manager may at any time cause the managed object to revert to the locked state.</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        
+        <enum name="HealthStatus">
+            <description>Specifies the health status based on result of all executed rules.</description>
+            <enumMember name="OK">
+                <description>Indicates that the result of all executed rules is as expected.
+</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="NOT_OK">
+                <description>Indicates that the result of at least one rule, which severity is CRITICAL, is not as expected.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="NOT_AVAILABLE">
+                <description>Indicates that the result of all rules is not available.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="WARNING">
+                <description>Indicates that the result of at least one rule, which severity is WARNING, is not as expected and the result of all CRITICAL ones is as expected.</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="ActionStateType">
+            <description>Lists the action states.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <enumMember name="CANCELLING">
+                <description>Cancellation is in progress.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="RUNNING">
+                <description>The execution of the action is currently in progress.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="FINISHED">
+                <description>The action is finished.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="CANCELLED">
+                <description>The action has been cancelled and cancellation has been done.</description>
+                <value>4</value>
+            </enumMember>
+        </enum>
+        <enum name="OperState">
+            <description>Operational states of a resource.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <enumMember name="DISABLED">
+                <description>The resource is  totally inoperable.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="ENABLED">
+                <description>The resource is partially or fully operable.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="BasicAdmState">
+            <description>Basic administrative states for a resource.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <enumMember name="LOCKED">
+                <description> The resource is administratively prohibited from performing services for its users.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="UNLOCKED">
+                <description>The resource is administratively permitted to perform services for its users.
+This is independent of its inherent operability.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="DayOfWeekOccurrence">
+            <description>This enumeration is used for the attribute dayOfWeekOccurrence.
+This attribute is used in combination with DayOfWeek to schedule an event on a certain occurence of that day in the month, for example first Monday or last Friday of the month.</description>
+            <enumMember name="ALL">
+                <description>This enum value represents all occurences.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="FIRST">
+                <description>This enum value represents the first occurence.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="SECOND">
+                <description>This enum value represents the second occurence.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="THIRD">
+                <description>This enum value represents the third occurence.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="FOURTH">
+                <description>This enum value represents the fourth occurence.</description>
+                <value>4</value>
+            </enumMember>
+            <enumMember name="LAST">
+                <description>This enum value represents the last occurence.</description>
+                <value>5</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="Time">
+            <description>This derived data type is used for the attribute 'time' and is represented in local time (ISO 8601). 
+The following pattern describes the Time format in detail:
+hh:mm:ss
+Where:
+hh = two digits of hour (00 through 23, AM/PM not allowed)
+mm = two digits of minute (00 through 59)
+ss = two digits of second (00 through 59, leap second not allowed)</description>
+            <baseType>
+                <string>
+                    <validValues>^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="DateTime">
+            <description>Represents the international standard for the representation of date and time ( ISO 8601).
+The string format is "YYYY-MM-DDThh:mm:ss.SSSZ" (excluding quotes).
+A DateTime string consists of a date part, a time part, and an optional time zone information part. The time zone part may be a "Z", representing the Coordinated Universal Time (UTC) time zone (equals to +00) or a time zone offset (for example, +02:00).
+If the time zone part is not present, the DateTime value represents local time.
+
+The following pattern describes the DateTime format:
+YYYY-MM-DDThh:mm:ss[.S+][Z|+-hh:mm]
+Where:
+YYYY = Four digit year
+MM = Two digit month (01=January, and so on)
+DD = Two digit day of month (01 through 31)
+T = Time designator (shows start of time component)
+hh = Two digits of hour (00 through 23, AM/PM not allowed)
+mm = Two digits of minute (00 through 59)
+ss = Two digits of second (00 through 59, leap second not allowed)
+S+ = One or more digits of decimal fraction of a second
+Z = Time is UTC
++- = + or - character indicating positive or negative offset to UTC
+
+DateTime values are compliant with ISO 8601 "Representation of dates and times" but are restricted according to RFC 3339 "Date and Time on the Internet: Timestamps". The DateTime format is further restricted as follows:
+- T and Z designators are upper case.
+- . (dot) is used to indicate start of fractions of seconds (ISO 8601 also allows comma)</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>19</min>
+                        <max>31</max>
+                    </lengthRange>
+                    <stringLength>
+                        <subrange>
+                            <min>19</min>
+                            <max>31</max>
+                        </subrange>
+                    </stringLength>
+                    <validValues>^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])([\.][0-9]+){0,1}(([\+|\-](0[0-9]|1[0-9]|2[0-4])(:[0-5][0-9])?)|(Z)?)$</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="Must be of the format YYYY-MM-DDTHH:MM:SS[.S+][Z|+-hh:mm] where T separates the time and the date parts and Z indicates the time zone in relation to UTC. Example 2000-08-01T17:17:34.1+01:00." format="posix_ere" name="Pattern Constraint"><![CDATA[^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])([\.][0-9]+){0,1}(([\+|\-](0[0-9]|1[0-9]|2[0-4])(:[0-5][0-9])?)|(Z)?)$]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="Month">
+            <description>Represents a month in digits.&#13;
+The string format is "M" or "MM" (excluding quotes).&#13;
+M or MM = One or two digit month (1 or 0 1=January, and so on)&#13;
+0 denotes all months.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <baseType>
+                <int16>
+                    <range>
+                        <min>0</min>
+                        <max>12</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>0</min>
+                            <max>12</max>
+                        </subrange>
+                    </ranges>
+                </int16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="DateTimeWithoutOffset">
+            <description>Represents the international standard for the representation of local date and time (ISO 8601).
+The following pattern describes the DateTimeWithoutOffset format:
+YYYY-MM-DDThh:mm:ss[.S+]
+Where:
+YYYY    = Four digit year
+MM      = Two digit month (01=January, and so on)
+DD      = Two digit day of month (01 through 31)
+T       = Time designator (shows start of time component)
+hh      = Two digits of hour (00 through 23, AM/PM not allowed)
+mm      = Two digits of minute (00 through 59)
+ss      = Two digits of second (00 through 59, leap second not allowed)
+S+      = One or more digits of decimal fraction of a second
+
+DateTimeWithoutOffset values are compliant with ISO 8601 "Representation of dates and times" but are restricted according to RFC 3339 "Date and Time on the Internet: Timestamps". The DateTimeWithoutOffset format is further restricted as follows:
+- T designator is upper case.
+- . (dot) is used to indicate start of fractions of seconds (ISO 8601 also allows comma)</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>19</min>
+                        <max>19</max>
+                    </lengthRange>
+                    <stringLength>
+                        <subrange>
+                            <min>19</min>
+                            <max>19</max>
+                        </subrange>
+                    </stringLength>
+                    <validValues>^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])([\.][0-9]+){0,1}$</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="Must be of the format YYYY-MM-DDTHH:MM:SS[.S+] where T separates the time and the date parts. Example 2000-08-01T17:17:34.1. " format="posix_ere" name="Pattern Constraint"><![CDATA[^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])([\.][0-9]+){0,1}$]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="DayOfMonth">
+            <description>This derived data type is used for the attribute 'dayOfMonth'.</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>0</min>
+                        <max>31</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>0</min>
+                            <max>31</max>
+                        </subrange>
+                    </ranges>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <class name="HealthCheckM">
+            <description>Represents the root MOC for Health Check Management function MOM.
+The function allows to check the healthness of AXE ME.
+
+The healthness status is obtained by verifying set of rules grouped in predefined health check categories.
+The categories which the Health Check Management function is acting upon are pre-instanced by loading an XML rules set file present into APG file system.
+
+Health check jobs execute all the rules belonging to specified health check categories and update the healthness status.
+Jobs can also be scheduled to be executed once or periodically at a specified date and time.
+
+A report file is generated for each health check job and stored in the folder /health_check/reports. It might  be transferred to a remote destination as well.</description>
+            <systemCreated/>
+            <root/>
+            <attribute name="healthCheckMId">
+                <description>Value component of the RDN.</description>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string>
+                        <defaultValue>1</defaultValue>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="status">
+                <description>Specifies the health status based on result of all executed rules. </description>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="HealthStatus">
+                        <defaultValue>NOT_AVAILABLE</defaultValue>
+                        <mimName>HealthCheck</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="lastUpdateTime">
+                <description>Specifies the date and time of the last time the health of the system has been updated.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>HealthCheck</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Category">
+            <description>Represents a category to which a few health check rules belong.
+This class facilitates in providing information about all the health check rules which are grouped under a category. For example, if there are 10 rules under a category PREUPGRADE, then an instance of Category will be created for PREUPGRADE and all the 10 Rule instances will be configured under it.</description>
+            <systemCreated/>
+            <attribute name="categoryId">
+                <description>Value component of the RDN.
+Note: This attribute specifies the name of a category.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="status">
+                <description>Specifies the health status based on result of all executed rules belonging to the category. 
+</description>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="HealthStatus">
+                        <defaultValue>NOT_AVAILABLE</defaultValue>
+                        <mimName>HealthCheck</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="lastUpdateTime">
+                <description>Specifies the date and time at which the status of category has been updated last time.
+It will initially consist of the date and time at which the category has been created.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>HealthCheck</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="lastExecutedJob">
+                <description>Specifies the DN of a health check job which has executed this category for the last time.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <moRef name="Job">
+                        <mimName>HealthCheck</mimName>
+                    </moRef>
+                </dataType>
+            </attribute>
+            
+            <attribute name="description">
+                <description>Specifies the description of a category of health check rules.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Rule">
+            <description>Represents a health check rule.
+This class facilitates in providing detailed information about an individual health check rule.</description>
+            <systemCreated/>
+            <attribute name="ruleId">
+                <description>Value component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="description">
+                <description>Specifies a small description of the health check rule.
+This attribute briefly explains the scope and purpose of the health check rule.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="name">
+                <description>Specifies the name of a health check rule.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="result">
+                <description>Specifies the result of latest execution of the rule. 
+</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="RuleResult">
+                        <defaultValue>NOT_AVAILABLE</defaultValue>
+                        <mimName>HealthCheck</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="recommendedAction">
+                <description>Specifies the step that needs to be performed in case the health check rule's execution fails.
+This recommended action will be provided n generated report file as well, which will help in taking appropriate actions.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            
+            <attribute name="severity">
+                <description>Specifes the severity of latest execution of the rule.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="RuleSeverity">
+                        <defaultValue>CRITICAL</defaultValue>
+                        <mimName>HealthCheck</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        
+        
+        
+        <class name="RuleSetFile">
+            <description>Represents a ruleset file which consists of the rules to be executed.
+This file will be in XML format containing the rules to be evaluated and must be uploaded to the folder reserved for health check rules in the path '/health_check/rules'.</description>
+            <systemCreated/>
+            <attribute name="ruleSetFileId">
+                <description>Value component of the RDN.
+This attribute represents the value of the tag "ruleset id" present in the rule set file.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="fileName">
+                <description>Specifies the name of the provided ruleset file.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="RuleFileManager">
+            <description>Represents the management of the ruleset files. 
+Rule set file management helps in loading the rule set files and mark them as in use. The RuleSetFile instance when loaded, will be moved from ReadyToUse to InUse and the rule set file from the '/health_check/rules' path will be removed. Unloading of rule set files will mark them back as ready to use. The RuleSetFile instance which is unloaded will be moved from InUse to ReadyToUse and the rule set file will be moved back to '/health_check/rules' path.
+</description>
+            <systemCreated/>
+            <attribute name="ruleFileManagerId">
+                <description>Value component of the RDN.</description>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string>
+                        <defaultValue>1</defaultValue>
+                    </string>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="InUse">
+            <description>Represents the management of the instances of RuleSetFile which are already loaded.
+This class provides information about the ruleset files which can be used by health check. An action to unload an already loaded RuleSetFile instance is provided in this class. If a RuleSetFile is unloaded successfully, then the corresponding rule set file is moved back to the directory reserved for health check rules in the APG file system. The RuleSetFile instance present under InUse is moved under ReadyToUse.</description>
+            <systemCreated/>
+            <action name="unload">
+                <description>Allows to remove the instances corresponding to the provided ruleSetFile.
+This action will move the instance of RuleSetFile from InUse to ReadyToUse. The instances of Category and Rule which were created earlier according to the information present in the ruleset file will be deleted. The progress and status of rule set file unloading will be updated in the 'progressReport' structure.
+
+Note : Name of the ruleset file need to be provided as a parameter for 'unload' operation.
+Example : If an instance RuleSetFile=MSCRSF_R1Z is existing under InUse, then 'unload' operation can be invoked as follows "unload RuleSetFile=MSCRSF_R1Z".</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="1"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <parameter name="ruleSetFile">
+                    <description>Represents the name of the RuleSetFile instance which is to be unloaded.</description>
+                    <in/>
+                    <dataType>
+                        <string/>
+                    </dataType>
+                </parameter>
+            </action>
+            <attribute name="inUseId">
+                <description>Value component of the RDN.</description>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string>
+                        <defaultValue>1</defaultValue>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="progressReport">
+                <description>Specifies the status of the unload operation of a rule set file.
+
+The 'unload' action can fail due to one of the following reasons shown in sub-attribute resultInfo:
+
+- Job in progress : This message appears when the action is initiated while a job execution is ongoing.
+- Cannot be unloaded : This message appears when the action is initiated with an instance of RuleSetFile which is already under ReadyToUse.
+- Categories referenced : This message appears when the categories to be unloaded are referenced in an existing job definition. Jobs which has these categories needs to be updated manually.
+- APG Backup in progress: cannot be unloaded : This message appears when a backup is ongoing.
+- Invalid Parameter, cannot be unloaded : This message appears, when the provided parameter is not valid.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <structRef name="AsyncActionProgress">
+                        <mimName>HealthCheck</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ReadyToUse">
+            <description>Represents the management of the available ruleset files.
+This class provides information about the ruleset files which can be used by health check. Each instance of the RuleSetFile configured under this class represents a ruleset file that is present in the directory reserved for health check rules in the '/health_check' path. An action to load any of the available ruleset file is provided in this class. If a RuleSetFile is loaded successfully, then the rule set file placed in the above path will be deleted. The RuleSetFile instance present under ReadyToUse will be moved under InUse.</description>
+            <systemCreated/>
+            <action name="load">
+                <description>Allows to create the instances corresponding to the provided ruleSetFile.
+This action will move the instance of RuleSetFile present in ReadyToUse to InUse and also it will create instances of Category and Rule according to the information provided in the ruleset file. The progress and status of rule set file loading will be updated in the 'progressReport' structure.
+
+Note : Name of the ruleset file need to be provided as a parameter for 'load' operation.
+Example : If an instance 'RuleSetFile=MSCRSF_R1Z' is existing under ReadyToUse, then 'load' operation can be invoked as follows "load RuleSetFile=MSCRSF_R1Z".</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="1"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <parameter name="ruleSetFile">
+                    <description>Represents the name of the RuleSetFile instance which is to be loaded.</description>
+                    <in/>
+                    <dataType>
+                        <string/>
+                    </dataType>
+                </parameter>
+            </action>
+            <attribute name="readyToUseId">
+                <description>Value component of the RDN.</description>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string>
+                        <defaultValue>1</defaultValue>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="progressReport">
+                <description>Specifies the status of the load operation of a rule set file.
+
+The 'load' action can fail due to one of the following reasons shown in sub-attribute resultInfo:
+
+- Cannot be loaded : This message appears when the action is initiated with an instance of RuleSetFile which is already under InUse.
+- Error reading XML file : This message appears when an error is present in the rule set file to be loaded.
+- APG Backup in progress, cannot be loaded : This message appears when a backup is ongoing.
+- Invalid Parameter, cannot be loaded : This message appears, when the provided parameter is not valid.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="AsyncActionProgress">
+                        <mimName>HealthCheck</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Job">
+            <description>Represents a health check job which can be executed on a Managed Element.
+This class facilitates in executing one or more health check rules. A job can be executed based on categories. Each executed rule's result will be combined to form an aggregate result of a health check job. Progress and a final result of job execution is also provided. A health check job can also be scheduled to run periodically.After each job execution 'systemHealth' and 'lastUpdateTime' in HealthCheckM MOC will get updated accordingly.
+
+One or more attributes setting can fail due to one of the following reasons:
+- Invalid category : This message appears when the provided category name(s) for execution are not valid.
+- Invalid job : This message appears when the provided health check job name in the attribute 'jobToTrigger' does not exist.
+- Invalid systemComponentTarget : This message appears when the provided target in the attribute 'systemComponentTarget' is not valid.
+- Invalid destinationUri : This message appears when the provided remote destination is not defined.
+- Invalid job name : This message appears when the health check job cannot be created with the provided job name.</description>
+            <action name="execute">
+                <description>Allows to manually execute an individual health check job.
+The execution of a health check job is performed by collecting the required data from the system and evaluating them. This can be invoked when the result is not fresh enough as part of periodic execution. The status of the categories and rules executed as part of job execution will be updated in the corresponding instances of Category and Rule.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="1"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <attribute name="jobId">
+                <description>Value component of the RDN.
+Note: This attribute specifies the name of a health check job.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="categories">
+                <description>Specifies the categories of the health check rules which needs to be executed.
+If multiple categories needs to be provided for execution, then they can be provided as comma separated. If all the categories needs to be provided, then ALL can be specified.</description>
+                <mandatory/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="progressReport">
+                <description>Specifies the execution status and result of a particular health check job.
+
+The 'execute' action can fail due to one of the following reasons shown in sub-attribute resultInfo
+- Another job is in progress : This message appears when a job is already ongoing.
+- Directory / File could not be created : This message appears when the data in the APG file system exceeds the specified limit.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <structRef name="AsyncActionProgress">
+                        <mimName>HealthCheck</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="jobToTrigger">
+                <description>Specifies the health check job name which needs to be triggered for execution.
+When a health check job evaluation fails, another health check job can be triggered to execute, as it might give more detailed information on the failure.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="successLogs">
+                <description>Specifies whether the printout files of successfully executed rules must be stored.
+If this attribute is in ENABLED state, then the logs of the successful and unsuccessful rules shall be stored on the disk. If the state is in DISABLED state, then the logs of only unsuccessful rules are stored.</description>
+                <dataType>
+                    <enumRef name="SuccessPrintouts">
+                        <defaultValue>DISABLED</defaultValue>
+                        <mimName>HealthCheck</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="compression">
+                <description>Specifies whether the report files and printout files of the executed commands are compressed. 
+If this attribute is in ENABLED state, then before sending out to remote destination all the files are compressed in .zip format. If the attribute 'successLogs' is in ENABLED state, then the files which are considered for compression are report files, logs of successful and unsuccessful rules. If the attribute 'successLogs' is in DISABLED state, then the files which are considered for compression are report files and printout files of only unsuccessful rules.</description>
+                <dataType>
+                    <enumRef name="Compression">
+                        <defaultValue>DISABLED</defaultValue>
+                        <mimName>HealthCheck</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="lastReportName">
+                <description>Specifies the name of the report file which is generated from the latest execution of the job.
+All the report files are placed in the folder reserved for health check reports in '/health_check/reports' path. The name format of the report file generated will be  &lt;JobName&gt;_&lt;Timestamp&gt;. Time stamp will be in the format YYYYMMDDTHHmmSS, where YYYY indicates the year, MM indicates the month, DD indicates the date, HH indicates the hours, mm indicates the minutes and SS indicates the seconds. 'T' acts as a delimiter between date and time in the above timestamp format.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="systemComponentTarget">
+                <description>Specifies the name of a target on which health check job is executed.
+The attribute should be set as in the following:
+- empty: in case the target is the executive CP side for a Single-CP System configuration, or the operative group for a Multi-CP System configuration.
+- name of a CP or CP group: in case the target is a specific CP or CP group for a Multi-CP System configuration.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="destinationUri">
+                <description>Specifies the name of a destination specified by a URI. 
+It is the name of a TQ already defined through Data Transfer Management function.
+The report files and the printout files are sent out to that destination. 
+If the value is set to emtpy, the output files are locally stored. Default value is an empty string.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="destinationDn">
+                <description>Specifies the DN associated to the destination specified via attribute destinationUri.
+It corresponds to DN of the TQ associated to health check job.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="SingleEvent">
+            <description>Represents a date/time based event for executing a health check job once.
+
+A single (one-shot) scheduled health check job is executed at specifed date and time. 
+
+One or more attributes setting can fail due to one of the following reasons:
+- Scheduled time has expired : This message appears when the specified 'scheduledTime' has already expired.
+- Invalid scheduled time : This message appears when the specified 'scheduledTime' is not valid.
+- Invalid time zone : This message appears when the specified 'scheduledTime' has an invalid time zone.</description>
+            <attribute name="singleEventId">
+                <description>Value component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="scheduledTime">
+                <description>Specifies the start date and time of a health check job execution.
+The health check job will be initiated at this time and will be executed only once.</description>
+                <mandatory/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>HealthCheck</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            
+            
+        </class>
+        <class name="PeriodicEvent">
+            <description>Represents a time interval based event for executing one health check job periodically.
+
+A periodic scheduled health check job is executed at specifed number of months, weeks, days, hours, or minutes.
+
+For example, in order to configure a periodic health check job execution to occur every 12 hours, the following setting should be done:
+hours=12
+
+Note: If a job is configured to execute on 30th of every month from January, then the job will be executed on 30th of january and next execution will be on 28th/29th of february as february has only 28/29 days.
+
+The default start time for calculating scheduled execution is assumed to be the current system time. A different start time can be set using the startTime attribute.
+Attribute stopTime can be used to decide when the scheduling stops. Note that the default value of stopTime is the end of the year 2099. 
+
+One or more attributes setting can fail due to one of the following reasons:
+- Start time has expired : This message appears when the specified 'startTime' has already expired.
+- Stop time has expired : This message appears when the specified 'stopTime' has already expired.
+- Stop time not valid : This message appears when the specified 'stopTime' is before the specified 'startTime'.
+- Invalid scheduled time : This message appears when the specified 'startTime' or 'stopTime' is not valid.
+- Invalid time zone : This message appears when the specified 'startTime' or 'stopTime' has an invalid time zone.</description>
+            <attribute name="periodicEventId">
+                <description>Value Component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="days">
+                <description>Specifies the frequency of the job execution in number of days.</description>
+                <dataType>
+                    <uint8>
+                        <defaultValue>0</defaultValue>
+                    </uint8>
+                </dataType>
+            </attribute>
+            <attribute name="hours">
+                <description>Specifies the frequency of the job execution in number of hours.</description>
+                <mandatory/>
+                <dataType>
+                    <uint8/>
+                </dataType>
+            </attribute>
+            <attribute name="minutes">
+                <description>Specifies the frequency of the job execution in number of minutes.</description>
+                <dataType>
+                    <uint8>
+                        <defaultValue>0</defaultValue>
+                    </uint8>
+                </dataType>
+            </attribute>
+            <attribute name="months">
+                <description>Specifies the frequency of the job execution in number of months.</description>
+                <dataType>
+                    <uint8>
+                        <defaultValue>0</defaultValue>
+                    </uint8>
+                </dataType>
+            </attribute>
+            <attribute name="weeks">
+                <description>Specifies the frequency of the job execution in number of weeks.</description>
+                <dataType>
+                    <uint8>
+                        <defaultValue>0</defaultValue>
+                    </uint8>
+                </dataType>
+            </attribute>
+            <attribute name="startTime">
+                <description>Specifies the start date and time of a periodic health check job execution.
+The execution of a health check job will be initiated at this time and the execution continues periodically. It is an optional attribute and if not specified, the implementation uses the current system time as the default value.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>HealthCheck</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="stopTime">
+                <description>Specifies the date and time at which periodic health check job execution must be stopped. 
+This attribute is optional and if not specified, by default value will be the end of the year 2099.</description>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <defaultValue>2099-12-31T23:59:59.000Z</defaultValue>
+                        <mimName>HealthCheck</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            
+        </class>
+        <class name="CalendarPeriodicEvent">
+            <description>Represents a calendar based event for executing one health check job periodically.
+
+A periodic scheduled health check job is executed at specifed time interval based on calendar.
+
+For instance, in order to configure execution of a health check job every night at 2:00 AM, the following setting should be done: 
+time=02:00:00
+
+The default start time for calculating scheduled execution is assumed to be the current system time. A different start time can be set using the startTime attribute.
+Attribute stopTime can be used to decide when the scheduling stops. Note that the default value of stopTime is the end of the year 2099. 
+
+As further example, in order to configure execution of health check jobs every first Monday of each month at 12:00 AM from October to January, the following setting should be done:
+
+time=12:00:00
+dayOfWeek=MONDAY
+DayOfWeekOccurrence=FIRST
+startTime=2013-10-01T00:00:00 
+stopTime=2014-01-31T00:00:00
+
+Note : If a job is configured to execute 30th day of every month with start time as "2014-01-30T10:10:10.0Z" then the job will be executed on 30th of january and next execution will be on 30th March as february has only 28/29 days. So, it will be skipped.
+
+A calendar based scheduled job execution is triggered only if all the conditions with regard to attribute values are satisfied. 
+For example, if "dayOfWeek" is set to Monday and "dayOfMonth" is set to 1, job will be executed only if the first day of month is Monday. 
+
+Daylight saving time adjustments in Spring and Fall are also addressed such that the affected periodic job executions are triggered exactly once. 
+
+One or more attributes setting can fail due to one of the following reasons:
+- Start time has expired : This message appears when the specified 'startTime' has already expired.
+- Stop time has expired : This message appears when the specified 'stopTime' has already expired.
+- Stop time not valid : This message appears when the specified 'stopTime' is before the specified 'time'.
+- Invalid scheduled time : This message appears when the specified 'startTime' or 'stopTime' is not valid.
+- Invalid time zone : This message appears when the specified 'startTime' or 'stopTime' has an invalid time zone.</description>
+            <attribute name="calendarPeriodicEventId">
+                <description>Value component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="dayOfMonth">
+                <description>Specifies the day of a month for a health check job execution.</description>
+                <dataType>
+                    <derivedDataTypeRef name="DayOfMonth">
+                        <defaultValue>0</defaultValue>
+                        <mimName>HealthCheck</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="dayOfWeek">
+                <description>Specifies the day of a week for health check job execution.</description>
+                <dataType>
+                    <enumRef name="DayOfWeek">
+                        <defaultValue>ALL</defaultValue>
+                        <mimName>HealthCheck</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="dayOfWeekOccurrence">
+                <description>Specifies the occurrence of the day of week in a month provided in the attribute dayOfWeek. </description>
+                <dataType>
+                    <enumRef name="DayOfWeekOccurrence">
+                        <defaultValue>ALL</defaultValue>
+                        <mimName>HealthCheck</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="month">
+                <description>Specifies the month for health check job execution.</description>
+                <dataType>
+                    <derivedDataTypeRef name="Month">
+                        <defaultValue>0</defaultValue>
+                        <mimName>HealthCheck</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="startTime">
+                <description>Specifies the start date and time of a periodic health check job execution.
+The execution of a health check job will be initiated at this time and the execution continues periodically. It is an optional attribute and if not specified, the implementation uses the current system time as the default value.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>HealthCheck</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="stopTime">
+                <description>Specifies the date and time at which periodic health check job execution must be stopped. 
+This attribute is optional and if not specified, by default value will be the end of the year 2099.</description>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <defaultValue>2099-12-31T23:59:59.000Z</defaultValue>
+                        <mimName>HealthCheck</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="time">
+                <description>Specifies the time (hour and minute) when the scheduled health check job execution must occur.</description>
+                <mandatory/>
+                <dataType>
+                    <derivedDataTypeRef name="Time">
+                        <mimName>HealthCheck</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            
+        </class>
+        <class name="JobScheduler">
+            <description>Represents the health check job scheduler which configures health check jobs automatically started at specified time.
+The following 3 scheduled events can be handled:
+1- Single event. It triggers a health check job to be performed once at a specified date and time.
+2- Periodic event. It triggers a health check periodic job to be performed regularly at a specified time interval.
+3- Calendar based periodic event. It triggers a health check periodic job to be performed regularly at a desired interval using calendar.
+
+Once the MO JobScheduler is created, MOs SingleEvent, PeriodicEvent, CalendarPeriodicEvent can be created for each of such events.
+Scheduler requires to be unlocked to start job execution setting the attribute adminState.</description>
+            <systemCreated/>
+            <attribute name="jobSchedulerId">
+                <description>Value component of the RDN.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="nextScheduledTime">
+                <description>Specifies the date and time when the next scheduled event will be triggered.
+This is the earliest scheduled event from among the set of configured events (single, periodic and calendar-based periodic events).</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>HealthCheck</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="progressReport">
+                <description>Reports the progress and final result of the ongoing (asynchronous) health check job execution.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="AsyncActionProgress">
+                        <mimName>HealthCheck</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="lastReportName">
+                <description>Specifies the name of the report file generated from the last scheduled execution of the job.
+All the report files are placed in the folder reserved for health check reports in '/health_check/reports' path. The name format of the report file generated will be &lt;JobName&gt;_&lt;Timestamp&gt;. Time stamp will be in the format YYYYMMDDTHHmmSS, where YYYY indicates the year, MM indicates the month, DD indicates the date, HH indicates the hours, mm indicates the minutes and SS indicates the seconds. 'T' acts as a delimiter between date and time in the above timestamp format.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="adminState">
+                <description>Specifies the administrative state of the scheduler.</description>
+                <dataType>
+                    <enumRef name="BasicAdmState">
+                        <defaultValue>LOCKED</defaultValue>
+                        <mimName>HealthCheck</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="schedulerState">
+                <description>Represents the operational state of the scheduler.
+The state ENABLED confirms that the scheduler is successfully configured and that the next event has been calculated. The state DISABLED indicates that no more scheduled events will be triggered by the scheduler.</description>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="OperState">
+                        <defaultValue>DISABLED</defaultValue>
+                        <mimName>HealthCheck</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="Category_to_Rule">
+            <containment>
+                <parent>
+                    <hasClass name="Category">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Rule">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="RuleFileManager_to_InUse">
+            <containment>
+                <parent>
+                    <hasClass name="RuleFileManager">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="InUse">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="RuleFileManager_to_ReadyToUse">
+            <containment>
+                <parent>
+                    <hasClass name="RuleFileManager">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ReadyToUse">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="InUse_to_RuleSetFile">
+            <containment>
+                <parent>
+                    <hasClass name="InUse">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="RuleSetFile">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="ReadyToUse_to_RuleSetFile">
+            <containment>
+                <parent>
+                    <hasClass name="ReadyToUse">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="RuleSetFile">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="HealthCheckM_to_RuleFileManager">
+            <containment>
+                <parent>
+                    <hasClass name="HealthCheckM">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="RuleFileManager">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="HealthCheckM_to_Category">
+            <containment>
+                <parent>
+                    <hasClass name="HealthCheckM">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Category">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="HealthCheckM_to_Job">
+            <containment>
+                <parent>
+                    <hasClass name="HealthCheckM">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Job">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="JobScheduler_to_SingleEvent">
+            <containment>
+                <parent>
+                    <hasClass name="JobScheduler">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="SingleEvent">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="JobScheduler_to_PeriodicEvent">
+            <containment>
+                <parent>
+                    <hasClass name="JobScheduler">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="PeriodicEvent">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="JobScheduler_to_CalendarPeriodicEvent">
+            <containment>
+                <parent>
+                    <hasClass name="JobScheduler">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="CalendarPeriodicEvent">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="Job_to_JobScheduler">
+            <containment>
+                <parent>
+                    <hasClass name="Job">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="JobScheduler">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        
+        
+        
+    </mim>
+    <interMim>
+        <relationship name="SystemFunctions_to_HealthCheckM">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="SystemFunctions">
+                        <mimName>ComTop</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="HealthCheckM">
+                        <mimName>HealthCheck</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

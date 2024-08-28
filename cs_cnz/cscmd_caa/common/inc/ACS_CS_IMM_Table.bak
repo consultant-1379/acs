@@ -1,0 +1,222 @@
+/*
+ * @file ACS_CS_IMM_Table.h
+ * @author xminaon
+ * @date Nov 8, 2010
+ *
+ *      COPYRIGHT Ericsson AB, 2010
+ *      All rights reserved.
+ *
+ *      The information in this document is the property of Ericsson.
+ *      Except as specifically authorized in writing by Ericsson, the receiver of
+ *      this document shall keep the information contained herein confidential and
+ *      shall protect the same in whole or in part from disclosure and dissemination
+ *      to third parties. Disclosure and disseminations to the receivers employees
+ *      shall only be made on a strict need to know basis.
+ *
+ */
+
+#ifndef ACS_CS_IMM_TABLE_H_
+#define ACS_CS_IMM_TABLE_H_
+
+extern "C" {
+#include <saImmOm.h>
+#include <saImm.h>
+}
+
+#include <string>
+#include <set>
+
+#include "ACS_CS_Internal_Table.h"
+
+class ACS_CS_TableEntry;
+class ACS_CS_Attribute;
+
+namespace ACS_CS_INTERNAL_API
+{
+	// Constants
+	static const char CS_RDN_NAME[] = "CSId";
+	static const char ENTRY_RDN_NAME[] = "entryId";
+	static const char ATTRIBUTE_RDN_NAME[] = "attributeId";
+	static const char ATTRIBUTE_NAME[] = "value";
+
+	static const char TABLE_RDN_TEMPLATE[] = "tableId=%s,CSId=1";
+	static const char ENTRY_RDN_TEMPLATE[] = "entryId=%d,tableId=%s,CSId=1";
+	static const char ATTRIBUTE_RDN_TEMPLATE[] = "attributeId=%d,entryId=%d,tableId=%s,CSId=1";
+
+	static const char HWC_TABLE_NAME[] = "HWCTable";
+	static const char CP_TABLE_NAME[] = "CPIdTable";
+	static const char NE_TABLE_NAME[] = "NETable";
+	static const char FD_TABLE_NAME[] = "FDTable";
+	static const char CPGNAME_TABLE_NAME[] = "CPGNamesTable";
+	static const char CPGMEMBER_TABLE_NAME[] = "CPGMembersTable";
+
+	static const uint16_t IMM_INVALID_ENTRY_ID = 0;
+
+	typedef struct
+	{
+	    SaImmCcbHandleT ccbHandle;
+	    SaImmAdminOwnerHandleT ownerHandle;
+	} IMMHandle_t;
+
+	class ACS_CS_IMM_Table
+	{
+		public:
+
+			ACS_CS_IMM_Table();
+
+			virtual ~ACS_CS_IMM_Table();
+
+			/** @brief Start a transaction and return handles
+			 *  param[out] handle       The IMM handle (ccb and owner)
+			 *  @return true if the operation succeed, otherwise false
+			 */
+			virtual bool beginTransaction(IMMHandle_t &handle) = 0;
+
+			/** @brief Commit a ongoing transaction
+			 *  param[in] ccbHandle The ccb handle
+             *  @return true if the operation succeed, otherwise false
+			 */
+			virtual bool commitTransaction(IMMHandle_t &handle) = 0;
+
+			/** @brief Abort a ongoing transaction
+             *  param[in] ccbHandle The ccb handle
+             *  @return true if the operation succeed, otherwise false
+			 */
+			virtual bool abortTransaction(IMMHandle_t &handle) = 0;
+
+			/** @brief Become the admin owner of an object
+			 *	param[in]	ownerHandle		An initialized AdminOwner handle
+			 *	param[in]	objectName		The RDN name of the object
+			 *	@return true if operation succeeded, otherwise false
+			 *
+			 *	This function must be called prior to changing an object. It must be called
+			 *	on the parent before children are added/removed.
+			 */
+			virtual bool becomeAdminOwner(SaImmAdminOwnerHandleT &ownerHandle, const std::string &objectName) = 0;
+
+
+			/** @brief Returns a free entry identifier from the specified table
+			 *	param[in]	immHandle	An initialized IMM handle
+			 *	param[in]	tableName	The RDN name for the table object
+			 *	param[out]	entryId		The returned entry identifier, zero is returned if failure
+			 *	@return true if operation succeeded, otherwise false
+			 */
+			virtual bool getEntryId(const std::string &tableName, uint16_t &entryId) = 0;
+
+			/** @brief Removes an object
+			 *	param[in]	ccbHandle	A CCB handle for an initialized CCB
+			 *	param[in]	objectName	The RDN name for the object to be removed
+			 *	@return true if operation succeeded, otherwise false
+			 */
+			virtual bool removeObject(SaImmCcbHandleT &ccbHandle, const std::string &objectName) = 0;
+
+			/** @brief Retrieved the attributes for a specified entry
+			 *	param[in]	immHandle		An initialized IMM handle
+			 *	param[in]	attributeRdn	The RDN name for the attribute object
+			 *	param[out]	attribute		A pointer to the returned attribute
+			 *	@return true if operation succeeded, otherwise false
+			 *
+			 *	The ACS_CS_Attribute object returned by this function must be deallocated by the caller.
+			 */
+			virtual bool getAttribute(const std::string &objectRdn, const std::string &attritsbuteName, ACS_CS_Attribute **attribute) = 0;
+
+			/** @brief Update the specified entry with its current attributes
+			 *  param[in]	ccbHandle	A CCB handle for an initialized CCB
+			 *	param[in]	entry		An ACS_CS_TableEntry object populated with attributes
+			 *	@return true if operation succeeded, otherwise false
+			 *
+			 *	The IMM object matching this ACS_CS_TableEntry will have its attributes
+			 *	updated so that the attribute values match the attribute values of the
+			 *	ACS_CS_TableEntry object. Any attributes not in the ACS_CS_TableEntry
+			 *	object remains unchanged.
+			 */
+
+		    virtual bool updateEntry(CS_INTERNAL_API_TableType tableType, IMMHandle_t &handle, const ACS_CS_TableEntry *entry) {
+		        return this->updateEntry(tableType, handle.ownerHandle, handle.ccbHandle, entry);
+		    }
+
+			virtual bool updateEntry(CS_INTERNAL_API_TableType tableType, SaImmAdminOwnerHandleT &ownerHandle, SaImmCcbHandleT &ccbHandle, const ACS_CS_TableEntry *entry) = 0;
+
+			virtual bool removeEntry(CS_INTERNAL_API_TableType tableType, SaImmAdminOwnerHandleT &ownerHandle, SaImmCcbHandleT &ccbHandle, const ACS_CS_TableEntry *entry) = 0;
+
+			/** @brief Returns the object name for the ACS_CS_Table object used by this instance
+			 *	@return a string containing the object name
+			 */
+			virtual std::string getTableRdn(CS_INTERNAL_API_TableType tableType) = 0;
+
+			/** @brief Returns the object name for the ACS_CS_TableEntry with the specified entryId.
+			 *  param[in]	entryId	The entryId for the ACS_CS_TableEntry object
+			 *	@return a string containing the object name
+			 */
+			virtual std::string getEntryRdn(CS_INTERNAL_API_TableType tableType, uint16_t entryId) = 0;
+
+			/** @brief Returns all object names with the specified parent
+			 *	param[in]	parentId	The RDN name for the parent object
+			 *	param[out]	objectNames	The returned object names
+			 *	@return true if operation succeeded, otherwise false
+			 *
+			 *	The returned strings must be deallocated by the caller.
+			 */
+			virtual bool getChildren(const std::string &parentId,	std::set<std::string *> &objectNames) = 0;
+
+			/** @brief Returns the object name for the ACS_CS_Attribute with the specified attributeId
+			 * and parent entryId.
+			 *  param[in]	entryId		The entryId for the parent object
+			 *  param[in]	attributeId	The attributeId for the ACS_CS_Attribute object
+			 *	@return a string containing the object name
+			 */
+//			virtual std::string getAttributeRdn(CS_INTERNAL_API_TableType tableType, uint16_t entryId, uint16_t attributeId) = 0;
+
+			virtual bool createTableEntry(CS_INTERNAL_API_TableType tableType,
+					SaImmAdminOwnerHandleT &ownerHandle,
+					SaImmCcbHandleT &ccbHandle,
+					const ACS_CS_TableEntry * entry) = 0;
+
+			virtual bool getEntries(CS_INTERNAL_API_TableType tableType,
+			        const ACS_CS_Attribute **array, uint16_t **boardIds, size_t &size) = 0;
+
+            virtual bool getEntries(CS_INTERNAL_API_TableType tableType,
+                    const ACS_CS_Attribute *attr, std::vector<uint16_t> &boardIds) = 0;
+
+			virtual bool getAttributes(CS_INTERNAL_API_TableType tableType, uint16_t boardId,
+			        ACS_CS_Attribute ***array, size_t &size) = 0;
+
+            virtual bool getAttributes(CS_INTERNAL_API_TableType tableType, uint16_t boardId,
+                    std::vector<ACS_CS_Attribute> &attributes) = 0;
+
+			/** @brief Returns a number of all boards in HWC table with a specified sysId
+			 *  param[in]	sysId		The sysId of the searched board
+			 *	@return a number of matching boards with the specified sysId
+			 */
+			virtual int countBoards (uint16_t sysId) = 0;
+
+			/** @brief Parses an RDN for a TableEntry and returns the id
+			 *	param[in]	entryName			The RDN of the entry
+			 *	@return The id for this entry RDN of -1 on failure
+			 */
+			virtual uint16_t parseEntryId(const std::string &entryName) = 0;
+
+			/** @brief Parses an RDN for an Attribute and returns the id
+			 *	param[in]	attributeName			The RDN of the attribute
+			 *	@return The id for this attribute RDN of -1 on failure
+			 */
+			virtual uint16_t parseAttributeId(const std::string &attributeName) = 0;
+
+			 /** @brief Removes an attribute from a table entry
+			 *	param[in]	ownerHandle		An initialized AdminOwner handle
+			 *  param[in]	ccbHandle		A CCB handle for an initialized CCB
+			 *	param[in]	attributeRdn	The RDN name for the attribute object
+			 *	@return Removes the IMM object corresponding to the specified attribute.
+			 */
+			virtual bool removeAttribute(SaImmAdminOwnerHandleT &ownerHandle,
+					SaImmCcbHandleT &ccbHandle, const std::string &attributeRdn) = 0;
+
+			/**
+			 * Factory function for creation of table instances
+			 */
+			static ACS_CS_IMM_Table * createTableInstance ();
+
+	};
+}
+
+#endif /* ACS_CS_IMM_TABLE_H_ */

@@ -1,0 +1,268 @@
+#!/bin/bash
+#
+# common SDP, ESM functions and variables 
+#
+# Author : :XANJDIT/ZGXXNAV
+#
+#
+
+
+# --------------------------------------------------------
+# Common functions section
+# --------------------------------------------------------
+
+#
+# function: error_message
+#
+#
+	function error_message {
+	 echo "$1"
+	 exit 1
+	}
+
+#this is an example of check_exit_value usage
+#ERROR_MESSAGE="ERROR: Could not create directory $HOME_DIR"
+#mkdir -p $HOME_DIR
+#check_exit_value "$ERROR_MESSAGE"
+
+#
+# function: check_exit_value
+#
+# Check the exit value from the last command and return 1 if it failed.
+function check_exit_value () {
+ if [ $? -ne 0 ]; then
+        error_message "$1"
+ fi
+}
+
+#
+# function: check_directory
+#
+function check_directory () {
+ if [ ! -d $1 ]; then
+     error_message "Error: directory doesn't exist $1"
+ fi
+}
+
+#
+# function: 
+#
+function check_file () {
+ if [ ! -e $1 ]; then
+     error_message "Error: File doesn't exist $1"
+ fi
+}
+
+#
+# function: 
+#
+function convert_in_upper(){
+ echo $@ | tr '[:lower:]' '[:upper:]'
+}
+
+
+#
+# function: 
+#
+#RSTATE_REGEX="^[RP][0-9A-Z]" ]]
+RSTATE_REGEX="^[R,P][0-9 A-Z]*$"
+# Validating the Version
+function validate_r_state() {
+ if [[ $1 =~ $RSTATE_REGEX ]]
+ then
+      val=`convert_in_upper $1`
+      echo "$val"
+ else
+     error_message "$1: Violates the Design Rule of Version"
+ fi
+}
+
+
+#
+# function: 
+#
+#echo "APOS" | grep -E '^[a-zA-Z0-9]{1,}_{0,1}[a-zA-Z0-9]{1,}+$'
+#BLOCKNAME_REGEX="^[a-zA-Z0-9]*_[a-zA-Z0-9]"
+BLOCKNAME_REGEX=".*[a-z][_]"
+#Validating the block Name
+function validate_blockname () {
+if [[ $1 =~ $BLOCKNAME_REGEX ]]
+then
+     val=$1	 
+     echo "$val"
+else
+     error_message "$1: Violates Design Rule of Block Name"
+fi
+}
+
+
+CXCNAME_REGEX=".*[A-Z][_]"
+#Validating the cxc Name
+function validate_cxcname () {
+if [[ $1 =~ $CXCNAME_REGEX ]]
+then
+     val=$1	 
+     echo "$val"
+else
+     error_message "$1: Violates Design Rule of Cxc Name"
+fi
+}
+
+#
+# function: 
+#
+# TO BE REMOVED !!!
+BLOCKPATH_REGEX="[/].*[a-z A-Z 0-9][_][c][x][c]"
+
+function validate_path() {
+if [[ $1 =~ $BLOCKPATH_REGEX ]]
+then
+     val=$1
+     echo "$val"
+else
+     error_message "$1: Violates Design Rule of Block Path"
+fi
+}
+
+
+#
+# function: 
+#
+PRODUCT_NR_REGEX="^CX[C,P,A][0-9_]"
+function validate_ProductNr() {
+# Validating the CX* Number
+if [[ $1 =~ $PRODUCT_NR_REGEX ]]
+then
+     val=`convert_in_upper $1`
+     echo "$val"
+else
+     error_message "$1: Violates the Design Rule of Product Number Number"
+fi
+}
+
+
+
+#
+# function: get_tmppath
+# return the temporary path  
+#
+function get_tmppath () {
+  local val="/tmp/$USER"
+  if [ ! -d $val ]; then
+     create_tmpdir
+  fi
+  echo "$val"
+}
+
+#
+# function: 
+#
+function get_sdppath () {
+  local val="$1/packages/sdp/"
+  check_directory $val
+  echo "$val"
+}
+
+
+#
+# function: 
+#
+function get_esmpath () {
+  local val="$1/packages/esm/"
+  check_directory $val
+  echo "$val"
+}
+
+
+
+#
+# function: 
+# 
+function create_tmpdir () {
+ local val="/tmp/$USER"
+ rm -rf $val > /dev/null
+ check_exit_value "ERROR: Could not delete directory $val"
+ mkdir $val
+ check_exit_value "ERROR: Could not create directory $val"
+}
+
+
+
+##
+# [Description: Function to convert R-state letter to integer
+#   example: R1B01 , here "B" will be converted to integer
+## [Parameters:
+#    $1   - $rchar (R state letter)]
+# [Return:
+#    integer]
+##
+
+function convert_char_to_num()
+{
+   rchar=$1
+   asciival=$(printf '%d' "'$rchar")
+   if [ "$asciival" -ge 65 ] && [ "$asciival" -le 90 ];then
+        rpatch_val=`expr $asciival - 65`
+        echo $rpatch_val
+   else
+        echo "Invalid input"
+	exit 1
+   fi
+}
+
+
+##
+# [Description: Function to convert R-state of the product to csm version string
+#  example:
+#  CXC1371427_7 R1A01
+#         |     |
+#       \CXP/  \R-state /
+# 	   cxp 1 A 01	
+#            7.0.0-001
+#            | | | |
+#            | | | subversion
+#            | | patch
+#            | minor
+#            major
+# [Parameters:
+#    $1   - $cxp
+#    $2   - $rstate_ver
+# [Return:
+#   converted r-state csm version stirng ]
+##
+
+function csm_version()
+{
+  cxp=$1
+  rstate_ver=$2
+  if echo "$cxp" | grep -q "_" ;then
+     rmajor_val=$(echo $cxp | cut -d'_' -f2)
+  else  
+     rmajor_val=1
+  fi 
+
+  rminor_index=$(echo $rstate_ver | cut -d'R' -f2 | grep -b -o '[A-Z]'| awk 'BEGIN {FS=":"}{print $1}')
+   
+  #retrive the Rstate-minor version
+  char_index=$(echo $rstate_ver | cut -d'R' -f2 | grep -b -o '[A-Z]'| awk 'BEGIN {FS=":"}{print $1}' | wc -l)
+    if [ $char_index -gt 1 ];then
+       echo "Invalid R-state letter"
+       exit 1
+    fi
+  rminor_ver=$(echo $rstate_ver | cut -d'R' -f2 | awk -v pos="$rminor_index" '{print substr($0,1,pos)}')
+  rminor_ver=`expr $rminor_ver - 1`
+
+  #retrive the Rstate letter conversion to number
+  rchar_ver=$(echo $rstate_ver | cut -d'R' -f2| awk -v pos="$rminor_index" '{print substr($0,pos+1,1)}')
+  char2num=$(convert_char_to_num $rchar_ver)
+
+  #retrive the Rstate subversion (verification level)
+  rsub_version=$(echo $rstate_ver| cut -d'R' -f2| awk -v pos="$rminor_index" -v cindex="$char_index" '{print substr($0,pos+cindex+1,3)}' | awk '{printf "%0d",$0;}')
+  csm_ver=$rmajor_val.$rminor_ver.$char2num-$rsub_version
+
+echo "$csm_ver"
+
+}
+
+# --------------------------------------------------------
+# END File

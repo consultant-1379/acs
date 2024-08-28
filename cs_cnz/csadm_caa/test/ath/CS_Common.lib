@@ -1,0 +1,1001 @@
+
+###########################################################################
+# Commonly used procedures for CS
+###########################################################################
+
+###########################################################################
+# PRECONDITIONS:
+###########################################################################
+
+
+##################################################################
+# Preparation procedure
+# Return values:
+# 0 - Success
+# 1 - Failure
+##################################################################
+proc cs_preparation { } {
+
+  #Set all necessary paths for lib and bin
+  cs_set_path
+    
+  #Run generic cleanup procedure
+  if {[cs_generic_cleanup]} {
+    ath_tc_failed "\ncs_preparation failed\n"
+  }
+  
+  #Run generic setup procedure
+  if {[cs_generic_setup]} {
+    ath_tc_failed "\ncs_preparation failed\n"
+  }  
+}
+
+##################################################################
+# Preparation procedure for active nodes other than AP1
+# Return values:
+# 0 - Success
+# 1 - Failure
+##################################################################
+proc cs_node_preparation { } {
+
+  #Set all necessary paths for lib and bin
+  cs_set_path
+    
+  # Empty VLAN using IMM commands (VLAN Table is not replicated to other nodes)
+  print "\nCleaning VLANs...\n"
+  ath_send {immfind -c ACS_CS_VLAN | xargs -i immcfg -d {}}
+  
+  #Run generic setup procedure
+  if {[cs_generic_setup]} {
+    ath_tc_failed "\ncs_preparation failed\n"
+  }
+}
+
+##################################################################
+# Cleanup procedure
+# Return values:
+# 0 - Success
+# 1 - Failure
+##################################################################
+proc cs_cleanup { } {
+
+  #Stop CS service
+  print "\nStopping CS service...\n"
+  cs_stop_service
+  
+  #Run generic cleanup procedure
+  if {[cs_generic_cleanup]} {
+    ath_tc_failed "\ncs_cleanup failed\n"
+  }
+	
+}
+
+##################################################################
+# Cleanup procedure for active nodes other than AP1
+# Return values:
+# 0 - Success
+# 1 - Failure
+##################################################################
+proc cs_node_cleanup { } {
+
+  #Stop CS service
+  print "\nStopping CS service...\n"
+  cs_stop_service
+  
+  #Run generic cleanup procedure
+  if {[cs_generic_cleanup]} {
+    ath_tc_failed "\ncs_cleanup failed\n"
+  }
+}
+
+##################################################################
+# Cleanup procedure
+# - sets the system to Single-CP
+# - makes all applicable IMM tables empty
+# - configures dhcpd.conf properly for 2 backplanes
+# Return values:
+# 0 - Success
+# 1 - Failure
+##################################################################
+proc cs_generic_cleanup { } {
+
+  #Clean dhcp configuration (both dhcp.conf and dhcpd.leases)
+  print "\nCleaning dhcp conf files..."
+  cs_dhcp_clean
+  
+  # Empty HWC table using IMM commands
+  print "\nCleaning HWCTable...\n"
+  # Delete all Attributes for HWCTable
+  ath_send {immfind -c ACS_CS_Attribute | grep HWCTable | xargs -i immcfg -d {}}
+  # Delete all Table Entries for HWCTable
+  ath_send {immfind -c ACS_CS_TableEntry | grep HWCTable | xargs -i immcfg -d {}}  
+  
+  # Empty CP table using IMM commands
+  print "\nCleaning CPTable...\n"
+  # Delete all Attributes for CPTable
+  ath_send {immfind -c ACS_CS_Attribute | grep CPIdTable | xargs -i immcfg -d {}}
+  # Delete all Table Entries for CPTable
+  ath_send {immfind -c ACS_CS_TableEntry | grep CPIdTable | xargs -i immcfg -d {}}
+
+  # Empty FD table using IMM commands
+  print "\nCleaning FDTable...\n"
+  # Delete all Attributes for FDTable
+  ath_send {immfind -c ACS_CS_Attribute | grep FDTable | xargs -i immcfg -d {}}
+  # Delete all Table Entries for FDTable
+  ath_send {immfind -c ACS_CS_TableEntry | grep FDTable | xargs -i immcfg -d {}}
+  
+  # Empty CPG tables using IMM commands
+  print "\nCleaning CPGTable...\n"
+  # Delete all Attributes for CPGNamesTable
+  ath_send {immfind -c ACS_CS_Attribute | grep CPGNamesTable | xargs -i immcfg -d {}}
+  # Delete all Table Entries for CPGNamesTable
+  ath_send {immfind -c ACS_CS_TableEntry | grep CPGNamesTable | xargs -i immcfg -d {}}
+  # Delete all Attributes for CPGMembersTable
+  ath_send {immfind -c ACS_CS_Attribute | grep CPGMembersTable | xargs -i immcfg -d {}}
+  # Delete all Table Entries for CPGMembersTable
+  ath_send {immfind -c ACS_CS_TableEntry | grep CPGMembersTable | xargs -i immcfg -d {}}
+  
+  # Empty VLAN using IMM commands
+  print "\nCleaning VLANs...\n"
+  ath_send {immfind -c ACS_CS_VLAN | xargs -i immcfg -d {}}
+  
+  #Set the system to Single-CP
+  print "\nSetting the system to Single-CP...\n"
+  ath_send "immcfg CSId=1 -a isMultipleCPSystem=0"
+  
+  return 0
+
+}
+
+
+##################################################################
+# Setup procedure
+# - Configures APG as test environment
+# Return values:
+# 0 - Success
+# 1 - Failure
+##################################################################
+proc cs_generic_setup { } {
+	
+	ath_send {immcfg -m CSId=1 -a pIsTestEnvironment=1}
+	
+	return 0
+}
+
+##################################################################
+# Procedure for cleaning DHCP table
+##################################################################
+
+proc cs_dhcp_clean {} {
+
+    AutoFail OFF
+    ath_send "mv -f /etc/dhcpd.conf /etc/dhcpd.conf.bak"
+
+    ath_send "echo \"authoritative;
+ddns-update-style none;
+omapi-port 7911;
+
+subnet 192.168.169.0 netmask 255.255.255.0 {
+}
+
+subnet 192.168.170.0 netmask 255.255.255.0 {
+}\" > /etc/dhcpd.conf"
+
+    ath_send "rm /var/lib/dhcp/db/dhcpd.leases*"
+    ath_send "touch /var/lib/dhcp/db/dhcpd.leases"
+    ath_send "/etc/init.d/dhcpd restart"
+}
+
+
+##################################################################
+# Procedure for automatic checking a command to return
+# a specific return code
+#
+# Return values:
+# 0 - Success
+# 1 - Failure
+##################################################################
+
+proc cs_send_cmd_exp_errcode_msg {cmd expectedrc errortext} {
+
+    AutoFail OFF
+    ath_send $cmd
+    
+    if {$ATH::ReturnCode != $expectedrc} {
+        # wrong resultcode
+        
+        if { [string length $errortext] <= 0 } {
+            set rcerr "\nIncorrect returncode received from \"$cmd\"\n"
+            set rcerr "$rcerr expected $expectedrc, got: $ATH::ReturnCode\n"
+        } else {
+            set rcerr $errortext
+        }
+        ath_tc_failed $rcerr
+        return 1
+    }
+    
+    return 0
+}
+
+proc cs_send_cmd_exp_errcode {cmd expectedrc} {
+    cs_send_cmd_exp_errcode_msg $cmd $expectedrc ""
+}                                                   
+
+
+##################################################################
+# Make sure that a specific command exists.
+# If the command does not exists then the ATH test will fail
+##################################################################
+
+proc cs_command_must_exist {cmd} {
+    AutoFail OFF
+    ath_send $cmd
+    
+    if {$ATH::ReturnCode == 127} {
+        # Command not possible to run
+        ath_tc_failed "Missing command \"$cmd\""
+    }
+}
+
+
+##################################################################
+# Make sure that the HWC table is empty.
+# If the table is not empty then the ATH test will fail
+##################################################################
+
+set EmptyHWCTablePattern ":
+HARDWARE CONFIGURATION TABLE
+:
+MAG **
+:
+"
+
+proc cs_hwctable_must_be_empty { } {
+    AutoFail OFF
+    ath_send "hwcls"
+    
+    if {[ath_match $::EmptyHWCTablePattern $ATH::LastResponse] == 0} {
+        ath_tc_failed "HWC Table is not empty!"
+    }
+    
+}
+
+##################################################################
+# Make sure that the CP table is empty.
+# If the table is not empty then the ATH test will fail
+##################################################################
+
+set EmptyCPTablePattern ":
+CP IDENTIFICATION TABLE
+:
+CPID CPNAME ALIAS APZSYS CPTYPE"
+
+proc cs_cptable_must_be_empty { } {
+    AutoFail OFF
+    ath_send "cpls"
+    
+    if {[ath_match $::EmptyCPTablePattern $ATH::LastResponse] == 0} {
+        ath_tc_failed "CP Table is not empty!"
+    }
+    
+
+}
+
+##################################################################
+# Make sure that the FD table is empty.
+# If the table is not empty then the ATH test will fail
+##################################################################
+
+set EmptyFDTablePattern ":
+FUNCTION DISTRIBUTION TABLEs
+:
+AP DOMAIN SERVICE
+AP* **
+:
+"
+
+proc cs_fdtable_must_be_empty { } {
+    AutoFail OFF
+    ath_send "fdls"
+    
+    if {[ath_match $::EmptyFDTablePattern $ATH::LastResponse] == 0} {
+        ath_tc_failed "FD Table is not empty!"
+    }
+    
+
+}
+
+##################################################################
+# Make sure that the CPG table is empty.
+# If the table is not empty then the ATH test will fail
+##################################################################
+
+set EmptyCPGTablePattern ":
+PREDEFINED CP GROUPS
+
+ALL:
+ALLBC:
+
+OPERATOR DEFINED CP GROUPS
+:
+"
+
+proc cs_cpgtable_must_be_empty { } {
+    AutoFail OFF
+    ath_send "cpgls"
+    
+    if {[ath_match $::EmptyCPGTablePattern $ATH::LastResponse] != 0} {
+        ath_tc_failed "CPG Table is not empty!"
+    }
+    
+
+}
+
+##################################################################
+# Make sure that the VLAN table is empty.
+# If the table is not empty then the ATH test will fail
+##################################################################
+
+set EmptyVLANTablePattern ":
+VLAN TABLE
+
+VLAN NETWORK NETMASK STACK
+APZ-A 192.168.169.0 255.255.255.0 KIP
+APZ-B 192.168.170.0 255.255.255.0 KIP
+* * * *
+:
+ALLOCATION TABLE
+
+VLAN CPNAME ADDRESS
+:
+"
+
+proc cs_vlantable_must_be_empty { } {
+    AutoFail OFF
+    ath_send "apzvlanls"
+    
+    if {[ath_match $::EmptyVLANTablePattern $ATH::LastResponse] == 0} {
+        ath_tc_failed "FD Table is not empty!"
+    }
+    
+
+}
+
+##################################################################
+# Check if CS service is running
+# Return 1 if so. Otherwise return 0.
+##################################################################
+
+proc cs_is_service_running { } {
+    AutoFail OFF
+    
+    #Verify the CS service is running and that its PPID equals 1.
+    set command {ps -ef | grep acs_csd | grep -v grep | awk '{print $3}'}
+    ath_send $command
+    set LastResponse [lindex [split $ATH::LastResponse "\n"] 1]
+    if {$LastResponse != "1"} {
+      return 0
+    } else {
+      return 1
+    }
+
+}
+##################################################################
+# Start CS service on AP1
+# If the service is not started the test will fail.
+##################################################################
+
+proc cs_start_service { } {
+    AutoFail OFF
+    
+    print "\nStarting CS service...\n"
+	
+    #Verify the CS service is not running. If not running start it.
+    if {![cs_is_service_running]} {
+      #Run the acs_csd daemon 
+      ath_send "acs_csd"
+    } else {
+      return
+    }
+	
+    print "\nWaiting 3 seconds... \n"
+    after 3000
+
+    #Verify the CS service has been started and it is running
+    if {![cs_is_service_running]} {
+       ath_tc_failed "CS service is not running."
+    }
+    
+}
+
+
+##################################################################
+# Start CS service on AP2-AP16
+# If the service is not started the test will fail.
+##################################################################
+
+proc cs_start_service_apn { } {
+    AutoFail OFF
+    
+    print "\nStarting CS service...\n"
+	
+    #Verify the CS service is not running. If not running start it.
+    if {![cs_is_service_running]} {
+      #Run the acs_csd daemon 
+      ath_send "export CS_AP1=0; acs_csd"
+    } else {
+      return
+    }
+	
+    print "\nWaiting 3 seconds... \n"
+    after 3000
+
+    #Verify the CS service has been started and it is running
+    if {![cs_is_service_running]} {
+       ath_tc_failed "CS service is not running."
+    }
+    
+}
+
+
+##################################################################
+# Stop CS service
+# If the service is not stopped the test will fail.
+##################################################################
+
+proc cs_stop_service { } {
+    AutoFail OFF
+    
+    #Verify the CS service is running. If it is running stop it.
+    if {[cs_is_service_running]} {
+      ath_send {killall acs_csd}
+      print "\n\n CS service stopped.\n\n"
+    } else {
+      return
+    }
+	
+    print "\nWaiting 3 seconds... \n"
+    after 3000
+
+	#Verify the CS service has been stopped
+    if {[cs_is_service_running]} {
+       ath_tc_failed "CS service has not been stopped."	
+    }
+
+}
+
+
+##################################################################
+# Check if CS service is running and stop it
+# If the service is running it will be stopped. 
+# If the service is not running, test case will fail.
+##################################################################
+
+proc cs_check_and_stop_service { } {
+    AutoFail OFF
+    
+	#Verify the CS service is running. If it is running stop it, otherwise fail.
+    if {[cs_is_service_running]} {
+      cs_stop_service
+    } else {
+       ath_tc_failed "CS service failed."
+    }
+
+}
+
+##################################################################
+# Set library and binary path
+##################################################################
+proc cs_set_path { } {
+
+  #Make sure the path to binaries is set
+  ath_send {export PATH=/opt/ap/acs/bin:$PATH}
+  #Make sure the path to CSAPI library is set
+  ath_send {export LD_LIBRARY_PATH=/opt/ap/acs/lib64:$LD_LIBRARY_PATH}
+  
+}
+
+
+##################################################################
+# Create fake macs
+##################################################################
+
+proc cs_create_fake_macs {} {
+	AutoFail OFF
+	
+	ath_send "echo \"<?xml version='1.0' encoding='ISO-8859-1'?>
+	<imm:IMM-contents 
+	xmlns:mount_0='http://ericsson.com/ns/tspsaf_cm/1.0'
+	xmlns:imm='http://www.saforum.org/IMMSchema'
+	xmlns:xs='http://www.w3.org/2001/XMLSchema'
+	xmlns:tspsaf_cm='http://ericsson.com/ns/tspsaf_cm/1.0'
+	xmlns:confd='http://tail-f.com/ns/confd/1.0'
+	xmlns:cs='http://tail-f.com/ns/confspec/1.0'
+	xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+	xsi:schemaLocation='http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd'>
+	
+	<object class='ACS_CS_Attribute'>
+	<dn>attributeId=98,entryId=2,tableId=HWCTable,CSId=1</dn>
+	<attr>
+		<name>value</name>
+		<value>0102030405AA</value>
+	</attr>
+	</object>
+	
+	<object class='ACS_CS_Attribute'>
+	<dn>attributeId=99,entryId=2,tableId=HWCTable,CSId=1</dn>
+	<attr>
+		<name>value</name>
+		<value>0102030405BB</value>
+	</attr>
+	</object>
+	</imm:IMM-contents>
+	\" > /tmp/.cs.fakemac"
+	
+	#Fake the MAC addresses for both backplanes for CPU board in HWC Table, by modifying IMM attributes (defined in /root/CS_MACinstances.xml) using IMM commands
+	ath_send {immfind -c ACS_CS_Attribute | grep HWC | grep entryId=2 | egrep "98|99" | xargs -i immcfg -d {}}
+	ath_send {immcfg -f /tmp/.cs.fakemac}
+	
+	ath_send {rm -f /tmp/.cs.fakemac}
+}
+
+##################################################################
+# Add to hosts file
+##################################################################
+
+proc cs_update_host_file {hostname address} {
+	
+	ath_send "egrep --silent \"$address.*$hostname\" /etc/hosts"
+	
+	if {$ATH::ReturnCode != 0} {
+		# Hostname not present
+		ath_send "echo \"$address $hostname\" >> /etc/hosts"
+	}
+}
+
+##################################################################
+# Create new VLAN
+##################################################################
+
+proc cs_create_new_VLAN {vlanName vlanAddress vlanNetmask vlanStack} {
+	AutoFail OFF
+	
+	ath_send "echo \"<?xml version='1.0' encoding='ISO-8859-1'?>
+	<imm:IMM-contents 
+	xmlns:mount_0='http://ericsson.com/ns/tspsaf_cm/1.0'
+	xmlns:imm='http://www.saforum.org/IMMSchema'
+	xmlns:xs='http://www.w3.org/2001/XMLSchema'
+	xmlns:tspsaf_cm='http://ericsson.com/ns/tspsaf_cm/1.0'
+	xmlns:confd='http://tail-f.com/ns/confd/1.0'
+	xmlns:cs='http://tail-f.com/ns/confspec/1.0'
+	xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+	xsi:schemaLocation='http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd'>
+	
+	<object class='ACS_CS_VLAN'>
+	<dn>vlanId=1,CSId=1</dn>
+	<attr>
+		<name>name</name>
+    	<value>$vlanName</value>
+    </attr>
+	<attr>
+		<name>networkAddress</name>
+		<value>$vlanAddress</value>
+	</attr>
+	<attr>
+		<name>netmask</name>
+		<value>$vlanNetmask</value>
+	</attr>
+	<attr>
+		<name>stack</name>
+		<value>$vlanStack</value>
+	</attr>
+	</object>
+	
+	</imm:IMM-contents>
+	\" > /tmp/.cs.vlan"
+	
+	#Add the VLAN object by modifying IMM attributes using IMM commands
+	ath_send {immcfg -f /tmp/.cs.vlan}
+	
+	ath_send {rm -f /tmp/.cs.vlan}
+}
+
+##################################################################
+# Connect to SUT
+##################################################################
+proc cs_sut_connect { } {
+  
+  print "\n\nConnecting to SUT...\n\n"
+  if {[string toupper $SUT::PROTOCOL] == "SSH"} {
+    ath_connect_ssh $SUT::APG1
+    ath_login_ssh $SUT::APG1_USER $SUT::APG1_PW
+  } else {
+    ath_connect_telnet $SUT::APG1
+    ath_login_telnet $SUT::APG1_USER $SUT::APG1_PW
+  }
+  
+}
+
+##################################################################
+# Connect to SNMP agent host machine
+##################################################################
+proc cs_snmp_connect { } {
+
+  if {[string toupper $SUT::PROTOCOL] == "SSH"} {
+    ath_connect_ssh $SUT::SCB_RP_ADDRESS
+    ath_login_ssh $SUT::SCB_RP_USER $SUT::SCB_RP_PW
+  } else {
+    ath_connect_telnet $SUT::SCB_RP_ADDRESS
+    ath_login_telnet $SUT::SCB_RP_USER $SUT::SCB_RP_PW
+  }
+  
+}
+
+##################################################################
+# Connect to SUT 2, used for internode testing
+##################################################################
+proc cs_sut2_connect { } {
+
+  print "\n\nConnecting to SUT2...\n\n"	
+  if {[string toupper $SUT::PROTOCOL] == "SSH"} {
+    ath_connect_ssh $SUT::APG2
+    ath_login_ssh $SUT::APG2_USER $SUT::APG2_PW
+  } else {
+    ath_connect_telnet $SUT::APG2
+    ath_login_telnet $SUT::APG2_USER $SUT::APG2_PW
+  }
+  
+}
+
+##################################################################
+# Fill base magazine
+# Fills a specified base magazine with all kinds of boards
+# Parameters: 
+# mag_addr - magazine address i.e. 2.4.0.5
+# base_mag_num - number of base-kind magazine, counted from 0
+#     used to calculate unique system and seqence numbers
+##################################################################
+proc cs_fill_base_magazine {mag_addr base_mag_num} {
+    AutoFail OFF
+    
+    print "\n\n Filling base magazine number: $base_mag_num address: $mag_addr.\n\n"
+    
+    # set the unique sequence number base for RPBI
+    set u_base_RPBI [expr $base_mag_num * 2]
+    
+    # set the unique system number
+    set y [expr $base_mag_num + 1]
+    
+    #Slot 0
+    #Add SCB-RP board
+    if {[ath_send "hwcadd -m $mag_addr -s 0 -n SCB-RP -d client"]} {
+      ath_tc_failed "hwcadd: failed -m $mag_addr -s 0"
+    }
+
+	#Slot 2
+    #Add RPBI-S 0 board
+    if {[ath_send "hwcadd -m $mag_addr -s 2 -n RPBI-S -t CP -y $y -e A -u [expr $u_base_RPBI + 0] -d client"]} {
+      ath_tc_failed "hwcadd: failed -m $mag_addr -s 2"
+    }
+
+	#Slot 3
+    #Add GEA board
+    if {[ath_send "hwcadd -m $mag_addr -s 3 -n GEA -t AP -y $y"]} {
+      ath_tc_failed "hwcadd: failed -m $mag_addr -s 3"
+    }
+       
+    #Slot 5
+    #Add CPUB A board in current magazine
+    if {[ath_send "hwcadd -m $mag_addr -s 5 -n CPUB -t CP -y $y -e A -a 10.11.12.13,10.11.13.13 -b 255.255.255.0,255.255.255.0 -d normal"]} {
+      ath_tc_failed "hwcadd: failed -m $mag_addr -s 5"
+    }
+    
+    #Slot 7
+    #Add MAUB board in current magazine
+    if {[ath_send "hwcadd -m $mag_addr -s 7 -n MAUB -t CP -y $y -d client"]} {
+      ath_tc_failed "hwcadd: failed -m $mag_addr -s 7"
+    }
+
+    #Slot 8
+    #Add CPUB B board in current magazine
+    if {[ath_send "hwcadd -m $mag_addr -s 8 -n CPUB -t CP -y $y -e B -a 10.11.12.14,10.11.13.14 -b 255.255.255.0,255.255.255.0 -d normal"]} {
+      ath_tc_failed "hwcadd: failed -m $mag_addr -s 8"
+    }
+
+    #Slot 12
+    #Add Disk A board in current magazine
+    if {[ath_send "hwcadd -m $mag_addr -s 12 -n Disk -t AP -y $y -e A"]} {
+      ath_tc_failed "hwcadd: failed -m $mag_addr -s 12"
+    }
+    
+    #Slot 14
+    #Add APUB A board in current magazine
+    if {[ath_send "hwcadd -m $mag_addr -s 14 -n APUB -t AP -y $y -e A"]} {
+      ath_tc_failed "hwcadd: failed -m $mag_addr -s 14"
+    }
+    
+    #Slot 16
+    #Add DVD board, system 2 in current magazine
+    if {[ath_send "hwcadd -m $mag_addr -s 16 -n DVD -t AP -y $y"]} {
+      ath_tc_failed "hwcadd: failed -m $mag_addr -s 16"
+    }
+
+    #Slot 20
+    #Add APUB B board in current magazine
+    if {[ath_send "hwcadd -m $mag_addr -s 20 -n APUB -t AP -y $y -e B"]} {
+      ath_tc_failed "hwcadd: failed -m $mag_addr -s 20"
+    }
+  
+    #Slot 22
+    #Add Disk B board, system 2 in current magazine
+    if {[ath_send "hwcadd -m $mag_addr -s 22 -n Disk -t AP -y $y -e B"]} {
+      ath_tc_failed "hwcadd: failed -m $mag_addr -s 22"
+    }
+
+	#Slot 23
+    #Add RPBI-S board
+    if {[ath_send "hwcadd -m $mag_addr -s 23 -n RPBI-S -t CP -y $y -e A -u [expr $u_base_RPBI + 1] -d client"]} {
+      ath_tc_failed "hwcadd: failed -m $mag_addr -s 23"
+    }
+    
+    #Slot 25
+    #Add SCB-RP board
+    if {[ath_send "hwcadd -m $mag_addr -s 25 -n SCB-RP -d client"]} {
+      ath_tc_failed "hwcadd: failed -m $mag_addr -s 25"
+    }
+
+}
+
+##################################################################
+# Fill blade magazine
+# Fill a specified magazine with BC boards
+# Parameters: 
+# mag_addr - magazine address i.e. 2.4.0.5
+# blade_mag_num - number of blade-kind magazine, counted from 0, 
+#     used to calculate unique system and seqence numbers
+##################################################################
+proc  cs_fill_blade_magazine {mag_addr blade_mag_num} {
+    AutoFail OFF
+    
+    print "\n\n Filling blade magazine number: $blade_mag_num address: $mag_addr.\n\n"
+    
+    # set the unique sequence number base for BC
+    set u_base_BC [expr $blade_mag_num * 8]
+    
+    #Slot 0
+    #Add SCB-RP board
+    if {[ath_send "hwcadd -m $mag_addr -s 0 -n SCB-RP -d client"]} {
+      ath_tc_failed "hwcadd: failed -m $mag_addr -s 0"
+    }
+    
+    #Add 8 BC boards
+    for {set i 1} {$i<9} {incr i} {
+       if {[ath_send "hwcadd -m $mag_addr -s $i -n CPUB -t BC -y 1 -u [expr $u_base_BC + $i - 1] -d normal"]} {
+         ath_tc_failed "hwcadd: failed -m $mag_addr -s $i"
+       }
+    }
+    
+    #Slot 25
+    #Add SCB-RP board
+    if {[ath_send "hwcadd -m $mag_addr -s 25 -n SCB-RP -d client"]} {
+      ath_tc_failed "hwcadd: failed -m $mag_addr -s 25"
+    }
+}
+
+##################################################################
+# Empty base magazine
+# Empty a specified base magazine
+# Parameters: 
+# mag_addr - magazine address i.e. 2.4.0.5
+##################################################################
+proc cs_empty_base_magazine {mag_addr} {
+    AutoFail OFF
+    
+    print "\n\n Emptying magazine address: $mag_addr.\n\n"
+    
+    if {[ath_send "hwcrm -m $mag_addr -s 0 -f"]} {
+       ath_tc_failed "hwcrm: failed -m $mag_addr -s 0"
+    }
+    if {[ath_send "hwcrm -m $mag_addr -s 2 -f"]} {
+           ath_tc_failed "hwcrm: failed -m $mag_addr -s 2"
+    }
+    if {[ath_send "hwcrm -m $mag_addr -s 3 -f"]} {
+		   ath_tc_failed "hwcrm: failed -m $mag_addr -s 3"
+	}
+    if {[ath_send "hwcrm -m $mag_addr -s 5 -f"]} {
+       ath_tc_failed "hwcrm: failed -m $mag_addr -s 5"
+    }
+    if {[ath_send "hwcrm -m $mag_addr -s 7 -f"]} {
+           ath_tc_failed "hwcrm: failed -m $mag_addr -s 7"
+    }
+    if {[ath_send "hwcrm -m $mag_addr -s 8 -f"]} {
+		   ath_tc_failed "hwcrm: failed -m $mag_addr -s 8"
+    }
+    if {[ath_send "hwcrm -m $mag_addr -s 12 -f"]} {
+       ath_tc_failed "hwcrm: failed -m $mag_addr -s 12"
+    }
+    if {[ath_send "hwcrm -m $mag_addr -s 14 -f"]} {
+           ath_tc_failed "hwcrm: failed -m $mag_addr -s 14"
+    }
+    if {[ath_send "hwcrm -m $mag_addr -s 16 -f"]} {
+		   ath_tc_failed "hwcrm: failed -m $mag_addr -s 16"
+	}
+    if {[ath_send "hwcrm -m $mag_addr -s 20 -f"]} {
+		   ath_tc_failed "hwcrm: failed -m $mag_addr -s 20"
+    }
+    if {[ath_send "hwcrm -m $mag_addr -s 22 -f"]} {
+       ath_tc_failed "hwcrm: failed -m $mag_addr -s 22"
+    }
+    if {[ath_send "hwcrm -m $mag_addr -s 23 -f"]} {
+           ath_tc_failed "hwcrm: failed -m $mag_addr -s 23"
+    }
+    if {[ath_send "hwcrm -m $mag_addr -s 25 -f"]} {
+		   ath_tc_failed "hwcrm: failed -m $mag_addr -s 25"
+	}
+}
+
+##################################################################
+# Empty blade magazine
+# Empty a specified blade magazine
+# Parameters: 
+# mag_addr - magazine address i.e. 2.4.0.5
+##################################################################
+proc cs_empty_blade_magazine {mag_addr} {
+    AutoFail OFF
+    
+    print "\n\n Emptying magazine address: $mag_addr.\n\n"
+    
+    for {set i 0} {$i<9} {incr i} {
+       if {[ath_send "hwcrm -m $mag_addr -s $i -f"]} {
+         ath_tc_failed "hwcrm: failed -m $mag_addr -s $i"
+       }
+    }
+    if {[ath_send "hwcrm -m $mag_addr -s 25 -f"]} {
+		 ath_tc_failed "hwcrm: failed -m $mag_addr -s 25"
+	   }
+}
+
+##################################################################
+# Change MAC address in SNMP agent configuration file
+##################################################################
+
+proc cs_change_mac_in_snmpd_conf {} {
+	AutoFail OFF
+
+    ath_send "exit"
+    cs_snmp_connect
+    
+    ath_send "mv -f /etc/snmp/snmpd.conf /etc/snmp/snmpd.conf.bak"
+    ath_send "touch /etc/snmp/snmpd.conf"
+    
+    ath_send "echo \"
+    
+# Please see /usr/share/doc/packages/net-snmp/EXAMPLE.conf for a
+# more complete example and snmpd.conf(5).
+#
+# Writing is disabled by default for security reasons.  If you'd like
+# to enable it uncomment the rwcommunity line and change the community
+# name to something nominally secure (keeping in mind that this is
+# transmitted in clear text).
+
+# don't use ' < > in strings for syslocation or syscontact
+# Note that if you define the following here you won't be able to change
+# them with snmpset
+syslocation Server Room
+syscontact Sysadmin (root@localhost)
+
+# These really aren't meant for production use.  They include all MIBS
+# and can use considerable resources.  See snmpd.conf(5) for information
+# on setting up groups and limiting MIBS.
+rocommunity public
+# rwcommunity mysecret 127.0.0.1
+
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.0 octet_str 0x000102030400
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.1 octet_str 0x000102030403
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.2 octet_str 0x000102030406
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.3 octet_str 0x000102030409
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.4 octet_str 0x00010203040C
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.5 octet_str 0x00010203040F
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.6 octet_str 0x000102030412
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.7 octet_str 0x000102030415
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.8 octet_str 0x000102030418
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.9 octet_str 0x00010203041B
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.10 octet_str 0x050403020100
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.11 octet_str 0x000102030421
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.12 octet_str 0x000102030424
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.13 octet_str 0x000102030427
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.14 octet_str 0x00010203042A
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.15 octet_str 0x00010203042D
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.16 octet_str 0x000102030430
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.17 octet_str 0x000102030433
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.18 octet_str 0x000102030436
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.19 octet_str 0x000102030439
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.20 octet_str 0x00010203043C
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.21 octet_str 0x00010203043F
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.22 octet_str 0x000102030442
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.23 octet_str 0x000102030445
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.24 octet_str 0x000102030448
+override 1.3.6.1.4.1.193.154.2.1.2.1.1.1.2.25 octet_str 0x00010203044B
+    
+    
+\" > /etc/snmp/snmpd.conf"
+	ath_send "/etc/init.d/snmpd restart"
+	
+	ath_send "exit"
+	cs_sut_connect
+    
+}
+
+##################################################################
+# Restore snmpd.conf - SNMP agent configuration file
+##################################################################
+
+proc cs_restore_snmpd_conf {} {
+	
+	AutoFail OFF
+	
+	ath_send "exit"
+	cs_snmp_connect
+	
+	#ath_send "rm -f /etc/snmp/snmpd.conf"
+        ath_send "mv -f /etc/snmp/snmpd.conf.bak /etc/snmp/snmpd.conf"
+	ath_send "/etc/init.d/snmpd restart"
+	
+	ath_send "exit"
+	cs_sut_connect
+    
+}
+
+##################################################################
+# Creates dhcp host name for a board of specified magazine, slot 
+# and side. The name is used in dhcpd.leases file.
+# E.g. 2.4.0.5_10_A
+# Parameters:
+#  - mag: board magazine, e.g. 2.4.0.5
+#  - slot: board slot, e.g. 10
+#  - side: board side, A or B
+# Return value:
+#  - dhcpd,leases file host name for specified board in the 
+#  following format: mag_slot_side
+##################################################################
+proc cs_get_dhcp_host_name {mag slot side} {
+
+  set host_name $mag
+  append host_name "_"
+  append host_name $slot
+  append host_name "_"
+  append host_name $side
+    
+    return $host_name
+}
+
+##################################################################
+# Sends a command and confirm it interactively
+# Parameters:
+#  - cmd: The command to send
+#  - confirm: The value to send as confirmation
+# Return value:
+#  - dhcpd,leases file host name for specified board in the 
+#  following format: mag_slot_side
+##################################################################
+proc send_cmd_and_confirm {cmd confirm} {
+
+	send "$cmd\r"
+	expect "*:" { send "$confirm\r" }
+	expect "*# "
+}
+
+
+##################################################################
+# Stops SNMP agent
+##################################################################
+proc cs_stop_snmp_agent {} {
+	ath_send "/etc/init.d/snmpd stop"
+}
+
+##################################################################
+# Starts SNMP agent
+##################################################################
+proc cs_start_snmp_agent {} {
+	ath_send "/etc/init.d/snmpd start"
+}

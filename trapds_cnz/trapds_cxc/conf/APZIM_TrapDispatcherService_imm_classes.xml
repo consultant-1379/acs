@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?><!-- 
+  Copyright (c) 2012 Ericsson AB.
+  All rights reserved
+
+  DX ECIM Tool-chain generated this file on Jan 3, 2012 3:47:14 PM using 
+    * coremw.m2m (1.4.4.201109271606)
+    * coremw.m2t (1.4.4.201109271606)
+    * coremw.dsl (1.4.4.201109271606)
+    * coremw.imm (1.4.4.201109271606)
+--><imm:IMM-contents xmlns:imm="http://www.saforum.org/IMMSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd">
+    <class name="TrapDispatcherService">
+        <category>SA_CONFIG</category>
+        <rdn>
+            <name>trapDispatcherServiceId</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_INITIALIZED</flag>
+        </rdn>
+		<attr>
+            <name>serviceState</name>
+            <type>SA_INT32_T</type>
+            <category>SA_RUNTIME</category>
+        </attr>        
+    </class>    
+	<class name="TrapSubscriber">
+        <category>SA_CONFIG</category>
+        <rdn>
+            <name>trapSubscriberId</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_INITIALIZED</flag>
+        </rdn>
+        <attr>
+            <name>port</name>
+            <type>SA_INT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>            
+        </attr>
+        <attr>
+            <name>name</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+        </attr>
+    </class>    
+</imm:IMM-contents>

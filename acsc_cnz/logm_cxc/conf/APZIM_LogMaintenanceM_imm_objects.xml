@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?><!-- 
+  Copyright (c) 2012 Ericsson AB.
+  All rights reserved
+
+  DX ECIM Tool-chain generated this file on Jan 23, 2012 5:26:55 PM using 
+    * coremw.m2m (1.4.4.201109271606)
+    * coremw.m2t (1.4.4.201109271606)
+    * coremw.dsl (1.4.4.201109271606)
+    * coremw.imm (1.4.4.201109271606)
+--><imm:IMM-contents xmlns:imm="http://www.saforum.org/IMMSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd">
+    <object class="LogMaintenanceM">
+        <dn>logMaintenanceMId=1</dn>
+    </object>
+    <object class="TimeBasedHouseKeeping">
+        <dn>timeBasedHouseKeepingId=TRALOG,logMaintenanceMId=1</dn>
+        <attr>
+            <name>searchPath</name>
+            <value>TRA_LOG</value>
+        </attr>
+        <attr>
+            <name>searchPattern</name>
+            <value>*.log</value>
+        </attr>
+        <attr>
+            <name>fileAge</name>
+            <value>7</value>
+        </attr>
+    </object>
+    <object class="TimeBasedHouseKeeping">
+        <dn>timeBasedHouseKeepingId=OUTPUTSTSIn,logMaintenanceMId=1</dn>
+        <attr>
+            <name>searchPath</name>
+            <value>STS_MP</value>
+        </attr>
+        <attr>
+            <name>searchPattern</name>
+            <value>Dummy</value>
+        </attr>
+        <attr>
+            <name>fileAge</name>
+            <value>3</value>
+        </attr>
+        <attr>
+            <name>fileType</name>
+            <value>1</value>
+        </attr>        
+    </object>
+    <object class="TimeBasedHouseKeeping">
+        <dn>timeBasedHouseKeepingId=OUTPUTSTSag,logMaintenanceMId=1</dn>
+        <attr>
+            <name>searchPath</name>
+            <value>STS_MP</value>
+        </attr>
+        <attr>
+            <name>searchPattern</name>
+            <value>*.*</value>
+        </attr>
+        <attr>
+            <name>fileAge</name>
+            <value>60</value>
+        </attr>
+        <attr>
+            <name>fileType</name>
+            <value>1</value>
+        </attr>        
+    </object>
+    <object class="TimeBasedHouseKeeping">
+        <dn>timeBasedHouseKeepingId=SCXLOG,logMaintenanceMId=1</dn>
+        <attr>
+            <name>searchPath</name>
+            <value>SCX_LOG</value>
+        </attr>
+        <attr>
+            <name>searchPattern</name>
+            <value>*.gz</value>
+        </attr>
+        <attr>
+            <name>fileAge</name>
+            <value>7</value>
+        </attr>
+        <attr>
+            <name>fileType</name>
+            <value>1</value>
+        </attr>        
+    </object>
+    <object class="TimeBasedHouseKeeping">
+        <dn>timeBasedHouseKeepingId=SMXLOG,logMaintenanceMId=1</dn>
+        <attr>
+            <name>searchPath</name>
+            <value>SMX_LOG</value>
+        </attr>
+        <attr>
+            <name>searchPattern</name>
+            <value>*.gz</value>
+        </attr>
+        <attr>
+            <name>fileAge</name>
+            <value>7</value>
+        </attr>
+        <attr>
+            <name>fileType</name>
+            <value>1</value>
+        </attr>        
+    </object>
+    <object class="TimeBasedHouseKeeping">
+        <dn>timeBasedHouseKeepingId=CMXLOG,logMaintenanceMId=1</dn>
+        <attr>
+            <name>searchPath</name>
+            <value>CMX_LOG</value>
+        </attr>
+        <attr>
+            <name>searchPattern</name>
+            <value>*.gz</value>
+        </attr>
+        <attr>
+            <name>fileAge</name>
+            <value>7</value>
+        </attr>
+        <attr>
+            <name>fileType</name>
+            <value>1</value>
+        </attr>        
+    </object>
+    <object class="TimeBasedHouseKeeping">
+        <dn>timeBasedHouseKeepingId=CORE,logMaintenanceMId=1</dn>
+        <attr>
+            <name>searchPath</name>
+            <value>CORE</value>
+        </attr>
+        <attr>
+            <name>searchPattern</name>
+            <value>core-*</value>
+        </attr>
+        <attr>
+            <name>fileAge</name>
+            <value>14</value>
+        </attr>
+        <attr>
+            <name>fileType</name>
+            <value>0</value>
+        </attr>
+    </object>
+    <object class="PeriodicBasedHouseKeeping">
+        <dn>periodicBasedHouseKeepingId=SCXLOG,logMaintenanceMId=1</dn>
+        <attr>
+            <name>searchPath</name>
+            <value>SCX_LOG</value>
+        </attr>
+        <attr>
+            <name>searchPattern</name>
+            <value>*.gz</value>
+        </attr>
+        <attr>
+            <name>fileAge</name>
+            <value>0</value>
+        </attr>
+        <attr>
+            <name>numberOfFiles</name>
+            <value>3</value>
+        </attr>              
+    </object>
+    <object class="PeriodicBasedHouseKeeping">
+        <dn>periodicBasedHouseKeepingId=SMXLOG,logMaintenanceMId=1</dn>
+        <attr>
+            <name>searchPath</name>
+            <value>SMX_LOG</value>
+        </attr>
+        <attr>
+            <name>searchPattern</name>
+            <value>*.gz</value>
+        </attr>
+        <attr>
+            <name>fileAge</name>
+            <value>0</value>
+        </attr>
+        <attr>
+            <name>numberOfFiles</name>
+            <value>3</value>
+        </attr>              
+    </object>
+    <object class="PeriodicBasedHouseKeeping">
+        <dn>periodicBasedHouseKeepingId=CMXLOG,logMaintenanceMId=1</dn>
+        <attr>
+            <name>searchPath</name>
+            <value>CMX_LOG</value>
+        </attr>
+        <attr>
+            <name>searchPattern</name>
+            <value>*.gz</value>
+        </attr>
+        <attr>
+            <name>fileAge</name>
+            <value>0</value>
+        </attr>
+        <attr>
+            <name>numberOfFiles</name>
+            <value>3</value>
+        </attr>              
+    </object>
+    <object class="PeriodicBasedHouseKeeping">
+        <dn>periodicBasedHouseKeepingId=CORE,logMaintenanceMId=1</dn>
+        <attr>
+            <name>searchPath</name>
+            <value>CORE</value>
+        </attr>
+        <attr>
+            <name>searchPattern</name>
+            <value>core-*</value>
+        </attr>
+        <attr>
+            <name>fileAge</name>
+            <value>0</value>
+        </attr>
+        <attr>
+            <name>periodicInterval</name>
+            <value>120</value>
+        </attr>
+    </object>
+</imm:IMM-contents>

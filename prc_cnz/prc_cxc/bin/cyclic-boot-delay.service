@@ -1,0 +1,12 @@
+[Unit]
+Description=Prevents too fast cyclic reboots
+Before=opensafd.service
+After=sshd.target
+
+[Service]
+ExecStart=/usr/lib/systemd/scripts/cyclic-boot-delay.sh
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+WantedBy=lde-servicestart.target

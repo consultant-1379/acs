@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?><!-- 
+  Copyright (c) 2012 Ericsson AB.
+  All rights reserved
+
+  DX ECIM Tool-chain generated this file on Feb 8, 2012 12:48:23 AM using 
+    * coremw.m2m (1.4.4.201109271606)
+    * coremw.m2t (1.4.4.201109271606)
+    * coremw.dsl (1.4.4.201109271606)
+    * coremw.imm (1.4.4.201109271606)
+--><imm:IMM-contents xmlns:imm="http://www.saforum.org/IMMSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd">
+    <object class="FTPVirtualPathM">
+        <dn>ftpVirtualPathMId=1</dn>
+    </object>
+    <object class="FTPVirtualPath">
+        <dn>ftpVirtualPathId=FMS_VD,ftpVirtualPathMId=1</dn>
+        <attr>
+            <name>ftpVirtualDirPath</name>
+            <value>/data/fms/data/cpf</value>
+        </attr>
+        <attr>
+            <name>ftpLogicalName</name>
+            <value>FMS_VD</value>
+        </attr>
+    </object>
+    <object class="FTPVirtualPath">
+        <dn>ftpVirtualPathId=PES_VD,ftpVirtualPathMId=1</dn>
+        <attr>
+            <name>ftpVirtualDirPath</name>
+            <value>/data/apz/data</value>
+        </attr>
+        <attr>
+            <name>ftpLogicalName</name>
+            <value>PES_VD</value>
+        </attr>
+    </object>
+    <object class="FTPVirtualPath">
+        <dn>ftpVirtualPathId=STS_VD,ftpVirtualPathMId=1</dn>
+        <attr>
+            <name>ftpVirtualDirPath</name>
+            <value>/data/sts/data</value>
+        </attr>
+        <attr>
+            <name>ftpLogicalName</name>
+            <value>STS_VD</value>
+        </attr>
+    </object>
+    <object class="FTPVirtualPath">
+        <dn>ftpVirtualPathId=ACS_ACA_VD,ftpVirtualPathMId=1</dn>
+        <attr>
+            <name>ftpVirtualDirPath</name>
+            <value>/data/acs/data/aca</value>
+        </attr>
+        <attr>
+            <name>ftpLogicalName</name>
+            <value>ACS_ACA_VD</value>
+        </attr>
+    </object>
+    <object class="FTPVirtualPath">
+        <dn>ftpVirtualPathId=ACS_RTR_VD,ftpVirtualPathMId=1</dn>
+        <attr>
+            <name>ftpVirtualDirPath</name>
+            <value>/data/acs/data/rtr</value>
+        </attr>
+        <attr>
+            <name>ftpLogicalName</name>
+            <value>ACS_RTR_VD</value>
+        </attr>
+    </object>
+    <object class="FTPVirtualPath">
+        <dn>ftpVirtualPathId=ACS_ALOG_VD,ftpVirtualPathMId=1</dn>
+        <attr>
+            <name>ftpVirtualDirPath</name>
+            <value>/data/acs/data/alog</value>
+        </attr>
+        <attr>
+            <name>ftpLogicalName</name>
+            <value>ACS_ALOG_VD</value>
+        </attr>
+    </object>
+</imm:IMM-contents>

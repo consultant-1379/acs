@@ -1,0 +1,44 @@
+<imm:IMM-contents xmlns:imm="http://www.saforum.org/IMMSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="SAI-AIS-IMM-XSD-A.01.01.xsd">
+        <class name="APGSWUpdate">
+                <category>SA_CONFIG</category>
+                <rdn>
+                        <name>safAPGSWUpdate</name>
+                        <type>SA_STRING_T</type>
+                        <category>SA_CONFIG</category>
+                        <flag>SA_INITIALIZED</flag>
+                </rdn>
+                <attr>
+                        <name>currentNodeAversion</name>
+                        <type>SA_STRING_T</type>
+                        <category>SA_CONFIG</category>
+                        <flag>SA_WRITABLE</flag>
+                </attr>
+                <attr>
+                        <name>currentNodeBversion</name>
+                        <type>SA_STRING_T</type>
+                        <category>SA_CONFIG</category>
+                        <flag>SA_WRITABLE</flag>
+                </attr>
+
+</class>
+
+        <object class="APGSWUpdate">
+                <dn>safAPGSWUpdate=SWUpdateInfo,safApp=safImmService</dn>
+                <attr>
+                        <name>currentNodeAversion</name>
+                        <value>AGM:3.1.1</value>
+                </attr>
+                <attr>
+                        <name>currentNodeBversion</name>
+                        <value>AGM:3.1.1</value>
+                </attr>
+
+
+<!--            <attr>
+                        <name>SaImmAttrAdminOwnerName</name>
+                        <value>FCSC</value>
+                </attr> -->
+
+        </object>
+
+</imm:IMM-contents>

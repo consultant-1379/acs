@@ -1,0 +1,30 @@
+#Copyright (C) 2013 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# models.info TEMPLATE
+##
+# Description:
+#       Configuration file used to perform IMM model changes during software upgrade for BUR block.
+##
+##
+# Changelog:
+# - nov 25-27 2013 - Fabrizio Paglia (XFABPAG)      First version
+# - dec 21-01 2014 - Andrea Formica  (EANFORM)      From APG43L1.12 to LSV24
+##
+# Report here FOR EACH package version, all introduced model changes, in the following format,
+# starting from the first version from which you want to support upgrade, with the most recent on top
+
+# Adaptations to SwM2.0
+VERSION: CXC1371487_14-R1A01
+VERSION: CXC1371487_10-R1A01
+VERSION: CXC1371487_9-R1A05
+VERSION: CXC1371487_9-R1A04
+VERSION: CXC1371487_9-R1A03
+VERSION: CXC1371487_9-R1A02
+VERSION: CXC1371487_9-R1A01
+
+#SLES12 rebase to 3_0_5
+VERSION: CXC1371487_5-R1A02
+
+#SLES12 comiplation
+VERSION:CXC1371487_5-R1A01

@@ -1,0 +1,4 @@
+MAS_MODD_Service 6798/tcp	# MAS MODD Handler Service port
+ACS_CS_Replication 14014/tcp	# ACS CS Service replication port
+ACS_CS_Service 14015/tcp	# ACS CS Service port
+ACS_CS_Subscription 14016/tcp	# ACS CS Service subscription port

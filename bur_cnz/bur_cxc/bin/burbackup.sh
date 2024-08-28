@@ -1,0 +1,27 @@
+#!/bin/bash
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2012 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# Name:
+#       burbackup.sh
+# Description:
+#       A script to wrap the invocation of burbackup from the COM CLI.
+# Note:
+#	None.
+##
+# Usage:
+#	None.
+##
+# Output:
+#       None.
+##
+# Changelog:
+# - Tue Oct 17 2012 - Gianluigi Crispino
+#	First version.
+##
+umask 022
+/usr/bin/sudo /opt/ap/acs/bin/burbackup "$@"
+
+exit $?

@@ -1,0 +1,373 @@
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2013 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# models.info TEMPLATE
+##
+# Description:
+#       Configuration file used to perform IMM model changes during software upgrade for CS block.
+##
+##
+# Changelog:
+# - nov 25-27 2013 - Fabrizio Paglia (XFABPAG)      First version
+# - dec 21-01 2014 - Andrea Formica  (EANFORM)      From APG43L1.12 to LSV24 
+##
+# Report here FOR EACH package version, all introduced model changes, in the following format,
+# starting from the first version from which you want to support upgrade, with the most recent on top
+#APG 5.4.0
+VERSION: CXC1371495_20-R1A01
+
+#APG 5.3.0
+VERSION: CXC1371495_18-R1C
+
+#APG 5.2.0 RM001
+VERSION: CXC1371495_18-R1B
+
+#APG 5.2.0 LSV2338
+VERSION: CXC1371495_18-R1A02
+
+#APG 5.2.0 LSV2329
+# Fix for TR IA45408
+VERSION: CXC1371495_18-R1A01
+
+#APG 5.2.0 LSV2326
+VERSION: CXC1371495_15-R1A01
+
+#APG 5.1.1
+VERSION: CXC1371495_14-R1D
+
+#APG 5.1.1
+VERSION: CXC1371495_14-R1D
+
+#APG 5.0.0 RM001 
+VERSION: CXC1371495_14-R1C
+
+#TR HZ64796 
+VERSION: CXC1371495_14-R1B
+
+#4.1.1 rebase to 4.2 LSV2132
+VERSION: CXC1371495_14-R1A01
+#APG 4.1 LSV03
+VERSION: CXC1371495_13-R1A02
+
+#APG 4.1 LSV01
+VERSION: CXC1371495_13-R1A01
+#APG 4.0 CM01
+VERSION: CXC1371495_9-R1K
+
+#APG 4.0 RM001
+VERSION: CXC1371495_9-R1J
+
+#APG 3.8 RM001
+VERSION: CXC1371495_9-R1H
+
+#APG 3.8 LSV03
+VERSION: CXC1371495_9-R1G
+log "Model files updated by generating with new version of modelling tool"
+
+#3.7.0 CM01
+VERSION: CXC1371495_9-R1F
+
+#3.6.3 rebase to 3.7 LSV06
+VERSION: CXC1371495_9-R1E
+
+#DM Changes for APG43L 3.7 LSV05
+VERSION: CXC1371495_9-R1D
+
+#APG43L 3.6.3
+VERSION: CXC1371495_9-R1C
+
+#APG43L 3.6.2
+VERSION: CXC1371495_9-R1B
+
+# Adaptations to SwM2.0
+VERSION: CXC1371495_9-R1A06
+VERSION: CXC1371495_9-R1A05
+VERSION: CXC1371495_9-R1A04
+VERSION: CXC1371495_9-R1A03
+VERSION: CXC1371495_9-R1A02
+VERSION: CXC1371495_9-R1A01
+
+#Change in a smart image script merge issue
+VERSION: CXC1371495_8-R1A10
+
+#Change in a result code in CS API for IPLB
+VERSION: CXC1371495_8-R1A09
+
+#TR HW65723,HW61701,HW78864,HW53952
+VERSION: CXC1371495_8-R1A08
+
+#HW72063 , IPLB TURBO
+VERSION: CXC1371495_8-R1A07
+
+# IPLB Refactor 2 changes 
+VERSION: CXC1371495_8-R1A06
+
+# IPLB Refactor changes 
+VERSION: CXC1371495_8-R1A05
+# GEP7 turbo, SEC, TR HW52567
+VERSION: CXC1371495_8-R1A04
+
+VERSION: CXC1371495_8-R1A03
+
+#CS  Changes due to IPLB Support in Virtual Environment 
+VERSION: CXC1371495_8-R1A02
+#CS API Changes
+VERSION: CXC1371495_8-R1A01
+
+#HW29613,HW31083,Double Node disaster recovery
+VERSION: CXC1371495_7-R1D
+
+VERSION: CXC1371495_7-R1C
+
+#HW14669
+VERSION: CXC1371495_7-R1B01
+
+#RM001 delivery - Fix for TRs HV95710 HV97226 HW18207
+VERSION: CXC1371495_7-R1A04
+
+#HV90938
+VERSION: CXC1371495_7-R1A03
+
+VERSION: CXC1371495_7-R1A02
+
+#17A_FD1 rebase
+
+VERSION: CXC1371495_7-R1A01
+
+VERSION: CXC1371495_6-R1C
+#HV75033
+VERSION: CXC1371495_6-R1B
+VERSION: CXC1371495_6-R1A11
+
+#HV69331
+VERSION: CXC1371495_6-R1A10
+
+VERSION: CXC1371495_6-R1A09
+
+VERSION: CXC1371495_6-R1A08
+
+VERSION: CXC1371495_6-R1A07
+
+VERSION: CXC1371495_6-R1A06
+
+VERSION: CXC1371495_6-R1A05
+
+#AXE17 3.2.5 - Model Version 6.0
+VERSION: CXC1371495_6-R1A04
+cmw-immclass-add $BUNDLE_NAME AxeEquipmentNetwork AxeTransportMHost AxeTransportMInternalNetwork AxeTransportMTransportM AxeTransportMInterface AxeTransportMExternalNetwork
+cmw-immclass-modify $BUNDLE_NAME AxeEquipmentComputeResource
+
+#CNI_CS_DESIGN REBASE
+VERSION: CXC1371495_5-R1E
+VERSION: CXC1371495_5-R1D
+
+#AXE17 3.2.5 - Model Version 5.6
+VERSION: CXC1371495_5-R1C
+
+#AXE17 CM002 - Model Version 5.6
+VERSION: CXC1371495_5-R1B
+cmw-immclass-add $BUNDLE_NAME AxeComputeResourceEquipment AxeComputeResourceComputeResource
+
+#AXE17 RM001 - Model Version 5.5
+VERSION: CXC1371495_5-R1A13
+
+#AXE17 - Model Version 5.5
+VERSION: CXC1371495_5-R1A12
+
+#AXE17 - Model Version 5.5
+VERSION: CXC1371495_5-R1A11
+
+#AXE17 - Model Version 5.5
+VERSION: CXC1371495_5-R1A10
+
+#AXE17 - Model Version 5.5
+VERSION: CXC1371495_5-R1A09
+
+#AXE17 - Model Version 5.5
+VERSION: CXC1371495_5-R1A08
+cmw-immclass-add $BUNDLE_NAME AxeEquipmentSwMau
+
+#AXE17 - Model Version 5.4
+VERSION: CXC1371495_5-R1A07
+
+#AXE17 - Model Version 5.4
+VERSION: CXC1371495_5-R1A06
+
+#AXE17 - Model Version 5.4
+VERSION: CXC1371495_5-R1A05
+
+#AXE17 - Model Version 5.4
+VERSION: CXC1371495_5-R1A04
+
+#AXE17 - Model Version 5.4
+VERSION: CXC1371495_5-R1A03
+
+#AXE17 - Model Version 5.4
+VERSION: CXC1371495_5-R1A02
+
+#AXE17 - Model Version 5.4
+VERSION: CXC1371495_5-R1A01
+
+#AXE17 - Model Version 5.4
+VERSION: CXC1371532-R1A08
+
+#AXE17 - Model Version 5.4
+VERSION: CXC1371532-R1A07
+
+#AXE17 - Model Version 5.2
+VERSION: CXC1371532-R1A06
+cmw-immclass-modify $BUNDLE_NAME AxeEquipmentVlan
+
+#AXE17 - Model Version 5.1
+VERSION: CXC1371532-R1A04
+
+#AXE17 - Model Version 5.0
+VERSION: CXC1371532-R1A02
+cmw-immclass-modify $BUNDLE_NAME AxeEquipmentDualSidedCp
+cmw-immclass-add $BUNDLE_NAME AxeEquipmentCrMgmt AxeEquipmentComputeResource
+cmw-immclass-modify $BUNDLE_NAME AxeEquipmentCpBlade AxeEquipmentApBlade AxeEquipmentOtherBlade
+
+#APG43L 3.1 - AXE16A - Model Version 4.2.1
+VERSION: CXC1371495-R1D
+
+#CM003 - AXE16A - Model Version 4.2.1
+VERSION: CXC1371495-R1D
+
+#CM003 - AXE16A - Model Version 4.2.1
+VERSION: CXC1371495-R1C
+
+#CM002 - AXE16A - Model Version 4.2.1 - CCFileId attribute description (Correction)
+VERSION: CXC1371495-R1B
+
+#RM001 - AXE16A - Model Version 4.2
+VERSION: CXC1371495-R1A13
+
+#LSV16 - AXE16A - Model Version 4.2
+VERSION: CXC1371495-R1A12
+
+#LSV15 - AXE16A - SEC 1.3 - Model Version 4.2
+VERSION: CXC1371495-R1A11
+
+#LLV14 - AXE16A - SEC 1.3 - Model Version 4.2
+VERSION: CXC1371495-R1A10
+log "Performing model changes introduced in version CXC1371432-R1A10"
+cmw-immclass-add $BUNDLE_NAME AxeEquipmentLdapConfiguration
+
+#LLV13 - AXE16A - Model Version 4.1
+VERSION: CXC1371495-R1A09
+log "Performing model changes introduced in version CXC1371432-R1A09"
+cmw-immclass-modify $BUNDLE_NAME AxeEquipmentVlan
+
+#AXE15A - 2.2.1
+VERSION: CXC1371432-R3A
+
+#AXE15A - 2.2
+VERSION: CXC1371432-R2B
+
+#AXE15A - 2.1 - LAG in SCX impacts
+VERSION: CXC1371432-R2A
+cmw-immclass-add $BUNDLE_NAME AxeEquipmentLag
+
+#CM004_BSP - no changes
+VERSION: CXC1371432-R1F
+
+#CM004_BSP - no changes
+VERSION: CXC1371432-R1E
+
+#CM003_BSP - no changes
+VERSION: CXC1371432-R1D
+
+#CM002_BSP - no changes
+VERSION: CXC1371432-R1C
+
+#CM002 - no changes
+VERSION: CXC1371432-R1B
+
+#Internal Build
+VERSION: CXC1371432-R1A50
+
+#LLV12 - AXE16A
+VERSION: CXC1371495-R1A08
+log "Performing model changes introduced in version CXC1371432-R1A06V"
+cmw-immclass-modify $BUNDLE_NAME AxeEquipmentVlan
+
+#LLV11 - AXE16A
+VERSION: CXC1371495-R1A07
+
+#LLV10 - AXE16A - Rebuilt model files with DX 2.13
+VERSION: CXC1371495-R1A06
+
+#LLV09 - AXE16A - no changes
+VERSION: CXC1371495-R1A05
+
+#CM004_BSP - no changes
+VERSION: CXC1371432-R1F
+
+#CM004_BSP - no changes
+VERSION: CXC1371432-R1E
+
+#CM003_BSP - no changes
+VERSION: CXC1371432-R1D
+
+#CM002_BSP - no changes
+VERSION: CXC1371432-R1C
+
+#CM002 - no changes
+VERSION: CXC1371432-R1B
+
+#RM001 - no changes
+VERSION: CXC1371432-R1A49
+
+#LSV32Int - no changes
+VERSION: CXC1371432-R1A48
+
+#LSV31Int - no changes
+VERSION: CXC1371432-R1A47
+
+#LSV30 - no changes
+VERSION: CXC1371432-R1A46
+
+#LSV30Int - no changes
+VERSION: CXC1371432-R1A45
+
+#LSV29 - no changes
+VERSION: CXC1371432-R1A44
+
+#LSV29Int - clusterAligned attribute
+VERSION: CXC1371432-R1A43
+cmw-immclass-modify $BUNDLE_NAME AxeEquipmentAdvancedConfiguration
+
+#LSV27 - no changes
+VERSION: CXC1371432-R1A42
+
+#LSV27Int - cpAlias attribute
+VERSION: CXC1371432-R1A41
+cmw-immclass-modify $BUNDLE_NAME AxeEquipmentClusterCp AxeEquipmentDualSidedCp
+
+#LSV26 - no changes
+VERSION: CXC1371432-R1A40
+
+#LSV25 - no changes
+VERSION: CXC1371432-R1A39
+
+#LSV24 - no changes
+VERSION: CXC1371432-R1A38
+
+#LSV23
+VERSION: CXC1371432-R1A37
+log "Performing model changes introduced in version CXC1371432-R1A37"
+cmw-immclass-add $BUNDLE_NAME AxeEquipmentCpCluster AxeEquipmentClusterCp AxeEquipmentOmProfile AxeEquipmentCcFile AxeEquipmentOmProfileManager AxeEquipmentCcFileManager AxeEquipmentCandidateCcFile AxeEquipmentAsyncProfileActionProgress AxeEquipmentAsyncActionProgress AxeEquipmentAsyncImportActionProgress AxeEquipmentCpProductInfo AxeFunctionDistributionFunctionDistributionM AxeFunctionDistributionApg AxeFunctionDistributionFunction AxeFunctionDistributionAsyncActionProgress 
+cmw-immclass-modify $BUNDLE_NAME AxeEquipmentCpBlade AxeEquipmentAdvancedConfiguration
+immcfg -d vlanId=1,vlanCategoryId=1,AxeEquipmentequipmentMId=1
+immcfg -d vlanId=2,vlanCategoryId=1,AxeEquipmentequipmentMId=1
+immcfg -c AxeEquipmentVlan -a networkAddress=192.168.169.0 -a netmask=255.255.255.0 -a name=APZ-A -a stack=0 vlanId=APZ-A,vlanCategoryId=1,AxeEquipmentequipmentMId=1
+immcfg -c AxeEquipmentVlan -a networkAddress=192.168.170.0 -a netmask=255.255.255.0 -a name=APZ-B -a stack=0 vlanId=APZ-B,vlanCategoryId=1,AxeEquipmentequipmentMId=1
+immcfg -a omProfileCurrent=100 advancedConfigurationId=1,AxeEquipmentequipmentMId=1
+immcfg -a apzProfileCurrent=100 advancedConfigurationId=1,AxeEquipmentequipmentMId=1
+immcfg -a apzProfileCurrent=100 advancedConfigurationId=1,AxeEquipmentequipmentMId=1
+immcfg -f /cluster/storage/system/software/coremw/repository/$BUNDLE_NAME/models/o_AxeFunctionDistributionInstance_imm_objects.xml
+
+#1.1.12 - no changes
+VERSION: CXC1371330-R2F

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+	Copyright (c) 2021 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Jul 2, 2021 4:01:13 PM using:
+	* com.ericsson.ecim.coremw.m2m 3.14.0.202105061142
+	* com.ericsson.ecim.coremw.dsl 3.14.0.202105061142
+	* com.ericsson.ecim.coremw.imm 3.14.0.202105061142
+--><imm:IMM-contents xmlns:imm="http://www.saforum.org/IMMSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd">
+    <object class="HealthCheckHealthCheckM">
+        <dn>HealthCheckhealthCheckMId=1</dn>
+    </object>
+    <object class="HealthCheckRuleFileManager">
+        <dn>ruleFileManagerId=1,HealthCheckhealthCheckMId=1</dn>
+    </object>
+    <object class="HealthCheckInUse">
+        <dn>inUseId=1,ruleFileManagerId=1,HealthCheckhealthCheckMId=1</dn>
+    </object>
+    <object class="HealthCheckReadyToUse">
+        <dn>readyToUseId=1,ruleFileManagerId=1,HealthCheckhealthCheckMId=1</dn>
+    </object>
+</imm:IMM-contents>

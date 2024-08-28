@@ -1,0 +1,135 @@
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2014 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# models.info
+##
+# Description:
+#       Configuration file used to perform IMM model changes during software upgrade for HCSBIN.
+##
+##
+# log($message) ===> Use it to append a notice to the system log
+# log_error($message) ===> Use it to append an error message to the system log
+##
+##
+#-----------------------------------------------------------------------
+#       CHANGE-LOG
+#----------------------------------------------------------------------
+##APG43L 5.2 LSV2338
+VERSION: CXC1371513_16-R1D
+
+##APG43L 5.2
+VERSION: CXC1371513_16-R1C
+
+##APG43L 5.1.1
+VERSION: CXC1371513_16-R1B
+
+##APG43L 5.1
+VERSION: CXC1371513_16-R1A01
+
+VERSION: CXC1371513_15-R1B
+
+##APG43L 4.3 LSV2211
+VERSION: CXC1371513_15-R1A01
+
+##APG43L 4.2 LSV2138
+VERSION: CXC1371513_14-R1A03
+
+#APG43L 4.2 LSV2135 
+VERSION: CXC1371513_14-R1A02
+
+#4.1.1 rebase to 4.2 LSV2132
+VERSION: CXC1371513_14-R1A01
+
+#APG43L 4.1 UFR Phase 2 CM003
+VERSION: CXC1371513_13-R1C
+
+#APG43L 4.1 UFR Phase 2 CM001
+VERSION: CXC1371513_13-R1B
+
+#APG43L 4.1 UFR Phase 2 & SLES12 SP5
+VERSION: CXC1371513_13-R1A02
+
+#APG43L 4.1 UFR Phase 2
+VERSION: CXC1371513_13-R1A01
+
+#APG43L 4.0 UFR CM001
+VERSION: CXC1371513_9-R1E
+#APG43L 4.0 UFR
+VERSION: CXC1371513_9-R1D
+
+# Adaptations to SwM2.0
+VERSION: CXC1371513_9-R1C
+VERSION: CXC1371513_9-R1B
+VERSION: CXC1371513_9-R1A05
+VERSION: CXC1371513_9-R1A04
+VERSION: CXC1371513_9-R1A03
+VERSION: CXC1371513_9-R1A02
+VERSION: CXC1371513_9-R1A01
+
+#
+#Deprecation of classes,attributes and actions in SwM MO
+VERSION: CXC1371513_8-R1A02
+log "No model changes introduced in CXC1371513_8-R1A02"
+
+#gep7 feature
+VERSION: CXC1371513_8-R1A01
+log "No model changes introduced in CXC1371513_8-R1A01"
+VERSION: CXC1371513_7-R1A01
+log "No model changes introduced in CXC1371513_7-R1A01"
+
+VERSION: CXC1371513_6-R1A02
+log "No model changes introduced"
+
+VERSION: CXC1371513_6-R1A01
+log "No model changes introduced in REL3 version CXC1371513_6-R1A01"
+
+#vAPZ
+VERSION: CXC1371513_5-R1A05
+
+#vAPZ
+VERSION: CXC1371513_5-R1A04
+log "No model changes introduced in REL3 version CXC1371513_5-R1A02"
+
+#vAPZ
+VERSION: CXC1371513_5-R1A03
+log "No model changes introduced in REL3 version CXC1371513_5-R1A02"
+
+#SLES12
+VERSION: CXC1371513_5-R1A02
+log "No model changes introduced in REL3 version CXC1371513_5-R1A02"
+
+#SLES12
+VERSION: CXC1371513_5-R1A01
+log "No model changes introduced in REL3 version CXC1371513_5-R1A01"
+
+#vAPG
+VERSION: CXC1371509_5-R1A01
+log "No model changes introduced in REL3 version CXC1371509_5-R1A01"
+
+#CM003
+VERSION: CXC1371513-R1B
+log "No model changes introduced in REL3 version CXC1371513-R1B"
+
+#LSV13
+VERSION: CXC1371513-R1A03
+log " No model changes introduced in REL3 version CXC1371513-R1A03"
+
+#LSV12
+VERSION: CXC1371513-R1A02
+log " No model changes introduced in REL3 version CXC1371513-R1A02"
+
+VERSION: CXC1371513-R1A01
+log " No model changes introduced in REL3 version CXC1371513-R1A01"
+
+VERSION: CXC1371476-R1C
+log " No model changes introduced in REL2 version CXC1371476-R1C"
+
+VERSION: CXC1371476-R1B
+log " No model changes introduced in REL2 version CXC1371476-R1B"
+
+VERSION: CXC1371476-R1A13
+log " No model changes introduced in REL2 version CXC1371476-R1A13"
+
+VERSION: CXC1371422-R1U

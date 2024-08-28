@@ -1,0 +1,28 @@
+csm-version: '1.0'
+components:
+- uid: acs.prc
+  name: acs-prc
+  description: ACS PRC component
+  availability-manager: NONE
+  software:
+    sdp: ERIC-ACS_PRCBIN-CXC1371540
+  supersedes:
+  - software: ERIC-ACS_PRCBIN-CXC1371540
+  constraints:
+    plugin: plugin/acs.prc
+    installation:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+    upgrade:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+  meta-data:
+    component-version: 12.0.12-0
+    deliverable:
+      deployment-package: acs_prc-12.0.12-0-deployment-CXC1371540.tar.gz
+      runtime-package: acs_prc-12.0.12-0-runtime-CXC1371540.tar.gz
+    software:
+    - file-name: ACS_PRCBIN-CXC1371540_12-R1M.x86_64.sdp
+      bundle-name: ERIC-ACS_PRCBIN-CXC1371540_12-R1M

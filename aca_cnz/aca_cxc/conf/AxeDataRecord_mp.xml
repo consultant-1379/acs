@@ -1,0 +1,931 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
+	Copyright (c) 2020 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Dec 9, 2020 3:15:28 PM using:
+	* com.ericsson.ecim.m2m 3.13.0.202006261811
+	* com.ericsson.ecim.dsl 3.13.0.202006261811
+	* com.ericsson.ecim.edm 3.13.0.202006261811
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>K</dtdVersion>
+    <momMetaData>
+        <momTitle>Managed Object Model for Data Record Management function</momTitle>
+        <momSubTitle/>
+        <momIdentity>
+            <docNum>19089-CXA 117 0045/7</docNum>
+            <docLang>Uen</docLang>
+            <docRev>C</docRev>
+            <docDate>2020-12-09</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>XHARBAV</signature>
+        </createdBy>
+    </momMetaData>
+    <mim author="Harika Bavana" contact="XHARBAV" correction="0" date="2020-12-09" docNo="" name="AxeDataRecord" namespace="urn:com:ericsson:ecim:AxeDataRecord" namespacePrefix="axedatarecord" organization="" release="1" revision="C" version="2">
+        <description>Data Record Management function MOM.</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="MOM_NAME"/>
+        </domainExtension>
+        <modelFeatures modelType="Template">
+            <modelFeature featureType="basic" name="CPI_HIDDEN"/>
+        </modelFeatures>
+        <struct name="EcimPassword">
+            <description>Stores the password.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <structMember name="cleartext">
+                <description>Indicates whether or not the password is entered in cleartext.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <derivedDataTypeRef name="EcimEmpty">
+                    <mimName>AxeDataRecord</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="password">
+                <description>Holds the password or passphrase text.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isKey" value="true"/>
+                </domainExtension>
+                <string/>
+            </structMember>
+        </struct>
+        <enum name="FixedFileRecordsFlag">
+            <description>This enum is used for the attribute 'fixedFileRecordsFlag'.
+
+</description>
+            <enumMember name="VARIABLE">
+                <description>Length of a file record is variable.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="FIXED">
+                <description>Length of a file record is fixed.</description>
+                <value>0</value>
+            </enumMember>
+        </enum>
+        <enum name="AlarmSeverity">
+            <description>Defines the set of possible alarm severities for an AXE alarm.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="3"/>
+                <extension name="originatingMimName" value="AxeCommonLibrary"/>
+            </domainExtension>
+            <enumMember name="ALARM_HIGH">
+                <description>Indicates the highest alarm severity.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="ALARM_MEDIUM">
+                <description>Indicates the medium alarm severity.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="ALARM_LOW">
+                <description>Indicates the lowest alarm severity.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="ALERT_HIGH">
+                <description>Indicates the highest alert severity.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="ALERT_LOW">
+                <description>Indicates the lowest alert severity.</description>
+                <value>4</value>
+            </enumMember>
+        </enum>
+        <enum name="LengthType">
+            <description>Specifies the range for files length.</description>
+            <enumMember name="VARIABLE">
+                <description>The length of a block of records is variable.
+The length of a block is adjusted so that no unused bytes are included.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="FIXED">
+                <description>The length of a block of records is fixed.
+Bytes not occupied by are filled with the character specified by paddingChar attribute.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="EVEN">
+                <description>The length of a block of records is variable with even number of bytes.
+The length is made even, if needed, by addition of a padding character specified by paddingChar attribute.</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="CdrCounterFlag">
+            <description>Specifies the range for CDR counting function.
+
+
+
+</description>
+            <enumMember name="ENABLE">
+                <description>CDR counting function is enabled.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="DISABLE">
+                <description>CDR counting function is disabled.</description>
+                <value>0</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="MessageStoreName">
+            <description>Specifies message store name pattern.
+</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>15</max>
+                    </lengthRange>
+                    <stringLength>
+                        <subrange>
+                            <min>1</min>
+                            <max>15</max>
+                        </subrange>
+                    </stringLength>
+                    <validValues>^[a-zA-Z]+[0-9]*$</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[^[a-zA-Z]+[0-9]*$]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="FileSize">
+            <description>Specifies file size range.
+</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>64</min>
+                        <max>32768</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>64</min>
+                            <max>32768</max>
+                        </subrange>
+                    </ranges>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="NumberOfFiles">
+            <description>Specifies range for number of files.</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>1</min>
+                        <max>2048</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>1</min>
+                            <max>2048</max>
+                        </subrange>
+                    </ranges>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="AlarmLevel">
+            <description>Specifies alarm level range.
+</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>1</min>
+                        <max>100</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>1</min>
+                            <max>100</max>
+                        </subrange>
+                    </ranges>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="RecordSize">
+            <description>Specifies record size range.</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>0</min>
+                        <max>65535</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>0</min>
+                            <max>65535</max>
+                        </subrange>
+                    </ranges>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="PaddingChar">
+            <description>Specifies range for padding characters.</description>
+            <baseType>
+                <int16>
+                    <range>
+                        <min>0</min>
+                        <max>255</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>0</min>
+                            <max>255</max>
+                        </subrange>
+                    </ranges>
+                </int16>
+            </baseType>
+        </derivedDataType>
+        
+        <derivedDataType name="MinFileSize">
+            <description>Specifies minimum file size range.</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>0</min>
+                        <max>16777216</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>0</min>
+                            <max>16777216</max>
+                        </subrange>
+                    </ranges>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Length">
+            <description>Specifies length range.
+</description>
+            <baseType>
+                <int32>
+                    <range>
+                        <min>512</min>
+                        <max>32768</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>512</min>
+                            <max>32768</max>
+                        </subrange>
+                    </ranges>
+                </int32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="FileHoldTime">
+            <description>Specifies hold time range for file based transfer.
+</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>1</min>
+                        <max>86400</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>1</min>
+                            <max>86400</max>
+                        </subrange>
+                    </ranges>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="BlockHoldTime">
+            <description>Specifies hold time range for block based transfer.
+</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>1</min>
+                        <max>7200</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>1</min>
+                            <max>7200</max>
+                        </subrange>
+                    </ranges>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="NumberOfRecords">
+            <description>This derived data type is used for the attribute 'numberOfRecords'</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>0</min>
+                        <max>65535</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>0</min>
+                            <max>65535</max>
+                        </subrange>
+                    </ranges>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="EcimEmpty">
+            <description>Represents a leaf that has no value, it conveys information by its presence or absence.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <baseType>
+                <boolean/>
+            </baseType>
+        </derivedDataType>
+        <class name="DataRecordM">
+            <description>Represents the root MOC for Data Record Management function.
+This function can be mainly segregated into the below parts:
+- Transfer of record data originating from CP towards message stores in the form of message records.
+- Transfer of message records from message stores in the form of either files or blocks.
+- Send the files or blocks to remote destination using TQs.
+
+</description>
+            <systemCreated/>
+            <root/>
+            <attribute name="dataRecordMId">
+                <description>Holds the name used when identifying the MO.
+</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            
+            
+            
+        </class>
+        <class name="BlockBasedJob">
+            <description>Represents a block based record transfer job.
+This job facilitates in the transfer of charging data records from the message stores to the remote server in the form of volatile buffers. Unlike the file based charging transfer which stores the record transfer files onto disk, block based charging transfer does not store anything on disk. The attributes of this class help in configuring the block record transfer towards remote server. Transfer of these blocks to a remote system is achieved with the help of the Data Transfer Management function.
+
+One or more attributes setting can fail due to one of the following reasons:
+
+- Unset mandatory attribute(s): This message appears when the attribute 'transferQueue' is not provided during block based job creation.
+- Transfer queue not defined: This message appears when the transfer queue name entered is not defined.
+- Job already defined: This message appears when an attempt is made to define a job under a message store which already has a job (file or block) created.
+- No access to Data Transfer Functionality: This message appears when there is no access to the data transfer functionality.
+- Message Store buffer larger than block size : This message appears when length attribute value is smaller than the value of recordSize attribute of MessageStore MO class.</description>
+            <attribute name="blockBasedJobId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="transferQueue">
+                <description>The TQ name used for transferring record data to a remote destination.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="holdTime">
+                <description>Specifies the maximum number of seconds a call record block is held before closing it.
+</description>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="BlockHoldTime">
+                        <defaultValue>60</defaultValue>
+                        <mimName>AxeDataRecord</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="length">
+                <description>Specifies the maximum length of a call record block.
+</description>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Length">
+                        <defaultValue>4096</defaultValue>
+                        <mimName>AxeDataRecord</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="lengthType">
+                <description>Specifies whether the block length is fixed, variable or variable with even number of bytes.</description>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="LengthType">
+                        <defaultValue>FIXED</defaultValue>
+                        <mimName>AxeDataRecord</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="paddingChar">
+                <description>The decimal value of a character used to fill unused bytes. Such unused bytes are filled in a fixed length call record block or in a call record block with a variable length but with a required even number of bytes.
+</description>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="PaddingChar">
+                        <defaultValue>0</defaultValue>
+                        <mimName>AxeDataRecord</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="FileBasedJob">
+            <description>Represents a file based record transfer job.
+This job facilitates in the transfer of charging data records from the message stores to the remote server in the form of files. In this kind of transfer, the record transfer files are stored on disk. Each file consists of the message records which are retrieved from message stores. Each file is built with the received message records, before it is stored on data disk. The attributes of this class help in configuring the record transfer flow towards the remote server. Transfer of these files to a remote system is achieved with the help of data transfer functionality.
+
+One or more attributes setting can fail due to one of the following reasons:
+
+- Unset mandatory attribute(s): This message appears when the attribute 'transferQueue' is not provided during file based job creation.
+- Transfer queue not defined: This message appears when the transfer queue name entered is not defined.
+- Job already defined: This message appears when an attempt is made to define a job under a message store which already has a job (file or block) created.
+- No access to Data Transfer Functionality: This message appears when there is no access to the data transfer functionality.
+- Message Store buffer larger than fixed record size: This message appears in case of attribute fixedFileRecordsFlag is set to FIXED and value of the recordLength attribute is smaller than the value of recordSize attribute of MessageStore MO class.
+</description>
+            <action name="endCurrentDataFile">
+                <description>Ends the record transfer file which is under construction and send it to remote destination immediately.
+
+The action can fail due to the following reason: 
+- No data file to end: No data files are under construction in the specified FilebasedJob.
+</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="1"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <attribute name="fileBasedJobId">
+                <description>Holds the name used when identifying the MO.
+</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="transferQueue">
+                <description>The TQ name used for transferring record files to a remote destination.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="cdrCounterFlag">
+                <description>Specifies whether CDR counting function is enabled or disabled.
+If enabled, it is possible to inform the remote system about the number of CDRs stored in a file. 
+This information is appended to the file name.
+
+Note: The CDR counting function is enabled only if the user is updated to send CDR number to APG.</description>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="CdrCounterFlag">
+                        <defaultValue>DISABLE</defaultValue>
+                        <mimName>AxeDataRecord</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="holdTime">
+                <description>Specifies the maximum time, a file is held before closing it. 
+Time is expressed in seconds. If the maximum filehold time is reached and no Call Data Records are received during the time interval, a file containing no data is created.</description>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="FileHoldTime">
+                        <defaultValue>300</defaultValue>
+                        <mimName>AxeDataRecord</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="paddingChar">
+                <description>The decimal value of a character is used to fill the unused bytes in a fixed file record.
+</description>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="PaddingChar">
+                        <defaultValue>0</defaultValue>
+                        <mimName>AxeDataRecord</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="recordlength">
+                <description>Specifies the fixed length of an individual record. 
+This value is expessed in bytes.</description>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="Length">
+                        <defaultValue>2048</defaultValue>
+                        <mimName>AxeDataRecord</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="fileSize">
+                <description>Specifies the range of the file size. 
+This value is expressed in kilobytes.</description>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="FileSize">
+                        <defaultValue>1024</defaultValue>
+                        <mimName>AxeDataRecord</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="fixedFileRecordsFlag">
+                <description>Specifies that the components of a file records will have a fixed length or variable length.
+
+</description>
+                <noNotification/>
+                <dataType>
+                    <enumRef name="FixedFileRecordsFlag">
+                        <defaultValue>VARIABLE</defaultValue>
+                        <mimName>AxeDataRecord</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="minFileSize">
+                <description>Specifies the minimum size of a record transfer file expressed in bytes.
+The minimum file size functionality will be enabled if the value is non-zero.</description>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="MinFileSize">
+                        <defaultValue>0</defaultValue>
+                        <mimName>AxeDataRecord</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="hashKey">
+                <description>A 32 bit hexadecimal string given as an input in the form of key to the hash function.
+If the key is defined, then a 16 byte long hash is stored at the end of record transfer file. The hash value is generated from the content of the record transfer file.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="EcimPassword">
+                        <mimName>AxeDataRecord</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="StatisticsInfo">
+            <description>Represents the information about the current record transfer job statistics.
+For each record transfer job there is an instance of this class. This class has statistics of a particular file based or block based job.</description>
+            <systemCreated/>
+            <attribute name="statisticsInfoId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="volumeRead">
+                <description>Specifies the volume in Kilobytes that has been retrieved from the Message Store.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <uint64/>
+                </dataType>
+            </attribute>
+            <attribute name="volumeReported">
+                <description>Specifies the volume in Kilobytes that has been sent to the remote destination.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <uint64/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="CPStatisticsInfo">
+            <description>Represents the record transfer statistics for a particular CP.
+For each record transfer job there will be one or more instances of this class.</description>
+            <systemCreated/>
+            <attribute name="cPStatisticsInfoId">
+                <description>Holds the name used when identifying the MO.
+</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="recordsLost">
+                <description>Specifies the number of Message Store records declared as lost.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <uint64/>
+                </dataType>
+            </attribute>
+            <attribute name="recordsRead">
+                <description>Specifies the number of Message Store records read from Message store.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <uint64/>
+                </dataType>
+            </attribute>
+            <attribute name="recordsSkipped">
+                <description>Specifies the number of Message Store records declared as skipped.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <uint64/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="MessageStore">
+            <description>Represents a message store that is configured for data record transfer from CP.
+Message stores are published on APG for receiving the traffic generated by CP(s). 
+
+The setting of messageStoreName and recordSize can fail for one of the following reasons:
+- Connection with message store temporary unavailable, try again : This message appears when the connection with the message store is temporary unavailable.
+- Record size cannot be changed since the message store contains not acknowledged messages : This message appears when the recordSize attribute is changed when the message store contains not acknowledged messages.
+- Message store name cannot be changed since the message store contains not acknowledged messages : This message appears when the messageStoreName attribute is changed when the message store contains not acknowledged messages.
+- The value of recordSize attribute should be smaller than or equal to value of recordlength attribute : This message appears when the value of recordSize attribute is greater than the value of recordlength attribute in MOC FileBasedJob.
+- The value of recordSize attribute should be smaller than or equal to value of length attribute : This message appears when the value of recordSize attribute is greater than value of length attribute in MOC BlockBasedJob. 
+
+Note: A restart of the traffic flow from CP is required if the attributes messageStoreName and recordSize of this class are modified.
+</description>
+            <systemCreated/>
+            <attribute name="messageStoreId">
+                <description>Holds the name used when identifying the MO.
+It holds the name of the message store which cannot be modified by the end user. It holds the same name as the messageStoreName attribute's initial value.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="numberOfRecords">
+                <description>Specifies the maximum number of records that can be stored in a file.</description>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="NumberOfRecords">
+                        <defaultValue>6000</defaultValue>
+                        <mimName>AxeDataRecord</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="numberOfFiles">
+                <description>Specifies the maximum number of files that can exist in a message store at the same time. 
+When the numberOfFiles reaches threshold an alarm is raised.
+</description>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="NumberOfFiles">
+                        <defaultValue>40</defaultValue>
+                        <mimName>AxeDataRecord</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="alarmLevel">
+                <description>Specifies at what storage level in the message store an alarm is initiated. 
+The value is given in percent of message store. 
+Size of the message store is determined by numberOfRecords * recordSize * numberOfFiles.</description>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="AlarmLevel">
+                        <defaultValue>25</defaultValue>
+                        <mimName>AxeDataRecord</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="messageStoreName">
+                <description>Specifies the name of the message store.
+The default values to this attribute for the 8 instances of this class are CHS, CHS1, CHS2, CHS3, CHS4, CHS5, CHS6, CHS7 respectively.</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="MessageStoreName">
+                        <mimName>AxeDataRecord</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="recordSize">
+                <description>Specifies the maximum size of a record in bytes.</description>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="RecordSize">
+                        <defaultValue>4096</defaultValue>
+                        <mimName>AxeDataRecord</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="alarmSeverity">
+                <description>Specifies the severity of the alarm that is raised when the message store is filled to alarmLevel. </description>
+                <dataType>
+                    <enumRef name="AlarmSeverity">
+                        <defaultValue>ALARM_MEDIUM</defaultValue>
+                        <mimName>AxeDataRecord</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="RecordTransferStatisticInfo_to_CPspecificRecordTransStatInfo">
+            <containment>
+                <parent>
+                    <hasClass name="StatisticsInfo">
+                        <mimName>AxeDataRecord</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="CPStatisticsInfo">
+                        <mimName>AxeDataRecord</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>64</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="RecordTransferM_to_MessageStore">
+            <containment>
+                <parent>
+                    <hasClass name="DataRecordM">
+                        <mimName>AxeDataRecord</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="MessageStore">
+                        <mimName>AxeDataRecord</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>8</min>
+                        <max>8</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="MessageStore_to_FilebasedJob">
+            <containment>
+                <parent>
+                    <hasClass name="MessageStore">
+                        <mimName>AxeDataRecord</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="FileBasedJob">
+                        <mimName>AxeDataRecord</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="MessageStore_to_BlockbasedJob">
+            <containment>
+                <parent>
+                    <hasClass name="MessageStore">
+                        <mimName>AxeDataRecord</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="BlockBasedJob">
+                        <mimName>AxeDataRecord</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="BlockBasedJob_to_StatisticsInfo">
+            <containment>
+                <parent>
+                    <hasClass name="BlockBasedJob">
+                        <mimName>AxeDataRecord</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="StatisticsInfo">
+                        <mimName>AxeDataRecord</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="FilebasedJob_to_StatisticsInfo">
+            <containment>
+                <parent>
+                    <hasClass name="FileBasedJob">
+                        <mimName>AxeDataRecord</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="StatisticsInfo">
+                        <mimName>AxeDataRecord</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </mim>
+    <interMim>
+        <relationship name="DataOutputHandling_to_RecordTransferM">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="DataOutputHandling">
+                        <mimName>AxeFunctions</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="DataRecordM">
+                        <mimName>AxeDataRecord</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

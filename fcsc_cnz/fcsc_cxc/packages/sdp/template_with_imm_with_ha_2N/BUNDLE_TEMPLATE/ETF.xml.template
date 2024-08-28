@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entityTypesFile name="ERIC-#TAG_NAME#-#TAG_CXP#-#TAG_REV#" provider="ERIC">
+  <AmfEntityType>
+    <AppType name="safAppType=ERIC-#TAG_APPT#" version="safVersion=#TAG_SAF_VER#">
+      <serviceGroupType name="safSgType=ERIC-#TAG_SGT#" version="safVersion=#TAG_SAF_VER#"/>
+    </AppType>
+  </AmfEntityType>
+  <AmfEntityType>
+    <SGType name="safSgType=ERIC-#TAG_SGT#" version="safVersion=#TAG_SAF_VER#">
+      <suType name="safSuType=ERIC-#TAG_SUT#" version="safVersion=#TAG_SAF_VER#"/>
+      <redModel>SA_AMF_2N_REDUNDANCY_MODEL</redModel>      
+     	  <compProbation period="#TAG_COMPPROB_PERIOD#" counterMax="#TAG_COMPPROB_COUNTERMAX#"/>
+	  <suProbation period="#TAG_SUPROB_PERIOD#" counterMax="#TAG_SUPROB_COUNTERMAX#"/>
+	<autoAdjust period="#TAG_AUTOADJUST_PERIOD#"></autoAdjust>    
+    </SGType>
+  </AmfEntityType>
+  <AmfEntityType>
+    <ServiceType name="safSvcType=ERIC-#TAG_SVCT#" version="safVersion=#TAG_SAF_VER#">
+      <csType name="safCSType=ERIC-#TAG_CST#" version="safVersion=#TAG_SAF_VER#"/>
+    </ServiceType>
+  </AmfEntityType>
+  <AmfEntityType>
+    <CSType name="safCSType=ERIC-#TAG_CST#" version="safVersion=#TAG_SAF_VER#"/>
+  </AmfEntityType>
+  <AmfEntityType>
+    <SUType name="safSuType=ERIC-#TAG_SUT#" version="safVersion=#TAG_SAF_VER#">
+      <componentType name="safCompType=ERIC-#TAG_COMPT#" version="safVersion=#TAG_COMP_VER#">
+    </componentType>
+      <providesServiceType name="safSvcType=ERIC-#TAG_SVCT#" version="safVersion=#TAG_SAF_VER#">
+    </providesServiceType>
+    <suFailOver>#TAG_SUFAILOVER#</suFailOver>    
+    </SUType>
+  </AmfEntityType>
+  <AmfEntityType>
+    <CompType name="safCompType=ERIC-#TAG_COMPT#" version="safVersion=#TAG_COMP_VER#">
+      <providesCSType name="safCSType=ERIC-#TAG_CST#" version="safVersion=#TAG_SAF_VER#">
+        <xactiveandystandby/>
+      </providesCSType>
+      <saAware>
+        <healthCheck key="safHealthcheckKey=#TAG_HLT_CHK#">
+		<period lowerBound="#TAG_HCPERIOD_LOWERBOUND#"/>
+		<maxDuration lowerBound="#TAG_HCMAXDURATION_LOWERBOUND#" />
+      </healthCheck>
+        <independent>
+          <instantiateCmd>
+            <command>#TAG_SCRIPT#</command>
+            <args>instantiate</args>
+          </instantiateCmd>
+          <cleanupCmd>
+            <command>#TAG_SCRIPT#</command>
+            <args>cleanup</args>
+          </cleanupCmd>
+        </independent>
+      </saAware>
+      <disableRestart>#TAG_DISABLERESTART#</disableRestart>
+      <recoveryOnError>#TAG_RECOVERYONERROR#</recoveryOnError>
+      <defaultClcCliTimeOut lowerBound="#TAG_DEFAULTCLCCLITIMEOUT_LOWERBOUND#"/>
+      <defaultCallbackTimeOut lowerBound="#TAG_DEFAULTCALLBACKTIMEOUT_LOWERBOUND#"/>      
+      <bundleReference name="safSmfBundle=ERIC-#TAG_NAME#-#TAG_CXP#-#TAG_REV#"/>
+    </CompType>
+  </AmfEntityType>
+  <swBundle name="safSmfBundle=ERIC-#TAG_NAME#-#TAG_CXP#-#TAG_REV#">
+    <removal>
+      <offline>
+        <command>remove_rpms.sh</command>
+        <args></args>
+        <serviceUnit/>
+      </offline>
+      <online>
+        <command></command>
+        <args></args>
+      </online>
+    </removal>
+    <installation>
+      <offline>
+        <command>install_rpms.sh</command>
+        <args></args>
+        <serviceUnit/>
+      </offline>
+      <online>
+        <command></command>
+        <args></args>
+      </online>
+    </installation>
+  </swBundle>
+</entityTypesFile>

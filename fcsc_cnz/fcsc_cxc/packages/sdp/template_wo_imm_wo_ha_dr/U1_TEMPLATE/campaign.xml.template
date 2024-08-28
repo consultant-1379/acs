@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<upgradeCampaign xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" safSmfCampaign="safSmfCampaign=ERIC-#TAG_NAME#-U1-#TAG_CXP#-#TAG_REV#">
+	<campaignInfo>
+		<campaignPeriod/>
+	</campaignInfo>
+	<campaignInitialization>
+		<addToImm>
+		</addToImm>
+	</campaignInitialization>
+	<upgradeProcedure safSmfProcedure="safSmfProc=RollingUpgrade_SC" saSmfExecLevel="3">
+		<outageInfo>
+			<acceptableServiceOutage>
+				<all />
+			</acceptableServiceOutage>
+			<procedurePeriod saSmfProcPeriod="60000000000" />
+		</outageInfo>
+		<upgradeMethod>
+			<rollingUpgrade>
+				<upgradeScope>
+					<byTemplate>
+						<targetNodeTemplate objectDN="safAmfNodeGroup=SCs,safAmfCluster=myAmfCluster">
+							<swRemove bundleDN="CMW_GETDN(^safSmfBundle=ERIC-#TAG_NAME#-#TAG_CXP#-(#TAG_OLD_REV#)$)" pathnamePrefix="/home/coremw/repository"/>
+							<swAdd bundleDN="safSmfBundle=ERIC-#TAG_NAME#-#TAG_CXP#-#TAG_REV#" pathnamePrefix="/home/coremw/repository"/>
+						</targetNodeTemplate>
+					</byTemplate>
+				</upgradeScope>
+				<upgradeStep/>
+			</rollingUpgrade>
+		</upgradeMethod>
+	</upgradeProcedure>
+	<campaignWrapup>
+		<waitToCommit/>
+		<waitToAllowNewCampaign/>
+		<removeFromImm>
+		</removeFromImm>
+	</campaignWrapup>
+</upgradeCampaign>

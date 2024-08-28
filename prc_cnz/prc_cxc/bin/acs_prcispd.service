@@ -1,0 +1,11 @@
+[Unit]
+Description= acs_prcispd daemon
+After=opensafd.service lde-sshd.target 
+
+[Service]
+LimitCORE=infinity
+ExecStart=/opt/ap/acs/bin/acs_prcispd
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

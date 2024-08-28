@@ -1,0 +1,1028 @@
+#!/bin/bash
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2013 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# Description:
+#       Common functions used by IPSec feature commands
+##
+##
+# Changelog:
+# - Jul 13 2020 - Gnaneswara Seshu (ZBHEGNA) 
+#   - updated ipsec_checklifetime function to accept only intergers
+# - Jun 10 2020 - Sowmya Pola (XSOWPOL)
+#   - Added function to check ipv6 address format.
+#   - Added error messages for the ipsec ipv6 support.
+# - jan 23 2019 - Pardhasaradhi
+#   - common functions related to Racoon and Strongswan are moved here
+# - Aug 12 2015 - Furqunan Ullah(XFURULL)
+#   - Fix for TR HT94442
+# - Mar 16 2015 - Nazeema Begum (XNAZBEG)
+#   - added logging mechanism
+# - nov 24 2014 - Fabio Imperato (XFABIMP)
+#   - Fix for TR HT26511
+# - jun 4 2014 - Fabrizio Paglia (XFABPAG)
+#   - Avoided blank lines in setkey.conf
+# - jun 3 2014 - Fabrizio Paglia (XFABPAG)
+#   - Fix for TR HS62885
+#        + Added check for IKE phase 2 lifetime (ipsecdef -l option)
+#   - Added exit codes for not existing VLAN/VLAN not defined
+# - feb 14 2014 - Quyen Dao (XQUYDAO)
+#   - Added pfsgroup check
+# - nov 29 2013 - Quyen Dao (XQUYDAO)
+#    - added pre-shared key check
+# - nov 26 2013 - Quyen Dao (XQUYDAO)
+#    - added policy name's length check
+#    - added exit code EXIT_CONFLICTING_POLICY_DETECTED
+# - oct 24 2013 - Fabrizio Paglia (XFABPAG)
+#    - changes in ipsec_checkpolicyname to avoid special chars in policy name
+# - oct 15 2013 - Fabrizio Paglia (XFABPAG)
+#    - added exit code EXIT_VLAN_PS_NOT_COMPATIBLE
+#    - added VLAN related constants and functions
+# - oct 14 2013 - Fabrizio Paglia (XFABPAG)
+#    - removed no more used functions
+# - oct 07 2013 - Fabrizio Paglia (XFABPAG)
+#    - added CURRENT_NODE_ID_FILE constant
+# - oct 06 2013 - Fabrizio Paglia (XFABPAG)
+#    - added Nodes IP variables
+#    - changes in ipsec_remove_in_out_policy to handle removal of single nodes security policies
+# - oct 03 2013 - Fabrizio Paglia (XFABPAG)
+#    - moved functions from ipsecls
+# - oct 02 2013 - Fabrizio Paglia (XFABPAG)
+#    - aligned ipsec_checkencralg with manual page
+#    - added exit code EXIT_GATEWAY_NOT_APPLICABLE
+# - sep 30 2013 - Fabrizio Paglia (XFABPAG)
+#    - added exit code EXIT_WRONG_SESSION_TYPE
+#    - added ipsec_exitwrongsessiontype function
+# - sep 24 2013 - Fabrizio Paglia (XFABPAG)
+#    - removed exit code EXIT_FAILED_DIRECTIVES_REMOVAL
+#    - added exit code EXIT_FAILED_POLICIES_REMOVAL printout
+#    - removed no longer used ipsec_backup_complete_racoon_cfg,ipsec_backup_setkey_cfg,ipsec_restore_complete_racoon_cfg,ipsec_restore_setkey_cfg,ipsec_remove_complete_racoon_cfg_backup,ipsec_remove_setkey_cfg_backup functions
+# - sep 23 2013 - Fabrizio Paglia (XFABPAG)
+#    - added ipsec_remove_tmp_files function
+# - sep 19 2013 - Alessandro Mortari (XALMORT)
+#    - added remote host IP address as return value of function ipsec_remove_policy
+# - sep 14 2013 - Fabrizio Paglia (XFABPAG)
+#    - added ipsec_backup, ipsec_restore and ipsec_remove_backup functions
+#    - removed no longer used ipsec_backup_racoon_cfg, ipsec_backup_psk, ipsec_restore_racoon_cfg, ipsec_restore_psk, ipsec_remove_racoon_cfg_backup, ipsec_remove_psk_backup functions
+#    - exit codes EXIT_FAILED_DIRECTIVE_INCLUDE, EXIT_FAILED_POLICY_ACTIVATION unified
+#    - added ipsec_remove_in_out_policy function
+# - sep 13 2013 - Fabrizio Paglia (XFABPAG)
+#    - 'grep' extra printouts removed from ipsec_checkifremotedirectiveexists
+#    - bugs fixed in ipsec_backup_complete_racoon_cfg and ipsec_get_ipaddresses
+#    - added check in ipsec_remove_policy to look if last line contains the newline character
+# - sep 12 2013 - Fabrizio Paglia (XFABPAG)
+#    - added functions used by IPSECRM
+#    - added exit codes used by IPSECRM
+# - sep 11 2013 - Fabrizio Paglia (XFABPAG)
+#    - subnets not allowed in ipsec_checkiporanon
+# - sep 9 2013 - Fabrizio Paglia (XFABPAG)
+#    - added EXIT_FAILED_DIRECTIVE_INCLUDE, EXIT_UNREASONABLE_VALUE and EXIT_FAILED_POLICY_ACTIVATION exit codes
+#    - exit code printouts changed
+#    - added backup/restore functions
+#    - changed algorithms check lists
+#    - changed protocol list
+#    - bug fixed in ipsec_checkport
+# - sep 3-5 2013 - Alessandro Mortari / Fabrizio Paglia
+#    - First version
+##
+
+#Paths
+RACOON_BASEDIR="/etc/racoon/"
+RACOON_CFGFILE="racoon.conf"
+SETKEY_CFGFILE="setkey.conf"
+PSK_BASEDIR="/etc/racoon/"
+PSK_FILE="psk.txt"
+PROTOCOLS_FILE="/etc/protocols"
+CLUSTER_ADDRESS_FILE="/etc/cluster/nodes/this/mip/nbi/address"
+CLUSTER_IPV6_ADDRESS_FILE="/etc/cluster/nodes/this/mip/nbi_v6/address"
+NODE1_ADDRESS_FILE="/etc/cluster/nodes/all/1/networks/public/primary/address"
+NODE2_ADDRESS_FILE="/etc/cluster/nodes/all/2/networks/public/primary/address"
+PHYSEP_ADDRESS_FILE="/etc/cluster/nodes/this/mip/primary_ps/address"
+PHYSEP_NODE1_ADDRESS_FILE="/etc/cluster/nodes/all/1/networks/public2/primary/address"
+PHYSEP_NODE2_ADDRESS_FILE="/etc/cluster/nodes/all/2/networks/public2/primary/address"
+VLAN_ADDRESS_FILE_PART1="/etc/cluster/nodes/this/mip/public_vlan" #followed by VLAN tag
+VLAN_ADDRESS_FILE_PART2="_mip/address"
+VLAN_MAPING_CONF="/cluster/etc/ap/apos/vlan_adapter_maping.conf"
+VLAN_NODE1_ADDRESS_FILE_PART1="/etc/cluster/nodes/all/1/networks/public_vlan"  #followed by VLAN tag
+VLAN_NODE1_ADDRESS_FILE_PART2="/primary/address"
+VLAN_NODE2_ADDRESS_FILE_PART1="/etc/cluster/nodes/all/2/networks/public_vlan"  #followed by VLAN tag
+VLAN_NODE2_ADDRESS_FILE_PART2="/primary/address"
+CURRENT_NODE_ID_FILE="/etc/cluster/nodes/this/id"
+CMD_PARMTOOL="/opt/ap/apos/bin/parmtool/parmtool"
+IP_VERSION_FILE="/storage/system/config/apos/apg_protocol_version_type"
+
+#IKEV2
+STRONGSWAN_BASEDIR="/etc/ipsec.d/"
+STRONGSWAN_CFGFILE="/etc/ipsec.conf"
+STRONGSWAN_SECRETS="/etc/ipsec.secrets"
+IKE_VER_FILE="/cluster/etc/ikeversion"
+ike_type=""
+ipversion=""
+stack_value=""
+
+#Commands
+CMD_IMMFIND="/usr/bin/immfind"
+CMD_IMMLIST="/usr/bin/immlist"
+CMD_PRCSTATE="/usr/bin/prcstate"
+CMD_LOGGER="/bin/logger"
+
+#Exit codes
+EXIT_SUCCESS=0
+EXIT_GENERAL_FAULT=1
+EXIT_INCORRECT_USAGE=2
+EXIT_UNREASONABLE_VALUE=3
+EXIT_CONFLICTING_KEY=4
+EXIT_NOT_ACTIVE=5
+EXIT_PS_NOT_CONFIGURED=6
+EXIT_POLICY_NAME_DUPLICATED=7
+#EXIT_FAILED_DIRECTIVE_INCLUDE=8
+EXIT_FAILED_POLICY_ACTIVATION=9
+#EXIT_FAILED_DIRECTIVES_REMOVAL=10
+EXIT_FAILED_POLICIES_REMOVAL=11
+EXIT_GATEWAY_NOT_APPLICABLE=12
+EXIT_VLAN_PS_NOT_COMPATIBLE=13
+EXIT_WRONG_SESSION_TYPE=14
+EXIT_CONFLICTING_POLICY_DETECTED=15
+EXIT_VLAN_NOT_EXISTS=16
+EXIT_VLAN_NOT_DEFINED=17
+EXIT_PROTOCOL_SET=18
+EXIT_CONNECTION_DOESNOT_EXISTS=19
+EXIT_TRUSTCATEGORY_DOESNOT_EXISTS=20
+EXIT_NODECREDENTIAL_DOESNOT_EXISTS=21
+EXIT_CONNECTION_CREATION_FAILED=22
+EXIT_CONNECTION_REMOVE_FAILED=23
+EXIT_INVALID_IP_ADDRESS=24
+EXIT_UNABLE_TO_FETCH_ARCHITECTURE=25
+EXIT_MISMATCH_GATEWAY_ADDRESS=26
+EXIT_INVALID_IKE_VERSION_CONFIGURATION=27
+EXIT_INVALID_IP_ADDRESS_CONFIGURATION=28
+
+#Constants
+#PROTOCOLLIST=$(awk -F" " '{print $1" " }' $PROTOCOLS_FILE | grep -vre "^#" | tr -d '\n')
+PROTOCOLLIST='udp tcp icmp any'
+POLICY_NAME_MARK="POLICY_NAME"
+
+# exit flags
+exit_success=0
+exit_failure=1
+
+#log
+LOG_TAG=$(basename $0)
+if [ -z $0 ]; then
+    LOG_TAG=bash
+else
+    LOG_TAG=$(basename $0)
+fi
+
+LOG_DIR="/data/acs/logs/ipsec"
+LOG_FILE="${LOG_TAG}.log"
+
+[ -f $LOG_DIR/$LOG_FILE ] && rm -f $LOG_DIR/$LOG_FILE
+if [ ! -d "$LOG_DIR" ] ; then
+  mkdir -p $LOG_DIR
+fi
+
+#####################
+#   Functions       #
+#####################
+#   Exit Functions  #
+function ipsec_exit() {
+    local exitCode=$1
+    local incorrectValue=$2
+    local stack=$3
+ 
+    case $exitCode in
+    $EXIT_GENERAL_FAULT )            echo -e "\nError when executing (general fault)\n" >&2
+                        ;;
+    $EXIT_INCORRECT_USAGE )            usage
+                        ;;
+    $EXIT_UNREASONABLE_VALUE ) echo -e "\nUnreasonable value $incorrectValue\n" >&2
+                        ;;
+    #$EXIT_ABORTED )                echo -e "\nCommand aborted by user"
+    #                    ;;
+    $EXIT_NOT_ACTIVE )            echo -e "\nIncorrect node state, you must execute the command on the active node\n" >&2
+                        ;;
+    $EXIT_PS_NOT_CONFIGURED )        echo -e "\nPhysical separation not configured\n" >&2
+                        ;;
+    #$EXIT_FAILED_DIRECTIVE_INCLUDE )    echo -e "\nFailed to define remote directive" >&2
+    #                    ;;
+    $EXIT_FAILED_POLICY_ACTIVATION )    echo -e "\nFailed to activate policy\n" >&2
+                        ;;
+    $EXIT_FAILED_POLICIES_REMOVAL )        echo -e "\nError when removing one or more policy.\nNo policy has been removed.\n" >&2
+                        ;;
+    $EXIT_GATEWAY_NOT_APPLICABLE )        echo -e "\nRemote gateway option not applicable in IPSec transport mode\n" >&2
+                        ;;
+    $EXIT_VLAN_PS_NOT_COMPATIBLE )        echo -e "\nVLAN option not allowed with physical separation option\n" >&2
+                        ;;
+    $EXIT_WRONG_SESSION_TYPE )        echo -e "\nCommand not allowed in this session type\n" >&2
+                        ;;
+    $EXIT_CONFLICTING_KEY )        echo -e "\nConflicting pre-shared-key detected\n" >&2
+                        ;;
+    $EXIT_PROTOCOL_SET ) echo -e "\n$(cat /cluster/etc/ikeversion) protocol type is already set\n" >&2
+			;;
+    $EXIT_CONNECTION_DOESNOT_EXISTS ) echo -e "\nConnection name $incorrectValue doesnot exist\n" >&2
+                        ;;
+    $EXIT_TRUSTCATEGORY_DOESNOT_EXISTS ) echo -e "\ntrustcategory=$incorrectValue certificate not available\n" >&2
+                        ;;
+    $EXIT_NODECREDENTIAL_DOESNOT_EXISTS ) echo -e "\nNodecredentials=$incorrectValue certificate not available\n" >&2
+                        ;;
+    $EXIT_CONNECTION_CREATION_FAILED ) echo -e "\nFailed to create new Connection $incorrectValue" >&2
+			;;
+    $EXIT_INVALID_IP_ADDRESS ) echo -e "\nInvalid IP address: $incorrectValue \n" >&2
+			;;
+    $EXIT_INVALID_IKE_VERSION_CONFIGURATION ) echo -e "\nIKEV1 is not supported in this system configuration\n" >&2
+			;;
+    $EXIT_INVALID_IP_ADDRESS_CONFIGURATION ) echo -e "\nIP address: $incorrectValue, is invalid in IPV$stack stack configuration\n" >&2
+			;;
+    $EXIT_MISMATCH_GATEWAY_ADDRESS ) echo -e "\nMismatch of remote and gateway address formats\n" >&2
+			;;
+    esac
+    
+    exit $exitCode
+}
+
+function INFO(){
+        echo "[$(date +'%Y-%m-%d %H:%M:%S')] $@" >> $LOG_DIR/$LOG_FILE
+}
+
+function TRACE_ENTER(){
+        INFO "$1() >>"
+}
+
+function TRACE_LEAVE(){
+        INFO "$1() <<"
+}
+function log(){
+        local PRIO='-p user.notice'
+        local MESSAGE="${*:-notice}"
+        ${CMD_LOGGER} $PRIO $LOG_TAG "$MESSAGE"
+}
+
+function log_error(){
+        local PRIO='-p user.err'
+        local MESSAGE="${*:-error}"
+        ${CMD_LOGGER} $PRIO $LOG_TAG "$MESSAGE"
+        INFO "$MESSAGE"
+}
+
+function ipsec_exitnotactive() {
+    if [ "$($CMD_PRCSTATE 2> /dev/null)" != "active" ] ; then
+        ipsec_exit $EXIT_NOT_ACTIVE
+    fi
+}
+
+function ipsec_exitwrongsessiontype() {
+    if [ "$PORT" == "4422" ] || [ "$PORT" == "4423" ] ; then
+        ipsec_exit $EXIT_WRONG_SESSION_TYPE
+    fi
+}
+
+function ipsec_exitpsnotconfigured() {
+     TRACE_ENTER $FUNCNAME
+    local imm_object_name=$($CMD_IMMFIND -c NorthBound | head -1)
+    
+    if [ -z $imm_object_name ] ; then
+        ipsec_exit $EXIT_GENERAL_FAULT
+    fi
+    
+    local physical_separation_status=$($CMD_IMMLIST $imm_object_name 2> /dev/null | grep "physicalSeparationStatus" | awk '{ print $3 }')
+    if [ $physical_separation_status -ne 1 ] ; then
+        ipsec_exit $EXIT_PS_NOT_CONFIGURED
+    fi
+    TRACE_LEAVE $FUNCNAME
+}
+
+function ipsec_exitvlannotconfigured() {
+    TRACE_ENTER $FUNCNAME
+    local vlantag=$1
+    
+    if [ ! -s $VLAN_MAPING_CONF ] ; then
+	echo -e "\nVLAN with tag $vlantag does not exist" >&2
+        ipsec_exit $EXIT_VLAN_NOT_EXISTS
+    fi
+    
+    vlan_name="$(grep "\.$vlantag$" $VLAN_MAPING_CONF | awk '{ print $1 }')"
+    if [ "$vlan_name" != "" ] ; then
+	if [ "$vlan_name" != "Public" ] ; then
+		if [ ! -s $VLAN_ADDRESS_FILE_PART1$vlantag$VLAN_ADDRESS_FILE_PART2 ] ; then
+			echo -e "\nNetwork for VLAN with tag $vlantag is not defined" >&2
+			ipsec_exit $EXIT_VLAN_NOT_DEFINED
+		fi
+	fi
+    else
+	echo -e "\nVLAN with tag $vlantag does not exist" >&2
+        ipsec_exit $EXIT_VLAN_NOT_EXISTS
+    fi
+    TRACE_LEAVE $FUNCNAME
+}
+
+function ipsec_retrieve_vlan_name() {
+    TRACE_ENTER $FUNCNAME
+    local vlantag=$1
+    
+    local vlan_name="$(grep "\.$vlantag$" $VLAN_MAPING_CONF | awk '{ print $1 }')"
+    echo "$vlan_name"
+    TRACE_LEAVE $FUNCNAME
+}
+
+#   Check Functions  #
+function ipsec_checklist() {
+    TRACE_ENTER $FUNCNAME
+    local element
+    local item=$1
+    shift 
+    for element in $@ ; do
+        if [ "$item" == "$element" ] ; then
+            return 0
+        fi
+    done
+    TRACE_LEAVE $FUNCNAME
+    return 1
+}
+
+function ipsec_checknotempty() {
+    if [ -z $1 ] ; then
+        ipsec_exit $EXIT_INCORRECT_USAGE
+    fi
+}
+
+function ipsec_checkipv6() {
+    local ip_to_check=$1
+    local stat=0
+
+    local input_addr=$(echo "$1" | tr 'a-z' 'A-Z')
+    ipsec_checknotempty "$ip_to_check"
+
+    [[ "$input_addr" =~ ^((([0-9A-F]{1,4}:){7}(([0-9A-F]{1,4})|:))|(([0-9A-F]{1,4}:){6}(((:[0-9A-F]{1,4}){1,2})|:))|(([0-9A-F]{1,4}:){5}(((:[0-9A-F]{1,4}){1,3})|:))|(([0-9A-F]{1,4}:){4}(((:[0-9A-F]{1,4}){1,4})|:))|(([0-9A-F]{1,4}:){3}(((:[0-9A-F]{1,4}){1,5})|:))|(([0-9A-F]{1,4}:){2}(((:[0-9A-F]{1,4}){1,6})|:))|(([0-9A-F]{1,4}:)(((:[0-9A-F]{1,4}){1,7})|:)))$ ]] || stat=1
+
+    if [ $stat -ne 0 ] ; then
+        ipsec_exit $EXIT_INVALID_IP_ADDRESS $ip_to_check
+    else
+        ipversion=6
+    fi
+
+    TRACE_LEAVE $FUNCNAME
+}
+
+function ipsec_checkipaddress() {
+    TRACE_ENTER $FUNCNAME
+    local ipAddress=$1
+    #local ipver=$2
+
+    if is_vAPG ; then 
+        if echo "$ipAddress" | grep -E '[0-9a-f]+:+' >/dev/null; then
+            ipsec_checkipv6 "$ipAddress"
+        else
+            ipsec_checkip "$ipAddress" 0
+        fi
+    else
+	ipsec_checkip "$ipAddress" 0	
+    fi
+
+    TRACE_LEAVE $FUNCNAME
+}
+
+## Arguments
+## $1 IP to check
+## $2 0/1 if 0 allow subnet format a.b.c.d/x, if 1 allow only normal IP a.b.c.d
+function ipsec_checkip() {
+    TRACE_ENTER $FUNCNAME
+    local ip_to_check=$1
+    local allow_subnet=$2
+    local ok=true
+
+    ipsec_checknotempty "$ip_to_check"
+
+    if [ $allow_subnet -eq 0 ] ; then
+        if ! ipsec_valid_ip "$ip_to_check" ; then
+            ipsec_exit $EXIT_INVALID_IP_ADDRESS $ip_to_check
+	fi
+    else
+        if ! ipsec_valid_ip_with_subnet "$ip_to_check" ; then
+            ipsec_exit $EXIT_INVALID_IP_ADDRESS $ip_to_check
+	fi
+    fi
+
+    if is_vAPG ; then
+	ipversion=4	
+    fi
+
+    TRACE_LEAVE $FUNCNAME
+}
+
+function ipsec_valid_ip() {
+    TRACE_ENTER $FUNCNAME
+    local ip=$1
+    local stat=1
+
+    if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+        OIFS=$IFS
+        IFS='.'
+        ip=($ip)
+        IFS=$OIFS
+        [[ ${ip[0]} -le 255 && ${ip[1]} -le 255 \
+            && ${ip[2]} -le 255 && ${ip[3]} -le 255 ]]
+        stat=$?
+    fi
+     TRACE_LEAVE $FUNCNAME
+    return $stat
+}
+
+function ipsec_valid_ip_with_subnet() {
+    TRACE_ENTER $FUNCNAME
+    local ip=$1
+    local stat=1
+
+    if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}(\/[0-9]{1,2}){0,1}$ ]]; then
+        OIFS=$IFS
+        IFS='.'
+        ip=($ip)
+        IFS=$OIFS
+        local last_component=${ip[3]}
+        local last_component_components=($(echo $last_component | tr "/" " "))
+        [[ ${ip[0]} -le 255 && ${ip[1]} -le 255 \
+            && ${ip[2]} -le 255 && ${last_component_components[0]} -le 255 && ${last_component_components[1]} -le 32 ]]
+        stat=$?
+    fi
+    TRACE_LEAVE $FUNCNAME
+    return $stat
+}
+
+#function ipsec_checkiporanon() {
+#    local ip_to_check=$1
+#    local option=$2
+#    
+#    ipsec_checknotempty "$ip_to_check" "$option"
+#    if [ "$ip_to_check" != "anonymous" ] ; then
+#        ipsec_checkip "$ip_to_check" "$option" 0
+#    fi
+#}
+
+function ipsec_checkpresharedkey() {
+    TRACE_ENTER $FUNCNAME
+    local key=$1 
+    local len=${#1}
+    local gw_ip=$2	
+    if [ $len -lt 6 -o $len -gt 48 ] || ! echo "$1" | grep "^[a-zA-Z0-9_-]*$" &> /dev/null ; then
+        ipsec_exit $EXIT_UNREASONABLE_VALUE "for key : $1"
+    fi
+    if grep -w "$gw_ip" "$PSK_BASEDIR$PSK_FILE" &> /dev/null  &&  !(grep -x "$gw_ip $key" "$PSK_BASEDIR$PSK_FILE" &> /dev/null); then
+	ipsec_exit $EXIT_CONFLICTING_KEY
+    fi   	
+    TRACE_LEAVE $FUNCNAME
+}
+
+function ipsec_checkencralg() {
+    TRACE_ENTER $FUNCNAME
+    local encralg=$1
+    iketype=$2
+
+    if [ "$iketype" == "IKEV2" ] ; then
+        if ! ipsec_checklist "$encralg" "des" "3des" "blowfish" "aes" "aes256" "aes256ctr" ; then
+            #cho -e "\nUnreasonable value for encryption $encralg" >&2
+            ipsec_exit $EXIT_UNREASONABLE_VALUE "for encryption : $encralg"
+        fi
+    else
+        if ! ipsec_checklist "$encralg" "des" "3des" "blowfish" "aes" ; then
+            #cho -e "\nUnreasonable value for encryption $encralg" >&2
+            ipsec_exit $EXIT_UNREASONABLE_VALUE "for encryption : $encralg"
+        fi
+    fi
+    TRACE_LEAVE $FUNCNAME
+}
+
+function ipsec_checkintegrity() {
+    TRACE_ENTER $FUNCNAME
+    local integrity=$1
+
+    if ! ipsec_checklist "$integrity" "md5" "sha1" "sha256" "sha384" "sha512" "sha2_256" "sha2_384" "sha2_512" "sha2-512-256" ; then
+        #echo -e "\nUnreasonable value $integrity" >&2
+        ipsec_exit $EXIT_UNREASONABLE_VALUE "for integrity : $integrity"
+    fi
+    TRACE_LEAVE $FUNCNAME
+}
+
+function ipsec_checkpfsgroup() {
+    TRACE_ENTER $FUNCNAME
+    local pfs_group=$1
+    if ! ipsec_checklist "$pfs_group" "modp768" "modp1024" "modp1536" "modp2048" "modp3072" "modp4096" "modp6144" "modp8192" "1" "2" "5" "14" "15" "16" "17" "18" ; then
+        ipsec_exit $EXIT_UNREASONABLE_VALUE "for pfsgroup : $pfs_group"
+    fi
+    TRACE_LEAVE $FUNCNAME
+}
+
+function ipsec_checkhashalg() {
+    TRACE_ENTER $FUNCNAME
+    local hashalg=$1
+    if ! ipsec_checklist "$hashalg" "md5" "sha1" "sha256" "sha384" "sha512" ; then
+        ipsec_exit $EXIT_UNREASONABLE_VALUE "for hashalg : $hashalg"
+    fi
+    TRACE_LEAVE $FUNCNAME
+}
+
+function ipsec_checkdhgroup() {
+    TRACE_ENTER $FUNCNAME
+    local dh_group=$1
+    iketype=$2
+
+    if [ "$iketype" == "IKEV2" ] ; then
+        if ! ipsec_checklist "$dh_group" "epc256" "curve25519" "modp768" "modp1024" "modp1536" "modp2048" "modp3072" "modp4096" "modp6144" "modp8192" "1" "2" "5" "14" "15" "16" "17" "18" ; then
+            ipsec_exit $EXIT_UNREASONABLE_VALUE "for dhgroup : $dh_group"
+        fi
+    else
+        if ! ipsec_checklist "$dh_group" "modp768" "modp1024" "modp1536" "modp2048" "modp3072" "modp4096" "modp6144" "modp8192" "1" "2" "5" "14" "15" "16" "17" "18" ; then
+            ipsec_exit $EXIT_UNREASONABLE_VALUE "for dhgroup : $dh_group"
+        fi
+    fi
+    TRACE_LEAVE $FUNCNAME
+}
+
+
+function ipsec_checkesn() {
+    TRACE_ENTER $FUNCNAME
+    local esnmode=$1
+    if ! ipsec_checklist "$esnmode" "esn" "noesn" ; then
+        ipsec_exit $EXIT_UNREASONABLE_VALUE "for esnmode : $esnmode"
+    fi
+    TRACE_LEAVE $FUNCNAME
+}
+
+function ipsec_checklifetime() {
+    TRACE_ENTER $FUNCNAME
+    local lifetime="$1"
+    iketype=$2
+	
+	
+    if [ "$iketype" == "IKEV2" ] ; then
+
+        if [[ "$lifetime" =~ ^[0-9]+$ || "$lifetime" =~ ^[0-9]+[d,h,m,s]$ ]];then
+            num=$(echo $lifetime |grep -Eo '^[0-9]*')
+            unit=$(echo $lifetime | grep -Eo '[d,h,m,s]$')
+        else
+            ipsec_exit $EXIT_UNREASONABLE_VALUE "for lifetime : $lifetime \nSupported value: Integer optionally followed by s (a time in seconds) or a value followed by m, h, or d (a time in minutes, hours,or days respectively) (default 1h, maximum 24h) "
+        fi
+
+        if [ ! $unit ] ;then
+          unit="s"
+        fi
+
+        case ${unit} in
+            s)
+                if [ $num -lt 0 ] || [ $num -gt 86400 ] ; then
+                    #echo -e "\nUnreasonable value $lifetime" >&2
+                    #echo -e "Supported value: Integer optionally followed by s (a time in seconds) or a value followed by m, h, or d (a time in minutes, hours,or days respectively) (default 1h, maximum 24h) " >&2
+                    ipsec_exit $EXIT_UNREASONABLE_VALUE "for lifetime : $lifetime \nSupported value: Integer optionally followed by s (a time in seconds) or a value followed by m, h, or d (a time in minutes, hours,or days respectively) (default 1h, maximum 24h) "
+               fi
+               ;;
+            m)
+                if [ $num -lt 0 ] || [ $num -gt 1440 ] ; then
+                    #echo -e "\nUnreasonable value $lifetime" >&2
+                    #echo -e "Supported value: Integer optionally followed by s (a time in seconds) or a value followed by m, h, or d (a time in minutes, hours,or days respectively) (default 1h, maximum 24h) " >&2
+                    ipsec_exit $EXIT_UNREASONABLE_VALUE "for lifetime : $lifetime \nSupported value: Integer optionally followed by s (a time in seconds) or a value followed by m, h, or d (a time in minutes, hours,or days respectively) (default 1h, maximum 24h) "
+                fi
+                ;;
+            h)
+                if [ $num -lt 0 ] || [ $num -gt 24 ] ; then
+                    #echo -e "\nUnreasonable value $lifetime" >&2
+                    #echo -e "Supported value: Integer optionally followed by s (a time in seconds) or a value followed by m, h, or d (a time in minutes, hours,or days respectively) (default 1h, maximum 24h) " >&2
+                    ipsec_exit $EXIT_UNREASONABLE_VALUE "for lifetime : $lifetime \nSupported value: Integer optionally followed by s (a time in seconds) or a value followed by m, h, or d (a time in minutes, hours,or days respectively) (default 1h, maximum 24h) "
+                fi
+                ;;
+            d)
+                if [ $num -lt 0 ] || [ $num -gt 1 ] ; then
+                    #echo -e "\nUnreasonable value $lifetime" >&2
+                    #echo -e "Supported value: Integer optionally followed by s (a time in seconds) or a value followed by m, h, or d (a time in minutes, hours,or days respectively) (default 1h, maximum 24h) " >&2
+                    ipsec_exit $EXIT_UNREASONABLE_VALUE "for lifetime : $lifetime \nSupported value: Integer optionally followed by s (a time in seconds) or a value followed by m, h, or d (a time in minutes, hours,or days respectively) (default 1h, maximum 24h) "
+                fi
+                ;;
+            * )   ipsec_exit $EXIT_UNREASONABLE_VALUE "for lifetime : $lifetime"
+        esac
+    else
+	if ! echo "$lifetime" | grep "^[0-9]*$" &> /dev/null ; then
+            ipsec_exit $EXIT_UNREASONABLE_VALUE "for lifetime : $lifetime"
+        fi
+
+        if [ $lifetime -lt 1 ] || [ $lifetime -gt 3600 ] ; then
+            ipsec_exit $EXIT_UNREASONABLE_VALUE "for lifetime : $lifetime"
+        fi
+    fi
+    TRACE_LEAVE $FUNCNAME
+}
+
+#function ipsec_checkport() {
+#    ipsec_checknotempty "$1"
+#    if [ "$1" != "any" ] ; then
+#        if [[ "$1" =~ ^([0-9])+$ ]] ; then
+#            if [ $1 -gt 65535 ] || [ $1 -lt 0 ] ; then
+#                echo -e "\nUnreasonable value $1" >&2
+#                ipsec_exit $EXIT_UNREASONABLE_VALUE
+#            fi
+#        else
+#            echo -e "\nUnreasonable value $1" >&2
+#            ipsec_exit $EXIT_UNREASONABLE_VALUE
+#        fi
+#    fi
+#}
+
+function ipsec_checkpolicyname() {
+    TRACE_ENTER $FUNCNAME
+    if [ ${#1} -gt 20 ] || ! echo "$1" | grep "^[a-zA-Z0-9_-]*$" &> /dev/null ; then
+        ipsec_exit $EXIT_UNREASONABLE_VALUE "for policy name : $1"
+    fi
+    iketype=$2
+    if [ "$iketype" == "IKEV2" ] ; then
+        if grep -wE "^\conn $1" "$STRONGSWAN_CFGFILE" &> /dev/null ; then
+           echo -e "\nPolicy name $1 already used" >&2
+           ipsec_exit $EXIT_POLICY_NAME_DUPLICATED
+        fi
+    else
+    if grep -wE "^\#$POLICY_NAME_MARK=$1$" "$RACOON_BASEDIR$SETKEY_CFGFILE" &> /dev/null ; then
+        echo -e "\nPolicy name $1 already used" >&2
+        ipsec_exit $EXIT_POLICY_NAME_DUPLICATED
+    fi
+    fi
+    TRACE_LEAVE $FUNCNAME
+}
+
+function ipsec_checkifpolicyexists() {
+    TRACE_ENTER $FUNCNAME
+    iketype=$(cat $IKE_VER_FILE)
+    if [ "$iketype" == "IKEV2" ] ; then
+        if ! grep -wE "^\conn $1" "$STRONGSWAN_CFGFILE" &> /dev/null ; then
+             #echo -e "\nConnection name $1 doesnot exist"
+             ipsec_exit $EXIT_CONNECTION_DOESNOT_EXISTS $1
+        fi
+    else
+        if ! grep -E "^\#$POLICY_NAME_MARK=$1$" "$RACOON_BASEDIR$SETKEY_CFGFILE" &> /dev/null ; then
+             ipsec_exit $EXIT_UNREASONABLE_VALUE $1
+        fi
+    fi
+    TRACE_LEAVE $FUNCNAME
+}
+
+#function ipsec_checkifremotedirectiveexists() {
+#    if ! grep "$1.racoon.conf" "$RACOON_BASEDIR$RACOON_CFGFILE" &> /dev/null ; then
+#        echo -e "\nUnreasonable value $1" >&2
+#        ipsec_exit $EXIT_UNREASONABLE_VALUE
+#    fi
+#}
+
+#   Configuration manipulation Functions  #
+function ipsec_backup() {
+    TRACE_ENTER $FUNCNAME
+    ike_type=$(cat $IKE_VER_FILE)
+    if [ "$ike_type" == "IKEV1" ] ; then
+        rm "$RACOON_BASEDIR""racoon_backup.tar.gz" &> /dev/null
+        tar -czf "$RACOON_BASEDIR""racoon_backup.tar.gz" $RACOON_BASEDIR*racoon.conf "$PSK_BASEDIR$PSK_FILE" "$RACOON_BASEDIR$SETKEY_CFGFILE" &> /dev/null
+        [[ $? -ne 0 ]] && log_error "creating compressed file $RACOON_BASEDIR  racoon_backup.tar.gz failed "
+    else
+        rm "$STRONGSWAN_BASEDIR""strongswan_backup.tar.gz" &> /dev/null
+        tar -czf "$STRONGSWAN_BASEDIR""strongswan_backup.tar.gz" $STRONGSWAN_BASEDIR*ipsec.conf "$STRONGSWAN_BASEDIR$STRONGSWAN_SECRETS" &> /dev/null
+        [[ $? -ne 0 ]] && log_error "creating compressed file $STRONGSWAN_BASEDIR  strongswan_backup.tar.gz failed "
+    fi
+    TRACE_LEAVE $FUNCNAME
+}
+
+function ipsec_restore() {
+    TRACE_ENTER $FUNCNAME
+    ike_type=$(cat $IKE_VER_FILE)
+    if [ "$ike_type" == "IKEV1" ] ; then
+        if [ -f "$RACOON_BASEDIR""racoon_backup.tar.gz" ] ; then
+            tar -xzf "$RACOON_BASEDIR""racoon_backup.tar.gz" -C / &> /dev/null
+	    [[ $? -ne 0 ]] && log_error "untaring the file $RACOON_BASEDIR racoon_backup.tar.gz failed"
+        fi
+    else
+        if [ -f "$STRONGSWAN_BASEDIR""strongswan_backup.tar.gz" ] ; then
+            tar -xzf "$STRONGSWAN_BASEDIR""strongswan_backup.tar.gz" -C / &> /dev/null
+	    [[ $? -ne 0 ]] && log_error "untaring the file $STRONGSWAN_BASEDIR strongswan_backup.tar.gz failed"
+        fi
+    fi
+    TRACE_LEAVE $FUNCNAME
+}
+
+function ipsec_remove_backup() {
+    TRACE_ENTER $FUNCNAME
+    ike_type=$(cat $IKE_VER_FILE)
+    if [ "$ike_type" == "IKEV1" ] ; then
+        rm "$RACOON_BASEDIR""racoon_backup.tar.gz" &> /dev/null
+        [[ $? -ne 0 ]] && log_error "Unable to remove the backups"
+    else
+        rm "$STRONGSWAN_BASEDIR""strongswan_backup.tar.gz" &> /dev/null
+        [[ $? -ne 0 ]] && log_error "Unable to remove the backups"
+    fi
+    TRACE_LEAVE $FUNCNAME
+}
+
+function ipsec_remove_policy() {
+    TRACE_ENTER $FUNCNAME
+    local policyname=$1
+    local cfg_file=$2
+    local rh_ipaddress=$(grep -E -A 1 "^\#$POLICY_NAME_MARK=$1$" "$cfg_file" | grep "spdadd" | sed "s|.*\s\(\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}\).*|\1|" )
+    #ipsec_remove_in_out_policy $policyname $cfg_file
+    echo $rh_ipaddress
+    TRACE_LEAVE $FUNCNAME
+}
+
+function ipsec_remove_gateway_policy() {
+    TRACE_ENTER $FUNCNAME
+    local policyname=$1
+    local cfg_file=$2
+    local gw_ipaddress=$(grep -E -A 2 "^\#$POLICY_NAME_MARK=$1$"  "$cfg_file" | grep "tunnel" | cut -d "-" -f2 | cut -d "/" -f1 )
+    echo $gw_ipaddress
+    TRACE_LEAVE $FUNCNAME
+}
+function ipsec_remove_in_out_policy() {
+    TRACE_ENTER $FUNCNAME
+    local policyname=$1
+    local cfg_file=$2
+    local policyname_line=$(grep -nE "^\#$POLICY_NAME_MARK=$1$" "$cfg_file")
+    local policyname_line_components=(${policyname_line//":"/ })
+    local policyname_line_number=${policyname_line_components[0]}
+    
+    local cfg_file_lines=$(wc -l "$cfg_file" | awk '{ print $1 }')
+    local lastline_has_newline=$(cat "$cfg_file" | tail -1 | wc -l)
+    if [ $lastline_has_newline -eq 0 ] ; then
+        (( cfg_file_lines = $cfg_file_lines + 1 ))
+    fi
+    local lines_to_read
+    (( lines_to_read = $cfg_file_lines - $policyname_line_number ))
+    local colon_line=$(tail "-$lines_to_read" "$cfg_file" | grep -n ";" | head -6 | tail -1)
+    local colon_line_components=(${colon_line//":"/ })
+    local colon_line_number
+    (( colon_line_number = ${colon_line_components[0]} + $policyname_line_number ))
+
+    sed -i $policyname_line_number","$colon_line_number"d" "$cfg_file"
+    sed -i '/./!d' "$cfg_file"
+    TRACE_LEAVE $FUNCNAME
+}
+
+function ipsec_get_policynames() {
+    TRACE_ENTER $FUNCNAME
+    local lines="$(grep "$POLICY_NAME_MARK" "$RACOON_BASEDIR$SETKEY_CFGFILE")"
+    local i
+    for i in $lines ; do
+        echo -n "${i:13} "
+    done
+    TRACE_LEAVE $FUNCNAME
+}
+
+#function ipsec_get_ipaddresses() {
+#    local line
+#    while read line || [ -n "$line" ] ; do
+#        local ip=$(echo $line | awk '{ print $1 }')
+#        echo "$ip "
+#    done < "$PSK_BASEDIR$PSK_FILE"
+#}
+
+function ipsec_remove_tmp_files() {
+    TRACE_ENTER $FUNCNAME
+    rm -f "$RACOON_BASEDIR*.tmp" &> /dev/null
+    rm -f "$PSK_BASEDIR*.tmp" &> /dev/null
+     TRACE_LEAVE $FUNCNAME
+}
+
+#   Miscellaneous Functions  #
+
+## Arguments: $1 line to process
+##          $2 string to look for
+##          $3 stuff to print out before value
+#function ipsec_print_param_value() {
+#    local printout=$3
+#    local grepped_line=`echo $1 | grep $2`
+#    if [ "$grepped_line" != "" ]; then
+#        local value=`echo $grepped_line | awk -F'[ ;{}]' '{printf t $2}'`
+#        printf "%-20s :%-40s\n\n" "$printout" "$value"
+#    fi
+#}
+
+#function ipsec_get_param_value() {
+## arguments: $1 line to process
+##          $2 string to look for
+#
+#    local grepped_line=`echo $1 | grep $2`
+#    if [ "$grepped_line" != "" ]; then
+#        local value=`echo $grepped_line | awk -F'[ ;{}]' '{printf t $2}'`
+#    fi
+#    echo "$value"
+#}
+
+function restore_configuration_racoon(){
+	ipsec_restore
+	ipsec_remove_backup
+	INFO "Restarting the racoon service, after the restore"
+	apos_servicemgmt restart racoon.service &> /dev/null
+	apos_servicemgmt restart racoon-setkey.service &>/dev/null
+	ipsec_exit $EXIT_FAILED_POLICIES_REMOVAL
+}
+
+function restore_configuration_strongswan(){
+	ipsec_restore
+	ipsec_remove_backup
+	INFO "Restarting the strongswan service, after the restore"
+	apos_servicemgmt restart strongswan.service &> /dev/null
+	ipsec_exit $EXIT_FAILED_POLICIES_REMOVAL
+}
+
+function stop_racoon(){
+	INFO "stopping the racoon.service..."
+	local rCode
+	apos_servicemgmt stop racoon.service &>/dev/null &> /dev/null
+	rCode=$?
+	if [ $rCode -ne 0 ] ; then
+		INFO "Unable to stop racoon service."
+	else
+		INFO "stopping the racoon-setkey.service."
+		apos_servicemgmt stop racoon-setkey.service &>/dev/null &> /dev/null
+		rCode=$?
+		if [ $rCode -ne 0 ] ; then
+		   INFO "Unable to stop racoon-setkey.service."
+		fi
+	fi	
+	return $rCode
+}	
+
+function start_racoon(){
+	local rCode
+	INFO "starting the racoon.service..."
+	apos_servicemgmt start racoon.service &>/dev/null &> /dev/null
+	rCode=$?
+	if [ $rCode -ne 0 ] ; then
+		INFO "Unable to start racoon.service."     
+ 	else
+		INFO "starting the racoon-setkey.service."
+		apos_servicemgmt start racoon-setkey.service &>/dev/null &> /dev/null
+		rCode=$?
+		if [ $rCode -ne 0 ] ; then
+			INFO "Unable to start racoon service."
+		fi
+	fi	
+	return $rCode
+}	
+
+function start_stop_racoon(){
+	local MAX_RETRY_CNT=5,rCode=0,count=0
+	while [[ $count -le $MAX_RETRY_CNT ]]
+	do
+		usleep 500000
+		$1_racoon
+		rCode=$?
+		if [ $rCode -eq 0 ]; then
+		  break
+		fi
+		(( count = count + 1 ))
+	done	 
+
+	if [ $rCode -ne 0 ]; then
+		INFO "Restoring the configuration"
+		restore_configuration_racoon
+	fi
+}
+
+function stop_strongswan(){
+	INFO "stopping the strongswan.service..."
+	local rCode
+	apos_servicemgmt stop strongswan.service &>/dev/null &> /dev/null
+	rCode=$?
+	if [ $rCode -ne 0 ] ; then
+		INFO "Unable to stop strongswan service."
+	fi	
+	return $rCode
+}	
+
+function start_strongswan(){
+	local rCode
+	INFO "starting the strongswan.service..."
+	apos_servicemgmt start strongswan.service &>/dev/null &> /dev/null
+	rCode=$?
+	if [ $rCode -ne 0 ] ; then
+		INFO "Unable to start strongswan.service."     
+	fi	
+	return $rCode
+}
+
+function start_stop_strongswan(){
+	local MAX_RETRY_CNT=5,rCode=0,count=0
+	while [[ $count -le $MAX_RETRY_CNT ]]
+	do
+		usleep 500000
+		$1_strongswan
+		rCode=$?
+		if [ $rCode -eq 0 ]; then
+		  break
+		fi
+		(( count = count + 1 ))
+	done	 
+
+	if [ $rCode -ne 0 ]; then
+		INFO "Restoring the configuration"
+		restore_configuration_strongswan
+	fi
+}
+
+#Fucntion to remove old Racoon procols before starting Strongswan
+function remove_racoon_protocols() {
+    arr=($(cat  /etc/racoon/setkey.conf | grep -i policy_name | cut  -d'=' -f 2))
+    #echo ${arr[*]}
+    for i in "${arr[@]}" ; do
+        /opt/ap/acs/bin/ipsecrm $i
+    done
+}
+
+#Function to remove Strongswan procols before starting racoon
+function remove_strongswan_protocols() {
+        immListCount=$(immfind | grep -i ipsecConnectionId | wc -l)
+        if [[ "$immListCount" -eq 0 ]] ; then
+                INFO "No Connections defined for IKEV2."
+        else
+		#immList=$(immfind | grep -i ipsecConnectionId)
+                #for list in $immList
+                #do
+                 #       immcfg -d $list
+                #done'
+
+		/opt/ap/acs/bin/ipsecrm all	
+
+		if [ "$?" -ne 0 ] ; then
+			ipsec_exit $EXIT_CONNECTION_REMOVE_FAILED
+		fi
+        fi
+}
+
+#Function to validate trustcategory
+function ipsec_checktrustcategory() {
+    TRACE_ENTER $FUNCNAME
+    if ! echo "$1" | grep "^[0-9]*$" &> /dev/null ; then
+        ipsec_exit $EXIT_UNREASONABLE_VALUE "for trustcategory : $1"
+    fi
+
+    #Check if the provided certificate is present on the system
+    local trustcategory=$(immfind | grep -i "trustCategoryId=$1,certMId=1" 2> /dev/null | wc -l)
+    if [ $trustcategory -ne 1 ] ; then
+       #echo -e "\ntrustcategory=$1 certificate not available" >&2
+        ipsec_exit $EXIT_TRUSTCATEGORY_DOESNOT_EXISTS $1
+	#need to change the error message
+    fi
+    TRACE_LEAVE $FUNCNAME
+}
+
+#Function to validate nodecredentials
+function ipsec_checknodecredentials() {
+    TRACE_ENTER $FUNCNAME
+    if ! echo "$1" | grep "^[0-9]*$" &> /dev/null ; then
+        ipsec_exit $EXIT_UNREASONABLE_VALUE "for nodecredential : $1"
+    fi
+    #Check if the provided certificate is present on the system
+    local nodecredentials=$(immfind | grep -i "nodeCredentialId=$1,certMId=1" 2> /dev/null | wc -l)
+    if [ $nodecredentials -eq 0 ] ; then
+       #echo -e "\nNodecredentials=$1 certificate not available" >&2
+        ipsec_exit $EXIT_NODECREDENTIAL_DOESNOT_EXISTS $1 
+	#need to change the error message
+    fi
+    TRACE_LEAVE $FUNCNAME
+}
+
+#Function to validate ikealg
+function ipsec_checkikealg() {
+    TRACE_ENTER $FUNCNAME
+    encryption=$(echo $1 | cut -d "-" -f 1)
+    integrity=$(echo $1 | cut -d "-" -f 2)
+    dhgroup=$(echo $1 | cut -d "-" -f 3)
+
+    #error cases
+    errorValue=$(echo $1 | cut -d "-" -f 4)
+    if [ "$errorValue" != "" ] ; then
+        ipsec_exit $EXIT_UNREASONABLE_VALUE "for IKE Algorithm : $1"
+    fi
+
+    ipsec_checkencralg $encryption "IKEV2"
+    ipsec_checkintegrity $integrity
+    ipsec_checkdhgroup $dhgroup "IKEV2"
+
+    TRACE_LEAVE $FUNCNAME
+}
+
+#Function to fetch apg environment
+#function is_vAPG() {
+#  local HW_TYPE=$(/opt/ap/apos/conf/apos_hwtype.sh)
+#  local SHELF_ARCH=$(get_shelf_architecture)
+#  if [[ "$HW_TYPE" == 'VM' && "$SHELF_ARCH" == "VIRTUALIZED" ]]; then
+#    return $TRUE
+#  fi
+#  return $FALSE
+#}
+
+#-------------------------------------------------------------------------------
+#function get_shelf_architecture() {
+#  local SHELF_ARCH=''
+#  [ ! -x $CMD_PARMTOOL ] && ipsec_exit $EXIT_UNABLE_TO_FETCH_ARCHITECTURE "$CMD_PARMTOOL not found or not executable"
+#  SHELF_ARCH=$( $CMD_PARMTOOL get --item-list shelf_architecture 2>/dev/null | \
+#  awk -F'=' '{print $2}')
+#  if [ -z "$SHELF_ARCH" ]; then
+#    SHELF_ARCH='SCB'
+#    INFO "$SHELF_ARCH file empty,setting default value"
+#  fi
+#  echo $SHELF_ARCH
+#}
+

@@ -1,0 +1,37 @@
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2023 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# models.info
+##
+# Description:
+#       Configuration file used to perform IMM model changes during software upgrade for HCBIN.
+##
+##
+# Changelog:
+#       First version
+##
+# log($message) ===> Use it to append a notice to the system log
+# log_error($message) ===> Use it to append an error message to the system log
+##
+##
+#-----------------------------------------------------------------------
+#       CHANGE-LOG
+#----------------------------------------------------------------------
+
+#APG 5.3
+VERSION: CXC1372185_18-R1F
+#APG 5.2.1
+VERSION: CXC1372185_18-R1E
+
+VERSION: CXC1372185_18-R1D
+VERSION: CXC1372185_18-R1C
+VERSION: CXC1372185_18-R1B
+VERSION: CXC1372185_18-R1A04
+#APG 5.2 LSV02
+VERSION: CXC1372185_18-R1A03
+VERSION: CXC1372185_18-R1A02
+#APG 5.2 LSV01
+VERSION: CXC1372185_18-R1A01
+

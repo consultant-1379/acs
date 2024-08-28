@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+	Copyright (c) 2020 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Dec 14, 2020 10:15:35 AM using:
+	* com.ericsson.ecim.m2m 3.13.0.202006261811
+	* com.ericsson.ecim.dsl 3.13.0.202006261811
+	* com.ericsson.ecim.edm 3.13.0.202006261811
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>K</dtdVersion>
+    <momMetaData>
+        <momTitle>Managed Object Model for Function Distribution Management function</momTitle>
+        <momSubTitle/>
+        <momIdentity>
+            <docNum>2/19089-CXA 117 0046/9</docNum>
+            <docLang>Uen</docLang>
+            <docRev>C</docRev>
+            <docDate>2020-12-14</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>XHARBAV</signature>
+        </createdBy>
+    </momMetaData>
+    <mim author="Harika Bavana" contact="XHARBAV" correction="0" date="2020-12-14" docNo="" name="AxeFunctionDistribution" namespace="urn:com:ericsson:ecim:AxeFunctionDistribution" namespacePrefix="axefunctiondistribution" organization="" release="1" revision="" version="1">
+        <description>Function Distribution function MOM.</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="MOM_NAME"/>
+        </domainExtension>
+        <struct name="AsyncActionProgress">
+            <description>Used by NMS to query progress of ongoing asyncronous actions.</description>
+            <structMember name="actionName">
+                <description>The name of the invoked asynchronous action.</description>
+                <string/>
+            </structMember>
+            <structMember name="additionalInfo">
+                <description>Used for logging significant messages during execution of an action.&#13;
+Each log message is a separate value. The NMS system may display this information, but it is not recommended to build any logic on the content of this field.&#13;
+ </description>
+                <sequence>
+                    <string/>
+                    <minLength>0</minLength>
+                </sequence>
+            </structMember>
+            <structMember name="progressInfo">
+                <description>Textual information describing the actual state of the execution of the action.&#13;
+The NMS system may display this information, but it is not recommended to build any logic on the content of this field.</description>
+                <string/>
+            </structMember>
+            <structMember name="progressPercentage">
+                <description>Progress of the action. &#13;
+The range is between 0 and 100.&#13;
+&#13;
+</description>
+                <uint8/>
+            </structMember>
+            <structMember name="result">
+                <description>Result state of completed action.&#13;
+This field has the value NOT_AVAILABLE if the action is not finished.</description>
+                <enumRef name="ActionResultType">
+                    <mimName>ECIM_CommonLibrary</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="resultInfo">
+                <description>Textual description of the outcome/result of the action containing useful info for the NMS.&#13;
+It can contain an error message if the action failed.&#13;
+The NMS system may display this information, but it is not recommended to build any logic on the content of this field.&#13;
+&#13;
+</description>
+                <string/>
+            </structMember>
+            <structMember name="state">
+                <description>Current state of the action.</description>
+                <enumRef name="ActionStateType">
+                    <mimName>ECIM_CommonLibrary</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="actionId">
+                <description>The struct member actionId uniquely identifies each value of a multivalued attribute of type struct AsyncActionProgress.</description>
+                <uint16/>
+            </structMember>
+            <structMember name="timeActionStarted">
+                <description>The date and time when the current action was started.</description>
+                <derivedDataTypeRef name="DateTimeWithoutOffset">
+                    <mimName>ECIM_CommonLibrary</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="timeActionCompleted">
+                <description>The date and time when the action was completed (successfully or unsuccessfully).</description>
+                <derivedDataTypeRef name="DateTimeWithoutOffset">
+                    <mimName>ECIM_CommonLibrary</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="timeOfLastStatusUpdate">
+                <description>The date and time when the struct member state was last updated.</description>
+                <derivedDataTypeRef name="DateTimeWithoutOffset">
+                    <mimName>ECIM_CommonLibrary</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+        </struct>
+        <enum name="Functions">
+            <description>Defines  the possible distributable AP functions among the AP nodes of a Multi-APG system.</description>
+            <enumMember name="CHS">
+                <description>Indicates the first MO MessageStore provided by Data Record Management function MOM.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="CHS1">
+                <description>Indicates the second MO MessageStore provided by Data Record Management function MOM.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="CHS2">
+                <description>Indicates the third MO MessageStore provided by Data Record Management function MOM.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="CHS3">
+                <description>Indicates the fourth MO MessageStore provided by Data Record Management function MOM.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="CHS4">
+                <description>Indicates the fifth MO MessageStore provided by Data Record Management function MOM.</description>
+                <value>4</value>
+            </enumMember>
+            <enumMember name="CHS5">
+                <description>Indicates the sixth MO MessageStore provided by Data Record Management function MOM.</description>
+                <value>5</value>
+            </enumMember>
+            <enumMember name="CHS6">
+                <description>Indicates the seventh MO MessageStore provided by Data Record Management function MOM.</description>
+                <value>6</value>
+            </enumMember>
+            <enumMember name="CHS7">
+                <description>Indicates the eighth MO MessageStore provided by Data Record Management function MOM.</description>
+                <value>7</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="ApgName">
+            <description>Defines the set of allowed alphanumeric characters for APG name, AP1..AP16.</description>
+            <domainExtension domain="ECIM">
+                <extension name="filter" value="hidden"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <validValues>\b(AP[1-9]|AP1[0-6])\b</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="" format="posix_ere" name="Pattern Constraint">\b(AP[1-9]|AP1[0-6])\b</rule>
+            </validationRules>
+        </derivedDataType>
+        <class name="FunctionDistributionM">
+            <description>It is the root MOC for Function Distribution Management function MOM.
+The function allows distributing AP functions among APGs in a Dual-APG configuration and a user can decide which APG is appointed to provide each of them.
+Th set of such AP functions is predefined and cannot be changed. 
+&#13;
+Currently the AP functions supporting the distribution among AP nodes are the Message Stores entities defined as MessageStore MOCs in Data Record Management function MOM.&#13;
+&#13;
+By default are present 8 Function MOs as children of MO Apg=AP1.&#13;
+&#13;
+e.g. Dual AP system: there are 2 AP nodes named AP1 and AP2.&#13;
+The MOM contains:&#13;
+- the FunctionDistributionM MO with rdn functionDistributionMId=1&#13;
+- 2  Apg MOs children of FunctionDistributionM MO representing the AP nodes with rdn apgId=AP1 and apgId=AP2&#13;
+- 8 Function MOs as children of AP1 MO representing the Message Stores. Rdn are functionId=CHS,&#13;
+functionId=CHS1,functionId=CHS2,functionId=CHS3,functionId=CHS4,functionId=CHS5,functionId=CHS6,functionId=CHS7.</description>
+            <systemCreated/>
+            <root/>
+            <action name="moveFunction">
+                <description>Allows moving of an AP function from an APG node to another one part of a Multi-APG system.&#13;
+
+The result of the action can be monitored checking the attribute progressReport.&#13;
+&#13;
+If the action is successfully executed then the specified Function MO is moved under the specified Apg MO.&#13;
+If the action fails then the specified Function MO remains under the source Apg MO and attribute progressReport reports the sub-attribute result as FAILURE and the sub-attribute resultInfo with one of the following diagnostics messages:&#13;
+&#13;
+	"AP Function &lt;Function MO&gt; failed to be moved on &lt;Apg MO&gt;: &lt;error message&gt;"&#13;
+&#13;
+where &lt;error message&gt; is one of the following:&#13;
+	- AP is not defined. An AP with the specified name does not exist.&#13;
+	- Duplicated function. The Function MO is already specified on the target AP MO.&#13;
+	- Error when executing. An internal error occurred during the execution.&#13;
+</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="100"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <parameter name="function">
+                    <description>The Function MO key value to distribute.&#13;
+&#13;
+</description>
+                    <in/>
+                    <dataType>
+                        <enumRef name="Functions">
+                            <mimName>AxeFunctionDistribution</mimName>
+                        </enumRef>
+                    </dataType>
+                </parameter>
+                <parameter name="ap">
+                    <description>Indicates the identity of the APG where the AP function is going to be moved on.</description>
+                    <in/>
+                    <dataType>
+                        <enumRef name="ApgIdentity">
+                            <mimName>AxeFunctions</mimName>
+                        </enumRef>
+                    </dataType>
+                </parameter>
+            </action>
+            <attribute name="functionDistributionMId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="progressReport">
+                <description>Specifies the progress report (including result) of the ongoing moveFunction action.&#13;
+This MO supports only one action to be executed at a time.</description>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="AsyncActionProgress">
+                        <mimName>AxeFunctionDistribution</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Apg">
+            <description>Represents an APG in a Single-APG or Dual-APG configuration.</description>
+            <systemCreated/>
+            <attribute name="apgId">
+                <description>Holds the name used when identifying the MO.&#13;
+It is expressed as AP&lt;n&gt; where &lt;n&gt; is the number of APG connected into AXE node.
+For example in a Dual-APG configuration the value can be AP1 or AP2.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Function">
+            <description>Represents the AP function that can be distributed among APGs in a Dual-APG configuration.</description>
+            <systemCreated/>
+            <attribute name="functionId">
+                <description>Holds the name used when identifying the MO.&#13;
+It is the string that uniquely identify an AP function.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="domain">
+                <description>domain</description>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+                <filter>APG_HIDDEN</filter>
+            </attribute>
+            <attribute name="description">
+                <description>Specifies the description of the distributable AP function.</description>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="functionDn">
+                <description>Specifies the DN of the MOC providing the AP function.</description>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <moRef name="ManagedObject">
+                        <mimName>EcimCommon</mimName>
+                    </moRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="FunctionDistributionM_to_Apg">
+            <containment>
+                <parent>
+                    <hasClass name="FunctionDistributionM">
+                        <mimName>AxeFunctionDistribution</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Apg">
+                        <mimName>AxeFunctionDistribution</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>16</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="Apg_to_Function">
+            <containment>
+                <parent>
+                    <hasClass name="Apg">
+                        <mimName>AxeFunctionDistribution</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Function">
+                        <mimName>AxeFunctionDistribution</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </mim>
+    <mim name="EcimCommon" release="0" version="1">
+        <class name="ManagedObject">
+            <description>The ManagedObject MO represents a generic MO type. It does not represent any real resource in the system and can therefore not be instanciated. It is used as a MO-reference that can refer to multiple MO types.</description>
+            <interfaceOnly/>
+        </class>
+    </mim>
+    <interMim>
+        <relationship name="SystemHandling_to_DistributionM">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="SystemHandling">
+                        <mimName>AxeFunctions</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="FunctionDistributionM">
+                        <mimName>AxeFunctionDistribution</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </interMim>
+    <mib correction="0" name="AxeFunctionDistributionInstance" release="1" version="0">
+        <object parentDn="FunctionDistributionM=1,Apg=AP1">
+            <hasClass name="Function">
+                <mimName>AxeFunctionDistribution</mimName>
+            </hasClass>
+            <slot name="functionId">
+                <value>CHS6</value>
+            </slot>
+            <slot name="domain">
+                <value>MTAP</value>
+            </slot>
+            <slot name="description">
+                <value>Represents the 7th message store handled by Data Record Management function.</value>
+            </slot>
+            <slot name="functionDn">
+                <value>DataRecordM=1,MessageStore=CHS6</value>
+            </slot>
+        </object>
+        <object parentDn="FunctionDistributionM=1,Apg=AP1">
+            <hasClass name="Function">
+                <mimName>AxeFunctionDistribution</mimName>
+            </hasClass>
+            <slot name="functionId">
+                <value>CHS4</value>
+            </slot>
+            <slot name="domain">
+                <value>MTAP</value>
+            </slot>
+            <slot name="description">
+                <value>Represents the 5th message store handled by Data Record Management function.</value>
+            </slot>
+            <slot name="functionDn">
+                <value>DataRecordM=1,MessageStore=CHS4</value>
+            </slot>
+        </object>
+        <object parentDn="FunctionDistributionM=1,Apg=AP1">
+            <hasClass name="Function">
+                <mimName>AxeFunctionDistribution</mimName>
+            </hasClass>
+            <slot name="domain">
+                <value>MTAP</value>
+            </slot>
+            <slot name="description">
+                <value>Represents the 1st message store handled by Data Record Management function.</value>
+            </slot>
+            <slot name="functionId">
+                <value>CHS</value>
+            </slot>
+            <slot name="functionDn">
+                <value>DataRecordM=1,MessageStore=CHS</value>
+            </slot>
+        </object>
+        <object parentDn="FunctionDistributionM=1,Apg=AP1">
+            <hasClass name="Function">
+                <mimName>AxeFunctionDistribution</mimName>
+            </hasClass>
+            <slot name="functionId">
+                <value>CHS3</value>
+            </slot>
+            <slot name="domain">
+                <value>MTAP</value>
+            </slot>
+            <slot name="description">
+                <value>Represents the 4th message store handled by Data Record Management function.</value>
+            </slot>
+            <slot name="functionDn">
+                <value>DataRecordM=1,MessageStore=CHS3</value>
+            </slot>
+        </object>
+        <object parentDn="FunctionDistributionM=1,Apg=AP1">
+            <hasClass name="Function">
+                <mimName>AxeFunctionDistribution</mimName>
+            </hasClass>
+            <slot name="functionId">
+                <value>CHS5</value>
+            </slot>
+            <slot name="domain">
+                <value>MTAP</value>
+            </slot>
+            <slot name="description">
+                <value>Represents the 6th message store handled by Data Record Management function.</value>
+            </slot>
+            <slot name="functionDn">
+                <value>DataRecordM=1,MessageStore=CHS5</value>
+            </slot>
+        </object>
+        <object parentDn="FunctionDistributionM=1,Apg=AP1">
+            <hasClass name="Function">
+                <mimName>AxeFunctionDistribution</mimName>
+            </hasClass>
+            <slot name="domain">
+                <value>MTAP</value>
+            </slot>
+            <slot name="functionId">
+                <value>CHS1</value>
+            </slot>
+            <slot name="description">
+                <value>Represents the 2nd message store handled by Data Record Management function.</value>
+            </slot>
+            <slot name="functionDn">
+                <value>DataRecordM=1,MessageStore=CHS1</value>
+            </slot>
+        </object>
+        <object parentDn="FunctionDistributionM=1,Apg=AP1">
+            <hasClass name="Function">
+                <mimName>AxeFunctionDistribution</mimName>
+            </hasClass>
+            <slot name="functionId">
+                <value>CHS2</value>
+            </slot>
+            <slot name="domain">
+                <value>MTAP</value>
+            </slot>
+            <slot name="description">
+                <value>Represents the 3rd message store handled by Data Record Management function.</value>
+            </slot>
+            <slot name="functionDn">
+                <value>DataRecordM=1,MessageStore=CHS2</value>
+            </slot>
+        </object>
+        <object parentDn="">
+            <hasClass name="FunctionDistributionM">
+                <mimName>AxeFunctionDistribution</mimName>
+            </hasClass>
+            <slot name="functionDistributionMId">
+                <value>1</value>
+            </slot>
+        </object>
+        <object parentDn="FunctionDistributionM=1">
+            <hasClass name="Apg">
+                <mimName>AxeFunctionDistribution</mimName>
+            </hasClass>
+            <slot name="apgId">
+                <value>AP1</value>
+            </slot>
+        </object>
+        <object parentDn="FunctionDistributionM=1,Apg=AP1">
+            <hasClass name="Function">
+                <mimName>AxeFunctionDistribution</mimName>
+            </hasClass>
+            <slot name="functionId">
+                <value>CHS7</value>
+            </slot>
+            <slot name="domain">
+                <value>MTAP</value>
+            </slot>
+            <slot name="description">
+                <value>Represents the 8th message store handled by Data Record Management function.</value>
+            </slot>
+            <slot name="functionDn">
+                <value>DataRecordM=1,MessageStore=CHS7</value>
+            </slot>
+        </object>
+    </mib>
+</models>

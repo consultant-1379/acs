@@ -1,0 +1,48 @@
+csm-version: '1.0'
+components:
+- uid: acs.logm
+  name: acs-logm
+  description: ACS LOGM component
+  availability-manager: AMF
+  software:
+    sdp: ERIC-ACS_LOGMBIN-CXC1371436
+  supersedes:
+  - base-component: ERIC-APG_LOGM
+  availability-properties:
+    control-policy:
+      type: ADVANCED
+    multiplicity-policy:
+      node-active: ONE
+      node-standby: NONE
+      node-active-standby: 'NO'
+      cluster-active: MANY
+      cluster-standby: NONE
+    lifecycle-control:
+      prefix: /opt/ap/acs/bin
+      start: acs_logm_logmaint_clc instantiate
+      stop: acs_logm_logmaint_clc cleanup
+      monitor-keys:
+      - key: acs_logmaintd_hck
+        period: 240s
+        timeout: 180s
+      promote-demote-timeout: 200s
+      migrate-timeout: 60s
+      recovery-policy: COMPONENT_RESTART
+      start-stop-timeout: 100s
+  constraints:
+    installation:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+    upgrade:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+  meta-data:
+    component-version: 9.0.1-0
+    deliverable:
+      deployment-package: acs_logm-9.0.1-0-deployment-CXC1371436.tar.gz
+      runtime-package: acs_logm-9.0.1-0-runtime-CXC1371436.tar.gz
+    software:
+    - file-name: ACS_LOGMBIN-CXC1371436_9-R1B.x86_64.sdp
+      bundle-name: ERIC-ACS_LOGMBIN-CXC1371436_9-R1B

@@ -1,0 +1,182 @@
+#!/bin/bash
+#
+# This script is to generte the configured number of filtered syslog events. 
+# This list is used by USA to scan the events.
+# Author:
+
+
+#setting  global variables
+#set -x
+exit_failure=1
+exit_success=0
+rmv_file=
+startup_analysis=1
+shortterm_analysis=2
+analysis_type=0
+
+#commands
+Grep=/usr/bin/grep
+
+# temorary file
+TEMP="/tmp/usaEventList.log"
+Syslog="/var/log/messages"
+
+#default record numbers to retrieve from syslog
+maxRecrds=20000
+t_filter=
+include_filter="Stopping[[:space:]]*.*[[:space:]]\|Stopped[[:space:]]*.*[[:space:]]\|Failed[[:space:]]keyboard-interactive\|usa-short-term-end\|RPM[[:space:]]activation\|USA[[:space:]]is[[:space:]]shutting[[:space:]]down"
+exclude_filter="APEvent"
+
+## The usual usage information
+##
+function usage_error() {
+
+	echo
+	echo -e "\t acs_usa_genEvtLst -  Generate Syslog Events List to Temporary file /tmp/usaEventList.log"
+	echo
+        echo "SYNOPSIS:"
+     	echo -e "\t acs_usa_genEvtLst [options]..."
+	echo
+        echo "DESCRIPTION:"
+	echo
+        echo -e "\t -n|--records    	<num>"
+        echo -e "\t -t|--time-stamp 	<string>"
+        echo -e "\t -a|--analysis-type 	<num>"
+        echo -e "\t -r|--remove"
+	echo
+        echo "Example:"
+	echo
+        echo -e "\t acs_usa_genEvtLst --remove"
+        echo -e "\t acs_usa_genEvtLst -n 2000 -t 2007-01-11_02:49:01 -a 1"
+        echo >&2
+	
+	exit $exit_failure
+}
+
+[[ $# < 1 ]] && {
+        usage_error
+        exit $exit_failure
+}
+
+log() {
+        /bin/logger -t acs_usa_genEvtLst "$@"
+}
+
+die(){
+        log "$@"
+        exit $exit_failure
+}
+
+function generate_event_list() {
+
+	$Grep "^$t_filter" $Syslog -A $maxRecrds | $Grep $include_filter | $Grep -v $exclude_filter > $TEMP
+	retval=$?
+
+	if [ $analysis_type -eq $startup_analysis ]; then
+		if [ $retval -ne 0 ]; then
+			die "no records found with the given pattern"
+		else
+			return $exit_success
+		fi
+	fi	
+		
+	if [ $analysis_type -eq $shortterm_analysis ]; then
+		if [ $retval -ne 0 ]; then
+			size=`/usr/bin/stat -c %s $TEMP`
+			if [ $size -eq 0 ]; then
+				#it might happen that messages were rorated. we only consider one rotation for now, which is messages.1
+				ARC_FILE="/var/log/`hostname`/messages.1"	
+				$Grep "^$t_filter" $ARC_FILE -A $maxRecrds | $Grep $include_filter | $Grep -v $exclude_filter > $TEMP
+				retval=$?
+				if [ $retval -ne 0 ]; then
+					die "no records found with the given pattern"
+				fi	
+			
+				#we also neeed to read the records from messages file too.
+				$Grep $include_filter $Syslog | $Grep -v $exclude_filter >>$TEMP
+			fi	
+		fi		
+	fi	
+	return $exit_success
+}
+
+function remove_file() {
+
+	/bin/rm -f $TEMP
+	return $exit_success
+}
+
+function parse_cmdline() {
+
+        local OPTIONS='n: t: a: r'
+
+        local LONG_OPTIONS='records: time-stamp: analysis-type: remove'
+
+        ARGS=`getopt --longoptions "$LONG_OPTIONS" --options "$OPTIONS" -- "$@"`
+        RETURN_CODE=$?
+        if [ $RETURN_CODE -ne 0 ]; then
+                usage_error
+        fi
+
+        eval set -- "$ARGS"
+
+        # Make sure to handle the cases for all the options listed in OPTIONS
+        # and LONG_OPTIONS and to fill up the right script-wide variables.
+
+        while [ $# -gt 0 ]; do
+                case "$1" in
+                        -n|--records)
+				if [ ! -z $2 ]; then	
+					maxRecrds=$2
+				fi
+				shift
+                        ;;
+
+			-t|--time-stamp)
+				t_filter=`echo $2 | sed 's/_/ /g'`			
+				shift
+			;;
+
+			-a|--analysis-type)
+				analysis_type=$2
+				break
+			;;
+
+                        -r|--remove)
+				rmv_file=yes
+				remove_file	
+				break
+                        ;;
+
+                        --)
+                                break
+                        ;;
+
+                        *)
+                                usage_error
+                        ;;
+                esac
+                shift
+	done
+	return $exit_success
+}
+
+
+#            ______
+#           |      |\
+#           | MAIN | |
+#           |______| |
+#            \______\|
+#
+
+
+#Parsing command-line arguments
+parse_cmdline $*
+
+if [ -z $rmv_file ]; then
+	generate_event_list
+fi	
+
+exit $exit_success
+
+

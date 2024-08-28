@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
+	Copyright (c) 2021 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Oct 7, 2021 12:48:50 PM using:
+	* com.ericsson.ecim.m2m 3.14.0.202105061142
+	* com.ericsson.ecim.dsl 3.14.0.202105061142
+	* com.ericsson.ecim.edm 3.14.0.202105061142
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>K</dtdVersion>
+    <momMetaData>
+        <momTitle>Managed Object Model for License Management Function</momTitle>
+        <momSubTitle/>
+        <momIdentity>
+            <docNum>19089-CXA 117 0050/13</docNum>
+            <docLang>Uen</docLang>
+            <docRev>C</docRev>
+            <docDate>2021-10-07</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>XPRAMDU</signature>
+        </createdBy>
+    </momMetaData>
+    <mim author="Prameela Vanga" contact="XPRAMDU" correction="0" date="2021-10-07" docNo="" name="AxeLicenseManagement" namespace="urn:com:ericsson:ecim:AxeLicenseManagement" namespacePrefix="axelicensemanagement" organization="" release="1" revision="C" variant="BASIC" version="3">
+        <description>License Management function MOM.</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="MOM_NAME"/>
+        </domainExtension>
+        <enum name="LicenseMode">
+            <description>Represents the possible license mode types.
+</description>
+            <enumMember name="VIRGIN">
+                <description>Indicates License Manager mode when the node is installed for the first time.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="LICENSECONTROLLED">
+                <description>Indicates License Manager mode when a valid License Key file is installed.
+</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="GRACE">
+                <description>Indicates License Manager mode when an invalid or loss of License Key File is detected.
+This mode lasts 60 days. No alarm raised in the first 30 days. In this mode the application uses the last licensing information that was available.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="EMERGENCY">
+                <description>Indicates License Manager mode when Emergency mode is activated.
+During this mode, capacity features which are intended for use during emergency situations are unlocked in order to
+provide as good accessibility as possible.
+</description>
+                <value>4</value>
+            </enumMember>
+            <enumMember name="MAINTENANCE">
+                <description>Indicates License Manager mode when Maintenance mode is activated.
+During this mode, license controlled features are frozen to allow maintenance activities without affecting in service performances. An observation alarm is raised when Maintenance mode is unlocked and will be ceased in the following cases. 
+- Maintenance mode is Locked manually
+- Automatically after 25 days of Unlock
+</description>
+                <value>5</value>
+            </enumMember>
+        </enum>
+        <class name="LicenseM">
+            <description>Represents the root MOC for License Management function MOM. 
+The main use cases of License Management function are :
+1) Installation of LKF.
+2) Viewing information of electronic keys present in the installed LKF.
+3) License Management function modes administration.</description>
+            <root/>
+            <action name="emergencyUnlock">
+                <description>Activates the Emergency Mode of License Management function.
+
+The action may fail due to any one of the following reasons:
+	-Command not executed, AP backup in progress: When backup or restore operation is going on.
+	-Emergency State Mode already activated: When the Emergency Mode is already activated.
+	-Emergency State Mode not allowed: When the two emergency state activation attempts are already used.
+	-Unable to connect to server: When service encounters internal fault like inter service communication failure. </description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="2"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <action name="installLicenseKeyFile">
+                <description>Installs the LKF taking it from folder /license_file on APG file system.
+After the installation the LKF is removed from APG file system.
+
+The action may fail due to any one of the following reasons:
+	-Command not executed, AP backup in progress: When backup or restore operation is going on.
+	-Invalid license key file: When the specified LKF is invalid.
+	-Invalid license key file path: When the specified path for LKF is wrong.
+	-Missing License Key File: When the LKF file is missing on APG file system.
+	-Physical file error: When the LKF is corrupted.
+	-Unable to connect to server: When service encounters internal fault like inter service communication failure.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="1"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <parameter name="licensefile">
+                    <description>Specifies the name of the LKF. 
+The LKF is expected to be present in the folder /license_file on APG file system.
+
+
+</description>
+                    <in/>
+                    <dataType>
+                        <string/>
+                    </dataType>
+                </parameter>
+            </action>
+            <action name="exportLicenseKeyFile">
+                <description>Exports the installed LKF to destination folder "license_file" on APG file system with filename &lt;fingerprint&gt;_lkf.
+The file is overwritten if it already exists in the destination folder and automatically deleted by the system after thirty days.
+
+The action may fail due to any one of the following reasons:
+	-Internal error: LKF not found: An internal error when exporting LKF.
+	-Not allowed in Grace Mode: LKF cannot be exported in Grace Mode.
+	-Not allowed in Virgin Mode: LKF cannot be exported in Virgin Mode.
+	-Quota limit exceeded: Unable to export LKF in the destination folder.
+	-Unable to connect to server: When service encounters internal fault like inter service communication failure. </description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="3"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <attribute name="licenseMId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="emergencyActivationCount">
+                <description>Specifies the number of activations left for the emergency with the current LKF.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <uint32/>
+                </dataType>
+            </attribute>
+            <attribute name="endDateforEmergencyMode">
+                <description>Specifies the end date until which the Emergency Mode is valid.
+If Emergency Mode is not set no value is displayed.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="fingerprint">
+                <description>Specifies the fingerprint of the AXE node in clear text.
+Fingerprint is in the format: &lt;Node Name&gt;-&lt;Cluster IP Address&gt;
+
+"Node Name" is the value of attribute managedElementId in ManagedElement MOC. 
+
+"Cluster IP Address" is the IP address assigned to cluster of 2 AP nodes.
+
+In case the OAM network is configured with both IPv4 and IPv6 connectivity, the IPv4 and IPv6 fingerprints are both valid but the attribute specifies only the valid IPv4 fingerprint value:
+ &lt;Node Name&gt;-&lt;Cluster IPv4 Address&gt;</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="licenseMode">
+                <description>Specifies the current License Management function mode. 
+</description>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="LicenseMode">
+                        <mimName>AxeLicenseManagement</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="maintenanceMode">
+                <description>Allows to activate/deactivate the Maintenance Mode. Default state is not active.</description>
+                <dataType>
+                    <enumRef name="BasicAdmState">
+                        <defaultValue>LOCKED</defaultValue>
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="endDateforMaintenanceMode">
+                <description>Specifies the end date until which the Maintenance Mode is valid.
+If Maintenance Mode is not set no value is displayed.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="hashedFingerprint">
+                <description>Specifies the fingerprint of the AXE node in encrypted format.
+
+In case the OAM network is configured with both IPv4 and IPv6 connectivity, the IPv4 and IPv6 fingerprints are both valid but the attribute specifies only IPv4 fingerprint value in encrypted format.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ElectronicKey">
+            <description>Represents the set of Electronic Keys part of LKF.</description>
+            <attribute name="electronicKeyId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="description">
+                <description>Specifies the description of electronic Key.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="startDate">
+                <description>Specifies the start date of the electronic key.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="expiryDate">
+                <description>Sepcifies the end date of the electronic key.
+In case of no end date for an electronic key then there no value is displayed.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <derivedDataTypeRef name="DateTime">
+                        <mimName>ECIM_CommonLibrary</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="licensedCapacityValue">
+                <description>Specifies the capacity value of the electronic key.
+If value is 1, it means the key is a feature electronic key.
+If the value is more than 1, it means the key is a capacity electronic key and the value represents the capacity value.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <uint32/>
+                </dataType>
+            </attribute>
+            <attribute name="daysToExpire">
+                <description>Specifies the number of remaining days to expire the electronic key.
+If the value is a number, it means the electronic key is going to expire in these number of days. If the value is "EXPIRED", it means the electronic key is expired. If the value is "NEVER", it means the electronic key never expires. </description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="AxeLicenseManagement_to_ElectronicKey">
+            <containment>
+                <parent>
+                    <hasClass name="LicenseM">
+                        <mimName>AxeLicenseManagement</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ElectronicKey">
+                        <mimName>AxeLicenseManagement</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </mim>
+    <mim name="EcimCommon" release="0" version="1">
+        <class name="ManagedObject">
+            <description>The ManagedObject MO represents a generic MO type. It does not represent any real resource in the system and can therefore not be instanciated. It is used as a MO-reference that can refer to multiple MO types.</description>
+            <interfaceOnly/>
+        </class>
+    </mim>
+    <interMim>
+        <relationship name="SystemHandling_to_AxeLicenseManagement">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="SystemHandling">
+                        <mimName>AxeFunctions</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="LicenseM">
+                        <mimName>AxeLicenseManagement</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </interMim>
+    <mib correction="0" name="AxeLicenseManagementInstances" release="0" version="1">
+        <object parentDn="">
+            <hasClass name="LicenseM">
+                <mimName>AxeLicenseManagement</mimName>
+            </hasClass>
+            <slot name="licenseMId">
+                <value>1</value>
+            </slot>
+        </object>
+    </mib>
+</models>

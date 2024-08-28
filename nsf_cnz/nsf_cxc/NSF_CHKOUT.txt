@@ -1,0 +1,6 @@
+T:\ntacs\nsf_cnz\nsf_cxc\bin\acs_nsfserverd
+T:\ntacs\nsf_cnz\nsf_cxc\bin\acs_nsfbiostimerecovery
+T:\ntacs\nsf_cnz\nsf_cxc\bin\nsfstart
+T:\ntacs\nsf_cnz\nsf_cxc\bin\nsfstop
+T:\ntacs\nsf_cnz\nsf_cxc\bin\nsfreset
+T:\ntacs\nsf_cnz\nsf_cxc\packages\rpm\ACS_NSF-CXC1371337-R1A07.x86_64.rpm

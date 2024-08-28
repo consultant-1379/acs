@@ -1,0 +1,246 @@
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2014 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# models.info
+##
+# Description:
+#       Configuration file used to perform IMM model changes during software upgrade for ACA block.
+##
+##
+# Changelog:
+# - 2014-01-21 - Giuliano Ferraioli (XGIUFER) 
+#       First version
+# - 2014-02-19 - Alessio Cascone (XCASALE) 
+#       Updated
+##
+
+#APG 4.1 LSV03
+VERSION: CXC1371516_9-R1E
+log "Model files updated by generating with new version of modelling tool"
+
+#APG 3.8 LSV03
+VERSION: CXC1371516_9-R1D
+log "Model files updated by generating with new version of modelling tool"
+
+VERSION: CXC1371516_9-R1C
+log "No model changes in CXC1371516_9-R1C"
+
+VERSION: CXC1371516_9-R1B
+log "No model changes in CXC1371516_9-R1B"
+
+VERSION: CXC1371516_9-R1A05
+log "No model changes in CXC1371516_9-R1A05"
+
+VERSION: CXC1371516_9-R1A04
+log "No model changes in CXC1371516_9-R1A04"
+
+VERSION: CXC1371516_9-R1A03
+
+# Adaptations to SwM2.0
+VERSION: CXC1371516_9-R1A02
+VERSION: CXC1371516_9-R1A01
+
+VERSION: CXC1371516_5-R1D
+log "No model changes in CXC1371516_5-R1D"
+
+VERSION: CXC1371516_5-R1C
+log "No model changes in CXC1371516_5-R1C"
+
+VERSION: CXC1371516_5-R1B
+log "No model changes in CXC1371516_5-R1B"
+
+VERSION: CXC1371516_5-R1A07
+log "No model changes in CXC1371516_5-R1A07"
+
+VERSION: CXC1371516_5-R1A06
+log "No model changes in CXC1371516_5-R1A06"
+
+VERSION: CXC1371516_5-R1A05
+log "No model changes in CXC1371516_5-R1A05"
+
+VERSION: CXC1371516_5-R1A04
+log "No model changes in CXC1371516_5-R1A04"
+
+VERSION: CXC1371516_5-R1A03
+log "No model changes in CXC1371516_5-R1A03"
+
+VERSION: CXC1371516_5-R1A02
+log "No model changes in CXC1371516_5-R1A02"
+
+VERSION: CXC1371516_5-R1A01
+log "No model changes in CXC1371516_5-R1A01"
+
+VERSION: CXC1371516-R1D
+log "No model changes in CXC1371516-R1D"
+
+VERSION: CXC1371516-R1C
+log "No model changes in CXC1371516-R1C"
+
+VERSION: CXC1371516-R1B
+log "No model changes in CXC1371516-R1B"
+
+VERSION: CXC1371516-R1A04
+log "No model changes in CXC1371516-R1A04"
+
+VERSION: CXC1371516-R1A03
+log "No model changes in CXC1371516-R1A03"
+
+VERSION: CXC1371516-R1A02
+log "No model changes in CXC1371516-R1A02"
+
+VERSION: CXC1371516-R1A01
+log "No model changes in CXC1371516-R1A01"
+
+VERSION: CXC1371391-R2B
+log "No model changes in CXC1371391-R2B"
+
+VERSION: CXC1371391-R2A
+log "No model changes in CXC1371391-R2A"
+
+VERSION: CXC1371391-R1E
+log "No model changes in CXC1371391-R1E"
+
+
+VERSION: CXC1371391-R1D
+log "Performing model changes introduced in version CXC1371391-R1D"
+
+# Delete AxeDataRecordMessageStoreInfo class
+cmw-immclass-modify  $BUNDLE_NAME AxeDataRecordDataRecordM
+
+
+VERSION: CXC1371391-R1C
+log "No model changes in CXC1371391-R1C"
+
+
+VERSION: CXC1371391-R1B
+log "No model changes in CXC1371391-R1B"
+
+
+VERSION: CXC1371391-R1A54
+log "No model changes in CXC1371391-R1A54"
+
+
+VERSION: CXC1371391-R1A53
+log "No model changes in CXC1371391-R1A53"
+
+
+VERSION: CXC1371391-R1A52
+log "No model changes in CXC1371391-R1A52"
+
+
+VERSION: CXC1371391-R1A51
+log "No model changes in CXC1371391-R1A51"
+
+
+VERSION: CXC1371391-R1A50
+log "No model changes in CXC1371391-R1A50"
+
+
+VERSION: CXC1371391-R1A49
+log "No model changes in CXC1371391-R1A49"
+
+
+VERSION: CXC1371391-R1A48
+log "No model changes in CXC1371391-R1A48"
+
+
+VERSION: CXC1371391-R1A47
+log "No model changes in CXC1371391-R1A47"
+
+
+VERSION: CXC1371391-R1A46
+log "No model changes in CXC1371391-R1A46"
+
+
+VERSION: CXC1371391-R1A45
+log "Performing model changes introduced in version CXC1371391-R1A45"
+
+# Delete AxeDataRecordMessageStoreInfo objects
+immcfg -d messageStoreInfoId=1,messageStoreId=CHS,AxeDataRecorddataRecordMId=1
+immcfg -d messageStoreInfoId=2,messageStoreId=CHS1,AxeDataRecorddataRecordMId=1
+immcfg -d messageStoreInfoId=3,messageStoreId=CHS2,AxeDataRecorddataRecordMId=1
+immcfg -d messageStoreInfoId=4,messageStoreId=CHS3,AxeDataRecorddataRecordMId=1
+immcfg -d messageStoreInfoId=5,messageStoreId=CHS4,AxeDataRecorddataRecordMId=1
+immcfg -d messageStoreInfoId=6,messageStoreId=CHS5,AxeDataRecorddataRecordMId=1
+immcfg -d messageStoreInfoId=7,messageStoreId=CHS6,AxeDataRecorddataRecordMId=1
+immcfg -d messageStoreInfoId=8,messageStoreId=CHS7,AxeDataRecorddataRecordMId=1
+
+# Delete AxeDataRecordMessageStoreInfo class
+cmw-immclass-delete AxeDataRecordMessageStoreInfo
+
+
+VERSION: CXC1371391-R1A44
+log "No model changes in CXC1371391-R1A44"
+
+
+VERSION: CXC1371391-R1A43
+log "No model changes in CXC1371391-R1A43"
+
+
+VERSION: CXC1371391-R1A42
+log "No model changes in CXC1371391-R1A42"
+
+
+VERSION: CXC1371391-R1A41
+log "No model changes in CXC1371391-R1A41"
+
+
+VERSION: CXC1371391-R1A40
+log "No model changes in CXC1371391-R1A40"
+
+
+VERSION: CXC1371391-R1A39
+log "No model changes in CXC1371391-R1A39"
+
+
+VERSION: CXC1371391-R1A38
+log "No model changes in CXC1371391-R1A38"
+
+
+VERSION: CXC1371391-R1A37
+log "No model changes in CXC1371391-R1A37"
+
+
+VERSION: CXC1371391-R1A36
+log "No model changes in CXC1371391-R1A36"
+
+
+VERSION: CXC1371391-R1A35
+log "No model changes in CXC1371391-R1A35"
+
+
+VERSION: CXC1371391-R1A34
+log "No model changes in CXC1371391-R1A34"
+
+
+VERSION: CXC1371391-R1A33
+log "No model changes in CXC1371391-R1A33"
+
+
+VERSION: CXC1371391-R1A32
+log "No model changes in CXC1371391-R1A32"
+
+
+VERSION: CXC1371391-R1A31
+log "No model changes in CXC1371391-R1A31"
+
+
+VERSION: CXC1371391-R1A30
+log "No model changes in CXC1371391-R1A30"
+
+
+VERSION: CXC1371391-R1A29
+log "Performing model changes introduced in version CXC1371391-R1A29"
+# Modify Attribute of object AxeDataRecorddataRecordMId
+immcfg -a oPadding='\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\0' AxeDataRecorddataRecordMId=1
+
+
+VERSION: CXC1371391-R1A28
+log "No model changes in CXC1371391-R1A28"
+
+
+# THIS IS THE FIRST VERSION FROM WHICH YOU WANT TO SUPPORT UPGRADE #
+VERSION: CXC1371391-R1A27
+log "No model changes in CXC1371391-R1A27"

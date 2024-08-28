@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?><!-- 
+  Copyright (c) 2012 Ericsson AB.
+  All rights reserved
+
+  DX ECIM Tool-chain generated this file on 07-Jun-2012 14:24:47 using 
+    * coremw.m2m (1.4.4.201109271606)
+    * coremw.m2t (1.4.4.201109271606)
+    * coremw.dsl (1.4.4.201109271606)
+    * coremw.imm (1.4.4.201109271606)
+--><imm:IMM-contents xmlns:imm="http://www.saforum.org/IMMSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd">
+    <object class="SystemSupervision">
+        <dn>systemSupervisionId=1</dn>
+    </object>
+    <object class="DiskMonitor">
+        <dn>diskMonitorId=DISK,systemSupervisionId=1</dn>
+        <attr>
+            <name>smallDiskHighAlarmLevelLimit</name>
+            <value>6</value>
+        </attr>
+        <attr>
+            <name>smallDiskLowAlarmLevelLimit</name>
+            <value>12</value>
+        </attr>
+        <attr>
+            <name>smallDiskHighCeaseLevelLimit</name>
+            <value>8</value>
+        </attr>
+        <attr>
+            <name>smallDiskLowCeaseLevelLimit</name>
+            <value>14</value>
+        </attr>
+        <attr>
+            <name>largeDiskHighAlarmLevelLimit</name>
+            <value>4</value>
+        </attr>
+        <attr>
+            <name>largeDiskLowAlarmLevelLimit</name>
+            <value>8</value>
+        </attr>
+        <attr>
+            <name>largeDiskHighCeaseLevelLimit</name>
+            <value>6</value>
+        </attr>
+        <attr>
+            <name>largeDiskLowCeaseLevelLimit</name>
+            <value>10</value>
+        </attr>
+        <attr>
+            <name>monitoringOnNode</name>
+            <value>1</value>
+        </attr>
+        <attr>
+            <name>pollingInterval</name>
+            <value>60</value>
+        </attr>
+        <attr>
+            <name>processDumpFrequency</name>
+            <value>1</value>
+        </attr>
+    </object>
+    <object class="PerformanceMonitor">
+        <dn>performanceMonitorId=MEM,systemSupervisionId=1</dn>
+        <attr>
+            <name>highAlarmLevelLimit</name>
+            <value>90</value>
+        </attr>
+        <attr>
+            <name>highCeaseLevelLimit</name>
+            <value>88</value>
+        </attr>
+        <attr>
+            <name>pollingInterval</name>
+            <value>120</value>
+        </attr>
+        <attr>
+            <name>processDumpFrequencyForHigh</name>
+            <value>0</value>
+        </attr>
+        <attr>
+            <name>monitoringOnNode</name>
+            <value>1</value>
+        </attr>
+        <attr>
+            <name>lowAlarmLevelLimit</name>
+            <value>80</value>
+        </attr>
+        <attr>
+            <name>lowCeaseLevelLimit</name>
+            <value>75</value>
+        </attr>
+        <attr>
+            <name>processDumpFrequencyForLow</name>
+            <value>1</value>
+        </attr>
+    </object>
+    <object class="PerformanceMonitor">
+        <dn>performanceMonitorId=FILE_HANDLE,systemSupervisionId=1</dn>
+        <attr>
+            <name>pollingInterval</name>
+            <value>300</value>
+        </attr>
+        <attr>
+            <name>monitoringOnNode</name>
+            <value>1</value>
+        </attr>
+        <attr>
+            <name>lowAlarmLevelLimit</name>
+            <value>200000</value>
+        </attr>
+        <attr>
+            <name>lowCeaseLevelLimit</name>
+            <value>195000</value>
+        </attr>
+        <attr>
+            <name>processDumpFrequencyForLow</name>
+            <value>1</value>
+        </attr>
+    </object>
+</imm:IMM-contents>

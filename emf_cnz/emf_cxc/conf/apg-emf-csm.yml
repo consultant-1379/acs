@@ -1,0 +1,47 @@
+csm-version: '1.0'
+components:
+- uid: acs.emf
+  name: acs-emf
+  description: ACS EMF component
+  availability-manager: AMF
+  software:
+    sdp: ERIC-ACS_EMFBIN-CXC1371533
+  supersedes:
+  - base-component: ERIC-APG_EMF
+  availability-properties:
+    control-policy:
+      type: ADVANCED
+    multiplicity-policy:
+      node-active: ONE
+      node-standby: ONE
+      cluster-active: ONE
+      cluster-standby: ONE
+    lifecycle-control:
+      prefix: /opt/ap/acs/bin
+      start: acs_emf_emfservice_clc instantiate
+      stop: acs_emf_emfservice_clc cleanup
+      monitor-keys:
+      - key: acs_emfserverd_hck
+        period: 180s
+        timeout: 240s
+      promote-demote-timeout: 200s
+      migrate-timeout: 60s
+      start-stop-timeout: 100s
+  constraints:
+    plugin: plugin/acs.emf
+    installation:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+    upgrade:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+  meta-data:
+    component-version: 9.0.10-0
+    deliverable:
+      deployment-package: acs_emf-9.0.10-0-deployment-CXC1371533.tar.gz
+      runtime-package: acs_emf-9.0.10-0-runtime-CXC1371533.tar.gz
+    software:
+    - file-name: ACS_EMFBIN-CXC1371533_9-R1K.x86_64.sdp
+      bundle-name: ERIC-ACS_EMFBIN-CXC1371533_9-R1K

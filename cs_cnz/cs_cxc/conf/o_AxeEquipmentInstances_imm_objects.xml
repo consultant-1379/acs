@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+	Copyright (c) 2020 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Dec 14, 2020 12:04:59 PM using:
+	* com.ericsson.ecim.coremw.m2m 3.13.0.202006261811
+	* com.ericsson.ecim.coremw.dsl 3.13.0.202006261811
+	* com.ericsson.ecim.coremw.imm 3.13.0.202006261811
+--><imm:IMM-contents xmlns:imm="http://www.saforum.org/IMMSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd">
+    <object class="AxeEquipmentEquipmentM">
+        <dn>AxeEquipmentequipmentMId=1</dn>
+    </object>
+    <object class="AxeEquipmentLogicalMgmt">
+        <dn>logicalMgmtId=1,AxeEquipmentequipmentMId=1</dn>
+    </object>
+    <object class="AxeEquipmentVlanCategory">
+        <dn>vlanCategoryId=1,AxeEquipmentequipmentMId=1</dn>
+    </object>
+    <object class="AxeEquipmentHardwareMgmt">
+        <dn>hardwareMgmtId=1,AxeEquipmentequipmentMId=1</dn>
+    </object>
+    <object class="AxeEquipmentLdapConfiguration">
+        <dn>ldapConfigurationId=1,AxeEquipmentequipmentMId=1</dn>
+    </object>
+    <object class="AxeEquipmentApServiceCategory">
+        <dn>apServiceCategoryId=1,AxeEquipmentequipmentMId=1</dn>
+    </object>
+    <object class="AxeEquipmentApg">
+        <dn>apgId=AP1,logicalMgmtId=1,AxeEquipmentequipmentMId=1</dn>
+    </object>
+    <object class="AxeEquipmentAdvancedConfiguration">
+        <dn>advancedConfigurationId=1,AxeEquipmentequipmentMId=1</dn>
+        <attr>
+            <name>aptProfileCurrent</name>
+            <value>100</value>
+        </attr>
+        <attr>
+            <name>apzProfileCurrent</name>
+            <value>100</value>
+        </attr>
+        <attr>
+            <name>omProfileCurrent</name>
+            <value>100</value>
+        </attr>
+    </object>
+    <object class="AxeEquipmentVlan">
+        <dn>vlanId=APZ-A,vlanCategoryId=1,AxeEquipmentequipmentMId=1</dn>
+        <attr>
+            <name>networkAddress</name>
+            <value>192.168.169.0</value>
+        </attr>
+        <attr>
+            <name>netmask</name>
+            <value>255.255.255.0</value>
+        </attr>
+        <attr>
+            <name>name</name>
+            <value>APZ-A</value>
+        </attr>
+        <attr>
+            <name>stack</name>
+            <value>0</value>
+        </attr>
+    </object>
+    <object class="AxeEquipmentVlan">
+        <dn>vlanId=APZ-B,vlanCategoryId=1,AxeEquipmentequipmentMId=1</dn>
+        <attr>
+            <name>networkAddress</name>
+            <value>192.168.170.0</value>
+        </attr>
+        <attr>
+            <name>netmask</name>
+            <value>255.255.255.0</value>
+        </attr>
+        <attr>
+            <name>name</name>
+            <value>APZ-B</value>
+        </attr>
+        <attr>
+            <name>stack</name>
+            <value>0</value>
+        </attr>
+    </object>
+</imm:IMM-contents>

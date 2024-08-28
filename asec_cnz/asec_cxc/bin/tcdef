@@ -1,0 +1,67 @@
+#!/bin/bash
+
+#SEC_HOME_DIR=/home/sec
+#SEC_CONFIG_FILE=$SEC_HOME_DIR/etc/sec.conf
+SEC_CREDENTIAL_USER_PATH=/cluster/storage/system/config/share/sec/cert_storage/certs
+
+CACERT_FILE_PREFIX="trusted_cert_id_"
+CACERT_FILE_SUFFIX=".pem"
+
+# print usage of the command
+function usage() {
+        echo -e "Incorrect usage"
+	echo -e "Usage: tcdef trusted_certificate_Id\n"
+
+}
+# check command line arguments
+if [ $# -eq 1 ]; then
+	if [ `echo $1 | grep "^-"` ]; then
+   		usage
+        	exit 4 
+	else
+		# load SEC configuration (set environment variables)
+		#. $SEC_CONFIG_FILE
+	
+		CACERT_FILE_NAME=$CACERT_FILE_PREFIX$1$CACERT_FILE_SUFFIX
+		CACERT_FILE_PATH=$SEC_CREDENTIAL_USER_PATH/$CACERT_FILE_NAME
+
+		#echo
+		#echo "Setting CA TRUSTED CERTIFICATE for LDAP"
+
+		#echo "the CA certificate full path is : $CACERT_FILE_PATH"
+
+		# check for file existence
+		if [ ! -f $CACERT_FILE_PATH ]
+		then
+   			#echo -e "Specified CA trusted certificate not present in the model:\n<Not found Distinguished Name>\n"
+   			#echo "the specified CA Certificate file does not exist in SEC's Credential User Directory. Maybe you forgot to install the certificate using SEC !"
+			#echo -e "Specified CA Trusted Certificate cannot be found\n"
+			echo -e "CA Trusted Certificate not found\n"
+   			exit 3
+		fi
+
+		# check if the file is a X509 certificate
+		#openssl x509 -noout -text -in $CACERT_FILE_PATH 1>/dev/null
+		#if [ $? -ne 0 ]; then
+		#   echo " ---> Operation FAILED ( the specified file isn't a X509 certificate) !"
+		#   exit 2
+		#fi
+
+		# install the CA certificate modifying LDAP fragment
+		immcfg -a tlsCaCertificate="$CACERT_FILE_PATH" ldapId=1,ldapAuthenticationMethodId=1 &>/dev/null
+
+		if [ $? -ne 0 ]; then
+   			echo "Error when executing (general fault)"
+   			echo
+   			exit 1
+		else
+   			exit 0	
+		fi
+
+	fi 
+# exit with the exit code of the last command
+#exit $?
+else
+        usage
+        exit 2
+fi

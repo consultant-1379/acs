@@ -1,0 +1,95 @@
+#!/bin/bash
+
+#SEC_HOME_DIR=/home/sec
+#SEC_CONFIG_FILE=$SEC_HOME_DIR/etc/sec.conf
+SEC_CREDENTIAL_USER_PATH_CERT=/cluster/storage/system/config/share/sec/cert_storage/certs
+SEC_CREDENTIAL_USER_PATH_KEY=/cluster/storage/system/config/share/sec/cert_storage/private
+#DSA_KEY_TMP_FILE_PATH=/tmp/dsa_key_tmp
+
+
+# print usage of the command
+function usage() {
+        	echo -e "Incorrect usage"
+		echo -e "Usage: ncdef  node_credential_Id\n"
+}
+
+# check command line arguments
+if [ $# -eq 1 ]; then
+	if [ `echo $1 | grep "^-"` ]; then
+		usage 
+		exit 3
+	else 
+
+		#echo
+		#echo "Setting NODE CREDENTIAL for LDAP"
+		#echo
+
+		# load SEC configuration (set environment variables)
+		#. $SEC_CONFIG_FILE
+
+		CLIENT_CERT_FILE_PREFIX="node_cert_id_"
+		CLIENT_CERT_FILE_SUFFIX=".pem"
+		CLIENT_KEY_FILE_PREFIX="node_key_id_"
+		CLIENT_KEY_FILE_SUFFIX=".pem"
+
+		CLIENT_CERT_FILE_NAME=$CLIENT_CERT_FILE_PREFIX$1$CLIENT_CERT_FILE_SUFFIX
+		CLIENT_CERT_FILE_PATH=$SEC_CREDENTIAL_USER_PATH_CERT/$CLIENT_CERT_FILE_NAME
+
+		CLIENT_KEY_FILE_NAME=$CLIENT_KEY_FILE_PREFIX$1$CLIENT_KEY_FILE_SUFFIX
+		CLIENT_KEY_FILE_PATH=$SEC_CREDENTIAL_USER_PATH_KEY/$CLIENT_KEY_FILE_NAME
+
+		#echo "the CLIENT KEY full path is : $CLIENT_KEY_FILE_PATH"
+		#echo "the CLIENT CERTIFICATE full path is : $CLIENT_CERT_FILE_PATH"
+
+		# check for CLIENT certificate file existence
+		if [ ! -f $CLIENT_CERT_FILE_PATH ]; then
+			echo -e "Node Credential not found\n"
+			 #echo -e "Specified Node Credential cannot be found\n"
+			#echo "the specified CLIENT Certificate file does not exist in SEC's Credential Users Directory. Maybe you forgot to install the NODE CREDENTIAL using SEC !"
+		exit 3
+		fi
+
+		# check if the cert file is a X509 certificate
+		#openssl x509 -noout -text -in $CLIENT_CERT_FILE_PATH 1>/dev/null
+		#if [ $? -ne 0 ]; then
+		#   echo " ---> Operation FAILED ( the specified certificate file isn't a X509 certificate) !"
+		#   exit 2
+		#fi
+
+		# check for CLIENT KEY file existence
+		if [ ! -f $CLIENT_KEY_FILE_PATH ]; then
+   			echo -e "Error when executing (general fault)\n"
+			#echo "the specified CLIENT KEY file does not exist in SEC's Credential User Directory. Maybe you forgot to install the NODE CREDENTIAL using SEC !"
+			exit 1
+		fi
+
+		# check if the client key file is an RSA KEY
+		#openssl rsa -noout -in $CLIENT_KEY_FILE_PATH >&/dev/null
+		#if [ $? -ne 0 ]; then
+    		# check if the client key file is a DSA KEY
+		#    openssl dsa -noout -in $CLIENT_KEY_FILE_PATH 2>$DSA_KEY_TMP_FILE_PATH
+		#    n_stderr_chars=`wc -l $DSA_KEY_TMP_FILE_PATH | cut -d " " -f1`
+		#if [ $n_stderr_chars -gt 1 ]; then
+		#       echo " ---> Operation FAILED ( the specified key file isn't valid ) !"
+		#       exit 2
+		#    fi
+		#fi
+
+		# install the NODE CREDENTIAL modifying LDAP fragment
+		immcfg -a tlsClientKey=$CLIENT_KEY_FILE_PATH ldapId=1,ldapAuthenticationMethodId=1 -a tlsClientCertificate=$CLIENT_CERT_FILE_PATH ldapId=1,ldapAuthenticationMethodId=1 &>/dev/null 
+
+		if [ $? -ne 0 ]; then
+   			echo -e "Error when executing (general fault)\n"
+			exit 1 
+		else
+			exit 0	
+		fi
+
+	fi
+		# exit with the exit code of the last command
+		#exit $?
+else 	
+	usage
+        exit 3
+fi 
+		

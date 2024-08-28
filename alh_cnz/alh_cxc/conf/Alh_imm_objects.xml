@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?><!-- 
+  Copyright (c) 2011 Ericsson AB.
+  All rights reserved
+
+  DX ECIM Tool-chain generated this file on 06-Dec-2011 16:28:19 using 
+    * coremw.m2m (1.3.0.Release)
+    * coremw.m2t (1.3.0.Release)
+    * coremw.dsl (1.3.0.Release)
+    * coremw.imm (1.3.0.Release)
+--><imm:IMM-contents xmlns:imm="http://www.saforum.org/IMMSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd">
+    <object class="AlarmHandler">
+        <dn>alarmHandlerId=1</dn>
+    </object>
+    <object class="AlarmConfigurationTable">
+	<dn>objectId=1,alarmHandlerId=1</dn>
+        <attr>
+            <name>perceivedSeverity</name>
+            <value>EVENT</value>
+        </attr>
+	<attr>
+            <name>specificProblem</name>
+            <value>6012</value>
+        </attr>
+    </object>
+</imm:IMM-contents>

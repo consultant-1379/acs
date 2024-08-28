@@ -1,0 +1,30 @@
+#!/bin/bash
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2012 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# Name:
+#       hcstart.sh
+# Description:
+#       A script to wrap the invocation of hcstart from the COM CLI.
+# Note:
+#       None.
+##
+# Usage:
+#       None.
+##
+# Output:
+#       None.
+##
+# Changelog:
+# - Wed Oct 03 2012 - Satya Deepthi (xsatdee)
+#       First version.
+# - Wed Mar 23 2016 - Kiran Apuri (xkirapu)
+#       Updated file due to SUGAR feature impacts in CLI exposed commands wrappers in SLES12.
+##
+
+umask 002
+/usr/bin/sudo /opt/ap/acs/bin/acs_hcs_hcstart.sh $@
+
+exit $?

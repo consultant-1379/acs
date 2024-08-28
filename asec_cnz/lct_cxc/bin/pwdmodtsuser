@@ -1,0 +1,49 @@
+#!/bin/bash
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2013 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# Name:
+#       pwdmodtsuser
+# Description:
+#       A script to wrap the invocation of pwdmodtsuser command.
+# Note:
+#       None.
+##
+# Usage:
+#       None.
+##
+# Output:
+#       None.
+##
+# Changelog:
+# - Tue May 28 2013 - Roni Newatia (xronnew)
+#       First version.
+##
+
+# Setting  global variables
+#############################
+root_user="root"
+tsgroup_user="tsgroup"
+
+# Exit codes
+###########################
+exit_privilege=5
+
+# Check the privilage of the user
+privilege_check(){
+cur_user=`id -n -g`
+#       tsadmin_id=`${GREP} "^$admin:" /cluster/etc/passwd | ${AWK} -F: '{print $3}'`
+#       root_id=`${GREP} "^$root_user:" /etc/passwd | ${AWK} -F: '{print $3}'`
+#        if [ "$userid" != "$tsadmin_id" ] && [ "$userid" != "$root_id" ];then
+        if [ "$cur_user" != "$tsgroup_user" ] && [ "$cur_user" != "$root_user" ];then
+                echo "ERROR: Not enough privileges to use this command"
+                echo ""
+                exit $exit_privilege
+        fi
+}
+privilege_check
+
+/opt/ap/acs/bin/acs_lct_pwdmodtsuser.sh "$@"
+

@@ -1,0 +1,49 @@
+csm-version: '1.0'
+components:
+- uid: acs.sch
+  name: acs-sch
+  description: ACS SCH component
+  availability-manager: AMF
+  software:
+    sdp: ERIC-ACS_SCHBIN-CXC1371532
+  supersedes:
+  - base-component: ERIC-APG_SCH
+  availability-properties:
+    control-policy:
+      type: ADVANCED
+    multiplicity-policy:
+      node-active: ONE
+      node-standby: ONE
+      node-active-standby: 'NO'
+      cluster-active: ONE
+      cluster-standby: ONE
+    lifecycle-control:
+      prefix: /opt/ap/acs/bin
+      start: acs_sch_2N_clc instantiate
+      stop: acs_sch_2N_clc cleanup
+      monitor-keys:
+      - key: acs_schd_hck
+        period: 240s
+        timeout: 180s
+      promote-demote-timeout: 200s
+      migrate-timeout: 60s
+      recovery-policy: COMPONENT_RESTART
+      start-stop-timeout: 100s
+  constraints:
+    plugin: plugin/acs.sch
+    installation:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+    upgrade:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+  meta-data:
+    component-version: 10.0.3-0
+    deliverable:
+      deployment-package: acs_sch-10.0.3-0-deployment-CXC1371532.tar.gz
+      runtime-package: acs_sch-10.0.3-0-runtime-CXC1371532.tar.gz
+    software:
+    - file-name: ACS_SCHBIN-CXC1371532_10-R1D.x86_64.sdp
+      bundle-name: ERIC-ACS_SCHBIN-CXC1371532_10-R1D

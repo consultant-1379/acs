@@ -1,0 +1,99 @@
+# **********************************************************************
+#
+# Short description:
+# Makefile template for XXX library
+# **********************************************************************
+#
+# Ericsson AB 2010 All rights reserved.
+# The information in this document is the property of Ericsson.
+# Except as specifically authorized in writing by Ericsson, the receiver of this
+# document shall keep the information contained herein confidential and shall protect
+# the same in whole or in part from disclosure and dissemination to third parties.
+# Disclosure and disseminations to the receivers employees shall only be made
+# on a strict need to know basis.
+#
+# **********************************************************************
+#
+# Rev        Date         Name      What
+# -----      -------      --------  --------------------------
+#            2010-08-31   xmianon   Created
+# **********************************************************************
+
+
+VOB_NAME := ntacs
+VOB_PATH := ../../../../../../cm4ap/$(VOB_NAME)
+
+CNZ_NAME := cs_cnz
+CNZ_PATH := $(VOB_PATH)/$(CNZ_NAME)
+
+CAA_NAME := cssrv_caa
+CAA_PATH := $(CNZ_PATH)/$(CAA_NAME)
+
+OBJDIR := ../object
+
+CINCLUDES += -I$(CAA_PATH)/inc
+CINCLUDES += -I$(CNZ_PATH)/csprot_caa/inc
+CINCLUDES += -I$(CNZ_PATH)/csmodd_caa/inc
+CINCLUDES += -I${CNZ_PATH}/cute
+CINCLUDES += -I/usr/local/boost
+CINCLUDES += -I/cc/IO_Developments/ACE_SDK/ACE_wrappers/
+
+CXXFLAGS += -Wall -fPIC -g -c ${CINCLUDES}
+#CXXFLAGS += --coverage
+#CXXFLAGS += -g -c --coverage ${CINCLUDES}
+#LDFLAGS += -lgcov
+LIBS += -ldhcpctl -lomapi -ldst
+
+
+TEST_SUITES := $(wildcard *_Test.cpp)
+TEST_SOURCES := $(patsubst %_Test.cpp,%.cpp,$(TEST_SUITES))
+TEST_DEPENDENCIES += ACS_CS_Protocol.cpp
+TEST_OBJECTS := $(patsubst %.cpp,%.obj,$(TEST_SOURCES)) $(patsubst %.cpp,%.obj,$(TEST_DEPENDENCIES))
+TEST_BINARIES := $(patsubst %.cpp,%,$(TEST_SUITES))
+
+vpath %.cpp .:$(CAA_PATH)/src:$(CNZ_PATH)/csprot_caa/src:$(CAA_PATH)/src:$(CNZ_PATH)/csmodd_caa/src
+vpath %.h .:$(CAA_PATH)/inc
+vpath %.obj ${OBJDIR}
+
+# Targets
+
+all: test
+
+test: $(TEST_BINARIES)
+
+# Build all tests, one binary for each *_Test.cpp file
+$(TEST_BINARIES): $$@.obj $(TEST_OBJECTS)
+	$(CXX) $(addprefix $(OBJDIR)/,$^) $(LDFLAGS) $(LIBSDIR) $(LIBS) -o $@
+
+# Only runs the tests (needed to retrieve test result)
+run: test
+	@for i in $(TEST_BINARIES); do \
+		./$$i > $$i.output; \
+	done
+
+# Print testresult
+testresult: run
+	@for i in $(TEST_BINARIES); do \
+		echo "$$i"; \
+		echo -n "success: "; \
+		grep "#success" $$i.output | wc -l; \
+		echo -n "failure: "; \
+		grep "#failure" $$i.output | wc -l; \
+		echo ""; \
+	done
+
+# Prints test coverage
+gcov: run
+	@for i in $(TEST_SOURCES); do \
+		echo "$$i"; \
+		gcov -n -o $(OBJDIR) $$i | grep -A 1 $$i | grep -v $$i; \
+		echo ""; \
+	done
+	
+%.obj : %.cpp
+	$(CXX) $(CXXFLAGS) $^ -o $(OBJDIR)/$@
+
+.PHONY : clean
+clean:
+	@echo "Cleaning"
+	@rm -f $(OBJDIR)/* ./*.gcov *.output $(TEST_BINARIES)

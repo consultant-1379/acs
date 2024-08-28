@@ -1,0 +1,157 @@
+opyright (C) 2013 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# models.info TEMPLATE
+##
+# Description:
+#       Configuration file used to perform IMM model changes during software upgrade for ALH block.
+##
+##
+# Changelog:
+# - Jul 28-07 2023 - P Soumya(ZPSXSOU)
+# - nov 25-27 2013 - Fabrizio Paglia (XFABPAG)      First version
+# - dec 21-01 2014 - Andrea Formica  (EANFORM)      From APG43L1.12 to LSV24
+# - Jul 28-07 2023 - P Soumya(ZPSXSOU)              Change in quota for support_data group
+#
+# Report here FOR EACH package version, all introduced model changes, in the following format,
+# starting from the first version from which you want to support upgrade, with the most recent on top
+
+# Updated data for support_data group quota limit.
+VERSION: CXC1371525_15-R1C
+# Updated data for 1300gb quota limit. 
+VERSION: CXC1371525_15-R1B
+# Updated data transfer quotas for BSC in APG43L 4.3
+VERSION: CXC1371525_15-R1A03
+
+# Updated STS Counter quotas for BSC in APG43L 4.3
+VERSION: CXC1371525_15-R1A02
+
+# STS Counter increase for BSC in APG43L 4.3
+VERSION: CXC1371525_15-R1A01
+
+# RSYSLOG Memory check implementation in APG43L 4.2
+VERSION: CXC1371525_14-R1B
+
+# vBSC-300 implementation in APG43L 4.2
+VERSION: CXC1371525_14-R1A01
+
+# WLN-GEP5 rebase from 4.1.1 to 4.2 lsv06 
+VERSION: CXC1371525_9-R2B
+
+# WLN-GEP5 introduction
+VERSION: CXC1371525_9-R2A
+
+# TR HX58640
+VERSION: CXC1371525_9-R1C
+
+#Changes for 3.6.2
+VERSION: CXC1371525_9-R1B
+
+# TR HX21829
+VERSION: CXC1371525_9-R1A04
+
+# Adaptations to SwM2.0
+VERSION: CXC1371525_9-R1A04
+VERSION: CXC1371525_9-R1A03
+VERSION: CXC1371525_9-R1A02
+VERSION: CXC1371525_9-R1A01
+
+#Changes done to change actual values to nominal values 4 vMSC-HC configurations
+VERSION:CXC1371525_8-R1A03
+
+#Rebase from APG43L3.4.4
+VERSION:CXC1371525_8-R1A02
+
+#Changes done to introduce 4 vMSC-HC configurations
+VERSION:CXC1371525_8-R1A01
+
+#BSC,BSC-400 configuration MCSUSRGRP quota increased to 500MB
+VERSION:CXC1371525_7-R1D
+
+#vHLR-BS-250 audit_log quota increased to 3000MB
+VERSION:CXC1371525_7-R1C
+
+#HV88823 Fix & Changes made to increase STS counter capacity
+VERSION:CXC1371525_7-R1B01
+
+#SSU rebase from 3.2 to 3.4
+VERSION: CXC1371525_7-R1A02
+
+#Changes made to introduce vHLR-BS-250GB configuration
+VERSION: CXC1371525_7-R1A01
+
+#Bug Fix in Gep2 environment
+VERSION: CXC1371525_6-R1A02
+
+#Changes made to introduce IPSTP-MCP in BC for AXE17A-FD1
+VERSION: CXC1371525_6-R1A01
+
+#Changes for WIRELINE CNI_33_6_673
+VERSION: CXC1371525_5-R2A
+
+#Changes made to introduce IPSTP
+VERSION: CXC1371525_5-R1C
+
+#Merge of CNI_33_6_652
+VERSION: CXC1371525_5-R1B
+
+#Merge of CNI_33_6_623
+VERSION: CXC1371525_5-R1A05
+
+#Changes for vMSC-147 & vMSC-300
+VERSION: CXC1371525_5-R1A04
+
+VERSION: CXC1371525_5-R1A03
+#SLES12 rebase to 3_0_5
+VERSION: CXC1371525_5-R1A02
+
+#SLES12 comiplation
+VERSION: CXC1371525_5-R1A01
+
+
+#Support to upgrade from 3.1 to LSV14
+VERSION: CXC1371525-R2B
+VERSION: CXC1371525-R2A
+
+#REL3 - no change
+VERSION: CXC1371525-R1B
+VERSION: CXC1371525-R1A05
+#CM011 - no changes
+VERSION: CXC1371453-R2A
+VERSION: CXC1371525-R1A04
+VERSION: CXC1371525-R1A03
+VERSION: CXC1371525-R1A02
+
+VERSION: CXC1371525-R1A01
+
+#CM006 - no changes
+VERSION: CXC1371453-R1J
+
+#CM005E - no changes
+VERSION: CXC1371453-R1H
+
+#CM005D - no changes
+VERSION: CXC1371453-R1G
+
+#CM005C - no changes
+VERSION: CXC1371453-R1F
+
+#CM005B - no changes
+VERSION: CXC1371453-R1E
+
+
+#CM005 - no changes
+VERSION: CXC1371453-R1D
+
+#CM004 - no changes
+VERSION: CXC1371453-R1C
+
+#RM001 - no changes
+VERSION: CXC1371453-R1B
+
+#LSV27 - no changes
+VERSION: CXC1371453-R1A14
+
+#1.1.12 - no changes
+VERSION: CXC1371319-R1M
+

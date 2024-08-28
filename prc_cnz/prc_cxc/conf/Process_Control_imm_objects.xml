@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?><!-- 
+  Copyright (c) 2012 Ericsson AB.
+  All rights reserved
+
+  DX ECIM Tool-chain generated this file on Apr 5, 2012 12:39:14 PM using 
+    * coremw.m2m (1.4.4.201109271606)
+    * coremw.m2t (1.4.4.201109271606)
+    * coremw.dsl (1.4.4.201109271606)
+    * coremw.imm (1.4.4.201109271606)
+--><imm:IMM-contents xmlns:imm="http://www.saforum.org/IMMSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd">
+    <object class="ProcessControl">
+        <dn>processControlId=1</dn>
+    </object>
+    <object class="IspConfig">
+        <dn>ispConfigId=1,processControlId=1</dn>
+        <attr>
+            <name>maxLogSize</name>
+            <value>10240</value>
+        </attr>
+    </object>
+    <object class="EventMatrix">
+        <dn>eventMatrixId=1,processControlId=1</dn>
+        <attr>
+            <name>processName</name>
+            <value>acs_ssumonitord</value>
+        </attr>
+        <attr>
+            <name>eventAction</name>
+            <value>failover</value>
+        </attr>
+        <attr>
+            <name>specificProblem</name>
+            <value>6102</value>
+        </attr>
+    </object>
+    <object class="EventMatrix">
+        <dn>eventMatrixId=2,processControlId=1</dn>
+        <attr>
+            <name>processName</name>
+            <value>acs_chbheartbeat</value>
+        </attr>
+        <attr>
+            <name>eventAction</name>
+            <value>changeactivenode</value>
+        </attr>
+        <attr>
+            <name>specificProblem</name>
+            <value>9030</value>
+        </attr>
+    </object>
+</imm:IMM-contents>

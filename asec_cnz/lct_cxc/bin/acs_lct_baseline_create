@@ -1,0 +1,182 @@
+#
+#       Description     :
+#
+#
+#       Author          :
+#
+#
+# - Mon May 13 2013 - Madhu (xmadmut)
+#       Updated for user story34 and sha1sum file path changed for restore
+
+
+#setting  global variables
+#
+exit_success=0
+exit_failure=1
+INTEGRITY_BASE="/opt/ap/acs/conf/acs_lct_integrityAP_base.conf"
+#SHA1SUM_FILE="/opt/ap/acs/conf/acs_lct_sha1verify.conf"
+SHA1SUM_FILE="/cluster/storage/system/config/acs_lct/acs_lct_sha1verify.conf"
+
+#commnd list to use
+#
+ECHO=/bin/echo
+CUT=/usr/bin/cut
+AWK=/bin/awk
+
+hyphen_delim='-'
+plus_delim='+'
+
+
+
+if [ ! -f $INTEGRITY_BASE ]
+        then
+                ${ECHO} "ERROR: File [$INTEGRITY_BASE] does not exist "
+                exit $exit_failure
+fi
+
+if [ ! -s $INTEGRITY_BASE ]
+        then
+                ${ECHO} "ERROR: File [$INTEGRITY_BASE] does not contain any data"
+                exit $exit_failure
+fi
+
+${ECHO} -n > $SHA1SUM_FILE
+chmod 755 $SHA1SUM_FILE
+while read line
+        do
+                if [ "${line:0:1}" == '#' ];then
+                        continue
+                fi
+		
+
+                num_field=`${ECHO} $line | ${AWK}  '{print NF}'`
+
+                base_file=`${ECHO} $line | ${AWK} '{len=length($1);print substr($1,2,len-2)}'`
+
+                base_bool=`${ECHO} $line | ${AWK} '{print $2}'`
+
+
+
+                if  [ "$base_bool" == "false" ];then
+
+                        for file in `find $base_file -maxdepth 1`
+                        do
+				if [ "$file" == "$base_file" ];then
+                                        continue
+                                fi
+
+                                status=0
+                                if [ $num_field -gt 2 ];then
+                                        delim=`${ECHO} $line | ${CUT} -d ' ' -f 3`
+					if [[ "$delim" =~ "$hyphen_delim" ]];then
+                                        	list=`${ECHO} $line | ${CUT} -d ' ' -f 4-`
+                                        	for val in $list
+                                        	do
+                                                	file_val=`${ECHO} "$base_file/$val"`
+                                                	if [ "$file" == "$file_val" ];then
+                                                        	status=1
+								break
+                                                	fi
+                                        	done
+					else
+						if [[ "$delim" =~ "$plus_delim" ]];then
+                                			plus_delim_status=0
+                                        		list=`${ECHO} $line | ${CUT} -d ' ' -f 4-`
+                                        		for val in $list
+                                        		do
+                                                		file_val=`${ECHO} "$base_file/$val"`
+                                                		if [ "$file" == "$file_val" ];then
+                                                        		plus_delim_status=1
+									break
+                                                		fi
+                                        		done
+                                			if [ $plus_delim_status == 0 ];then
+                                        			continue
+                                			fi
+						fi
+                                	fi
+                                fi
+
+                                if [ $status == 1 ];then
+                                        continue
+                                fi
+
+                                if [ -d $file ]; then
+                                        ${ECHO} "\"$file\"" >> $SHA1SUM_FILE
+                                else
+                                        if [ -f $file ];then
+						var=`sha1sum $file`
+						if [ $? == 0 ];then 
+                                        		${ECHO} $var | ${AWK} '{print "\""$2"\""$1}' >> $SHA1SUM_FILE
+						fi
+					fi
+                                fi
+                        done
+
+
+                fi
+
+                if [ "$base_bool" == "true" ];then
+
+                        for file in `find $base_file`
+                        do
+				if [ "$file" == "$base_file" ];then
+					continue
+				fi
+                                status=0
+                                if [ $num_field -gt 2 ];then
+                                        delim=`${ECHO} $line | ${CUT} -d ' ' -f 3`
+					if [[ "$delim" =~ "$hyphen_delim" ]];then
+                                        	list=`${ECHO} $line | ${CUT} -d ' ' -f 4-`
+                                        	for val in $list
+                                        	do
+                                                	file_val=`${ECHO} "$base_file/$val"`
+                                                	if [[ "$file" =~ "$file_val" ]];then
+                                                        	status=1
+                                                 	#      if [ -d $file_val ]; then
+                                                 	#               ${ECHO} "\"$file\"" >> $SHA1SUM_FILE
+                                                 	#      fi
+                                                	fi
+                                        	done
+					else
+						if [[ "$delim" =~ "$plus_delim" ]];then
+                                			plus_delim_status=0
+                                        		list=`${ECHO} $line | ${CUT} -d ' ' -f 4-`
+                                        		for val in $list
+                                        		do
+                                                		file_val=`${ECHO} "$base_file/$val"`
+                                                		if [ "$file" == "$file_val" ];then
+                                                        		plus_delim_status=1
+									break
+                                                		fi
+                                        		done
+                                			if [ $plus_delim_status == 0 ];then
+                                        			continue
+                                			fi
+						fi
+                                	fi
+                                fi
+
+                                if [ $status == 1 ];then
+                                        continue
+                                fi
+
+                                if [ -d $file ]; then
+                                        ${ECHO} "\"$file\"" >> $SHA1SUM_FILE
+                                else
+                                        if [ -f $file ];then
+						var=`sha1sum $file`
+						if [ $? == 0 ];then
+                                        		${ECHO} $var | ${AWK} '{print "\""$2"\""$1}' >> $SHA1SUM_FILE
+						fi
+					fi
+                                fi
+                        done
+
+                fi
+
+
+
+done < $INTEGRITY_BASE
+
+exit $exit_success

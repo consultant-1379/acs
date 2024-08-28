@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+	Copyright (c) 2021 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Oct 7, 2021 12:48:46 PM using:
+	* com.ericsson.ecim.coremw.m2m 3.14.0.202105061142
+	* com.ericsson.ecim.coremw.dsl 3.14.0.202105061142
+	* com.ericsson.ecim.coremw.imm 3.14.0.202105061142
+--><imm:IMM-contents xmlns:imm="http://www.saforum.org/IMMSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd">
+    <class name="AxeLicenseManagementLicenseM">
+        <category>SA_CONFIG</category>
+        <rdn>
+            <name>AxeLicenseManagementlicenseMId</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_INITIALIZED</flag>
+        </rdn>
+        <attr>
+            <name>emergencyActivationCount</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_RUNTIME</category>
+        </attr>
+        <attr>
+            <name>endDateforEmergencyMode</name>
+            <type>SA_STRING_T</type>
+            <category>SA_RUNTIME</category>
+        </attr>
+        <attr>
+            <name>fingerprint</name>
+            <type>SA_STRING_T</type>
+            <category>SA_RUNTIME</category>
+        </attr>
+        <attr>
+            <name>licenseMode</name>
+            <type>SA_INT32_T</type>
+            <category>SA_RUNTIME</category>
+        </attr>
+        <attr>
+            <name>maintenanceMode</name>
+            <type>SA_INT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>0</default-value>
+        </attr>
+        <attr>
+            <name>endDateforMaintenanceMode</name>
+            <type>SA_STRING_T</type>
+            <category>SA_RUNTIME</category>
+        </attr>
+        <attr>
+            <name>hashedFingerprint</name>
+            <type>SA_STRING_T</type>
+            <category>SA_RUNTIME</category>
+        </attr>
+    </class>
+    <class name="AxeLicenseManagementElectronicKey">
+        <category>SA_RUNTIME</category>
+        <rdn>
+            <name>electronicKeyId</name>
+            <type>SA_STRING_T</type>
+            <category>SA_RUNTIME</category>
+            <flag>SA_CACHED</flag>
+        </rdn>
+        <attr>
+            <name>description</name>
+            <type>SA_STRING_T</type>
+            <category>SA_RUNTIME</category>
+        </attr>
+        <attr>
+            <name>startDate</name>
+            <type>SA_STRING_T</type>
+            <category>SA_RUNTIME</category>
+        </attr>
+        <attr>
+            <name>expiryDate</name>
+            <type>SA_STRING_T</type>
+            <category>SA_RUNTIME</category>
+        </attr>
+        <attr>
+            <name>licensedCapacityValue</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_RUNTIME</category>
+        </attr>
+        <attr>
+            <name>daysToExpire</name>
+            <type>SA_STRING_T</type>
+            <category>SA_RUNTIME</category>
+        </attr>
+    </class>
+</imm:IMM-contents>

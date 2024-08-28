@@ -1,0 +1,537 @@
+#!/bin/bash
+#
+# common SDP functions and variables 
+#
+# Author : ESALVES, TEIGGAM
+#
+#
+
+
+# --------------------------------------------------------
+#define variables
+# --------------------------------------------------------
+
+# ----------------------------
+# BUNDLE Tags definition
+# ----------------------------
+tagName="#TAG_NAME#"
+tagVer="#TAG_REV#"
+tagCXP="#TAG_CXP#"
+
+tagSafVer="#TAG_SAF_VER#"
+
+# ---------------------------
+# AppType Tags definition
+# ---------------------------
+tagAppT="#TAG_APPT#"
+
+# --------------------------
+# SGType Tags definition
+# --------------------------
+tagSgT="#TAG_SGT#"
+tagSuProbPeriod="#TAG_SUPROB_PERIOD#"
+tagSuProbCounterMax="#TAG_SUPROB_COUNTERMAX#"
+tagCompProbPeriod="#TAG_COMPPROB_PERIOD#"
+tagCompProbCounterMax="#TAG_COMPPROB_COUNTERMAX#"
+tagAutoAdjustPeriod="#TAG_AUTOADJUST_PERIOD#"
+
+# --------------------------
+# SUType Tags definition
+# --------------------------
+tagSUT="#TAG_SUT#"
+tagSuFailOver="#TAG_SUFAILOVER#"
+
+# ----------------------------
+# CompType Tags definition
+# ----------------------------
+tagCompT="#TAG_COMPT#"
+tagHLTCHK="#TAG_HLT_CHK#"
+tagHLTCHK1="#TAG_HLT_CHK1#"
+tagHLTCHK2="#TAG_HLT_CHK2#"
+tagHTPeriodLowerBound="#TAG_HCPERIOD_LOWERBOUND#"
+tagHTMaxDurationLowerBound="#TAG_HCMAXDURATION_LOWERBOUND#"
+tagScript="#TAG_SCRIPT#"
+tagScript1="#TAG_SCRIPT1#"
+tagScript2="#TAG_SCRIPT2#"
+tagDefaultClcCliTimeOut_LowerBound="#TAG_DEFAULTCLCCLITIMEOUT_LOWERBOUND#"
+tagDefaultCallbackTimeOut_LowerBound="#TAG_DEFAULTCALLBACKTIMEOUT_LOWERBOUND#"
+tagRecoveryOnError="#TAG_RECOVERYONERROR#"
+tagDisableRestart="#TAG_DISABLERESTART#"
+tagCompVer="#TAG_COMP_VER#"
+
+# --------------------------
+# CSType Tags definition
+# --------------------------
+tagCST="#TAG_CST#"
+
+# -------------------------------
+# ServiceType Tags definition
+# -------------------------------
+tagSVCT="#TAG_SVCT#"
+
+# -----------------------
+# Campaign Tags
+# -----------------------
+tagUC="#TAG_UC#"
+tagApp="#TAG_APP#"
+tagSG="#TAG_SG#"
+tagSU1="#TAG_SU1#"
+tagSU2="#TAG_SU2#"
+tagSaAmfSUFailover="#TAG_SAAMFSUFAILOVER#"
+tagCOMP="#TAG_COMP#"
+tagSI="#TAG_SI#"
+tagSI1="#TAG_SI1#"
+tagSI2="#TAG_SI2#"
+tagCSI="#TAG_CSI#"
+tagCSI1="#TAG_CSI1#"
+tagCSI2="#TAG_CSI2#"
+tagPathnamePrefix="#TAG_PATHNAMEPREFIX#"
+tagRecoveryOnErrorCampaign="#TAG_RECOVERYONERROR#"
+tagSIRank="#TAG_SI_RANK#"
+
+# ---------------------------
+# -- Upgrade campaign template U1 New tag details
+# ---------------------------
+tagOldName="#TAG_OLD_REV#"
+#tagNewName="#TAG_NEW_REV#"
+
+# are used ????
+tagIMM="#IMM_FILE#"
+#tagScript="#TAG_SCR#"
+#tagBname="#SUB_NAME#"
+
+
+# ---------------------
+# script variables
+# ---------------------
+
+TEMPLATE_PATH="BUNDLE_TEMPLATE"
+TEMPLATE_PATH_3="BUNDLE_TEMPLATE_3"
+TEMPLATE_NAME="_TEMPLATE"
+
+COREMW_PATH="$COREMW_SDK_PATH"
+
+# --------------------------------------
+# Configuration files variables section
+# --------------------------------------
+IMM_R1_MODEL_CONF_FILE="APOS-IMM_R1-model.config "
+OLD_IMM_R1_MODEL_CONF_FILE="imm-model.config"
+IMM_I_LOCAL_AUTH_R1_MODEL_CONF_FILE="IMM-I-Local_Authorization_R1-model.config"
+COM_MODEL_CONF_FILE="APOS-COM_R1-model.config"
+IMM_R1_MODEL_APOS_CONF_FILE="IMM_R1-model.config "
+COM_MODEL_APOS_CONF_FILE="COM_R1-model.config"
+
+
+# ----------------------------
+# BUNDLE section
+# ----------------------------
+#Bname="APOS_HA"
+#ver="R1A05" 
+#cxp="CXC1371349" 
+safVer="1.0.0"
+# ---------------------------
+# AppType section
+# ---------------------------
+appT="APG_"
+# ---------------------
+# SGType section
+# ---------------------
+sgT="APG_"
+suProbation_period="600000000000" 
+suProbation_counterMax="1"
+compProbation_period="600000000000" 
+compProbation_counterMax="2"
+autoAdjust_period="10000000"
+# ------------------
+# SUType section
+# ------------------
+suT="APG_"
+suFailOver="1"
+# --------------------
+# CompType section
+# --------------------
+compT="APG_"
+#hltCHK="apos_ha_2napp1d_hck"
+HCperiod_Lowebound="240000000000"
+HCmaxDuration_Lowerbound="180000000000"
+#script="bin\/apos_ha_2napp1_clc"
+defaultClcCliTimeOut_LowerBound="10000000000"
+defaultCallbackTimeOut_LowerBound="10000000000"
+recoveryOnError="SA_AMF_COMPONENT_RESTART"
+disableRestart="0"
+# -----------------
+# CSType section
+# -----------------
+csT="APG_"
+# -----------------------
+# ServiceType section
+# -----------------------
+svcT="APG_"
+# -----------------------
+# Campaign section
+# -----------------------
+#UC="I1"
+#safApp="APG_App1"
+safSg="2NSG_"
+safSgNoRed="NoRedSG_"
+safSu1="SU1_"
+safSu2="SU2_"
+saAmfSUFailover="true"
+safComp="Comp_"
+safSi="SI_"
+safSi1="SI1_"
+safSi2="SI2_"
+safCsi="CSI_"
+safCsi1="CSI1_"
+safCsi2="CSI2_"
+#pathnamePrefix="\/opt\/ap\/apos"
+recoveryOnErrorCampaign="2"
+SiRank="2"
+
+ext="/*.template"
+
+TFILE="/tmp/out.tmp.$$"
+
+validatesdpconfpath="/vobs/cm4ap/ntacs/fcsc_cnz/fcsc_cxc/packages/sdp"
+
+
+# --------------------------------------------------------
+# Common functions section
+# --------------------------------------------------------
+
+#
+# function: error_message
+#
+#
+function error_message {
+ echo "$1"
+ exit 1
+}
+
+#this is an example of check_exit_value usage
+#ERROR_MESSAGE="ERROR: Could not create directory $HOME_DIR"
+#mkdir -p $HOME_DIR
+#check_exit_value "$ERROR_MESSAGE"
+
+#
+# function: check_exit_value
+#
+# Check the exit value from the last command and return 1 if it failed.
+function check_exit_value () {
+ if [ $? -ne 0 ]; then
+        error_message "$1"
+ fi
+}
+
+
+
+#
+# function: check_directory
+#
+function check_directory () {
+ if [ ! -d $1 ]; then
+     error_message "Error: directory doesn't exist $1"
+ fi
+}
+
+#
+# function: 
+#
+function check_file () {
+ if [ ! -e $1 ]; then
+     error_message "Error: File doesn't exist $1"
+ fi
+}
+
+#
+# function: 
+#
+function convert_in_upper(){
+ echo $@ | tr '[:lower:]' '[:upper:]'
+}
+
+#
+# function: 
+#
+function convert_in_lower(){
+ echo $@ | tr '[:upper:]' '[:lower:]'
+}
+
+#
+# function: 
+#
+#RSTATE_REGEX="^[RP][0-9A-Z]" ]]
+RSTATE_REGEX="^[R,P][0-9 A-Z]*$"
+# Validating the Version
+function validate_r_state() {
+ if [[ $1 =~ $RSTATE_REGEX ]]
+ then
+      val=`convert_in_upper $1`
+      echo "$val"
+ else
+     error_message "$1: Violates the Design Rule of Version"
+ fi
+}
+
+
+#
+# function: 
+#
+#echo "APOS" | grep -E '^[a-zA-Z0-9]{1,}_{0,1}[a-zA-Z0-9]{1,}+$'
+#BLOCKNAME_REGEX="^[a-zA-Z0-9]*_[a-zA-Z0-9]"
+BLOCKNAME_REGEX="^[a-zA-Z0-9]{1,}_{0,1}[a-zA-Z0-9]{1,}+$"
+#Validating the block Name
+function validate_blockname () {
+if [[ $1 =~ $BLOCKNAME_REGEX ]]
+then
+     val=`convert_in_upper $1`
+     echo "$val"
+else
+     error_message "$1: Violates Design Rule of Block Name"
+fi
+}
+
+
+#
+# function: 
+#
+# TO BE REMOVED !!!
+BLOCKPATH_REGEX="[/].*[a-z A-Z 0-9][_][c][x][c]"
+
+function validate_path() {
+if [[ $1 =~ $BLOCKPATH_REGEX ]]
+then
+     val=$1
+     echo "$val"
+else
+     error_message "$1: Violates Design Rule of Block Path"
+fi
+}
+
+
+#
+# function: 
+#
+PRODUCT_NR_REGEX="^CX[C,P,A][0-9_]"
+function validate_ProductNr() {
+# Validating the CX* Number
+if [[ $1 =~ $PRODUCT_NR_REGEX ]]
+then
+     val=`convert_in_upper $1`
+     echo "$val"
+else
+     error_message "$1: Violates the Design Rule of Product Number Number"
+fi
+}
+
+
+
+#
+# function: get_tmppath
+# return the temporary path  
+#
+function get_tmppath () {
+  local val="/tmp/$USER"
+  if [ ! -d $val ]; then
+     create_tmpdir
+  fi
+  echo "$val"
+}
+
+#
+# function: 
+#
+function get_sdppath () {
+  local val="$1/packages/sdp/"
+  check_directory $val
+  echo "$val"
+}
+
+#
+# function: 
+#
+function get_rpmpath () {
+  local val="$1/packages/rpm/"
+  check_directory $val
+  echo "$val"
+}
+
+
+#
+# function: 
+# 
+function create_tmpdir () {
+ local val="/tmp/$USER"
+ rm -rf $val > /dev/null
+ check_exit_value "ERROR: Could not delete directory $val"
+ mkdir $val
+ check_exit_value "ERROR: Could not create directory $val"
+}
+
+
+# TO BE REMOVED !!!!
+function check_rpm_file_with_version()
+{
+	ls $rpmpath | grep $ver > /dev/null
+	if [ $? -gt 0 ]
+	then
+		echo "---------------------------------------------------"
+		echo "There is no rpm with version $ver for block $blockname"
+		echo "Campaign creation.. Aborted"
+		echo "---------------------------------------------------"
+		exit 1
+	fi
+}
+
+
+
+#
+# function: 
+#
+function validate_Campaignfile() {
+echo "Validating campaign.xml in progress :: "
+xmllint --schema $COREMW_PATH/schemas/campaign.xsd --output /dev/null $1
+check_exit_value "ERROR: Could not validate $1"
+echo ""
+}
+
+#
+# function: 
+#
+function validate_ETFfile() {
+echo "Validating etf.xml in progress :: "
+xmllint --schema $COREMW_PATH/schemas/etf.xsd --output /dev/null $1
+check_exit_value "ERROR: Could not validate $1"
+echo ""
+
+}
+
+#
+# function: 
+#
+#  $1 sdp/campaign File Name
+#  $2 SDP Path to copy file
+function create_and_copy_sdpFile
+{
+  tar cvzf $1.x86_64.sdp -P *
+  check_exit_value "Impossible to create $1.x86_64.sdp file !!!"
+  cp -f $1.x86_64.sdp $2
+  check_exit_value "Impossible to copy file at $2"
+  echo "SDP file Successfully created at $2"
+}
+
+
+#
+# function: 
+#
+#  $1 Destination Path
+#  $2 Source Path
+function create_and_copy_template_to_dest_path
+{
+  create_tmpdir
+  if [ ! -d $1 ]
+  then
+    # only for debug purpose 
+    echo " Source template path is $2"
+    echo " Destination path is $1"
+    mkdir $1
+    check_exit_value "Impossible to create $1 directory"
+    /bin/cp -R $2/* $1/.
+    check_exit_value "Impossible to copy from $2 to $1"
+  fi
+}
+
+# --------------------------------------------------------
+# sdp bundle functions section
+# --------------------------------------------------------
+
+#
+# function: 
+#
+function sdp_check_number_arguments(){
+	
+        if [ $1 -ne 4 ]
+	then
+		echo " usage:"
+		echo "   $0 <CXC-Path> <Subsystem_BlockName> <Version> <ProductNumber>" 
+		echo "    where:"
+		echo "              Argument 1 <CXC-Path> is Block's CXC Path"
+		echo "              Argument 2 <Subsystem_BlockName> is Subsystem_BlockName"
+		echo "              Argument 3 <Version> is Block Version"
+		echo "              Argument 4 <ProductNumber> is Block Product Number "
+		exit 1
+	fi
+
+}
+
+
+# --------------------------------------------------------
+# sdp campaign functions section
+# --------------------------------------------------------
+
+#
+# function: 
+#
+function campaign_check_number_arguments(){
+
+	if [ $1 -lt 5  -o  $1 -gt 6  ]
+	then
+		echo " usage:"
+		echo "   $0 <CXC-Path> <Subsystem_BlockName> <Version> <ProductNumber> <CampaignType>" 
+		echo "    where:"
+		echo "              Argument 1 <CXC-Path> is Block's CXC Path"
+		echo "              Argument 2 <Subsystem_BlockName> is Subsystem_BlockName"
+		echo "              Argument 3 <Version> is Block Version"
+		echo "              Argument 4 <ProductNumber> is Block Product Number "
+		echo "              Argument 5 <CampaignType> is Campaign type. where:" 
+		echo "                           I1 --> Install Campaign (SingleStep Procudure)"
+		echo "                           I2 --> Install Campaign (RollingUpgrade Procudure)"
+		echo "                           U1 --> Update  Campaign (RollingUpgrade Procudure) *See Note below"
+		echo "                           R1 --> Remove  Campaign (only test purpose)"
+                echo "              Argument 6  <Old-Version> is the old Block Version"
+		echo " "
+                echo "              Note: "
+                echo "                    Argument 6 <New-Version> is Mandatory if <campaignType> is U1 "
+		echo " "
+		exit 1
+	fi
+
+}
+
+
+
+#
+# function: 
+#
+function campaign_getType() {
+
+case $1 in
+    I1)
+        val=I1
+        echo "$val"
+        ;;
+    I2)
+        val=I2
+        echo "$val"
+	#exit 0
+        ;;
+    U1)
+        val=U1
+        echo "$val"
+        ;;
+    R1)
+        val=R1
+        echo "$val"
+
+        ;;
+    *)
+       # print_usage
+        exit 1
+        ;;
+esac
+
+}
+
+
+# --------------------------------------------------------
+# END File

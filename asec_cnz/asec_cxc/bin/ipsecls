@@ -1,0 +1,195 @@
+#!/bin/bash
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2013 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# Name:
+#       ipsecls
+# Description:
+#       This command lists the IPSec configuration status.
+##
+# Usage: ipsecls [-l]
+##
+# Changelog:
+# - Aug 12 2015 - Furqunan Ullah(XFURULL)
+#   - Fix for TR HT94442
+# - Mar 16 2015 - Nazeema Begum (XNAZBEG)
+#   - added logging mechanism
+# - nov 24 2014 - Fabio Imperato (XFABIMP)
+#   - Fix for TR HT26511
+# - june 4 2014 - Fabrizio Paglia (XFABPAG)
+#   - Added lifetime into long form printout
+# - feb 14 2014 - Quyen Dao (XQUYDAO)
+#   - Added pfs group into long form printout
+# - jan 14 2014 - Quyen Dao (XQUYDAO)
+#   - Added Protocol into short form printout
+# - oct 08 2013 - Fabrizio Paglia (XFABPAG)
+#    - Removed single nodes IP addresses from the printout
+# - oct 07 2013 - Fabrizio Paglia (XFABPAG)
+#     - Changes in the printout to show all active local host addresses
+# - oct 03 2013 - Fabrizio Paglia (XFABPAG)
+#     - Moved functions to ipsec_commons
+#     - Bug fixed: handling of unsupported parameters
+# - sep 24 2013 - Fabrizio Paglia (XFABPAG)
+#     - Printouts aligned with ipsecls_PA6 manpage
+# - sep 18 2013 - Alessandro Mortari
+#     - Updated with comments after review ( -l option instead of -r or -p)
+# - sep 4 2013 - Alessandro Mortari / Fabrizio Paglia
+#    - First draft
+##
+##installpath=/opt/...
+installPath="/opt/ap/acs/bin/"
+source $installPath"ipsec_commons"
+
+################
+# Main Program #
+################
+log "START: <$0 $*>"
+
+#Flag settings for options checks
+lflag=""
+
+#Constants:
+MATCHPOLICYSTRING="^#POLICY_NAME"
+
+function usage() {
+    echo -e "\nIncorrect usage" >&2
+    echo -e "Usage: ipsecls [-l]
+       ipsecls [-v]" >&2
+}
+
+if [ $# -gt 1 ] ; then
+        ipsec_exit $EXIT_INCORRECT_USAGE
+elif [ $# -eq 1 ] && [ "$1" != "-l" ] ; then
+        ipsec_exit $EXIT_INCORRECT_USAGE
+fi
+
+(( $# )) || { lflag=""; }
+options=':l'
+while getopts $options option
+do
+    case $option in
+        l  ) lflag=true;;
+        #\? ) ipsec_exit $EXIT_INCORRECT_USAGE;;
+        #:  ) ipsec_exit $EXIT_INCORRECT_USAGE;;
+        #*  ) ipsec_exit $EXIT_INCORRECT_USAGE;;
+    esac
+done
+
+INFO "Checking for Node state"
+ipsec_exitnotactive
+
+current_node_id=$(cat $CURRENT_NODE_ID_FILE)
+
+if [ ! -z "$lflag" ]
+then
+	ikeversion=$(cat /cluster/etc/ikeversion)
+fi
+
+
+INFO "Checking for policy name "
+printf "\nIP Security Policies\n\n"
+grep "$MATCHPOLICYSTRING" $RACOON_BASEDIR/$SETKEY_CFGFILE &> /dev/null
+if [[ $? -eq 0 ]]; then
+    awk -v mymatch=$MATCHPOLICYSTRING -v long=$lflag -v racoonpath=$RACOON_BASEDIR -v active_node=$current_node_id '
+    BEGIN {
+     FS="[ \t=]"
+     RS="\n"
+     OFS="\n-> "
+    }
+    $0~mymatch {
+        FS="[ \\]\\[\t\n]+"
+        RS=";"
+        $1=$1; 
+        printf("%-20s : %-40s\n","Policy name",$2)
+        spflag=0
+    }
+    /spdadd/ {
+        if (spflag==0) {
+            FS="[ \t=]"
+            RS="\n"
+            $1=$1;
+            srcaddr=$2
+            dstaddr=$3
+            srcport="ANY"
+            dstport="ANY"
+            ipsecproto=""
+            localgw="-"
+            remgw="na"
+            offset=0 
+            if ((NF > 8 && ($0!~/ah/||$0!~/esp/))||(NF > 9)) {
+                if ($3!~/([0-9]|[0-9][0-9]|[0-9][0-9][0-9])\.([0-9]|[0-9][0-9]|[0-9][0-9][0-9])\.([0-9]|[0-9][0-9]|[0-9][0-9][0-9])\.([0-9]|[0-9][0-9]|[0-9][0-9][0-9])/ && ($3 >= 0 && $3< 65536 || tolower($3)~/any/)) {
+                    srcport=toupper($3)
+                    dstaddr=$4
+                    offset=1
+                }
+                if ($4!~/([0-9]|[0-9][0-9]|[0-9][0-9][0-9])\.([0-9]|[0-9][0-9]|[0-9][0-9][0-9])\.([0-9]|[0-9][0-9]|[0-9][0-9][0-9])\.([0-9]|[0-9][0-9]|[0-9][0-9][0-9])/ && ($4 >= 0 && $4< 65536 || tolower($4)~/any/)) {
+                    dstport=toupper($4)
+                    offset=offset+1
+                }
+                if (tolower($6)~/any/ && ($5 >= 0 && $5< 65536 || tolower($5)~/any/) && offset > 0 ) {
+                    dstaddr=$4
+                    dstport=toupper($5)
+                    offset=offset+1
+                }
+            }
+            for(i=8+offset;i<=NF;i++){
+                split($i,data,"/")
+                if (ipsecproto!="") ipsecproto=data[1] ", " ipsecproto
+                else ipsecproto=data[1]
+                ipsecproto=toupper(ipsecproto)
+                ipsecmode=data[2]
+                if (data[2]=="tunnel") {
+                    split(data[3],gws,"-")
+                    localgw=gws[1]
+                    remgw=gws[2]
+                }
+            }
+            grepcmd="grep -m 1 encryption_algorithm " racoonpath dstaddr ".racoon.conf | sed \"s|encryption_algorithm||\"|sed \"s|[ \t;]||g\""
+            while ( ( grepcmd | getline encalg ) > 0 ); 
+            close(grepcmd)
+            grepcmd="grep -m 1 hash_algorithm " racoonpath dstaddr ".racoon.conf | sed \"s|hash_algorithm||\"|sed \"s|[ \t;]||g\""
+            while ( ( grepcmd | getline hashalg ) > 0 ); 
+            close(grepcmd)
+            grepcmd="grep -m 1 dh_group " racoonpath dstaddr ".racoon.conf | sed \"s|dh_group||\"|sed \"s|[ \t;]||g\""
+            while ( ( grepcmd | getline dhgrp ) > 0 ); 
+            close(grepcmd)
+            grepcmd="grep -m 1 pfs_group " racoonpath dstaddr ".racoon.conf | sed \"s|pfs_group||\"|sed \"s|[ \t;]||g\""
+            while ( ( grepcmd | getline pfsgrp ) > 0 ); 
+            close(grepcmd)
+            if (pfsgrp=="") pfsgrp="na";
+            grepcmd="grep -m 1 \"lifetime time\" " racoonpath dstaddr ".racoon.conf | sed \"s|lifetime time||\"|sed \"s|[ \tsec;]||g\""
+            while ( ( grepcmd | getline lifetime ) > 0 ); 
+            close(grepcmd)
+            if (lifetime=="") lifetime="na";
+        } else if (spflag==active_node) {
+            FS="[ \t=]"
+            RS="\n"
+            $1=$1;
+            srcaddr_active_node_port=$2
+            split(srcaddr_active_node_port,srcaddr_active_node_port_array,"[")
+            srcaddr_active_node=srcaddr_active_node_port_array[1]
+        }
+        spflag=spflag + 1
+        if (spflag==6) {
+            printf("%-20s : %-40s\n","Local host address",srcaddr)
+            printf("%-20s : %-40s\n","Remote host address",dstaddr)
+            printf("%-20s : %-40s\n","Mode",ipsecmode)
+            printf("%-20s : %-40s\n","IPSec protocol",ipsecproto)
+            if (long=="true") {
+                printf("%-20s : %-40s\n","Encryption algorithm",encalg)
+                printf("%-20s : %-40s\n","Hash algorithm",hashalg)
+                printf("%-20s : %-40s\n","IKE phase 2 lifetime",lifetime" sec")
+                printf("%-20s : %-40s\n","DH group",dhgrp)
+                printf("%-20s : %-40s\n","PFS group",pfsgrp)
+                printf("%-20s : %-40s\n","Remote gateway",remgw)
+            }
+            printf("\n\n")
+        }
+    }' $RACOON_BASEDIR/$SETKEY_CFGFILE
+else
+    INFO "Matching policy does not found.."
+    printf "None\n\n"
+fi
+log "END: <$0 $*>"

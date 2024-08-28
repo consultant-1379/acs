@@ -1,0 +1,65 @@
+# **********************************************************************
+#
+# Short description:
+# Makefile template for XXX library
+# **********************************************************************
+#
+# Ericsson AB 2010 All rights reserved.
+# The information in this document is the property of Ericsson.
+# Except as specifically authorized in writing by Ericsson, the receiver of this
+# document shall keep the information contained herein confidential and shall protect
+# the same in whole or in part from disclosure and dissemination to third parties.
+# Disclosure and disseminations to the receivers employees shall only be made
+# on a strict need to know basis.
+#
+# **********************************************************************
+#
+# Rev        Date         Name      What
+# -----      -------      --------  --------------------------
+#            2010-08-31   xmianon   Created
+# **********************************************************************
+
+VOB_NAME = ntacs
+VOB_PATH = ../../../../../cm4ap/$(VOB_NAME)
+
+CNZ_NAME = cs_cnz
+CNZ_PATH = $(VOB_PATH)/$(CNZ_NAME)
+
+CAA_NAME = csapi_caa
+CAA_PATH = $(CNZ_PATH)/$(CAA_NAME)
+
+OUTDIR = $(CNZ_PATH)/$(CAA_NAME)/object
+
+CINCLUDES = -I${CNZ_PATH}/cute
+CINCLUDES += -I${CAA_PATH}/inc
+CINCLUDES += -I${CNZ_PATH}/cssrv_caa/inc
+CINCLUDES += -I${CNZ_PATH}/csprot_caa/inc
+CINCLUDES += -I/usr/local/boost
+
+CXX = g++
+CXXFLAGS = -Wall -fPIC -pedantic -g -c ${CINCLUDES}
+LDFLAGS = 
+
+SOURCES = $(wildcard *.cpp)
+SOURCES += $(notdir $(wildcard ../src/*.cpp) )
+
+OBJECTS := $(patsubst %.cpp,%.o,$(SOURCES))
+
+APPNAME = testsuite
+
+vpath %.cpp ${CAA_PATH}/src
+vpath %.h ${CAA_PATH}/inc
+vpath %.o ${CAA_PATH}/object
+
+# Targets
+
+main: $(OBJECTS)
+	$(CXX) $(OUTDIR)/*.o -o $(APPNAME)
+	
+%.o : %.cpp
+	$(CXX) $(CXXFLAGS) $^ -o $(OUTDIR)/$@
+
+
+clean:
+	@echo "Cleaning"
+	@rm -f $(OUTDIR)/*.o $(APPNAME)

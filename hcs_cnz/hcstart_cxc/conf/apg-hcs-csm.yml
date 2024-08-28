@@ -1,0 +1,27 @@
+csm-version: '1.0'
+components:
+- uid: acs.hcs
+  name: acs-hcs
+  description: Install HCS
+  availability-manager: NONE
+  software:
+    sdp: ERIC-ACS_HCSBIN-CXC1371513
+  supersedes:
+  - software: ERIC-ACS_HCSBIN-CXC1371513
+  constraints:
+    installation:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+    upgrade:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+  meta-data:
+    component-version: 16.0.3-0
+    deliverable:
+      deployment-package: acs_hcs-16.0.3-0-deployment-CXC1371513.tar.gz
+      runtime-package: acs_hcs-16.0.3-0-runtime-CXC1371513.tar.gz
+    software:
+    - file-name: ACS_HCSBIN-CXC1371513_16-R1D.x86_64.sdp
+      bundle-name: ERIC-ACS_HCSBIN-CXC1371513_16-R1D

@@ -1,0 +1,476 @@
+        -:    0:Source:inc/ACS_DSD_IOStream.h
+        -:    0:Graph:obj/ACS_DSD_SocketAcceptor.gcno
+        -:    0:Data:obj/ACS_DSD_SocketAcceptor.gcda
+        -:    0:Runs:2
+        -:    0:Programs:1
+        -:    1:#ifndef HEADER_GUARD_CLASS__ACS_DSD_IOStream
+        -:    2:#define HEADER_GUARD_CLASS__ACS_DSD_IOStream ACS_DSD_IOStream
+        -:    3:
+        -:    4:/** @file ACS_DSD_IOStream.h
+        -:    5: *	@brief
+        -:    6: *	@author xnicmut (Nicola Muto)
+        -:    7: *	@date 2010-07-14
+        -:    8: *	@version 1.0.0
+        -:    9: *
+        -:   10: *	COPYRIGHT Ericsson AB, 2010
+        -:   11: *	All rights reserved.
+        -:   12: *
+        -:   13: *	The information in this document is the property of Ericsson.
+        -:   14: *	Except as specifically authorized in writing by Ericsson, the receiver of
+        -:   15: *	this document shall keep the information contained herein confidential and
+        -:   16: *	shall protect the same in whole or in part from disclosure and dissemination
+        -:   17: *	to third parties. Disclosure and disseminations to the receivers employees
+        -:   18: *	shall only be made on a strict need to know basis.
+        -:   19: *
+        -:   20: *	REVISION INFO
+        -:   21: *	+========+============+==============+=====================================+
+        -:   22: *	| REV    | DATE       | AUTHOR       | DESCRIPTION                         |
+        -:   23: *	+========+============+==============+=====================================+
+        -:   24: *	| P0.9.0 | 2010-07-14 | xnicmut      | File created.                       |
+        -:   25: *	+--------+------------+--------------+-------------------------------------+
+        -:   26: *	| P0.9.1 | 2010-08-04 | xnicmut      | Released for sprint 2               |
+        -:   27: *	+========+============+==============+=====================================+
+        -:   28: */
+        -:   29:
+        -:   30:#include <cstdarg>
+        -:   31:#include <sys/types.h>
+        -:   32:#include <sys/uio.h>
+        -:   33:#if defined(ACS_DSD_HAS_ALLOCA)
+        -:   34:#include <alloca.h>
+        -:   35:#endif // defined(ACS_DSD_HAS_ALLOCA)
+        -:   36:
+        -:   37:#include <iostream>
+        -:   38:#include <new>
+        -:   39:
+        -:   40:#include "ace/Time_Value.h"
+        -:   41:#include "ace/SOCK_Stream.h"
+        -:   42:
+        -:   43:#include "ACS_DSD_Macros.h"
+        -:   44:
+        -:   45:#undef __CLASS_NAME__
+        -:   46:#define __CLASS_NAME__ HEADER_GUARD_CLASS__ACS_DSD_IOStream
+        -:   47:
+        -:   48:/** @class ACS_DSD_IOStream ACS_DSD_IOStream.h
+        -:   49: *	@brief ACS_DSD_IOStream class
+        -:   50: *	@author xnicmut (Nicola Muto)
+        -:   51: *	@date 2010-07-14
+        -:   52: *	@version 1.0.0
+        -:   53: *
+        -:   54: *	ACS_DSD_IOStream Class detailed description
+        -:   55: */
+        -:   56:class __CLASS_NAME__ {
+        -:   57:	//===========//
+        -:   58:	// Constants //
+        -:   59:	//===========//
+        -:   60:public:
+        -:   61:	/** @brief IOStream error constants.
+        -:   62:	 *
+        -:   63:	 *	IOStreamErrorConstants enumeration detailed description
+        -:   64:	 */
+        -:   65:	enum IOStreamErrorConstants {
+        -:   66:		ERR_SYSTEM_ERROR				= ACS_DSD_ERR_SYSTEM_ERROR,				///< ERR_SYSTEM_ERROR description (check errno)
+        -:   67:		ERR_SYSTEM_CLOSE				= ACS_DSD_ERR_SYSTEM_CLOSE,				///< ERR_SYSTEM_CLOSE description (check errno)
+        -:   68:		ERR_SYSTEM_GET_ADDRESS	= ACS_DSD_ERR_SYSTEM_GET_ADDRESS,	///< ERR_SYSTEM_GET_ADDRESS description (check errno)
+        -:   69:		ERR_SYSTEM_RECEIVE			= ACS_DSD_ERR_SYSTEM_RECEIVE,			///< ERR_SYSTEM_RECEIVE description (check errno)
+        -:   70:		ERR_SYSTEM_SEND					= ACS_DSD_ERR_SYSTEM_SEND,				///< ERR_SYSTEM_SEND description (check errno)
+        -:   71:		ERR_SYSTEM_GET_OPTION		= ACS_DSD_ERR_SYSTEM_GET_OPTION,	///< ERR_SYSTEM_GET_OPTION description (check errno)
+        -:   72:		ERR_SYSTEM_SET_OPTION		= ACS_DSD_ERR_SYSTEM_SET_OPTION		///< ERR_SYSTEM_SET_OPTION description (check errno)
+        -:   73:	};
+        -:   74:
+        -:   75:	/** @brief IOStream state constants.
+        -:   76:	 *
+        -:   77:	 *	IOStreamStateConstants enumeration detailed description
+        -:   78:	 */
+        -:   79:	enum IOStreamStateConstants {
+        -:   80:		STREAM_STATE_DISCONNECTED	= ACS_DSD_STREAM_STATE_DISCONNECTED,										///< STREAM_STATE_DISCONNECTED description
+        -:   81:		STREAM_STATE_CONNECTED_READER_ONLY = ACS_DSD_STREAM_STATE_CONNECTED_READER_ONLY,	///< STREAM_STATE_CONNECTED_READER_ONLY description
+        -:   82:		STREAM_STATE_CONNECTED_WRITER_ONLY = ACS_DSD_STREAM_STATE_CONNECTED_WRITER_ONLY,	///< STREAM_STATE_CONNECTED_WRITER_ONLY description
+        -:   83:		STREAM_STATE_CONNECTED		= ACS_DSD_STREAM_STATE_CONNECTED												///< STREAM_STATE_CONNECTED description
+        -:   84:	};
+        -:   85:
+        -:   86:	//==============//
+        -:   87:	// Constructors //
+        -:   88:	//==============//
+        -:   89:protected:
+        -:   90:	/** @brief ACS_DSD_IOStream Default constructor
+        -:   91:	 *
+        -:   92:	 *	ACS_DSD_IOStream Constructor detailed description
+        -:   93:	 *
+        -:   94:	 *	@remarks Remarks
+        -:   95:	 */
+        -:   96:	inline __CLASS_NAME__() : _state(STREAM_STATE_DISCONNECTED) {
+        -:   97:		ACS_DSD_TRACE(ACS_DSD_STRINGIZE(__CLASS_NAME__)"::"ACS_DSD_STRINGIZE(__CLASS_NAME__)"()");
+        -:   98:	}
+        -:   99:
+        -:  100:	//============//
+        -:  101:	// Destructor //
+        -:  102:	//============//
+        -:  103:public:
+        -:  104:	/** @brief ACS_DSD_IOStream Destructor
+        -:  105:	 *
+        -:  106:	 *	ACS_DSD_IOStream Destructor detailed description
+        -:  107:	 *
+        -:  108:	 *	@remarks Remarks
+        -:  109:	 */
+        -:  110:	inline virtual ~__CLASS_NAME__() {
+        -:  111:		ACS_DSD_TRACE(ACS_DSD_STRINGIZE(__CLASS_NAME__)"::~"ACS_DSD_STRINGIZE(__CLASS_NAME__)"()");
+        -:  112:	}
+        -:  113:
+        -:  114:	//===========//
+        -:  115:	// Functions //
+        -:  116:	//===========//
+        -:  117:public:
+        -:  118:	/** @brief get_local_addr method
+        -:  119:	 *
+        -:  120:	 *	get_local_addr method detailed description
+        -:  121:	 *
+        -:  122:	 *	@param[out] sa Description
+        -:  123:	 *	@return Return Description
+        -:  124:	 *	@remarks Remarks
+        -:  125:	 */
+        -:  126:	virtual int get_local_addr(ACE_Addr & sa) const = 0;
+        -:  127:
+        -:  128:	/** @brief get_remote_addr method
+        -:  129:	 *
+        -:  130:	 *	get_remote_addr method detailed description
+        -:  131:	 *
+        -:  132:	 *	@param[out] sa Description
+        -:  133:	 *	@return Return Description
+        -:  134:	 *	@remarks Remarks
+        -:  135:	 */
+        -:  136:	virtual int get_remote_addr(ACE_Addr & sa) const = 0;
+        -:  137:
+        -:  138:	/** @brief recvv method
+        -:  139:	 *
+        -:  140:	 *	recvv method detailed description
+        -:  141:	 *
+        -:  142:	 *	@param[in,out] iov Description
+        -:  143:	 *	@param[in] n Description
+        -:  144:	 *	@param[in] timeout Description
+        -:  145:	 *	@return Return Description
+        -:  146:	 *	@remarks Remarks
+        -:  147:	 */
+        -:  148:	virtual ssize_t recvv(iovec iov[], int n, const ACE_Time_Value * timeout = 0) const = 0;
+        -:  149:
+        -:  150:	/** @brief recvv method
+        -:  151:	 *
+        -:  152:	 *	recvv method detailed description
+        -:  153:	 *
+        -:  154:	 *	@param[in,out] io_vec Description
+        -:  155:	 *	@param[in] timeout Description
+        -:  156:	 *	@return Return Description
+        -:  157:	 *	@remarks Remarks
+        -:  158:	 */
+        -:  159:	virtual ssize_t recvv(iovec * io_vec, const ACE_Time_Value * timeout = 0) const = 0;
+        -:  160:
+        -:  161:	/** @brief recv method
+        -:  162:	 *
+        -:  163:	 *	recv method detailed description
+        -:  164:	 *
+        -:  165:	 *	@param[out] buf Description
+        -:  166:	 *	@param[in] n Description
+        -:  167:	 *	@param[in] flags Description
+        -:  168:	 *	@param[in] timeout Description
+        -:  169:	 *	@return Return Description
+        -:  170:	 *	@remarks Remarks
+        -:  171:	 */
+        -:  172:	virtual ssize_t recv(void * buf, size_t n, int flags, const ACE_Time_Value * timeout = 0) const = 0;
+        -:  173:
+        -:  174:	/** @brief recv method
+        -:  175:	 *
+        -:  176:	 *	recv method detailed description
+        -:  177:	 *
+        -:  178:	 *	@param[out] buf Description
+        -:  179:	 *	@param[in] n Description
+        -:  180:	 *	@param[in] timeout Description
+        -:  181:	 *	@return Return Description
+        -:  182:	 *	@remarks Remarks
+        -:  183:	 */
+        -:  184:	virtual ssize_t recv(void * buf, size_t n, const ACE_Time_Value * timeout = 0) const = 0;
+        -:  185:
+        -:  186:	/** @brief recv method
+        -:  187:	 *
+        -:  188:	 *	recv method detailed description
+        -:  189:	 *
+        -:  190:	 *	@param[in] n Description
+        -:  191:	 *	@param[in,out] ... Description
+        -:  192:	 *	@return Return Description
+        -:  193:	 *	@remarks Remarks
+        -:  194:	 */
+        -:  195:	ssize_t recv(size_t n, ...) const {
+        -:  196:		ACS_DSD_TRACE(ACS_DSD_STRINGIZE(__CLASS_NAME__)"::recv(size_t n, ...)");
+        -:  197:
+        -:  198:		va_list argp;
+        -:  199:		const int total_tuples = static_cast<int>(n >> 1);
+        -:  200:		iovec * iovp = 0;
+        -:  201:
+        -:  202:#if defined(ACS_DSD_HAS_ALLOCA)
+        -:  203:		iovp = reinterpret_cast<iovec *>(alloca(total_tuples * sizeof(iovec)));
+        -:  204:#else
+        -:  205:		if (!(iovp = new (::std::nothrow) iovec[total_tuples])) return ERR_SYSTEM_RECEIVE;
+        -:  206:#endif // defined(ACS_DSD_HAS_ALLOCA)
+        -:  207:
+        -:  208:		va_start(argp, n);
+        -:  209:
+        -:  210:		for (int i = 0; i < total_tuples; ++i) {
+        -:  211:			iovp[i].iov_base = va_arg(argp, char *);
+        -:  212:			iovp[i].iov_len = va_arg(argp, int);
+        -:  213:		}
+        -:  214:
+        -:  215:		const ssize_t result = recvv(iovp, total_tuples);
+        -:  216:
+        -:  217:#if !defined(ACS_DSD_HAS_ALLOCA)
+        -:  218:		delete[] iovp;
+        -:  219:#endif // !defined(ACS_DSD_HAS_ALLOCA)
+        -:  220:
+        -:  221:		va_end(argp);
+        -:  222:	  return (-1 ^ result) ? result : ERR_SYSTEM_RECEIVE;
+        -:  223:	}
+        -:  224:
+        -:  225:	/** @brief sendv method
+        -:  226:	 *
+        -:  227:	 *	sendv method detailed description
+        -:  228:	 *
+        -:  229:	 *	@param[in] iov Description
+        -:  230:	 *	@param[in] n Description
+        -:  231:	 *	@param[in] timeout Description
+        -:  232:	 *	@return Return Description
+        -:  233:	 *	@remarks Remarks
+        -:  234:	 */
+        -:  235:	virtual ssize_t sendv(const iovec iov[], int n, const ACE_Time_Value * timeout = 0) const = 0;
+        -:  236:
+        -:  237:	/** @brief send method
+        -:  238:	 *
+        -:  239:	 *	send method detailed description
+        -:  240:	 *
+        -:  241:	 *	@param[in] buf Description
+        -:  242:	 *	@param[in] n Description
+        -:  243:	 *	@param[in] flags Description
+        -:  244:	 *	@param[in] timeout Description
+        -:  245:	 *	@return Return Description
+        -:  246:	 *	@remarks Remarks
+        -:  247:	 */
+        -:  248:	virtual ssize_t send(const void * buf, size_t n, int flags, const ACE_Time_Value * timeout = 0) const = 0;
+        -:  249:
+        -:  250:	/** @brief send method
+        -:  251:	 *
+        -:  252:	 *	send method detailed description
+        -:  253:	 *
+        -:  254:	 *	@param[in] buf Description
+        -:  255:	 *	@param[in] n Description
+        -:  256:	 *	@param[in] timeout Description
+        -:  257:	 *	@return Return Description
+        -:  258:	 *	@remarks Remarks
+        -:  259:	 */
+        -:  260:	virtual ssize_t send(const void * buf, size_t n, const ACE_Time_Value * timeout = 0) const = 0;
+        -:  261:
+        -:  262:	/** @brief send method
+        -:  263:	 *
+        -:  264:	 *	send method detailed description
+        -:  265:	 *
+        -:  266:	 *	@param[in] n Description
+        -:  267:	 *	@param[in] ... Description
+        -:  268:	 *	@return Return Description
+        -:  269:	 *	@remarks Remarks
+        -:  270:	 */
+        -:  271:	ssize_t send(size_t n, ...) const {
+        -:  272:		ACS_DSD_TRACE(ACS_DSD_STRINGIZE(__CLASS_NAME__)"::send(size_t n, ...)");
+        -:  273:
+        -:  274:		va_list argp;
+        -:  275:		const int total_tuples = static_cast<int>(n >> 1);
+        -:  276:		iovec * iovp = 0;
+        -:  277:
+        -:  278:#if defined (ACS_DSD_HAS_ALLOCA)
+        -:  279:		iovp = reinterpret_cast<iovec *>(alloca(total_tuples * sizeof(iovec)));
+        -:  280:#else
+        -:  281:		if (!(iovp = new (::std::nothrow) iovec[total_tuples])) return ERR_SYSTEM_SEND;
+        -:  282:#endif // defined(ACS_DSD_HAS_ALLOCA)
+        -:  283:
+        -:  284:		va_start(argp, n);
+        -:  285:
+        -:  286:		for (int i = 0; i < total_tuples; ++i) {
+        -:  287:			iovp[i].iov_base = va_arg(argp, char *);
+        -:  288:			iovp[i].iov_len = va_arg(argp, int);
+        -:  289:		}
+        -:  290:
+        -:  291:		const ssize_t result = sendv(iovp, total_tuples);
+        -:  292:
+        -:  293:#if !defined(ACS_DSD_HAS_ALLOCA)
+        -:  294:		delete[] iovp;
+        -:  295:#endif // !defined(ACS_DSD_HAS_ALLOCA)
+        -:  296:
+        -:  297:	  va_end(argp);
+        -:  298:	  return (-1 ^ result) ? result : ERR_SYSTEM_SEND;
+        -:  299:	}
+        -:  300:
+        -:  301:	/** @brief recv_n method
+        -:  302:	 *
+        -:  303:	 *	recv_n method detailed description
+        -:  304:	 *
+        -:  305:	 *	@param[out] buf Description
+        -:  306:	 *	@param[in] len Description
+        -:  307:	 *	@param[in] flags Description
+        -:  308:	 *	@param[in] timeout Description
+        -:  309:	 *	@param[out] bytes_transferred Description
+        -:  310:	 *	@return Return Description
+        -:  311:	 *	@remarks Remarks
+        -:  312:	 */
+        -:  313:	virtual ssize_t recv_n(void * buf, size_t len, int flags, const ACE_Time_Value * timeout = 0, size_t * bytes_transferred = 0) const = 0;
+        -:  314:
+        -:  315:	/** @brief recv_n method
+        -:  316:	 *
+        -:  317:	 *	recv_n method detailed description
+        -:  318:	 *
+        -:  319:	 *	@param[out] buf Description
+        -:  320:	 *	@param[in] len Description
+        -:  321:	 *	@param[in] timeout Description
+        -:  322:	 *	@param[out] bytes_transferred Description
+        -:  323:	 *	@return Return Description
+        -:  324:	 *	@remarks Remarks
+        -:  325:	 */
+        -:  326:	virtual ssize_t recv_n(void * buf, size_t len, const ACE_Time_Value * timeout = 0, size_t * bytes_transferred = 0) const = 0;
+        -:  327:
+        -:  328:	/** @brief recvv_n method
+        -:  329:	 *
+        -:  330:	 *	recvv_n method detailed description
+        -:  331:	 *
+        -:  332:	 *	@param[in,out] iov Description
+        -:  333:	 *	@param[in] iovcnt Description
+        -:  334:	 *	@param[in] timeout Description
+        -:  335:	 *	@param[out] bytes_transferred Description
+        -:  336:	 *	@return Return Description
+        -:  337:	 *	@remarks Remarks
+        -:  338:	 */
+        -:  339:	virtual ssize_t recvv_n(iovec iov[], int iovcnt, const ACE_Time_Value * timeout = 0, size_t * bytes_transferred = 0) const = 0;
+        -:  340:
+        -:  341:	/** @brief sendv_n method
+        -:  342:	 *
+        -:  343:	 *	sendv_n method detailed description
+        -:  344:	 *
+        -:  345:	 *	@param[in] iov Description
+        -:  346:	 *	@param[in] iovcnt Description
+        -:  347:	 *	@param[in] timeout Description
+        -:  348:	 *	@param[out] bytes_transferred
+        -:  349:	 *	@return Return Description
+        -:  350:	 *	@remarks Remarks
+        -:  351:	 */
+        -:  352:	virtual ssize_t sendv_n(const iovec iov[], int iovcnt, const ACE_Time_Value * timeout = 0, size_t * bytes_transferred = 0) const = 0;
+        -:  353:
+        -:  354:	/** @brief send_n method
+        -:  355:	 *
+        -:  356:	 *	send_n method detailed description
+        -:  357:	 *
+        -:  358:	 *	@param[in] buf Description
+        -:  359:	 *	@param[in] len Description
+        -:  360:	 *	@param[in] flags Description
+        -:  361:	 *	@param[in] timeout Description
+        -:  362:	 *	@param[out] bytes_transferred
+        -:  363:	 *	@return Return Description
+        -:  364:	 *	@remarks Remarks
+        -:  365:	 */
+        -:  366:	virtual ssize_t send_n(const void * buf, size_t len, int flags, const ACE_Time_Value * timeout = 0, size_t * bytes_transferred = 0) const = 0;
+        -:  367:
+        -:  368:	/** @brief send_n method
+        -:  369:	 *
+        -:  370:	 *	send_n method detailed description
+        -:  371:	 *
+        -:  372:	 *	@param[in] buf Description
+        -:  373:	 *	@param[in] len Description
+        -:  374:	 *	@param[in] timeout Description
+        -:  375:	 *	@param[out] bytes_transferred
+        -:  376:	 *	@return Return Description
+        -:  377:	 *	@remarks Remarks
+        -:  378:	 */
+        -:  379:	virtual ssize_t send_n(const void * buf, size_t len, const ACE_Time_Value * timeout = 0, size_t * bytes_transferred = 0) const = 0;
+        -:  380:
+        -:  381:	/** @brief close_reader method
+        -:  382:	 *
+        -:  383:	 *	close_reader method detailed description
+        -:  384:	 *
+        -:  385:	 *	@return Return Description
+        -:  386:	 *	@remarks Remarks
+        -:  387:	 */
+        -:  388:	virtual int close_reader() = 0;
+        -:  389:
+        -:  390:	/** @brief close_writer method
+        -:  391:	 *
+        -:  392:	 *	close_writer method detailed description
+        -:  393:	 *
+        -:  394:	 *	@return Return Description
+        -:  395:	 *	@remarks Remarks
+        -:  396:	 */
+        -:  397:	virtual int close_writer() = 0;
+        -:  398:
+        -:  399:	/** @brief close method
+        -:  400:	 *
+        -:  401:	 *	close method detailed description
+        -:  402:	 *
+        -:  403:	 *	@return Return Description
+        -:  404:	 *	@remarks Remarks
+        -:  405:	 */
+        -:  406:	virtual int close() = 0;
+        -:  407:
+        -:  408:	/** @brief get_option method
+        -:  409:	 *
+        -:  410:	 *	get_option method detailed description
+        -:  411:	 *
+        -:  412:	 *	@param[in] level Description
+        -:  413:	 *	@param[in] option Description
+        -:  414:	 *	@param[out] optval Description
+        -:  415:	 *	@param[in,out] optlen Description
+        -:  416:	 *	@return Return Description
+        -:  417:	 *	@remarks Remarks
+        -:  418:	 */
+        -:  419:	virtual int get_option(int level, int option, void * optval, int * optlen) const = 0;
+        -:  420:
+        -:  421:	/** @brief set_option method
+        -:  422:	 *
+        -:  423:	 *	set_option method detailed description
+        -:  424:	 *
+        -:  425:	 *	@param[in] level Description
+        -:  426:	 *	@param[in] option Description
+        -:  427:	 *	@param[in] optval Description
+        -:  428:	 *	@param[in] optlen Description
+        -:  429:	 *	@return Return Description
+        -:  430:	 *	@remarks Remarks
+        -:  431:	 */
+        -:  432:	virtual int set_option(int level, int option, void * optval, int optlen) const = 0;
+        -:  433:
+        -:  434:	/** @brief state method
+        -:  435:	 *
+        -:  436:	 *	state method detailed description
+        -:  437:	 *
+        -:  438:	 *	@return Return Description
+        -:  439:	 *	@remarks Remarks
+        -:  440:	 */
+        1:  441:	inline IOStreamStateConstants state() const {
+        -:  442:		ACS_DSD_TRACE(ACS_DSD_STRINGIZE(__CLASS_NAME__)"::state()");
+        -:  443:
+        1:  444:		return _state;
+        -:  445:	}
+        -:  446:
+        -:  447:protected:
+        -:  448:	/** @brief state method
+        -:  449:	 *
+        -:  450:	 *	state method detailed description
+        -:  451:	 *
+        -:  452:	 *	@param[in] new_state Description
+        -:  453:	 *	@return Return Description
+        -:  454:	 *	@remarks Remarks
+        -:  455:	 */
+        1:  456:	inline IOStreamStateConstants state(IOStreamStateConstants new_state) {
+        -:  457:		ACS_DSD_TRACE(ACS_DSD_STRINGIZE(__CLASS_NAME__)"::state(IOStreamStateConstants new_state)");
+        -:  458:
+        1:  459:		const IOStreamStateConstants old_state = _state;
+        1:  460:		return (_state = new_state, old_state);
+        -:  461:	}
+        -:  462:
+        -:  463:	//========//
+        -:  464:	// Fields //
+        -:  465:	//========//
+        -:  466:private:
+        -:  467:	/// IOStreamStateConstants _state brief description.
+        -:  468:	IOStreamStateConstants _state;
+        -:  469:};
+        -:  470:
+        -:  471:#endif // HEADER_GUARD_CLASS__ACS_DSD_IOStream

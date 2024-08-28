@@ -1,0 +1,47 @@
+csm-version: '1.0'
+components:
+- uid: acs.asec
+  name: acs-asec
+  description: ACS ASEC component
+  availability-manager: AMF
+  software:
+    sdp: ERIC-ACS_ASECBIN-CXC1371538
+  supersedes:
+  - base-component: ERIC-APG_ASEC
+  availability-properties:
+    control-policy:
+      type: ADVANCED
+    multiplicity-policy:
+      node-active: ONE
+      node-standby: ONE
+      cluster-active: ONE
+      cluster-standby: ONE
+    lifecycle-control:
+      prefix: /opt/ap/acs/bin
+      start: acs_asec_csadm_clc instantiate
+      stop: acs_asec_csadm_clc cleanup
+      monitor-keys:
+      - key: acs_asec_csadmd_hck
+        period: 180s
+        timeout: 240s
+      promote-demote-timeout: 200s
+      migrate-timeout: 60s
+      start-stop-timeout: 100s
+  constraints:
+    plugin: plugin/acs.asec
+    installation:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+    upgrade:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+  meta-data:
+    component-version: 16.0.0-1
+    deliverable:
+      deployment-package: acs_asec-16.0.0-1-deployment-CXC1371538.tar.gz
+      runtime-package: acs_asec-16.0.0-1-runtime-CXC1371538.tar.gz
+    software:
+    - file-name: ACS_ASECBIN-CXC1371538_16-R1A01.x86_64.sdp
+      bundle-name: ERIC-ACS_ASECBIN-CXC1371538_16-R1A01

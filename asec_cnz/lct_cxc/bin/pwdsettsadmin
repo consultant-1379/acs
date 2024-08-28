@@ -1,0 +1,47 @@
+#!/bin/bash
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2021 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# Name:
+#       pwdsettsadmin
+# Description:
+#       A script to wrap the invocation of pwdsettsadmin command.
+# Note:
+#       None.
+##
+# Usage:
+#       None.
+##
+# Output:
+#       None.
+##
+# Changelog:
+# - Mon Jun 7 2021 - Sravanthi T (xsravan)
+#       First version.
+##
+
+# Setting  global variables
+#############################
+root_user="root"
+admin="tsadmin"
+
+# Exit codes
+###########################
+exit_privilege=5
+
+# Check the privilage of the user
+privilege_check(){
+cur_user=`id -u -n`
+        if [ "$cur_user" != "$admin" ] && [ "$cur_user" != "$root_user" ];then
+                echo "Authorization Failure"
+                echo ""
+                exit $exit_privilege
+        fi
+}
+privilege_check
+
+/usr/bin/sudo /opt/ap/acs/bin/acs_lct_pwdsettsadmin.sh "$cur_user" "$@"
+
+

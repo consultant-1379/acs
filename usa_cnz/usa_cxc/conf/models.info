@@ -1,0 +1,149 @@
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2016 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# models.info
+##
+# Description:
+#       Configuration file used to perform IMM model changes during software upgrade for USA block.
+##
+##
+# Changelog:
+# - 2016-03-15 - Ramakrishna Maturu (XRAMMAT) 
+#       First version
+##
+VERSION: CXC1371409_9-R1E
+VERSION: CXC1371409_9-R1D
+log "Performing model changes introduced in version CXC1371409_10-R1A"
+immcfg -a pattern="Error response received from LDAP client" usaSupervisonId=11,usaSupervisonConfigId=1
+immcfg -a pattern="Error response received from LDAP client" usaSupervisonId=12,usaSupervisonConfigId=1
+
+#APG43r 3.6.2
+VERSION: CXC1371409_9-R1C
+VERSION: CXC1371409_9-R1B
+# Adaptations to SwM2.0
+VERSION: CXC1371409_9-R1A05
+log "Performing model changes introduced in version CXC1371409_9-R1A05"
+immcfg -a pattern="Stopped ISC DHCPv4 Server" usaSupervisonId=1,usaSupervisonConfigId=1
+immcfg -a object="DHCPv4" usaSupervisonId=1,usaSupervisonConfigId=1
+
+VERSION: CXC1371409_9-R1A04
+VERSION: CXC1371409_9-R1A03
+VERSION: CXC1371409_9-R1A02
+VERSION: CXC1371409_9-R1A01
+
+VERSION: CXC1371409_8-R1A
+log "Performing model changes introduced in version "
+immcfg -c USASupervison usaSupervisonId=11,usaSupervisonConfigId=1
+immcfg -a problemText="LDAP Authorization Failed" usaSupervisonId=11,usaSupervisonConfigId=1
+immcfg -a probableCause="AP LDAP COMMUNICATION FAULT" usaSupervisonId=11,usaSupervisonConfigId=1
+immcfg -a specificProblem=8797 usaSupervisonId=11,usaSupervisonConfigId=1
+immcfg -a perceivedSeverity="A1" usaSupervisonId=11,usaSupervisonConfigId=1
+immcfg -a pattern="userDataFetch Error response received from LDAP client : -1" usaSupervisonId=11,usaSupervisonConfigId=1
+immcfg -a objectOfRefSuffix="mcs_adhd" usaSupervisonId=11,usaSupervisonConfigId=1
+immcfg -a object="mcs_adhd" usaSupervisonId=11,usaSupervisonConfigId=1
+immcfg -a maxAllowed=3 usaSupervisonId=11,usaSupervisonConfigId=1
+immcfg -c USASupervison usaSupervisonId=12,usaSupervisonConfigId=1
+immcfg -a problemText="LDAP Authorization Failed" usaSupervisonId=12,usaSupervisonConfigId=1
+immcfg -a probableCause="AP LDAP COMMUNICATION FAULT" usaSupervisonId=12,usaSupervisonConfigId=1
+immcfg -a specificProblem=8797 usaSupervisonId=12,usaSupervisonConfigId=1
+immcfg -a perceivedSeverity="A1" usaSupervisonId=12,usaSupervisonConfigId=1
+immcfg -a pattern="userDataFetch Error response received from LDAP client : -1" usaSupervisonId=12,usaSupervisonConfigId=1
+immcfg -a objectOfRefSuffix="com" usaSupervisonId=12,usaSupervisonConfigId=1
+immcfg -a object="com" usaSupervisonId=12,usaSupervisonConfigId=1
+immcfg -a maxAllowed=3 usaSupervisonId=12,usaSupervisonConfigId=1
+immcfg -a pattern="Stopping LSB" usaSupervisonId=6,usaSupervisonConfigId=1
+immcfg -a pattern="Starting ISC" usaSupervisonId=1,usaSupervisonConfigId=1
+immcfg -a pattern="Stopping rsyslog daemon" usaSupervisonId=2,usaSupervisonConfigId=1
+immcfg -a objectOfRefSuffix="rsyslog" usaSupervisonId=2,usaSupervisonConfigId=1
+immcfg -a object="rsyslog" usaSupervisonId=2,usaSupervisonConfigId=1
+immcfg -a pattern="Stopping acs_prcmand daemon" usaSupervisonId=4,usaSupervisonConfigId=1
+immcfg -a pattern="Stopping acs_prcispd daemon" usaSupervisonId=3,usaSupervisonConfigId=1
+immcfg -a pattern="Stopping auditd daemon" usaSupervisonId=5,usaSupervisonConfigId=1
+immcfg -a specificProblem=8798 usaSupervisonId=9,usaSupervisonConfigId=1
+immcfg -a specificProblem=8798 usaSupervisonId=10,usaSupervisonConfigId=1
+
+
+VERSION: CXC1371409_6-R1A02
+log "Performing model changes introduced in version CXC1371409_6-R1A02"
+immcfg -a perceivedSeverity="EVENT" usaSupervisonId=9,usaSupervisonConfigId=1
+immcfg -a perceivedSeverity="EVENT" usaSupervisonId=10,usaSupervisonConfigId=1
+
+VERSION: CXC1371409_6-R1A01
+log "Performing model changes introduced in version CXC1371409_6-R1A01"
+immcfg -c USASupervison usaSupervisonId=9,usaSupervisonConfigId=1
+immcfg -a problemText="SYSTEM DISK FAULTY" usaSupervisonId=9,usaSupervisonConfigId=1
+immcfg -a probableCause="AP FAULT" usaSupervisonId=9,usaSupervisonConfigId=1
+immcfg -a perceivedSeverity="A2" usaSupervisonId=9,usaSupervisonConfigId=1
+immcfg -a pattern="Self-Test Log error count increased" usaSupervisonId=9,usaSupervisonConfigId=1
+immcfg -a objectOfRefSuffix="smartd" usaSupervisonId=9,usaSupervisonConfigId=1
+immcfg -a object="smartd" usaSupervisonId=9,usaSupervisonConfigId=1
+immcfg -a maxAllowed=0 usaSupervisonId=9,usaSupervisonConfigId=1
+immcfg -c USASupervison usaSupervisonId=10,usaSupervisonConfigId=1
+immcfg -a problemText="SYSTEM DISK FAULTY" usaSupervisonId=10,usaSupervisonConfigId=1
+immcfg -a probableCause="AP FAULT" usaSupervisonId=10,usaSupervisonConfigId=1
+immcfg -a perceivedSeverity="A2" usaSupervisonId=10,usaSupervisonConfigId=1
+immcfg -a pattern="SMART Failure" usaSupervisonId=10,usaSupervisonConfigId=1
+immcfg -a objectOfRefSuffix="smartd" usaSupervisonId=10,usaSupervisonConfigId=1
+immcfg -a object="smartd" usaSupervisonId=10,usaSupervisonConfigId=1
+immcfg -a maxAllowed=1 usaSupervisonId=10,usaSupervisonConfigId=1
+
+VERSION: CXC1371409_5-R1B
+log "No model changes introduced in version CXC1371409_5-R1B"
+
+VERSION: CXC1371409_5-R1A07
+log "No model changes introduced in version CXC1371409_5-R1A07"
+
+VERSION: CXC1371409_5-R1A06
+log "No model changes introduced in version CXC1371409_5-R1A06"
+
+VERSION: CXC1371409_5-R1A05
+log "Model changes in USABIN CXC1371409_5-R1A05 for SLES12 feature"
+
+VERSION: CXC1371409_5-R1A04
+log "Model changes in USABIN CXC1371409_5-R1A04 for SLES12 feature"
+
+VERSION: CXC1371409_5-R1A03
+log "Model changes in USABIN CXC1371409_5-R1A03 for SLES12 feature"
+
+VERSION: CXC1371409_5-R1A02
+log "No model changes in USABIN CXC1371409_5-R1A02"
+
+VERSION: CXC1371409_5-R1A01
+log "No model changes in USABIN CXC1371409_5-R1A01"
+
+VERSION: CXC1371409-R2A
+log "Performing model changes introduced in version CXC1371409-R2A"
+immcfg -c USASupervison usaSupervisonId=8,usaSupervisonConfigId=1
+immcfg -a problemText="Illegal Logon Attempts made" usaSupervisonId=8,usaSupervisonConfigId=1
+immcfg -a probableCause="ILLEGAL LOGON ATTEMPTS" usaSupervisonId=8,usaSupervisonConfigId=1
+immcfg -a perceivedSeverity="EVENT" usaSupervisonId=8,usaSupervisonConfigId=1
+immcfg -a pattern="FAILED LOGIN SESSION" usaSupervisonId=8,usaSupervisonConfigId=1
+immcfg -a objectOfRefSuffix="login" usaSupervisonId=8,usaSupervisonConfigId=1
+immcfg -a object="login" usaSupervisonId=8,usaSupervisonConfigId=1
+immcfg -a maxAllowed=0 usaSupervisonId=8,usaSupervisonConfigId=1
+
+VERSION: CXC1371409-R1H
+log "No model changes in USABIN CXC1371409-R1H"
+
+VERSION: CXC1371409-R1G
+log "No model changes in USABIN CXC1371409-R1G"
+
+VERSION: CXC1371409-R1F
+log "No model changes in USABIN CXC1371409-R1F"
+
+VERSION: CXC1371409-R1E
+log "No model changes in USABIN CXC1371409-R1E"
+
+VERSION: CXC1371409-R1D
+log "No model changes in USABIN CXC1371409-R1D"
+
+VERSION: CXC1371409-R1C
+log "No model changes in USABIN CXC1371409-R1C"
+
+VERSION: CXC1371409-R1B
+log "No model changes in USABIN CXC1371409-R1B"
+
+VERSION: CXC1371409-R1A17
+log "No model changes in USABIN CXC1371409-R1A17"

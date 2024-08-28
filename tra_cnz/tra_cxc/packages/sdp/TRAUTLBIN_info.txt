@@ -1,0 +1,5 @@
+Third party products
+CXS1020847R1A
+Company: Sourceforge
+Product Descr: Logging Framework for C++
+Version: 1.0.4

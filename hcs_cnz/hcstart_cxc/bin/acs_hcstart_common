@@ -1,0 +1,153 @@
+#*********************************************************
+# --------------------------------------------------------
+#     Copyright (C) 2012 Ericsson AB. All rights reserved.
+# --------------------------------------------------------
+##
+# Name:
+#       acs_hcstart_common
+# Description:
+#       A script containing the common functionality for hcstart
+##
+#
+# Changelog:
+# - July 31 2020 - Ganoz Siva Kumar (xsigano)   
+#       HCSTART improvement:
+# - Apr 15 2015 Divya Chakkilam
+#  Rebase of CNI 109 22-APZ 212 33/6-460 for TR HT46233
+# - Feb 06 2014 - Trotta A. (xanttro)	
+#	HCSTART improvement: 
+#   integration with the AP, System Restore, Initiate step from 48 to 75
+# - Sun May 27 2012 - Satya Deepthi (xsatdee)
+#       First version.
+#*********************************************************
+
+# paths and files variables
+LOG_FILE="hcstart.log"
+LOG_TAG='hcstart'
+#LOG_DIR="/data/opt/ap/nbi_fuse/health_check"
+LOG_DIR="/data/opt/ap/internal_root/health_check"
+REQID_FILE="/opt/ap/acs/conf/acs_hcstart_reqid_list.conf"
+
+# list-of commands
+GREP="/bin/grep"
+AWK="/bin/awk"
+HEAD="/usr/bin/head"
+TAIL="/usr/bin/tail"
+CUT="/usr/bin/cut"
+CAT="/bin/cat"
+WC="/usr/bin/wc"
+SED="/bin/sed"
+ECHO="/bin/echo"
+PING="/bin/ping"
+SSH="/usr/bin/ssh"
+MKTEMP="/bin/mktemp"
+SORT="/usr/bin/sort"
+TOUCH="/usr/bin/touch"
+KILL="/bin/kill"
+TR="/usr/bin/tr"
+#BEGIN - xanttro - 15/01/2014 - HCSTART improvement - US6
+EGREP="/bin/egrep"
+#END - xanttro - 15/01/2014 - HCSTART improvement - US6
+#BEGIN - xsigano - 31/07/2020 - HCSTART improvement
+UPTIME="/usr/bin/uptime"
+#END - xsigano - 31/07/2020 - HCSTART improvement
+CMD_IMMLIST="/usr/bin/immlist"
+
+
+# script-wide variables
+exit_success=0
+exit_failure=1
+exit_ntp_local=2
+exit_ntp_peer=3
+TRUE=$( true; ${ECHO} $? )
+FALSE=$( false; ${ECHO} $? )
+a_silent=$FALSE
+a_verbose=$FALSE
+a_local=$FALSE
+
+#---------------------------------------------------------
+function log(){
+	/bin/logger -t "$LOG_TAG" "$*"
+}
+
+#---------------------------------------------------------
+function flog(){
+	$ECHO "[$(date +'%Y-%m-%d %H:%M:%S')] $@" >>$LOG_DIR/$LOG_FILE 2>> /dev/null
+}
+
+#---------------------------------------------------------
+function abort(){
+	log "ABORTING: <"$1">"
+
+	#Following result will on on COM
+	#echo "Not OK"
+	exit $2
+}
+
+#---------------------------------------------------------
+function trace_enter(){
+	flog "$1() >>"
+}
+
+#---------------------------------------------------------
+function trace_leave(){
+	flog "$1() <<"
+}
+
+#---------------------------------------------------------
+function trim(){
+	echo $1;
+}
+
+#---------------------------------------------------------
+function logrotate(){
+
+	#-------------------------
+	# Config Paramters
+	#-------------------------
+	logFile=$LOG_DIR/$LOG_FILE
+	mxFleCnt=10
+	
+	if [ ! -e $logFile ]; then
+		# First time in life time this script is invoked.
+		# return with success
+		return $exit_success
+	fi
+
+	 # If the log-file already exists, check for latest version
+	for (( index=$mxFleCnt; index >= 1; index-- )) ; do
+		if [ -e "$logFile.$index" ]; then
+			break
+		fi
+	done
+
+	if [ $index == 0 ]; then
+		mv $logFile $logFile.1
+	else
+		while [ $index -ne 0 ]
+		do
+			if [ $index == $mxFleCnt ]; then
+				(( index=$index - 1 ))
+				continue
+			fi
+
+			(( count=$index + 1 ))
+			mv $logFile.$index $logFile.$count
+			(( index=$index - 1 ))
+
+			if [ $index == 0 ]; then
+				mv $logFile $logFile.1
+			fi
+		done
+	fi
+	
+	return $exit_success
+}
+#---------------------------------------------------------
+# This function, returns hardware type
+function GetHwType() {
+  local HW_TYPE=$(/opt/ap/apos/conf/apos_hwtype.sh)
+  [ -z "$HW_TYPE" ] && abort "HW_TYPE not found"
+  echo $HW_TYPE
+}
+#---------------------------------------------------------

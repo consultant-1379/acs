@@ -1,0 +1,8 @@
+T:\ntacs\chb_cnz\chb_cxc\bin\acs_chbheartbeatd
+T:\ntacs\chb_cnz\chb_cxc\bin\acs_chbheartbeatchildd
+T:\ntacs\chb_cnz\chb_cxc\bin\acs_chbclocksyncd
+T:\ntacs\chb_cnz\chb_cxc\bin\acs_chbmtzlnd
+T:\ntacs\chb_cnz\chb_cxc\bin\mtzln
+T:\ntacs\chb_cnz\chb_cxc\bin\libacs_chb_cpobject.so.2.0.0
+T:\ntacs\chb_cnz\chb_cxc\bin\libacs_chb_mtz.so.1.3.0
+T:\ntacs\chb_cnz\chb_cxc\packages\rpm\ACS_CHB-CXC1371342-R1A06.x86_64.rpm

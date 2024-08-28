@@ -1,0 +1,863 @@
+#!/bin/bash
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2014 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# Name:
+#       wssadm
+# Description:
+#       This script is to administer AP Web Server security
+##
+# Usage:
+#        wssadm -c node_credential_id
+#        wssadm -t trustCategory_id
+#        wssadm -s security_status
+#        wssadm -q status
+#        wssadm tlsversion -p tls_protocol_version                                     
+#        wssadm tlsversion -l                                                          
+#        wssadm tlsversion -q                                                          
+#        wssadm ciphers -q                                                             
+#        wssadm ciphers -s                                                             
+#        wssadm ciphers -r                                                             
+#        wssadm ciphers -i cipher_suite_names                                          
+#        wssadm ciphers -l                                                             
+#        wssadm ciphers -c cipher_suite_names or ALL                                        
+#        wssadm -a [-f] 
+##
+# Changelog:
+# - Jan 10 2022 - Akhila Giramoni (ZGIRAKH)
+#    - GSNH Secuirity Enhancements
+# - Dec 20 2021 - Rajendra Prasad (ZRJAAPR)
+#    - GSNH Secuirity Enhancements
+# - Apr 23 2020 - Roshini Chilukoti (ZCHIROS)
+#    - Added fix for TR HY32331 APG43L 3.8.0 R9B, Web server security configuration
+# - May 2 2019 - Naveen G (ZGXXNAV)
+#    - GSNH secuirty enhancements 
+# - Nov 4 2014 - Fabrizio Paglia (XFABPAG)
+#    - Solution cleanup
+# - Oct 24 2014 - Fabrizio Paglia (XFABPAG)
+#    - Robustness improvements
+# - Oct 23 2014 - Fabrizio Paglia (XFABPAG)
+#    - Refining of "ad interim" solution
+# - Oct 23 2014 - Gianluigi Crispino/Fabio Imperato (XGIACRI/XFABPIMP)
+#    - "Ad interim" solution to support client authentication
+# - Oct 13 2014 - Fabio Imperato/Fabrizio Paglia (XFABPIMP/XFABPAG)
+#    - Security settings allowed, even if server is not yet configured
+#    - Warning in case of server not configured/not running
+# - Oct 10 2014 - Fabrizio Paglia (XFABPAG)
+#    - Options cannot be mixed together
+#    - Options -c implies option -s enabled
+#    - Security settings not allowed in case of server not yet configured
+# - Oct 8 2014 - Fabrizio Paglia (XFABPAG)
+#    - Security settings allowed, even if server is not yet configured
+# - Oct 6 2014 - Fabrizio Paglia (XFABPAG)
+#    - Aligned to 21/190 80-CNZ 222 257 PA2
+# - Oct 6 2014 - Fabrizio Paglia (XFABPAG)
+#    - Aligned to 21/190 80-CNZ 222 257 PA2 (preliminary version)
+# - Oct 3 2014 - Fabrizio Paglia
+#    - First version
+##
+
+# Debug variables
+_DEBUG="on"
+_wssadm_VER="B"
+F_INFO="/dev/null" # To be initialized by wssadm_init()
+
+# Commands
+CMD_LOGGER="/bin/logger"
+CMD_HTTPMGR="/opt/ap/apos/bin/httpmgr"
+CMD_RCAPACHE2="/usr/sbin/rcapache2"
+CMD_OPENSSL="/usr/bin/openssl"
+
+# Global variables
+TRUE=$(true; echo $?)
+FALSE=$(false; echo $?)
+LOG_TAG='wssadm'
+LOG_DIR="/tmp"
+LOG_FILE="${LOG_TAG}.log"
+ALLOWED_OPT_SECURITY_ARGS=("enabled" "disabled")
+ALLOWED_OPT_TLS_PROTOCOL_ARGS=("TLSv1" "TLSv1.1" "TLSv1.2")
+STORAGE_CONFIG_PATH="/usr/share/pso/storage-paths/config"
+CONFIG_PATH=$(< "$STORAGE_CONFIG_PATH")
+HTTP_CONFIGURATION_FILE="$CONFIG_PATH/apos/http_config_file"
+
+# To be initialized by wssadm_init()
+CURRENT_NODE_HOSTNAME=""
+CURRENT_NODE_IP=""
+
+# Command options and arguments -- To be initialized by parse_args()
+OPT_TRUSTED_CERT=$FALSE
+OPT_TRUSTED_CERT_ARG=""
+OPT_CERT=$FALSE
+OPT_CERT_ARG=""
+OPT_SECURITY=$FALSE
+OPT_SECURITY_ARG=""
+OPT_QUERY=$FALSE
+OPT_QUERY_ARG=""
+OPT_TLS_PROTOCOL=$FALSE
+OPT_TLS_PROTOCOL_ARG=""
+OPT_CIPHER_SUITES_ENABLED=$FALSE
+OPT_CIPHER_SUITES_ARG=""
+OPT_CIPHER_SUITES_DISABLED=$FALSE
+OPT_CIPHER_SUITES_CLEAN_ARG=""
+OPT_CIPHER_SUITES_REMOVE_TEMPARAORY=$FALSE
+OPT_CIPHER_SUITES_CLEAN_TEMPARAORY=$FALSE
+OPT_CIPHER_SUITES_ADD_TEMPARAORY=$FALSE
+OPT_CIPHER_LIST=$FALSE
+OPT_SUPPORTED_CIPHER=$FALSE
+OPT_RELOAD_TEMPLIST=$FALSE
+OPT_ENABLED_CIPHER_LIST=$FALSE
+OPT_RELOAD_TEMPLIST_FORCE=$FALSE
+OPT_LIST_TLS_PROTOCOL=$FALSE
+OPT_TLS_TEMP_LIST_ARG=""
+OPT_TLS_LIST_ARG=""
+OPT_ENABLED_CIPHER_SUITES_LIST_ARG=""
+OPT_CIPHER_SUITES_LIST_ARG=""
+OPT_ENABLED_CIPHER_SUITES_SUPPORT_ARG=""
+OPT_CIPHER_TEMPARAORY=$FALSE
+OPT_LIST_TLS_ENABLED=$FALSE
+OPT_LIST_RELOAD=$FALSE
+OPT_FORCE_ARG=""
+# Exit codes
+EXIT_SUCCESS=$TRUE # 0
+EXIT_FAILURE=$FALSE # 1
+EXIT_GENERAL_FAULT=2
+EXIT_USAGE_ERROR=3
+EXIT_UNREASONABLE_VALUE=4
+EXIT_NODE_CREDENTIAL_NOT_FOUND=5
+EXIT_SSL_NOT_VALID=6
+EXIT_SSL_NOT_CONFIGURED=7
+EXIT_TRUSTED_CERTIFICATE_NOT_FOUND=8
+EXIT_TRUSTED_CERTIFICATE_NOT_VALID=9
+EXIT_TRUSTED_CERTIFICATE_NOT_CONFIGURED=10
+EXIT_WEB_SERVER_NOT_CONFIGURED=11
+EXIT_UNSUPPORTED_TLS_VERSION=12
+EXIT_UNSUPPORTED_CIPHER_SUITE=13
+EXIT_MAX_LENGTH_EXCEEDED=14
+EXIT_ALREADY_ENABLED_TLS_PROTOCOL_VERSION=15
+EXIT_TLS_UNREASONABLE_VALUE=16
+EXIT_CIPHER_UNREASONABLE_VALUE=17
+EXIT_ALREADY_ENABLED_TLS_CIPHER=18
+EXIT_WEBSERVER_DISABLED=19
+EXIT_NO_VALUE_EXIST_TO_UPDATE=20
+# Exit messages
+EXIT_GENERAL_FAULT_MSG="Error when executing (general fault)"
+EXIT_USAGE_ERROR_MSG="Incorrect usage" # Followed by the command usage
+EXIT_UNREASONABLE_VALUE_MSG="Unreasonable value" # Followed by the wrong value
+EXIT_NOT_CONFIGURED_MSG="Web server not configured"
+EXIT_NODE_CREDENTIAL_NOT_FOUND_MSG="Node credential not found"
+EXIT_SSL_NOT_VALID_MSG="Invalid node credential"
+EXIT_SSL_NOT_CONFIGURED_MSG="Node credential not defined"
+EXIT_TRUSTED_CERTIFICATE_NOT_FOUND_MSG="Trust category not found"
+EXIT_TRUSTED_CERTIFICATE_NOT_VALID_MSG="Invalid trusted certificate"
+EXIT_TRUSTED_CERTIFICATE_NOT_CONFIGURED_MSG="Trusted certificate not defined"
+EXIT_UNSUPPORTED_TLS_VERSION_MSG="Invalid/Unsupported TLS protocol version"
+EXIT_UNSUPPORTED_CIPHER_SUITE_MSG="Invalid Cipher suite selection"
+EXIT_MAX_LENGTH_EXCEEDED_MSG="Maximum command length exceeded.Allowed command length is 255 characters."
+EXIT_ALREADY_ENABLED_TLS_PROTOCOL_STRING_MSG="TLSProtocol Version is already enabled"
+EXIT_TLS_UNREASONABLE_VALUE_MSG="Unreasonable value"
+EXIT_CIPHER_UNREASONABLE_VALUE_MSG="one or more Unreasonable value"
+EXIT_ALREADY_ENABLED_TLS_CIPHER_MSG="Cipher suite is already exist in to be enabled list"
+EXIT_WEBSERVER_DISABLED_MSG="Webserver is disabled"
+EXIT_NO_VALUE_EXIST_TO_UPDATE_MSG="Nothing to Update"
+# Mappable httpmgr exit codes
+HTTPMGR_EXIT_NOT_ACTIVE_NODE=5
+HTTPMGR_EXIT_NOT_CONFIGURED=6
+HTTPMGR_EXIT_NODE_CREDENTIAL_NOT_FOUND=9
+HTTPMGR_EXIT_SSL_NOT_VALID=10
+HTTPMGR_EXIT_SSL_NOT_CONFIGURED=11
+HTTPMGR_EXIT_TRUSTED_CERTIFICATE_NOT_FOUND=12
+HTTPMGR_EXIT_TRUSTED_CERTIFICATE_NOT_VALID=13
+HTTPMGR_EXIT_TRUSTED_CERTIFICATE_NOT_CONFIGURED=14
+HTTPMGR_EXIT_UNSUPPORTED_TLS_VERSION="19"
+HTTPMGR_EXIT_UNSUPPORTED_CIPHER_SUITE="20"
+HTTPMGR_EXIT_ALREADY_ENABLED_TLS_PROTOCOL_VERSION=21
+HTTPMGR_EXIT_TLS_UNREASONABLE_VALUE=22
+HTTPMGR_EXIT_CIPHER_UNREASONABLE_VALUE=23
+HTTPMGR_EXIT_ALREADY_ENABLED_TLS_CIPHER=24
+HTTPMGR_EXIT_WEBSERVER_DISABLED=25
+HTTPMGR_EXIT_NO_VALUE_EXIST_TO_UPDATE=26
+#######################################################################################
+#                           Logging and debugging Functions                           #
+#######################################################################################
+
+#######################################################################################
+# function INFO($message);                                                            #
+#                                                                                     #
+# Appends a message (with the addition of a timestamp) to the application log         #
+# (/tmp/wssadm.log)                                                                   #
+# NOTE: message is appended only in debug mode [[ $_DEBUG=="on" ]]                    #
+#                                                                                     #
+# Arguments:                                                                          #
+# $message message to append to the application log                                   #
+#######################################################################################
+function INFO() {
+        echo -e "[$(date +'%Y-%m-%d %H:%M:%S')] $@" >> ${F_INFO}
+}
+
+#######################################################################################
+# function log($message);                                                             #
+#                                                                                     #
+# Appends a notice message to the system log                                          #
+#                                                                                     #
+# Arguments:                                                                          #
+# $message message to append to the system log                                        #
+#######################################################################################
+function log() {
+        local message="${*:-notice}"
+        local prio="user.notice"
+        
+        INFO "$message"
+        $CMD_LOGGER -p $prio $LOG_TAG "$message"
+}
+
+#######################################################################################
+# function log_error($message);                                                       #
+#                                                                                     #
+# Appends an error message to the system log                                          #
+#                                                                                     #
+# Arguments:                                                                          #
+# $message error message to append to the system log                                  #
+#######################################################################################
+function log_error() {
+        local message="${*:-error}"
+        local prio="user.err"
+        
+        INFO "$message"
+        $CMD_LOGGER -p $prio $LOG_TAG "$message"
+}
+
+#######################################################################################
+# function TRACE_ENTER($message);                                                     #
+#                                                                                     #
+# Appends a message to the application log file followed by "() >>"                   #
+# NOTE: it is useful to log the entry point of a function e.g. TRACE_ENTER $FUNCNAME  #
+#                                                                                     #
+# Arguments:                                                                          #
+# - $message message to append to the application log                                 #
+#######################################################################################
+function TRACE_ENTER() {
+        INFO "$1() >>"
+}
+
+#######################################################################################
+# function TRACE_LEAVE($message);                                                     #
+#                                                                                     #
+# Appends a message to the application log file followed by "() <<"                   #
+# NOTE: it is useful to log the exit point of a function e.g. TRACE_LEAVE $FUNCNAME   #
+#                                                                                     #
+# Arguments:                                                                          #
+# - $message message to append to the application log                                 #
+#######################################################################################
+function TRACE_LEAVE() {
+        INFO "$1() <<"
+}
+
+#######################################################################################
+#                                 Utilities Functions                                 #
+#######################################################################################
+
+#######################################################################################
+# function in_array($needle,$haystack);                                               #
+#                                                                                     #
+# Arguments:                                                                          #
+# $needle string to search for in $haystack                                           #
+# $haystack imploded array to search in (pass the array as "${haystack[@]}"           #
+#                                                                                     #
+# Return value:                                                                       #
+# Index of $needle in $haystack, or -1 if $needle is not in $haystack                 #
+#                                                                                     #
+# Return codes:                                                                       #:
+# - SUCCESS (0) if $needle is contained in $haystack                                  #
+# - FAILURE (1) if $needle is not contained in $haystack                              #
+#######################################################################################
+function in_array() {
+	TRACE_ENTER $FUNCNAME
+	local needle="$1"
+	shift
+	
+	local hay
+	local counter=0
+	for hay in "$@"; do
+		[[ "$hay" == "$needle" ]] && {
+			INFO "Index of $needle = $counter"
+			
+			TRACE_LEAVE $FUNCNAME
+			return $EXIT_SUCCESS
+		}
+		(( counter = $counter + 1 ))
+	done
+	
+	INFO "$needle not found"
+	
+	TRACE_LEAVE $FUNCNAME
+	return $EXIT_FAILURE
+}
+
+#######################################################################################
+#                             Command-specific Functions                              #
+#######################################################################################
+
+
+#######################################################################################
+# function invoke();                                                                  #
+#                                                                                     #
+# Execute one of                                                                      #
+# httpmgr [--cert $OPT_CERT_ARG]                                                      #
+# httpmgr [--tcert $OPT_TRUSTED_CERT_ARG]                                             #
+# httpmgr [--security $OPT_SECURITY_ARG]                                              #
+# httpmgr [--query   $OPT_QUERY_ARG]                                                  #
+# httpmgr [-p $OPT_TLS_PRTOCOL_ARG]                                                   #
+# httpmgr [-d $OPT_CIPHER_SUITES_ARG]                                                 #
+# httpmgr [-e $OPT_CIPHER_SUITES_ARG]                                                 #
+# httpmgr [ ciphers -i $OPT_CIPHER_SUITES_ARG]                                        #
+# httpmgr [ ciphers -c $OPT_CIPHER_SUITES_CLEAN_ARG]                                  #
+# httpmgr [ ciphers -l ]                                                              #
+# httpmgr [ ciphers -q ]                                                              #
+# httpmgr [ ciphers -s ]                                                              #
+# httpmgr [ ciphers -r $OPT_LIST_RELOAD]                                              #
+# httpmgr [ tlsversion -p $OPT_TLS_PROTOCOL]                                          #
+# httpmgr [ tlsversion -l ]                                                           #
+# httpmgr [ tlsversion -q ]                                                           #
+#                                                                                     #
+#                                                                                     #
+# Exits:                                                                              #
+# - see exit codes of above command                                                   #
+#                                                                                     #
+# Return codes:                                                                       #
+# - SUCCESS (0)                                                                       #
+# - FAILURE (1)                                                                       #
+#######################################################################################
+function invoke() {
+	TRACE_ENTER $FUNCNAME
+	local rCode=$EXIT_SUCCESS
+	local show_warning=$FALSE
+	#Check existence of configuration file in the shared filesystem
+	if [ ! -e "$HTTP_CONFIGURATION_FILE" ] ; then
+		INFO "Configuration file $HTTP_CONFIGURATION_FILE does not exist"
+		show_warning=$TRUE
+	else
+		$CMD_RCAPACHE2 status &> /dev/null
+		[[ $? -ne 0 ]] && {
+			INFO "Web server not running."
+			show_warning=$TRUE
+		}
+	fi
+	
+	local httpmgr_parameters=""
+	
+	if [ $OPT_CERT -eq $TRUE ] ; then
+		httpmgr_parameters="--cert $OPT_CERT_ARG"
+	fi
+	
+	if [ $OPT_TRUSTED_CERT -eq $TRUE ] ; then
+		httpmgr_parameters="--tcert $OPT_TRUSTED_CERT_ARG"
+	fi
+
+	if [ $OPT_QUERY -eq $TRUE ] ; then
+		httpmgr_parameters="--query $OPT_QUERY_ARG"
+                INFO "$httpmgr_parameters"
+	fi
+	
+	if [ $OPT_SECURITY -eq $TRUE ] ; then
+		local httpmgr_opt_security_arg
+		if [ "$OPT_SECURITY_ARG" == "enabled" ] ; then
+			httpmgr_opt_security_arg="on"
+		else
+			httpmgr_opt_security_arg="off"
+		fi
+		
+		httpmgr_parameters="--security $httpmgr_opt_security_arg"
+	fi
+
+	if [ $OPT_CIPHER_SUITES_ADD_TEMPARAORY -eq $TRUE ] ; then
+		httpmgr_parameters="ciphers -i $OPT_CIPHER_SUITES_ARG"
+	fi
+	
+	if [ $OPT_CIPHER_SUITES_CLEAN_TEMPARAORY -eq $TRUE ] ; then
+		httpmgr_parameters="ciphers -c $OPT_CIPHER_SUITES_CLEAN_ARG"
+	fi
+	if [ $OPT_TLS_PROTOCOL -eq $TRUE ] ; then
+                httpmgr_parameters="tlsversion -p  $OPT_TLS_PROTOCOL_ARG"
+        fi
+	if [ $OPT_CIPHER_LIST -eq $TRUE ] ; then
+		httpmgr_parameters="ciphers -l"
+	fi
+
+	if [ $OPT_LIST_TLS_PROTOCOL -eq $TRUE ]; then
+		httpmgr_parameters="tlsversion -l"
+	fi
+	
+	if [ $OPT_SUPPORTED_CIPHER -eq $TRUE ] ; then
+		httpmgr_parameters="ciphers -s"
+	fi
+	
+	if [ $OPT_ENABLED_CIPHER_LIST -eq $TRUE ] ; then
+		httpmgr_parameters="ciphers -q"
+	fi
+	if [ $OPT_CIPHER_TEMPARAORY -eq $TRUE ] ; then
+		httpmgr_parameters="ciphers -l"
+	fi
+
+	if [ $OPT_RELOAD_TEMPLIST -eq $TRUE ] ; then
+		httpmgr_parameters="-a"
+	fi
+
+	if [ $OPT_RELOAD_TEMPLIST_FORCE -eq $TRUE ] ; then
+		httpmgr_parameters="-a -f"
+	fi
+
+	if [ $OPT_LIST_TLS_ENABLED -eq $TRUE ] ; then
+		httpmgr_parameters="tlsversion -q"
+	fi
+	
+	if [ $OPT_LIST_RELOAD -eq $TRUE ] ; then
+		httpmgr_parameters="ciphers -r"
+	fi
+
+	if [ "$httpmgr_parameters" != "" ] ; then
+               if [ "$httpmgr_parameters" == "--query status" ] ; then
+                  
+                  $CMD_HTTPMGR $httpmgr_parameters  
+               else
+			
+                  $CMD_HTTPMGR $httpmgr_parameters  #1>>$F_INFO 2>&1
+               fi
+          
+		local httpmgr_exit_code=$?
+		if [ $httpmgr_exit_code -ne $EXIT_SUCCESS ] ; then
+			case $httpmgr_exit_code in
+				$HTTPMGR_EXIT_NODE_CREDENTIAL_NOT_FOUND)
+					wssadm_exit $EXIT_NODE_CREDENTIAL_NOT_FOUND "$EXIT_NODE_CREDENTIAL_NOT_FOUND_MSG"
+					;;
+				$HTTPMGR_EXIT_SSL_NOT_VALID)
+					wssadm_exit $EXIT_SSL_NOT_VALID "$EXIT_SSL_NOT_VALID_MSG"
+					;;
+				$HTTPMGR_EXIT_SSL_NOT_CONFIGURED)
+					wssadm_exit $EXIT_SSL_NOT_CONFIGURED "$EXIT_SSL_NOT_CONFIGURED_MSG"
+					;;
+				$HTTPMGR_EXIT_TRUSTED_CERTIFICATE_NOT_FOUND)
+					wssadm_exit $EXIT_TRUSTED_CERTIFICATE_NOT_FOUND "$EXIT_TRUSTED_CERTIFICATE_NOT_FOUND_MSG"
+					;;
+				$HTTPMGR_EXIT_TRUSTED_CERTIFICATE_NOT_VALID)
+					wssadm_exit $EXIT_TRUSTED_CERTIFICATE_NOT_VALID "$EXIT_TRUSTED_CERTIFICATE_NOT_VALID_MSG"
+					;;
+				$HTTPMGR_EXIT_TRUSTED_CERTIFICATE_NOT_CONFIGURED)
+					wssadm_exit $EXIT_TRUSTED_CERTIFICATE_NOT_CONFIGURED "$EXIT_TRUSTED_CERTIFICATE_NOT_CONFIGURED_MSG"
+					;;
+				$HTTPMGR_EXIT_NOT_CONFIGURED)
+					wssadm_exit $EXIT_WEB_SERVER_NOT_CONFIGURED 
+					;;
+				$HTTPMGR_EXIT_NOT_ACTIVE_NODE)
+					wssadm_exit $HTTPMGR_EXIT_NOT_ACTIVE_NODE
+					;;
+				$HTTPMGR_EXIT_TLS_UNREASONABLE_VALUE)
+					wssadm_exit $EXIT_TLS_UNREASONABLE_VALUE 
+					;;
+				$HTTPMGR_EXIT_CIPHER_UNREASONABLE_VALUE)
+					wssadm_exit $EXIT_CIPHER_UNREASONABLE_VALUE
+					;;
+				$HTTPMGR_EXIT_ALREADY_ENABLED_TLS_PROTOCOL_VERSION)
+					wssadm_exit $EXIT_ALREADY_ENABLED_TLS_PROTOCOL_VERSION 
+					;;
+				$HTTPMGR_EXIT_ALREADY_ENABLED_TLS_CIPHER)
+					wssadm_exit $EXIT_ALREADY_ENABLED_TLS_CIPHER
+					;;
+				$HTTPMGR_EXIT_WEBSERVER_DISABLED)
+					wssadm_exit $EXIT_WEBSERVER_DISABLED
+					;;
+				$HTTPMGR_EXIT_NO_VALUE_EXIST_TO_UPDATE)
+					wssadm_exit $EXIT_NO_VALUE_EXIST_TO_UPDATE
+					;;
+				*)	wssadm_exit $EXIT_GENERAL_FAULT "$EXIT_GENERAL_FAULT_MSG"
+					;;
+			esac
+		fi
+	fi
+
+	if [ $show_warning -eq $TRUE ] ; then
+		echo "Warning: Web server is not running. Security settings will apply once it is correctly started."
+	fi
+	
+	TRACE_LEAVE $FUNCNAME
+	return $rCode
+}
+#######################################################################################
+# function parse_args($args...);                                                      #
+#                                                                                     #
+# Parses the command line arguments and fill the global variables.                    #
+#                                                                                     #
+# Allowed formats:                                                                    #
+#       wssadm -c node_credential_id                                                  #
+#       wssadm -t trustCategory_id                                                    #
+#       wssadm -s security_status                                                     #
+#       wssadm -q status                                                              #
+#       wssadm tlsversion -p tls_protocol_version                                     #
+#       wssadm tlsversion -l                                                          #
+#       wssadm tlsversion -q                                                          #
+#       wssadm ciphers -q                                                             #
+#       wssadm ciphers -s                                                             #
+#       wssadm ciphers -r                                                             #
+#       wssadm ciphers -i cipher_suite_names                                          #
+#       wssadm ciphers -l                                                             #
+#       wssadm ciphers -c cipher_suite_names                                          #
+#       wssadm -a [-f]                                                                #
+#                                                                                     #
+# Arguments:                                                                          #
+# - $args... command line arguments                                                   #
+#                                                                                     #
+# Exits:                                                                              #
+# - $EXIT_USAGE_ERROR in case of incorrect usage                                      #
+#                                                                                     #
+# Return codes:                                                                       #
+# - SUCCESS (0)                                                                       #
+# - FAILURE (1)                                                                       #
+#######################################################################################                                                                                
+function parse_args() {
+	TRACE_ENTER $FUNCNAME
+	local rCode=$EXIT_SUCCESS
+	
+	local parameters=("$@")
+	local arg=("$*")
+	local num_parameters=${#parameters[@]}
+	
+	[ $num_parameters -lt 1 ] && usage_error
+	[ $num_parameters -gt 6 ] && usage_error
+	
+	
+	local options='c t s q a ciphers i r tlsversion p l f'
+	getopt --quiet --quiet-output --options="$options" -- "${parameters[@]}"
+	[ $? -ne $TRUE ] && usage_error
+
+	local args="${parameters[@]}"
+	eval set -- $args 
+	if [ ${#arg} -gt 255 ] ; then
+             	INFO "Argument exceed "
+		wssadm_exit $EXIT_MAX_LENGTH_EXCEEDED "$EXIT_MAX_LENGTH_EXCEEDED_MSG"
+        fi
+	while [ $# -gt 0 ]; do
+		case "$1" in
+			'-c')
+				INFO "Option -c given"
+				OPT_CERT=$TRUE
+				OPT_CERT_ARG="$2"
+				[[ "$OPT_CERT_ARG" != "" ]] || {
+					INFO "Argument $OPT_CERT_ARG not allowed for -c option"
+					usage_error
+				}
+				shift
+				;;
+			'-t')
+				INFO "Option -t given"
+				OPT_TRUSTED_CERT=$TRUE
+				OPT_TRUSTED_CERT_ARG="$2"
+				[[ "$OPT_TRUSTED_CERT_ARG" != "" ]] || {
+					INFO "Argument $OPT_CERT_ARG not allowed for -t option"
+					usage_error
+				}
+				shift
+				;;
+			'-s')
+				INFO "Option -s given"
+				OPT_SECURITY=$TRUE
+				OPT_SECURITY_ARG="$2"
+				in_array "$OPT_SECURITY_ARG" "${ALLOWED_OPT_SECURITY_ARGS[@]}" || {
+					INFO "Argument $OPT_SECURITY_ARG not allowed for -s option"
+					wssadm_exit $EXIT_UNREASONABLE_VALUE "$EXIT_UNREASONABLE_VALUE_MSG $OPT_SECURITY_ARG"
+				}
+				shift
+				;;
+			'-q')
+				INFO "Option -q given"
+				OPT_QUERY=$TRUE
+				OPT_QUERY_ARG="$2"
+                                if [ "$OPT_QUERY_ARG" == "status" ]; then
+                                        INFO "Argument $OPT_QUERY_ARG allowed for -q option"
+                                else
+                                        INFO "Argument $OPT_QUERY_ARG not allowed for -q option"
+                                        usage_error
+                                fi
+				shift
+				;;
+			'-a')
+
+                                INFO "Option -a given"
+				case "$2" in
+					'-f')
+						INFO "option -f given"
+						 OPT_RELOAD_TEMPLIST_FORCE=$TRUE
+						 OPT_FORCE_ARG="$3"
+                                                [[ "$OPT_FORCE_ARG" == "" ]] || {
+                                                INFO "Argument $OPT_FORCE_ARG not allowed for -f option"
+                                                usage_error
+                                                }
+						shift
+						;;
+					'')	
+						OPT_RELOAD_TEMPLIST=$TRUE
+						shift
+						;;
+					*)
+						usage_error
+						shift
+						;;
+				esac
+				shift
+                                ;;
+
+				
+			"ciphers")
+				INFO "Option ciphers given"
+				case "$2" in
+					'-i') 
+						INFO " option -i given"
+						OPT_CIPHER_SUITES_ADD_TEMPARAORY=$TRUE;
+						OPT_CIPHER_SUITES_ARG="$3"
+						[[ "$OPT_CIPHER_SUITES_ARG" != "" ]] || {
+
+                                        	INFO "Argument $OPT_CIPHER_SUITES_ARG not allowed for -i option"
+						usage_error
+                                		}
+						shift
+
+                                		;;
+				
+					'-c')
+						INFO " option -c given"
+                                                OPT_CIPHER_SUITES_CLEAN_TEMPARAORY=$TRUE
+						OPT_CIPHER_SUITES_CLEAN_ARG="$3"
+						[[ "$OPT_CIPHER_SUITES_CLEAN_ARG" != "" ]] || {
+
+                                                INFO "Argument $OPT_CIPHER_SUITES_CLEAN_ARG not allowed for -c option"
+                                                usage_error
+                                                }
+						shift
+						;;
+					'-l') 
+						INFO "option -l given"
+						OPT_CIPHER_TEMPARAORY=$TRUE
+						 OPT_CIPHER_SUITES_LIST_ARG="$3"
+                                                [[ "$OPT_CIPHER_SUITES_LIST_ARG" == "" ]] || {
+                                                INFO "Argument $OPT_CIPHER_SUITES_LIST_ARG not allowed for -l option"
+                                                usage_error
+                                                }
+
+						shift
+						;;
+					'-q')
+						INFO "Option -q given"
+						OPT_ENABLED_CIPHER_LIST=$TRUE
+						OPT_ENABLED_CIPHER_SUITES_LIST_ARG="$3"
+                                                [[ "$OPT_ENABLED_CIPHER_SUITES_LIST_ARG" == "" ]] || {
+                                                INFO "Argument $OPT_ENABLED_CIPHER_SUITES_LIST_ARG not allowed for -q option"
+                                                usage_error
+                                                }
+
+						shift
+						;;
+					'-s')
+						INFO "Option -s given"
+						OPT_SUPPORTED_CIPHER=$TRUE
+						 OPT_ENABLED_CIPHER_SUITES_SUPPORT_ARG="$3"
+                                                [[ "$OPT_ENABLED_CIPHER_SUITES_SUPPORT_ARG" == "" ]] || {
+                                                INFO "Argument $OPT_ENABLED_CIPHER_SUITES_SUPPORT_ARG not allowed for -s option"
+                                                usage_error
+                                                }
+
+						shift
+						;;
+					'-r')
+						INFO "Option -r given"
+						OPT_LIST_RELOAD=$TRUE
+						OPT_RELOAD_CIPHER_SUITES_SUPPORT_ARG="$3"
+                                                [[ "$OPT_RELOAD_CIPHER_SUITES_SUPPORT_ARG" == "" ]] || {
+                                                INFO "Argument $OPT_RELOAD_CIPHER_SUITES_SUPPORT_ARG not allowed for -r option"
+                                                usage_error
+						}
+						shift
+						;;
+					*)
+						usage_error
+						shift
+						;;
+				esac
+				shift
+
+
+				;;
+			
+			
+			"tlsversion")
+				INFO "Protocl Options given"
+				case "$2" in
+					'-p')
+						INFO "option -p given"
+						OPT_TLS_PROTOCOL=$TRUE
+						OPT_TLS_PROTOCOL_ARG="$3"
+						[[ "$OPT_TLS_PROTOCOL_ARG" != "" ]] || {
+                                                        usage_error
+
+                                                }
+						shift
+						;;
+					'-l')
+						INFO "option -l given"
+						OPT_LIST_TLS_PROTOCOL=$TRUE
+	               				OPT_TLS_TEMP_LIST_ARG="$3"
+                                                [[ "$OPT_TLS_TEMP_LIST_ARG" == "" ]] || {
+                                                INFO "Argument $OPT_CIPHER_SUITES_ARG not allowed for -i option"
+                                                usage_error
+                                                }
+
+						shift
+						;;
+					'-q')
+						INFO "option -q given"
+						OPT_LIST_TLS_ENABLED=$TRUE
+						OPT_TLS_LIST_ARG="$3"
+						[[ "$OPT_TLS_LIST_ARG" == "" ]] || {
+                                                INFO "Argument $OPT_LIST_TLS_ARG not allowed for -q option"
+                                                usage_error
+                                                }
+
+						shift
+						;;
+						
+					*)
+						usage_error
+						shift
+						;;
+				esac
+				shift
+				;;
+			*)
+				usage_error
+				shift
+				;;
+		esac
+		shift
+	done
+	
+	TRACE_LEAVE $FUNCNAME
+	return $rCode
+}
+
+#######################################################################################
+# function usage();                                                                   #
+#                                                                                     #
+# Displays the command usage                                                          #
+#######################################################################################
+function usage() {
+	TRACE_ENTER $FUNCNAME
+	
+	cat << EOF
+Usage:
+        wssadm -a
+	wssadm -a -f
+	wssadm -c node_credential_Id
+	wssadm ciphers -c cipher_suite_names_or_ALL
+	wssadm ciphers -i cipher_suite_names
+	wssadm ciphers -l
+	wssadm ciphers -q
+	wssadm ciphers -r
+	wssadm ciphers -s
+	wssadm -q status
+	wssadm -s security_status
+	wssadm -t trustCategory_Id
+	wssadm tlsversion -l
+	wssadm tlsversion -p tls_protocol_versions
+	wssadm tlsversion -q
+EOF
+	TRACE_LEAVE $FUNCNAME
+}
+
+#######################################################################################
+# function usage_error();                                                             #
+#                                                                                     #
+# Displays the command usage and exits with $EXIT_USAGE_ERROR (3)                     #
+#                                                                                     #
+# Exits:                                                                              #
+# - $EXIT_USAGE_ERROR                                                                 #
+#######################################################################################
+function usage_error() {
+	TRACE_ENTER $FUNCNAME
+	
+	wssadm_exit $EXIT_USAGE_ERROR "$EXIT_USAGE_ERROR_MSG\n$(usage)"
+}
+
+#######################################################################################
+# function wssadm_exit($exit_code = $EXIT_SUCCESS,$exit_message = "");                #
+#                                                                                     #
+# Logs the execution end, and exits with provided exit code                           #
+# and message (if any) or with SUCCESS (0) if called without arguments                #
+# Optionally displays a message                                                       #
+#                                                                                     #
+# Arguments:                                                                          #
+# $exit_code (Optional, default 0) numeric exit code to return to the parent shell    #
+# $exit_message (Optional, default empty) exit message to display                     #
+#                                                                                     #
+# Exits:                                                                              #
+# - SUCCESS (0) if called without arguments                                           #
+# - $exit_code if exit code is passed as first argument                               #
+#######################################################################################
+function wssadm_exit() {
+	TRACE_ENTER $FUNCNAME
+	
+	local exit_code=$EXIT_SUCCESS
+	local exit_message=""
+	
+	[[ "$1" != "" ]] && exit_code=$1
+	shift
+	[[ "$1" != "" ]] && exit_message="$@"
+	
+	[[ "$exit_message" != "" ]] && echo -e "\n$exit_message"
+	
+	INFO "$LOG_TAG version $_wssadm_VER -- Execution ended on node $CURRENT_NODE_HOSTNAME ($CURRENT_NODE_IP) with exit code $exit_code"
+	if [ $exit_code != $EXIT_SUCCESS ] ; then
+		log_error "END <$LOG_TAG> - EXIT CODE <$exit_code>"
+	else
+		log "END <$LOG_TAG>"
+	fi
+	
+	exit $exit_code
+}
+
+#######################################################################################
+# function wssadm_init();                                                             #
+#                                                                                     #
+# - Initialize global variables (log file, current node, etc...)                      #
+# - Logs the execution start                                                          #
+#######################################################################################
+function wssadm_init() {
+	TRACE_ENTER $FUNCNAME
+	
+	[[ "$_DEBUG" == "on" ]] && {
+		F_INFO="$LOG_DIR/$LOG_FILE"
+		cat /dev/null > $F_INFO
+	}
+	
+	CURRENT_NODE_HOSTNAME="$(< /etc/cluster/nodes/this/hostname)"
+	CURRENT_NODE_IP="$(< /etc/cluster/nodes/this/networks/public/primary/address)"
+	
+	INFO "$LOG_TAG version $_wssadm_VER -- Execution started on node $CURRENT_NODE_HOSTNAME ($CURRENT_NODE_IP)"
+	log "START <$LOG_TAG>"
+	
+	TRACE_LEAVE $FUNCNAME
+}
+
+#######################################################################################
+#                                        MAIN                                         #
+#######################################################################################
+# Initialize
+wssadm_init
+
+# Parse the command line arguments
+parse_args "$@"
+
+# Invoke the validation and execution
+invoke
+
+# Exit!
+wssadm_exit $EXIT_SUCCESS
+

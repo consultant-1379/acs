@@ -1,0 +1,177 @@
+
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2014 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# models.info
+##
+# Description:
+#       Configuration file used to perform IMM model changes during software upgrade for LCTBIN.
+##
+##
+# Changelog:
+# - May 12 2014 - Shyam Chirania (XSHYCHI)
+#       First version
+##
+# log($message) ===> Use it to append a notice to the system log
+# log_error($message) ===> Use it to append an error message to the system log
+##
+##
+#-----------------------------------------------------------------------
+#       CHANGE-LOG
+#----------------------------------------------------------------------
+#APG 5.3
+VERSION: CXC1371533_9-R1K
+
+#APG 5.2.1 
+VERSION: CXC1371533_9-R1J
+
+#APG 5.0 CM002
+VERSION: CXC1371533_9-R1H
+
+#APG 5.0 LSV2238
+VERSION: CXC1371533_9-R1G
+
+#APG 4.1 LSV03
+VERSION: CXC1371533_9-R1F
+log "Model files corrected and generated with new version of modelling tool"
+
+#APG 3.8 CM001
+VERSION: CXC1371533_9-R1E
+log "Model files corrected and generated with new version of modelling tool"
+
+#APG 3.8 LSV03
+VERSION: CXC1371533_9-R1D
+log "Model files updated by generating with new version of modelling tool"
+
+VERSION: CXC1371533_9-R1C
+log "No model changes introduced in version  CXC1371533_9-R1C"
+
+VERSION: CXC1371533_9-R1B
+log "No model changes introduced in version  CXC1371533_9-R1B"
+
+# Adaptations to SwM2.0
+VERSION: CXC1371533_9-R1A05
+VERSION: CXC1371533_9-R1A04
+VERSION: CXC1371533_9-R1A03
+VERSION: CXC1371533_9-R1A02
+VERSION: CXC1371533_9-R1A01
+
+#gep7 hardware
+VERSION: CXC1371533_8-R1A01
+log "No model changes introduced in version  CXC1371533_8-R1A01"
+
+VERSION: CXC1371533_5-R1A03
+log "No model changes introduced in version  CXC1371533_5-R1A03"
+
+VERSION: CXC1371533_5-R1A02
+log "No model changes introduced in version  CXC1371533_5-R1A02"
+
+VERSION: CXC1371533_5-R1A01
+log "No model changes introduced in version  CXC1371533_5-R1A01"
+
+VERSION: CXC1371533-R1B
+log "Model changes introduced in version CXC1371533-R1A02"
+cmw-immclass-modify $BUNDLE_NAME AxeExternalMediaExternalMediaM
+
+VERSION: CXC1371533-R1A01
+log "No Model changes. Descriptions are changed."
+
+#Rel 2.0 Version
+VERSION: CXC1371462-R1D
+log "Model changes introduced in version  CXC1371462-R1D"
+
+VERSION: CXC1371462-R1C
+log "Model changes introduced in version  CXC1371462-R1C"
+
+VERSION: CXC1371462-R1B
+log "No model changes introduced in version  CXC1371462-R1B"
+
+VERSION: CXC1371462-R1A23
+log "No model changes introduced in version  CXC1371462-R1A23"
+
+
+VERSION: CXC1371462-R1A22
+log " Model changes introduced in version  CXC1371462-R1A22"
+
+VERSION: CXC1371462-R1A21
+log " No model changes introduced in version  CXC1371462-R1A21"
+
+VERSION: CXC1371462-R1A20
+log " No model changes introduced in version  CXC1371462-R1A20"
+
+VERSION: CXC1371462-R1A19
+log " No model changes introduced in version  CXC1371462-R1A19"
+
+VERSION: CXC1371462-R1A18
+log " No model changes introduced in version  CXC1371462-R1A18"
+
+VERSION: CXC1371462-R1A17
+log " Model is validated and fixed warnings in versions CXC1371462-R1A17"
+
+VERSION: CXC1371462-R1A16
+log " No model changes introduced in version  CXC1371462-R1A16"
+
+VERSION: CXC1371462-R1A15
+log " No model changes introduced in version  CXC1371462-R1A15"
+
+VERSION: CXC1371462-R1A14
+log " No model changes introduced in version  CXC1371462-R1A14"
+
+VERSION: CXC1371462-R1A13
+log " No model changes introduced in version  CXC1371462-R1A13"
+
+VERSION: CXC1371462-R1A12
+log " No model changes introduced in version  CXC1371462-R1A12"
+
+
+VERSION: CXC1371462-R1A11
+log " No model changes introduced in version  CXC1371462-R1A11"
+
+
+VERSION: CXC1371462-R1A10
+log " No model changes introduced in version  CXC1371462-R1A10"
+
+
+VERSION: CXC1371462-R1A09
+log " Model changes introduced in version  CXC1371462-R1A09"
+
+
+
+VERSION: CXC1371462-R1A08
+log " No model changes introduced in version  CXC1371462-R1A08"
+
+
+VERSION: CXC1371462-R1A07
+log " No model changes introduced in version  CXC1371462-R1A07"
+
+
+VERSION: CXC1371462-R1A06
+log " No model changes introduced in version  CXC1371462-R1A06"
+
+
+VERSION: CXC1371462-R1A05
+log " No model changes introduced in version  CXC1371462-R1A05"
+
+
+VERSION: CXC1371462-R1A04
+log " No model changes introduced in version  CXC1371462-R1A04"
+
+
+VERSION: CXC1371462-R1A03
+log " No model changes introduced in version  CXC1371462-R1A03"
+
+
+VERSION: CXC1371462-R1A02
+log " No model changes introduced in version  CXC1371462-R1A02"
+
+
+VERSION: CXC1371462-R1A01
+log " No model changes introduced in version  CXC1371462-R1A01"
+
+
+VERSION: CXC1371345-R1U
+
+
+

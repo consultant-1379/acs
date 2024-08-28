@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
+	Copyright (c) 2020 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Dec 9, 2020 2:33:17 PM using:
+	* com.ericsson.ecim.m2m 3.13.0.202006261811
+	* com.ericsson.ecim.dsl 3.13.0.202006261811
+	* com.ericsson.ecim.edm 3.13.0.202006261811
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>K</dtdVersion>
+    <momMetaData>
+        <momTitle>Managed Object Model for AP Session Management Function.</momTitle>
+        <momSubTitle/>
+        <momIdentity>
+            <docNum>1/19089-CXA 117 0042/13</docNum>
+            <docLang>Uen</docLang>
+            <docRev>A</docRev>
+            <docDate>2020-12-09</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>XHARBAV</signature>
+        </createdBy>
+    </momMetaData>
+    <mim author="Harika Bavana" contact="XHARBAV" correction="0" date="2020-12-09" docNo="" name="AxeApSessionManagement" namespace="urn:com:ericsson:ecim:AxeApSessionManagement" namespacePrefix="axeapsessionmanagement" organization="" release="1" revision="" version="3">
+        <description>AP Session Management function MOM.</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="MOM_NAME"/>
+        </domainExtension>
+        <modelFeatures modelType="Template">
+            <modelFeature featureType="basic" name="CPI_HIDDEN"/>
+        </modelFeatures>
+        <derivedDataType name="InactivityTimerValue">
+            <description>Specifies the range for inactivity timer, in minutes, of AP sessions.</description>
+            <baseType>
+                <int16>
+                    <range>
+                        <min>1</min>
+                        <max>180</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>1</min>
+                            <max>180</max>
+                        </subrange>
+                    </ranges>
+                </int16>
+            </baseType>
+        </derivedDataType>
+        <class name="ApSessionM">
+            <description>Represents the configurable security settings for AP sessions.
+
+One or more attributes setting can fail due to one of the following reasons:
+	- Internal Error: Wrong/missing configuration file. 
+	- Error connecting to server : Internal error.</description>
+            <root/>
+            <attribute name="apSessionMId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            
+            
+            
+            <attribute name="inactivityTimer">
+                <description>Specifies the maximum idle time, in minutes, of an AP session before disconnection. 
+When  this threshold is exceeded, an AP session gets automatically disconnected. 
+Default value is 30 minutes.
+</description>
+                <dataType>
+                    <derivedDataTypeRef name="InactivityTimerValue">
+                        <defaultValue>30</defaultValue>
+                        <mimName>AxeApSessionManagement</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            
+            
+            
+            
+            
+        </class>
+    </mim>
+    <interMim>
+        <description>This is the contribution association of ApSessionM MOC to to SecurityHandling MOC.</description>
+        <relationship name="SecurityHandling_to_ApSessionM">
+            <description>This is the contribution association of ApSessionM MOC to to SecurityHandling MOC.</description>
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="SecurityHandling">
+                        <mimName>AxeFunctions</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ApSessionM">
+                        <mimName>AxeApSessionManagement</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

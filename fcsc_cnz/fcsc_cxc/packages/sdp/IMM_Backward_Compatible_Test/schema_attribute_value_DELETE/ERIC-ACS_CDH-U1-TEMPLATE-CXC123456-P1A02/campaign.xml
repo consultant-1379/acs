@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<upgradeCampaign xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" safSmfCampaign="safSmfCampaign=ERIC-ACS_CDH-U1-TEMPLATE-CXC123456-P1A02">
+	<campaignInfo>
+		<campaignPeriod saSmfCmpgExpectedTime="0" />
+		<configurationBase saSmfCmpgConfigBase="0" />
+	</campaignInfo>
+	<campaignInitialization>
+		<addToImm>
+		</addToImm>
+	</campaignInitialization>
+	<upgradeProcedure safSmfProcedure="safSmfProc=RollingUpgrade_SC" saSmfExecLevel="3">
+		<outageInfo>
+			<acceptableServiceOutage>
+				<all />
+			</acceptableServiceOutage>
+			<procedurePeriod saSmfProcPeriod="12345678" />
+		</outageInfo>
+		<procInitAction>
+			<immCCB ccbFlags="0">
+		                <modify objectDN="testId=1" operation="SA_IMM_ATTR_VALUES_DELETE">
+        		            <attribute name="attr3" type="SA_IMM_ATTR_SAINT32T">
+                		        <value>12</value>
+			            </attribute>
+				</modify>
+			</immCCB>
+		</procInitAction>
+		<upgradeMethod>
+			<rollingUpgrade>
+				<upgradeScope>
+					<byTemplate>
+						<targetNodeTemplate objectDN="safAmfNodeGroup=SCs,safAmfCluster=myAmfCluster">
+							<swRemove bundleDN="safSmfBundle=ERIC-ACS_CDH-CXC123456-P1A01" pathnamePrefix="/home/coremw/repository"/>
+							<swAdd bundleDN="safSmfBundle=ERIC-ACS_CDH-CXC123456-P1A02" pathnamePrefix="/home/coremw/repository"/>
+						</targetNodeTemplate>
+					</byTemplate>
+				</upgradeScope>
+				<upgradeStep/>
+			</rollingUpgrade>
+		</upgradeMethod>
+	</upgradeProcedure>
+	<campaignWrapup>
+		<waitToCommit time="0" />
+		<waitToAllowNewCampaign time="0"></waitToAllowNewCampaign>
+		<removeFromImm>
+		</removeFromImm>
+	</campaignWrapup>
+</upgradeCampaign>

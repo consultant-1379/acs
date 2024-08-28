@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project fingerprintPlugin">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="create_run_jar">
+        <jar destfile="/vobs/cm4ap/ntacs/lm_cnz/ApgCustomHash/test/ApgCustomHashGenerator/package/ApgCustomHashCodeGenerator.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="ApgLockCodeGenerator"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="/vobs/cm4ap/ntacs/lm_cnz/ApgCustomHash/test/ApgCustomHashGenerator/bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="/vobs/cm4ap/ntacs/lm_cnz/ApgCustomHash/package/ApgCustomHashImpl.jar"/>
+        </jar>
+    </target>
+</project>
+

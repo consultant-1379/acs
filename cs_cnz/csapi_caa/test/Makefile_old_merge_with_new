@@ -1,0 +1,74 @@
+# **********************************************************************
+#
+# Short description:
+# Makefile template for XXX library
+# **********************************************************************
+#
+# Ericsson AB 2010 All rights reserved.
+# The information in this document is the property of Ericsson.
+# Except as specifically authorized in writing by Ericsson, the receiver of this
+# document shall keep the information contained herein confidential and shall protect
+# the same in whole or in part from disclosure and dissemination to third parties.
+# Disclosure and disseminations to the receivers employees shall only be made
+# on a strict need to know basis.
+#
+# **********************************************************************
+#
+# Rev        Date         Name      What
+# -----      -------      --------  --------------------------
+#            2010-10-19   xmianon   Created
+# **********************************************************************
+
+include ../../cs_cxc/include.mk
+
+CAA_NAME := csapi_caa
+CAA_PATH := $(CNZ_PATH)/$(CAA_NAME)
+
+OBJDIR := ../obj
+
+#CINCLUDES = -I$(CAA_PATH)/inc
+CINCLUDES = -I/vobs/IO_Developments/MIDDLEWARE/include
+CINCLUDES += -I$(CNZ_PATH)/csadm_caa/csprot/inc
+CINCLUDES += -I$(CNZ_PATH)/csapi_caa/inc_ext/
+CINCLUDES += -I$(CNZ_PATH)/csapi_caa/inc_int/
+CINCLUDES += -I$(CNZ_PATH)/cscmd_caa/common/inc/
+CINCLUDES += -I$(CNZ_PATH)/csadm_caa/inc
+
+LIBSDIR += -L$(CNZ_PATH)/cs_cxc/lib
+LIBSDIR = -L$(CNZ_PATH)/cs_cxc/bin/lib_ext/
+//LIBSDIR += -L$(CNZ_PATH)/cs_cxc/bin/lib_int/
+LIBSDIR += -L/vobs/IO_Developments/AP_SDK/Lib
+LIBSDIR += -L/vobs/IO_Developments/MIDDLEWARE/lib64
+
+#LIBS += -lACS_CSAPI
+#LIBS += -lacs_csapi
+#LIBS = -lrt -lpthread -ldhcpctl -lomapi -ldst  
+LIBS += -lstdc++ -lacs_csapi
+#-lboost_serialization -lprot -lacs_pha -lacs_tra -lacs_apgcc
+
+TEST_SOURCES:= neapitest.cpp 
+
+TEST_OBJECTS := $(patsubst %.cpp,%.obj,$(TEST_SOURCES))
+
+ALL_SOURCES := $(wildcard ../src/*.cpp)
+
+vpath %.cpp .:$(CNZ_PATH)/cscmd_caa/common/src:$(CNZ_PATH)/cssrv_caa/src:$(CNZ_PATH)/csprot_caa/src:$(CNZ_PATH)/cssrv_caa/test
+vpath %.h .:$(CAA_PATH)/inc
+vpath %.obj ${OBJDIR}
+
+# Targets
+
+all: netest
+
+netest: $(TEST_OBJECTS)
+	$(CC) $(addprefix $(OBJDIR)/,$(TEST_OBJECTS)) -L../../cs_cxc/lib $(LDFLAGS) $(LIBSDIR) $(LIBS) -o $@
+
+.PHONY : cppcheck
+cppcheck:
+	$(SILENT) echo "Running cppcheck"
+	$(SILENT) cppcheck $(ALL_SOURCES) | egrep "(error)|100% done"
+
+.PHONY : clean
+clean:
+	@echo "Cleaning"
+	@rm -f $(OBJDIR)/* netest

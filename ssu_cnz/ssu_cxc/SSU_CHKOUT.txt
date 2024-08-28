@@ -1,0 +1,4 @@
+T:\ntacs\ssu_cnz\ssu_cxc\bin\ssucfg
+T:\ntacs\ssu_cnz\ssu_cxc\bin\acs_ssumonitord
+T:\ntacs\ssu_cnz\ssu_cxc\bin\ssuls
+T:\ntacs\ssu_cnz\ssu_cxc\packages\rpm\ACS_SSU-CXC1371319-R1A11.x86_64.rpm

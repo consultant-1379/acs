@@ -1,0 +1,27 @@
+csm-version: '1.0'
+components:
+- uid: acs.aeh
+  name: acs-aeh
+  description: ACS AEH component
+  availability-manager: NONE
+  software:
+    sdp: ERIC-ACS_AEHBIN-CXC1371526
+  supersedes:
+  - software: ERIC-ACS_AEHBIN-CXC1371526
+  constraints:
+    installation:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+    upgrade:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+  meta-data:
+    component-version: 10.0.0-2
+    deliverable:
+      deployment-package: acs_aeh-10.0.0-2-deployment-CXC1371526.tar.gz
+      runtime-package: acs_aeh-10.0.0-2-runtime-CXC1371526.tar.gz
+    software:
+    - file-name: ACS_AEHBIN-CXC1371526_10-R1A02.x86_64.sdp
+      bundle-name: ERIC-ACS_AEHBIN-CXC1371526_10-R1A02

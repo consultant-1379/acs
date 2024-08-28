@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
+	Copyright (c) 2020 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Dec 14, 2020 12:41:31 PM using:
+	* com.ericsson.ecim.m2m 3.13.0.202006261811
+	* com.ericsson.ecim.dsl 3.13.0.202006261811
+	* com.ericsson.ecim.edm 3.13.0.202006261811
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>K</dtdVersion>
+    <momMetaData>
+        <momTitle>AXE Transport Management</momTitle>
+        <momSubTitle/>
+        <momIdentity>
+            <docNum>19089-CXA 117 0046/9</docNum>
+            <docLang>uen</docLang>
+            <docRev>B</docRev>
+            <docDate>2020-12-14</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>XHARBAV</signature>
+        </createdBy>
+    </momMetaData>
+    <mim author="Harika Bavana" contact="XHARBAV" correction="0" date="2020-12-14" docNo="" name="AxeTransportM" namespace="urn:com:ericsson:ecim:AxeTransportM" namespacePrefix="axetransportm" organization="" release="1" revision="B" version="1">
+        <description>AXE Transport Management function MOM.</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="MOM_NAME"/>
+        </domainExtension>
+        <modelFeatures modelType="Template">
+            <modelFeature featureType="basic" name="CPI_HIDDEN"/>
+        </modelFeatures>
+        <enum name="BasicAdmState">
+            <description>Basic administrative states for a resource.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <enumMember name="LOCKED">
+                <description> The resource is administratively prohibited from performing services for its users.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="UNLOCKED">
+                <description>The resource is administratively permitted to perform services for its users.
+This is independent of its inherent operability.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <class name="TransportM">
+            <description>Represents the root MOC for AXE Transport Management function MOM.</description>
+            <systemCreated/>
+            <root/>
+            <attribute name="transportMId">
+                <description>Holds the name used when identifying the MO.</description>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string>
+                        <defaultValue>1</defaultValue>
+                    </string>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ExternalNetwork">
+            <description>Represents a network transporting traffic between the internal components of the AXE node and external peers.</description>
+            <systemCreated/>
+            <attribute name="externalNetworkId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="name">
+                <description>Specifies the name of the network.</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="adminState">
+                <description>Specifies the administrative state of the network. 
+When in state LOCKED, but not for APG related networks, the network is disabled so the related traffic is stopped.</description>
+                <dataType>
+                    <enumRef name="BasicAdmState">
+                        <defaultValue>UNLOCKED</defaultValue>
+                        <mimName>AxeTransportM</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="description">
+                <description>Specifies a textual description of the network.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="attachedInterfaces">
+                <description>Specifies the references to the interfaces attached to the network.</description>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <moRef name="Interface">
+                            <mimName>AxeTransportM</mimName>
+                        </moRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            
+            
+        </class>
+        <class name="Interface">
+            <description>Represents a network interface of the host.</description>
+            <systemCreated/>
+            <attribute name="interfaceId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="mac">
+                <description>Specifies the MAC address of the interface.</description>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            
+        </class>
+        <class name="InternalNetwork">
+            <description>Represents a network transporting traffic between the components internal to the AXE node.</description>
+            <systemCreated/>
+            <attribute name="internalNetworkId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="name">
+                <description>Specifies the name of the network.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="description">
+                <description>Specifies a textual description of the network.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="attachedInterfaces">
+                <description>Specifies the references to the interfaces attached to the network.</description>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <moRef name="Interface">
+                            <mimName>AxeTransportM</mimName>
+                        </moRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+            
+            
+            
+        </class>
+        <class name="Host">
+            <description>Represents a network host in the AXE node.</description>
+            <systemCreated/>
+            <attribute name="hostId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="computeResourceDn">
+                <description>Specifies the reference to the Compute Resource associated with the host.</description>
+                <readOnly/>
+                <dataType>
+                    <moRef name="ComputeResource">
+                        <mimName>AxeComputeResource</mimName>
+                    </moRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="TransportM_to_ExternalNetwork">
+            <containment>
+                <parent>
+                    <hasClass name="TransportM">
+                        <mimName>AxeTransportM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ExternalNetwork">
+                        <mimName>AxeTransportM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="TransportM_to_InternalNetwork">
+            <containment>
+                <parent>
+                    <hasClass name="TransportM">
+                        <mimName>AxeTransportM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="InternalNetwork">
+                        <mimName>AxeTransportM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="Host_to_Interface">
+            <containment>
+                <parent>
+                    <hasClass name="Host">
+                        <mimName>AxeTransportM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Interface">
+                        <mimName>AxeTransportM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="TransportM_to_Host">
+            <containment>
+                <parent>
+                    <hasClass name="TransportM">
+                        <mimName>AxeTransportM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Host">
+                        <mimName>AxeTransportM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="ExternalNetwork_attachedInterfaces_to_Interface">
+            <uniDirectionalAssociation>
+                <hasClass name="ExternalNetwork">
+                    <mimName>AxeTransportM</mimName>
+                </hasClass>
+                <associationEnd name="attachedInterfaces">
+                    <hasClass name="Interface">
+                        <mimName>AxeTransportM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </associationEnd>
+            </uniDirectionalAssociation>
+        </relationship>
+        <relationship name="InternalNetwork_attachedInterfaces_to_Interface">
+            <uniDirectionalAssociation>
+                <hasClass name="InternalNetwork">
+                    <mimName>AxeTransportM</mimName>
+                </hasClass>
+                <associationEnd name="attachedInterfaces">
+                    <hasClass name="Interface">
+                        <mimName>AxeTransportM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </associationEnd>
+            </uniDirectionalAssociation>
+        </relationship>
+    </mim>
+    <interMim>
+        <relationship name="SystemHandling_to_TransportM">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="SystemHandling">
+                        <mimName>AxeFunctions</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="TransportM">
+                        <mimName>AxeTransportM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

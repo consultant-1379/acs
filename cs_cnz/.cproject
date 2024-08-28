@@ -1,0 +1,862 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?fileVersion 4.0.0?><cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
+	<storageModule moduleId="org.eclipse.cdt.core.settings">
+		<cconfiguration id="0.948516317">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="0.948516317" moduleId="org.eclipse.cdt.core.settings" name="Default">
+				<externalSettings>
+					<externalSetting/>
+				</externalSettings>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.VCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactName="cs_cnz" buildProperties="" description="" id="0.948516317" name="Default" parent="org.eclipse.cdt.build.core.prefbase.cfg">
+					<folderInfo id="0.948516317." name="/" resourcePath="">
+						<toolChain id="org.eclipse.cdt.build.core.prefbase.toolchain.1378007476" name="No ToolChain" resourceTypeBasedDiscovery="false" superClass="org.eclipse.cdt.build.core.prefbase.toolchain">
+							<targetPlatform id="org.eclipse.cdt.build.core.prefbase.toolchain.1378007476.1054748154" name=""/>
+							<builder autoBuildTarget="imm_model" buildPath="${workspace_loc:/cs_cnz/cs_cxc}" cleanBuildTarget="clean" command="make" enableAutoBuild="false" enableCleanBuild="true" enabledIncrementalBuild="true" id="org.eclipse.cdt.build.core.settings.default.builder.1363349887" incrementalBuildTarget="all" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" parallelBuildOn="false" superClass="org.eclipse.cdt.build.core.settings.default.builder"/>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.1236765372" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.1046584436" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1786271338" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/cc/IO_Developments/BOOST_SDK/boost_1_44_0"/>
+								</option>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1965876517" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.988075482" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.34448496" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/lib64/gcc/x86_64-suse-linux/4.8/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/c++/4.8"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/linux"/>
+									<listOptionValue builtIn="false" value="/vobs/cm4ap/ntacs/cs_cnz/csapi_caa/inc_ext"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/CMW/LATEST/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/AP/LATEST/Include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/3pp/ACE/LATEST/ACE_wrappers/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/dhcp/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/SEC/LATEST/credu/inc/"/>
+									<listOptionValue builtIn="false" value="/afs/sunrise.ericsson.se/app/APG43L/SDK/3pp/libXerces/LATEST/include"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/3pp/BOOST/LATEST/include"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/c++/4.8/x86_64-suse-linux"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/SEC/LATEST/crypto/inc/"/>
+								</option>
+								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.1606711145" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="__cplusplus=1"/>
+									<listOptionValue builtIn="false" value="BOOST_ITERATOR_FACADE_NEEDS_ITERATOR_BASE=1"/>
+								</option>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.810404089" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.1016896374" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1470656081" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/cc/IO_Developments/BOOST_SDK/boost_1_44_0"/>
+								</option>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1218686746" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+						</toolChain>
+					</folderInfo>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+			<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
+			<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+		</cconfiguration>
+		<cconfiguration id="0.948516317.680607072">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="0.948516317.680607072" moduleId="org.eclipse.cdt.core.settings" name="Debug ADM">
+				<externalSettings/>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.VCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactName="cs_cnz" buildProperties="" description="Debug ADM" id="0.948516317.680607072" name="Debug ADM" parent="org.eclipse.cdt.build.core.prefbase.cfg">
+					<folderInfo id="0.948516317.680607072." name="/" resourcePath="">
+						<toolChain id="org.eclipse.cdt.build.core.prefbase.toolchain.372782686" name="No ToolChain" resourceTypeBasedDiscovery="false" superClass="org.eclipse.cdt.build.core.prefbase.toolchain">
+							<targetPlatform id="org.eclipse.cdt.build.core.prefbase.toolchain.372782686.94502139" name=""/>
+							<builder autoBuildTarget="imm_model" buildPath="${workspace_loc:/cs_cnz/csadm_caa/test}" cleanBuildTarget="clean" command="make" enableAutoBuild="false" enableCleanBuild="true" enabledIncrementalBuild="true" id="org.eclipse.cdt.build.core.settings.default.builder.401127216" incrementalBuildTarget="" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="org.eclipse.cdt.build.core.settings.default.builder">
+								<outputEntries>
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name=""/>
+								</outputEntries>
+							</builder>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.1487932967" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.1273775697" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.810890001" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths"/>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.173991456" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.31040964" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.705642029" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/lib64/gcc/x86_64-suse-linux/4.8/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/c++/4.8"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/linux"/>
+									<listOptionValue builtIn="false" value="/vobs/cm4ap/ntacs/cs_cnz/csapi_caa/inc_ext"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/CMW/LATEST/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/AP/LATEST/Include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/3pp/ACE/LATEST/ACE_wrappers/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/dhcp/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/SEC/LATEST/credu/inc/"/>
+									<listOptionValue builtIn="false" value="/afs/sunrise.ericsson.se/app/APG43L/SDK/3pp/libXerces/LATEST/include"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/3pp/BOOST/LATEST/include"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/c++/4.8/x86_64-suse-linux"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/SEC/LATEST/crypto/inc/"/>
+								</option>
+								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.448482283" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="__cplusplus=1"/>
+									<listOptionValue builtIn="false" value="BOOST_ITERATOR_FACADE_NEEDS_ITERATOR_BASE=1"/>
+								</option>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.119906732" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.2061922671" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.522900377" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths"/>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.945665278" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+						</toolChain>
+					</folderInfo>
+					<folderInfo id="0.948516317.680607072.1696013974" name="/" resourcePath="csapi_caa">
+						<toolChain id="org.eclipse.cdt.build.core.prefbase.toolchain.1312559237" name="No ToolChain" superClass="org.eclipse.cdt.build.core.prefbase.toolchain" unusedChildren="">
+							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.1775846840" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs.1487932967"/>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.617475237" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder.1273775697">
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1430956708" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.1676390387" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.1273775697">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1818540428" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/lib64/gcc/x86_64-suse-linux/4.8/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/c++/4.8"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/linux"/>
+									<listOptionValue builtIn="false" value="/vobs/cm4ap/ntacs/cs_cnz/csapi_caa/inc_ext"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/CMW/LATEST/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/AP/LATEST/Include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/3pp/ACE/LATEST/ACE_wrappers/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/dhcp/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/SEC/LATEST/credu/inc/"/>
+									<listOptionValue builtIn="false" value="/afs/sunrise.ericsson.se/app/APG43L/SDK/3pp/libXerces/LATEST/include"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/3pp/BOOST/LATEST/include"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/c++/4.8/x86_64-suse-linux"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/SEC/LATEST/crypto/inc/"/>
+								</option>
+								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.1510026660" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="__cplusplus=1"/>
+									<listOptionValue builtIn="false" value="BOOST_ITERATOR_FACADE_NEEDS_ITERATOR_BASE=1"/>
+								</option>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.685569597" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.535639866" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder.1273775697">
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1258804937" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+						</toolChain>
+					</folderInfo>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+			<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
+			<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+		</cconfiguration>
+		<cconfiguration id="0.948516317.1016844355">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="0.948516317.1016844355" moduleId="org.eclipse.cdt.core.settings" name="Imm_model">
+				<externalSettings/>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.VCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactName="${ProjName}" buildProperties="" description="" id="0.948516317.1016844355" name="Imm_model" parent="org.eclipse.cdt.build.core.prefbase.cfg">
+					<folderInfo id="0.948516317.1016844355." name="/" resourcePath="">
+						<toolChain id="org.eclipse.cdt.build.core.prefbase.toolchain.1167474281" name="No ToolChain" resourceTypeBasedDiscovery="false" superClass="org.eclipse.cdt.build.core.prefbase.toolchain">
+							<targetPlatform id="org.eclipse.cdt.build.core.prefbase.toolchain.1167474281.1209896748" name=""/>
+							<builder arguments="all" autoBuildTarget="imm_model" buildPath="${workspace_loc:/cs_cnz/csadm_caa/src/imm_mapper}" cleanBuildTarget="clean" command="make" enableAutoBuild="false" enableCleanBuild="true" enabledIncrementalBuild="true" id="org.eclipse.cdt.build.core.settings.default.builder.1226461145" incrementalBuildTarget="imm_model" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="org.eclipse.cdt.build.core.settings.default.builder">
+								<outputEntries>
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name=""/>
+								</outputEntries>
+							</builder>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.425747232" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.917448374" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.563035039" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/cc/IO_Developments/BOOST_SDK/boost_1_44_0"/>
+								</option>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1921417264" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.1379747485" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1908713795" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/lib64/gcc/x86_64-suse-linux/4.8/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/c++/4.8"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/linux"/>
+									<listOptionValue builtIn="false" value="/vobs/cm4ap/ntacs/cs_cnz/csapi_caa/inc_ext"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/CMW/LATEST/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/AP/LATEST/Include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/3pp/ACE/LATEST/ACE_wrappers/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/dhcp/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/SEC/LATEST/credu/inc/"/>
+									<listOptionValue builtIn="false" value="/afs/sunrise.ericsson.se/app/APG43L/SDK/3pp/libXerces/LATEST/include"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/3pp/BOOST/LATEST/include"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/c++/4.8/x86_64-suse-linux"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/SEC/LATEST/crypto/inc/"/>
+								</option>
+								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.1209995110" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="__cplusplus=1"/>
+									<listOptionValue builtIn="false" value="BOOST_ITERATOR_FACADE_NEEDS_ITERATOR_BASE=1"/>
+								</option>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1375083616" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.831398258" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1792544413" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/cc/IO_Developments/BOOST_SDK/boost_1_44_0"/>
+								</option>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1024088812" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+						</toolChain>
+					</folderInfo>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+			<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
+			<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+		</cconfiguration>
+		<cconfiguration id="0.948516317.680607072.48271972">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="0.948516317.680607072.48271972" moduleId="org.eclipse.cdt.core.settings" name="Debug API">
+				<externalSettings/>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.VCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactName="cs_cnz" buildProperties="" description="Debug API" id="0.948516317.680607072.48271972" name="Debug API" parent="org.eclipse.cdt.build.core.prefbase.cfg">
+					<folderInfo id="0.948516317.680607072.48271972." name="/" resourcePath="">
+						<toolChain id="org.eclipse.cdt.build.core.prefbase.toolchain.1266902049" name="No ToolChain" resourceTypeBasedDiscovery="false" superClass="org.eclipse.cdt.build.core.prefbase.toolchain">
+							<targetPlatform id="org.eclipse.cdt.build.core.prefbase.toolchain.1266902049.1173675300" name=""/>
+							<builder autoBuildTarget="imm_model" buildPath="${workspace_loc:/cs_cnz/csapi_caa/test}" cleanBuildTarget="clean" command="make" enableAutoBuild="false" enableCleanBuild="true" enabledIncrementalBuild="true" id="org.eclipse.cdt.build.core.settings.default.builder.1837945540" incrementalBuildTarget="" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="org.eclipse.cdt.build.core.settings.default.builder">
+								<outputEntries>
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name=""/>
+								</outputEntries>
+							</builder>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.1523921169" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.478207014" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1654882909" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths"/>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1597370476" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.780168745" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1121226079" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/lib64/gcc/x86_64-suse-linux/4.8/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/c++/4.8"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/linux"/>
+									<listOptionValue builtIn="false" value="/vobs/cm4ap/ntacs/cs_cnz/csapi_caa/inc_ext"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/CMW/LATEST/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/AP/LATEST/Include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/3pp/ACE/LATEST/ACE_wrappers/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/dhcp/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/SEC/LATEST/credu/inc/"/>
+									<listOptionValue builtIn="false" value="/afs/sunrise.ericsson.se/app/APG43L/SDK/3pp/libXerces/LATEST/include"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/3pp/BOOST/LATEST/include"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/c++/4.8/x86_64-suse-linux"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/SEC/LATEST/crypto/inc/"/>
+								</option>
+								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.1728902836" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="__cplusplus=1"/>
+									<listOptionValue builtIn="false" value="BOOST_ITERATOR_FACADE_NEEDS_ITERATOR_BASE=1"/>
+								</option>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1762136146" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.478545487" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1691315956" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths"/>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.892911557" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+						</toolChain>
+					</folderInfo>
+					<folderInfo id="0.948516317.680607072.48271972.csapi_caa" name="/" resourcePath="csapi_caa">
+						<toolChain id="org.eclipse.cdt.build.core.prefbase.toolchain.543581819" name="No ToolChain" superClass="org.eclipse.cdt.build.core.prefbase.toolchain" unusedChildren="">
+							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.1331795391" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs.1523921169"/>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.818870507" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder.478207014">
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.18286080" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.1644178117" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.478207014">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1256064792" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/lib64/gcc/x86_64-suse-linux/4.8/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/c++/4.8"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/linux"/>
+									<listOptionValue builtIn="false" value="/vobs/cm4ap/ntacs/cs_cnz/csapi_caa/inc_ext"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/CMW/LATEST/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/AP/LATEST/Include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/3pp/ACE/LATEST/ACE_wrappers/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/dhcp/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/SEC/LATEST/credu/inc/"/>
+									<listOptionValue builtIn="false" value="/afs/sunrise.ericsson.se/app/APG43L/SDK/3pp/libXerces/LATEST/include"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/3pp/BOOST/LATEST/include"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/c++/4.8/x86_64-suse-linux"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/SEC/LATEST/crypto/inc/"/>
+								</option>
+								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.1774102061" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="__cplusplus=1"/>
+									<listOptionValue builtIn="false" value="BOOST_ITERATOR_FACADE_NEEDS_ITERATOR_BASE=1"/>
+								</option>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.532984615" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.336486212" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder.478207014">
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1878381039" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+						</toolChain>
+					</folderInfo>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+			<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
+			<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+		</cconfiguration>
+		<cconfiguration id="0.948516317.1242165929">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="0.948516317.1242165929" moduleId="org.eclipse.cdt.core.settings" name="Package">
+				<externalSettings/>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.VCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactName="cs_cnz" buildProperties="" description="" id="0.948516317.1242165929" name="Package" parent="org.eclipse.cdt.build.core.prefbase.cfg">
+					<folderInfo id="0.948516317.1242165929." name="/" resourcePath="">
+						<toolChain id="org.eclipse.cdt.build.core.prefbase.toolchain.816159823" name="No ToolChain" resourceTypeBasedDiscovery="false" superClass="org.eclipse.cdt.build.core.prefbase.toolchain">
+							<targetPlatform id="org.eclipse.cdt.build.core.prefbase.toolchain.816159823.2081981439" name=""/>
+							<builder autoBuildTarget="imm_model" buildPath="${workspace_loc:/cs_cnz/cs_cxc}" cleanBuildTarget="clean" command="make" enableAutoBuild="false" enableCleanBuild="true" enabledIncrementalBuild="true" id="org.eclipse.cdt.build.core.settings.default.builder.992587397" incrementalBuildTarget="all rpm_package sdp_package" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="org.eclipse.cdt.build.core.settings.default.builder"/>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.1381644566" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.208827495" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.999273905" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/cc/IO_Developments/BOOST_SDK/boost_1_44_0"/>
+								</option>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1876532047" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.1055562303" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.2125608053" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/lib64/gcc/x86_64-suse-linux/4.8/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/c++/4.8"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/linux"/>
+									<listOptionValue builtIn="false" value="/vobs/cm4ap/ntacs/cs_cnz/csapi_caa/inc_ext"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/CMW/LATEST/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/AP/LATEST/Include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/3pp/ACE/LATEST/ACE_wrappers/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/dhcp/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/SEC/LATEST/credu/inc/"/>
+									<listOptionValue builtIn="false" value="/afs/sunrise.ericsson.se/app/APG43L/SDK/3pp/libXerces/LATEST/include"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/3pp/BOOST/LATEST/include"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/c++/4.8/x86_64-suse-linux"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/SEC/LATEST/crypto/inc/"/>
+								</option>
+								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.2008789679" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="__cplusplus=1"/>
+									<listOptionValue builtIn="false" value="BOOST_ITERATOR_FACADE_NEEDS_ITERATOR_BASE=1"/>
+								</option>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1418103875" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.759551305" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1718816248" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/cc/IO_Developments/BOOST_SDK/boost_1_44_0"/>
+								</option>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1120337898" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+						</toolChain>
+					</folderInfo>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+			<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
+			<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+		</cconfiguration>
+		<cconfiguration id="0.948516317.825101748">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="0.948516317.825101748" moduleId="org.eclipse.cdt.core.settings" name="CSADM">
+				<externalSettings>
+					<externalSetting/>
+				</externalSettings>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.VCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactName="cs_cnz" buildProperties="" description="" id="0.948516317.825101748" name="CSADM" parent="org.eclipse.cdt.build.core.prefbase.cfg">
+					<folderInfo id="0.948516317.825101748." name="/" resourcePath="">
+						<toolChain id="org.eclipse.cdt.build.core.prefbase.toolchain.1534785601" name="No ToolChain" resourceTypeBasedDiscovery="false" superClass="org.eclipse.cdt.build.core.prefbase.toolchain">
+							<targetPlatform id="org.eclipse.cdt.build.core.prefbase.toolchain.1534785601.492948534" name=""/>
+							<builder autoBuildTarget="imm_model" buildPath="${workspace_loc:/cs_cnz/csadm_caa}" cleanBuildTarget="clean" command="make" enableAutoBuild="false" enableCleanBuild="true" enabledIncrementalBuild="true" id="org.eclipse.cdt.build.core.settings.default.builder.2132028418" incrementalBuildTarget="all" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="org.eclipse.cdt.build.core.settings.default.builder"/>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.896285838" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.1846732581" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1635968155" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/cc/IO_Developments/BOOST_SDK/boost_1_44_0"/>
+								</option>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.926736349" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.956540978" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.142691075" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/lib64/gcc/x86_64-suse-linux/4.8/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/c++/4.8"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/linux"/>
+									<listOptionValue builtIn="false" value="/vobs/cm4ap/ntacs/cs_cnz/csapi_caa/inc_ext"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/CMW/LATEST/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/AP/LATEST/Include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/3pp/ACE/LATEST/ACE_wrappers/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/dhcp/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/SEC/LATEST/credu/inc/"/>
+									<listOptionValue builtIn="false" value="/afs/sunrise.ericsson.se/app/APG43L/SDK/3pp/libXerces/LATEST/include"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/3pp/BOOST/LATEST/include"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/c++/4.8/x86_64-suse-linux"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/SEC/LATEST/crypto/inc/"/>
+								</option>
+								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.1456372943" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="__cplusplus=1"/>
+									<listOptionValue builtIn="false" value="BOOST_ITERATOR_FACADE_NEEDS_ITERATOR_BASE=1"/>
+								</option>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1128904345" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.2143531137" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1171360948" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/cc/IO_Developments/BOOST_SDK/boost_1_44_0"/>
+								</option>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1477695892" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+						</toolChain>
+					</folderInfo>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+			<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
+			<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+		</cconfiguration>
+		<cconfiguration id="0.948516317.1085675433">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="0.948516317.1085675433" moduleId="org.eclipse.cdt.core.settings" name="Fast">
+				<externalSettings>
+					<externalSetting/>
+				</externalSettings>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.VCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactName="cs_cnz" buildProperties="" description="" id="0.948516317.1085675433" name="Fast" parent="org.eclipse.cdt.build.core.prefbase.cfg">
+					<folderInfo id="0.948516317.1085675433." name="/" resourcePath="">
+						<toolChain id="org.eclipse.cdt.build.core.prefbase.toolchain.1597418316" name="No ToolChain" resourceTypeBasedDiscovery="false" superClass="org.eclipse.cdt.build.core.prefbase.toolchain">
+							<targetPlatform id="org.eclipse.cdt.build.core.prefbase.toolchain.1597418316.1649687" name=""/>
+							<builder autoBuildTarget="imm_model" buildPath="${workspace_loc:/cs_cnz/cs_cxc}" cleanBuildTarget="clean" command="make" enableAutoBuild="false" enableCleanBuild="true" enabledIncrementalBuild="true" id="org.eclipse.cdt.build.core.settings.default.builder.925261819" incrementalBuildTarget="all" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="org.eclipse.cdt.build.core.settings.default.builder"/>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.228404502" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.1941722758" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.817676385" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/cc/IO_Developments/BOOST_SDK/boost_1_44_0"/>
+								</option>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.245400335" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.182530247" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.827020877" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/lib64/gcc/x86_64-suse-linux/4.8/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/c++/4.8"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/linux"/>
+									<listOptionValue builtIn="false" value="/vobs/cm4ap/ntacs/cs_cnz/csapi_caa/inc_ext"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/CMW/LATEST/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/AP/LATEST/Include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/3pp/ACE/LATEST/ACE_wrappers/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/dhcp/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/SEC/LATEST/credu/inc/"/>
+									<listOptionValue builtIn="false" value="/afs/sunrise.ericsson.se/app/APG43L/SDK/3pp/libXerces/LATEST/include"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/3pp/BOOST/LATEST/include"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/LDE/LATEST/usr/include/c++/4.8/x86_64-suse-linux"/>
+									<listOptionValue builtIn="false" value="/app/APG43L/SDK/SEC/LATEST/crypto/inc/"/>
+								</option>
+								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.1416054618" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_GLIBCPP_USE_NAMESPACES=0"/>
+									<listOptionValue builtIn="false" value="__cplusplus=1"/>
+									<listOptionValue builtIn="false" value="BOOST_ITERATOR_FACADE_NEEDS_ITERATOR_BASE=1"/>
+								</option>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1637978537" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.770269260" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1818830335" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/cc/IO_Developments/BOOST_SDK/boost_1_44_0"/>
+								</option>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1089754035" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+						</toolChain>
+					</folderInfo>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+			<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
+			<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+		</cconfiguration>
+	</storageModule>
+	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+		<project id="cs_cnz.null.474945412" name="cs_cnz"/>
+	</storageModule>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Fast"/>
+		<configuration configurationName="Imm_model">
+			<resource resourceType="PROJECT" workspacePath="/cs_cnz"/>
+		</configuration>
+		<configuration configurationName="Default">
+			<resource resourceType="PROJECT" workspacePath="/cs_cnz"/>
+		</configuration>
+		<configuration configurationName="Debug API">
+			<resource resourceType="PROJECT" workspacePath="/cs_cnz"/>
+		</configuration>
+		<configuration configurationName="CSADM"/>
+		<configuration configurationName="Package">
+			<resource resourceType="PROJECT" workspacePath="/cs_cnz"/>
+		</configuration>
+		<configuration configurationName="Debug ADM">
+			<resource resourceType="PROJECT" workspacePath="/cs_cnz"/>
+		</configuration>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
+			<buildOutputProvider>
+				<openAction enabled="true" filePath=""/>
+				<parser enabled="true"/>
+			</buildOutputProvider>
+			<scannerInfoProvider id="specsFile">
+				<runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true"/>
+				<parser enabled="true"/>
+			</scannerInfoProvider>
+		</profile>
+		<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfile">
+			<buildOutputProvider>
+				<openAction enabled="true" filePath=""/>
+				<parser enabled="true"/>
+			</buildOutputProvider>
+			<scannerInfoProvider id="specsFile">
+				<runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true"/>
+				<parser enabled="true"/>
+			</scannerInfoProvider>
+		</profile>
+		<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP">
+			<buildOutputProvider>
+				<openAction enabled="true" filePath=""/>
+				<parser enabled="true"/>
+			</buildOutputProvider>
+			<scannerInfoProvider id="specsFile">
+				<runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.cpp" command="g++" useDefault="true"/>
+				<parser enabled="true"/>
+			</scannerInfoProvider>
+		</profile>
+		<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC">
+			<buildOutputProvider>
+				<openAction enabled="true" filePath=""/>
+				<parser enabled="true"/>
+			</buildOutputProvider>
+			<scannerInfoProvider id="specsFile">
+				<runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.c" command="gcc" useDefault="true"/>
+				<parser enabled="true"/>
+			</scannerInfoProvider>
+		</profile>
+		<scannerConfigBuildInfo instanceId="0.948516317.680607072.48271972">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+			<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfile">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.cpp" command="g++" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.c" command="gcc" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="0.948516317;0.948516317.;cdt.managedbuild.tool.gnu.c.compiler.base.1575263862;cdt.managedbuild.tool.gnu.c.compiler.input.1853624717">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+			<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfile">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.cpp" command="g++" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.c" command="gcc" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="0.948516317.1016844355">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+			<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfile">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.cpp" command="g++" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.c" command="gcc" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="0.948516317.1085675433">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="0.948516317;0.948516317.;cdt.managedbuild.tool.gnu.cpp.compiler.base.1501322381;cdt.managedbuild.tool.gnu.cpp.compiler.input.812022264">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+			<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfile">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.cpp" command="g++" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.c" command="gcc" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="0.948516317.680607072">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+			<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfile">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.cpp" command="g++" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.c" command="gcc" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="0.948516317.825101748">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="0.948516317">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+			<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfile">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="gcc" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.cpp" command="g++" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.c" command="gcc" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="0.948516317.1242165929">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+	</storageModule>
+</cproject>

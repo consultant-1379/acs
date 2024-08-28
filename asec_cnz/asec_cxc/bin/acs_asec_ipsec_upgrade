@@ -1,0 +1,532 @@
+#!/bin/bash
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2014 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# Name:
+#       acs_asec_ipsec_upgrade
+# Description:
+#       This script is to upgrade the IPSec configuration files
+#       to the latest format (during software upgrade)
+##
+##
+# - Oct 20 2021 - Dharma Goudu(XDHATEJ)
+#   - Fix for racoon service restart
+# - Apr 05 2021 - Dharma Gondu(XDHATEJ)
+#   - Fix for TR HY95331
+# - Aug 12 2015 - Furqunan Ullah(XFURULL)
+#   - Fix for TR HT94442
+# Changelog:
+# - Nov 24 2014 - Fabio Imperato (XFABIMP)
+#   - Fix for TR HT26511
+# - Sep 24 2014 - Fabrizio Paglia (XFABPAG)
+#   - Adapted to new spec file (TR HS98027)
+#     - Removed restriction to run only on Node A
+#     - Restart racoon daemon only if run on active node
+# - Jun 4 2014 - Fabrizio Paglia (XFABPAG)
+#   - Adapted to the new -l option introduced in ipsecdef
+#   - Avoided blank lines in setkey.conf
+# - May 23 2014 - Fabrizio Paglia (XFABPAG)
+#   - First version
+##
+
+#Global variables
+TRUE=$(true;echo $?)
+FALSE=$(false; echo $?)
+is_swm_2_0="/cluster/storage/system/config/apos/swm_version" 
+if [ -f $is_swm_2_0 ];then
+	AGENT_COMP_NODEA="safCSIComp=safComp=apos.haagent\\,safSu=SC-1\\,safSg=2N\\,safApp=ERIC-apg.nbi.aggregation.service,safCsi=apos.haagent,safSi=apg.nbi.aggregation.service-2N-1,safApp=ERIC-apg.nbi.aggregation.service"
+	AGENT_COMP_NODEB="safCSIComp=safComp=apos.haagent\\,safSu=SC-2\\,safSg=2N\\,safApp=ERIC-apg.nbi.aggregation.service,safCsi=apos.haagent,safSi=apg.nbi.aggregation.service-2N-1,safApp=ERIC-apg.nbi.aggregation.service"
+else
+	AGENT_COMP_NODEA="safCSIComp=safComp=Agent\\,safSu=1\\,safSg=2N\\,safApp=ERIC-APG,safCsi=AGENT,safSi=AGENT,safApp=ERIC-APG"
+	AGENT_COMP_NODEB="safCSIComp=safComp=Agent\\,safSu=2\\,safSg=2N\\,safApp=ERIC-APG,safCsi=AGENT,safSi=AGENT,safApp=ERIC-APG"
+fi
+
+CONF_DIR="/cluster/storage/system/config/asec/ipsec"
+PSK_FILE="/cluster/storage/system/config/asec/ipsec/psk.txt"
+RACOON_FILE="/cluster/storage/system/config/asec/ipsec/racoon.conf"
+SETKEY_FILE="/cluster/storage/system/config/asec/ipsec/setkey.conf"
+
+#Exit codes
+EXIT_SUCCESS=0
+EXIT_FAILURE=1
+
+#######################################################################
+#                             Functions                               #
+#######################################################################
+
+#######################################################################
+# function get_active_node_id();                                      #
+#                                                                     #
+# Returns the id of the active node                                   #
+#                                                                     #
+# Return value:                                                       #
+# - the id (1 or 2) of the active node                                #
+#                                                                     #
+# Return codes:                                                       #
+# - SUCCESS (0)                                                       #
+# - FAILURE (1)                                                       #
+#######################################################################
+function get_active_node_id() {
+	local rCode=$EXIT_FAILURE
+	
+	local nodeA_HAState=""
+	local nodeB_HAState=""
+	
+	nodeA_HAState=$(immlist "$AGENT_COMP_NODEA" 2> /dev/null | grep -w "saAmfCSICompHAState" | awk '{ print $3 }')
+	nodeB_HAState=$(immlist "$AGENT_COMP_NODEB" 2> /dev/null | grep -w "saAmfCSICompHAState" | awk '{ print $3 }')
+	
+	local active_node_id=""
+	if [ "$nodeA_HAState" == "1" ] ; then
+		active_node_id="1"
+		rCode=$EXIT_SUCCESS
+	elif [ "$nodeB_HAState" == "1" ] ; then
+		active_node_id="2"
+		rCode=$EXIT_SUCCESS
+	fi
+	
+	echo "$active_node_id"
+	return $rCode
+}
+
+#######################################################################
+# function restart_racoon();                                          #
+#                                                                     #
+# Attempts to restart the racoon service on active node               #
+#                                                                     #
+# Returns:                                                            #
+# - SUCCESS (0)                                                       #
+# - FAILURE (1)                                                       #
+#######################################################################
+function restart_racoon() {
+	local rCode=$EXIT_SUCCESS
+	
+	local current_node_id="$(< /etc/cluster/nodes/this/id)"
+	local active_node_id="$(get_active_node_id)"
+	
+	if [ "$active_node_id" == "$current_node_id" ] ; then
+		local cmd_racoon_restart="/opt/ap/apos/bin/servicemgmt/servicemgmt restart racoon-setkey.service"
+		local success_string="IPSec racoon daemon started"
+		local failure_string="Failed to start IPSec racoon daemon!"
+		
+		echo "Starting IPSec racoon daemon"
+		if $cmd_racoon_restart ; then
+			echo "$success_string"
+		else
+			echo "$failure_string"
+			rCode=$EXIT_FAILURE
+		fi
+	fi
+	
+	return $rCode
+}
+
+#######################################################################
+# function sanity_check();                                            #
+#                                                                     #
+# Checks                                                              #
+# - immlist command is available                                      #
+# - /opt/ap/apos/bin/servicemgmt/servicemgmt command is available     #
+#                                                                     #
+# Returns/Exits:                                                      #
+# - SUCCESS (0)                                                       #
+# - FAILURE (1)                                                       #
+#######################################################################
+function sanity_check() {
+	local rCode=$EXIT_SUCCESS
+	
+	which immlist &> /dev/null || exit $EXIT_FAILURE
+	which /opt/ap/apos/bin/servicemgmt/servicemgmt &> /dev/null || exit $EXIT_FAILURE
+	
+	return $rCode
+}
+
+#######################################################################
+# function upgrade_files();                                           #
+#                                                                     #
+# Upgrade the IPSec configuration files to the latest format          #
+#                                                                     #
+# Returns:                                                            #
+# - SUCCESS (0)                                                       #
+# - FAILURE (1)                                                       #
+#######################################################################
+function upgrade_files() {
+	local rCode=$EXIT_SUCCESS
+	
+	local cluster_address=$(< /etc/cluster/nodes/this/mip/nbi/address)
+	local nodeA_address=$(< /etc/cluster/nodes/all/1/networks/public/primary/address)
+	local nodeB_address=$(< /etc/cluster/nodes/all/2/networks/public/primary/address)
+	
+	local remote_hosts=""
+	local pre_shared_keys=""
+	local policy_names=""
+	local local_hosts_C=""
+	local local_hosts_A=""
+	local local_hosts_B=""
+	local modes=""
+	local ipsec_protocols=""
+	local encryption_algorithms=""
+	local hash_algorithms=""
+	local lifetimes=""
+	local dh_groups=""
+	local pfs_groups=""
+	local remote_gateways=""
+	
+	local line
+	local line_components
+	local remote_host
+	local policy_name
+	local mode
+	local useAH
+	local useESP
+	local protocol_list
+	local ipsec_protocol
+	local encryption_algorithm
+	local hash_algorithm
+	local lifetime
+	local dh_group
+	local pfs_group
+	local remote_gateway
+	local policy_counter=0
+        remote_host="$(cat $RACOON_FILE | grep -i include | grep -Eo "[[:digit:]]+.[[:digit:]]+.[[:digit:]]+.[[:digit:]]+")"
+	while read line || [ -n "$line" ]; do
+		line_components=($line)
+		#remote_host="${line_components[0]}"
+		[[ $policy_counter -eq 0 ]] && remote_hosts="$remote_host"
+		[[ $policy_counter -ne 0 ]] && remote_hosts=$remote_hosts";$remote_host"
+		
+		[[ $policy_counter -eq 0 ]] && pre_shared_keys="${line_components[1]}"
+		[[ $policy_counter -ne 0 ]] && pre_shared_keys=$pre_shared_keys";${line_components[1]}"
+		
+		policy_name=$(grep -w "$remote_host\[any\]" $SETKEY_FILE -B1 | head -1 | awk -F'=' '{ print $2 }')
+		[[ "$policy_name" == "" ]] && policy_name="POLICY_AUTO$policy_counter"
+		[[ $policy_counter -eq 0 ]] && policy_names="$policy_name"
+		[[ $policy_counter -ne 0 ]] && policy_names=$policy_names";$policy_name"
+		
+		local_host_C=$(grep -w "$remote_host\[any\]" $SETKEY_FILE | head -1 | awk '{ print $2 }' | awk -F'[' '{ print $1 }')
+		local_host_A=$(grep -w "$remote_host\[any\]" $SETKEY_FILE | head -2 | tail -1 | awk '{ print $2 }' | awk -F'[' '{ print $1 }')
+		local_host_B=$(grep -w "$remote_host\[any\]" $SETKEY_FILE | head -3 | tail -1 | awk '{ print $2 }' | awk -F'[' '{ print $1 }')
+		[[ "$local_host_C" == "" ]] && local_host_C="$cluster_address"
+		[[ "$local_host_A" == "" ]] && local_host_A="$nodeA_address"
+		[[ "$local_host_B" == "" ]] && local_host_B="$nodeB_address"
+		[[ $policy_counter -eq 0 ]] && local_hosts_C="$local_host_C"
+		[[ $policy_counter -ne 0 ]] && local_hosts_C=$local_hosts_C";$local_host_C"
+		[[ $policy_counter -eq 0 ]] && local_hosts_A="$local_host_A"
+		[[ $policy_counter -ne 0 ]] && local_hosts_A=$local_hosts_A";$local_host_A"
+		[[ $policy_counter -eq 0 ]] && local_hosts_B="$local_host_B"
+		[[ $policy_counter -ne 0 ]] && local_hosts_B=$local_hosts_B";$local_host_B"
+		
+		mode=$(grep -w "$remote_host\[any\]" $SETKEY_FILE -A1 | head -2 | tail -1 | awk -F'/' '{ print $2 }')
+		[[ "$mode" == "" ]] && mode="transport"
+		[[ $policy_counter -eq 0 ]] && modes="$mode"
+		[[ $policy_counter -ne 0 ]] && modes=$modes";$mode"
+		
+		useAH=$FALSE
+		useESP=$FALSE
+		protocol_list=$(grep -w "$remote_host\[any\]" $SETKEY_FILE -A2 | head -3 | tail -2 | awk -F'/' '{print $1}' | tr '\n' ' ')
+		echo "$protocol_list" | grep -w "ah" &> /dev/null && useAH=$TRUE
+		echo "$protocol_list" | grep -w "esp" &> /dev/null && useESP=$TRUE
+		if [ $useAH -eq $TRUE ] && [ $useESP -eq $TRUE ] ; then
+			ipsec_protocol="AH_ESP"
+		elif [ $useAH -eq $TRUE ] ; then
+			ipsec_protocol="AH"
+		else
+			ipsec_protocol="ESP"
+		fi
+		[[ $policy_counter -eq 0 ]] && ipsec_protocols="$ipsec_protocol"
+		[[ $policy_counter -ne 0 ]] && ipsec_protocols=$ipsec_protocols";$ipsec_protocol"
+		
+		encryption_algorithm=$(grep "encryption_algorithm [0-9A-Za-z][0-9A-Za-z]*;" $CONF_DIR"/"$remote_host".racoon.conf" | head -1 | sed 's/\(\s\s*\)encryption_algorithm \([0-9A-Za-z][0-9A-Za-z]*\);/\2/')
+		[[ "$encryption_algorithm" == "" ]] && encryption_algorithm="3des"
+		[[ $policy_counter -eq 0 ]] && encryption_algorithms="$encryption_algorithm"
+		[[ $policy_counter -ne 0 ]] && encryption_algorithms=$encryption_algorithms";$encryption_algorithm"
+		
+		hash_algorithm=$(grep "hash_algorithm [0-9A-Za-z][0-9A-Za-z]*;" $CONF_DIR"/"$remote_host".racoon.conf" | head -1 | sed 's/\(\s\s*\)hash_algorithm \([0-9A-Za-z][0-9A-Za-z]*\);/\2/')
+		[[ "$hash_algorithm" == "" ]] && hash_algorithm="sha1"
+		[[ $policy_counter -eq 0 ]] && hash_algorithms="$hash_algorithm"
+		[[ $policy_counter -ne 0 ]] && hash_algorithms=$hash_algorithms";$hash_algorithm"
+		
+		lifetime=$(grep "lifetime time [0-9][0-9]* sec;" $CONF_DIR"/"$remote_host".racoon.conf" | head -1 | sed 's/\(\s\s*\)lifetime time \([0-9][0-9]*\) sec;/\2/')
+		[[ "$lifetime" == "" ]] && lifetime="300"
+		[[ $policy_counter -eq 0 ]] && lifetimes="$lifetime"
+		[[ $policy_counter -ne 0 ]] && lifetimes=$lifetimes";$lifetime"
+		
+		dh_group=$(grep "dh_group [0-9A-Za-z][0-9A-Za-z]*;" $CONF_DIR"/"$remote_host".racoon.conf" | head -1 | sed 's/\(\s\s*\)dh_group \([0-9A-Za-z][0-9A-Za-z]*\);/\2/')
+		[[ "$dh_group" == "" ]] && dh_group="2"
+		[[ $policy_counter -eq 0 ]] && dh_groups="$dh_group"
+		[[ $policy_counter -ne 0 ]] && dh_groups=$dh_groups";$dh_group"
+		
+		pfs_group=$(grep "pfs_group [0-9A-Za-z][0-9A-Za-z]*;" $CONF_DIR"/"$remote_host".racoon.conf" | head -1 | sed 's/\(\s\s*\)pfs_group \([0-9A-Za-z][0-9A-Za-z]*\);/\2/')
+		[[ "$pfs_group" == "" ]] && pfs_group="NA"
+		[[ $policy_counter -eq 0 ]] && pfs_groups="$pfs_group"
+		[[ $policy_counter -ne 0 ]] && pfs_groups=$pfs_groups";$pfs_group"
+		
+		remote_gateway=""
+		if [ "$mode" == "tunnel" ] ; then
+			remote_gateway=$(grep -w "$remote_host\[any\]" $SETKEY_FILE -A1 | head -2 | tail -1 | awk -F'-' '{ print $2 }' | awk -F'/' '{ print $1 }')
+			[[ "$remote_gateway" == "" ]] && $remote_gateway="$remote_host"
+		else
+			remote_gateway="NA"
+		fi
+		[[ $policy_counter -eq 0 ]] && remote_gateways="$remote_gateway"
+		[[ $policy_counter -ne 0 ]] && remote_gateways=$remote_gateways";$remote_gateway"
+		
+		(( policy_counter = $policy_counter + 1 ))
+	done < $PSK_FILE
+	
+	upgrade_racoon_confs "$remote_hosts" "$encryption_algorithms" "$hash_algorithms" "$lifetimes" "$dh_groups" "$local_hosts_C" "$local_hosts_A" "$local_hosts_B" "$pfs_groups"
+	upgrade_setkey_conf "$policy_names" "$local_hosts_C" "$local_hosts_A" "$local_hosts_B" "$remote_hosts" "$modes" "$ipsec_protocols" "$remote_gateways"
+	
+	return $rCode
+}
+
+########################################################################################################################################################################
+# function upgrade_racoon_confs($remote_hosts,$encryption_algorithms,$hash_algorithms,$lifetimes,$dh_groups,$local_hosts_C,$local_hosts_A,$local_hosts_B,$pfs_groups); #
+#                                                                                                                                                                      #
+# Upgrade the *racoon.conf configuration files to the latest format                                                                                                    #
+#                                                                                                                                                                      #
+# Parameters:                                                                                                                                                          #
+# $remote_hosts - ordered semicolon-separated list of remote IP addresses to use in IPSec policies                                                                     #
+# $encryption_algorithms - ordered semicolon-separated list of encryption algorithms to use in IPSec policies                                                          #
+# $hash_algorithms - ordered semicolon-separated list of hash algorithms to use in IPSec policies                                                                      #
+# $lifetimes - ordered semicolon-separated list of IKE phase 2 lifetimes to use in IPSec policies                                                                      #
+# $dh_groups - ordered semicolon-separated list of DH groups to use in IPSec policies                                                                                  #
+# $local_hosts_C - ordered semicolon-separated list of cluster IP addresses to use in IPSec policies                                                                   #
+# $local_hosts_A - ordered semicolon-separated list of node A IP addresses to use in IPSec policies                                                                    #
+# $local_hosts_B - ordered semicolon-separated list of node B IP addresses to use in IPSec policies                                                                    #
+# $pfs_groups - ordered semicolon-separated list of PFS groups to use in IPSec policies                                                                                #
+#                                                                                                                                                                      #
+# Returns:                                                                                                                                                             #
+# - SUCCESS (0)                                                                                                                                                        #
+# - FAILURE (1)                                                                                                                                                        #
+########################################################################################################################################################################
+function upgrade_racoon_confs() {
+	local rCode=$EXIT_SUCCESS
+	
+	local remote_hosts=(${1//;/ })
+	local encryption_algorithms=(${2//;/ })
+	local hash_algorithms=(${3//;/ })
+	local lifetimes=(${4//;/ })
+	local dh_groups=(${5//;/ })
+	local local_hosts_C=(${6//;/ })
+	local local_hosts_A=(${7//;/ })
+	local local_hosts_B=(${8//;/ })
+	local pfs_groups=(${9//;/ })
+	
+	echo -e "path pre_shared_key \"/etc/racoon/psk.txt\";\n" > $RACOON_FILE
+	
+	local remote_host
+	for remote_host in "${remote_hosts[@]}"; do
+		echo "include \"/etc/racoon/$remote_host.racoon.conf\";" >> $RACOON_FILE
+	done
+	
+	echo -e "sainfo anonymous {\n\tpfs_group 2;\n\tencryption_algorithm 3des, aes, des, blowfish 448, twofish, rijndael;\n\tauthentication_algorithm hmac_sha1, hmac_md5, hmac_sha256, hmac_sha384, hmac_sha512;\n\tcompression_algorithm deflate;\n}"  >> $RACOON_FILE
+	
+	local encryption_algorithm
+	local hash_algorithm
+	local lifetime
+	local dh_group
+	local local_host_C
+	local local_host_A
+	local local_host_B
+	local pfs_group
+	local counter=0
+	for remote_host in "${remote_hosts[@]}"; do
+		encryption_algorithm="${encryption_algorithms[$counter]}"
+		hash_algorithm="${hash_algorithms[$counter]}"
+		lifetime="${lifetimes[$counter]}"
+		dh_group="${dh_groups[$counter]}"
+		local_host_C="${local_hosts_C[$counter]}"
+		local_host_A="${local_hosts_A[$counter]}"
+		local_host_B="${local_hosts_B[$counter]}"
+		pfs_group="${pfs_groups[$counter]}"
+		[[ "$pfs_group" != "NA" ]] && pfs_group="pfs_group $pfs_group;"
+		[[ "$pfs_group" == "NA" ]] && pfs_group=""
+		
+		cat > $CONF_DIR"/"$remote_host".racoon.conf" <<EOM
+remote $remote_host {
+    exchange_mode main;
+    proposal {
+            encryption_algorithm $encryption_algorithm;
+            hash_algorithm $hash_algorithm;
+            authentication_method pre_shared_key;
+            dh_group $dh_group;
+    }
+}
+
+sainfo address $local_host_C/32 any address $remote_host/32 any {
+        $pfs_group
+        lifetime time $lifetime sec;
+        encryption_algorithm 3des, des, blowfish 448, twofish, rijndael;
+        authentication_algorithm hmac_sha1, hmac_md5;
+        compression_algorithm deflate;
+}
+
+sainfo address $local_host_A/32 any address $remote_host/32 any {
+        $pfs_group
+        lifetime time $lifetime sec;
+        encryption_algorithm 3des, des, blowfish 448, twofish, rijndael;
+        authentication_algorithm hmac_sha1, hmac_md5;
+        compression_algorithm deflate;
+}
+
+sainfo address $local_host_B/32 any address $remote_host/32 any {
+        $pfs_group
+        lifetime time $lifetime sec;
+        encryption_algorithm 3des, des, blowfish 448, twofish, rijndael;
+        authentication_algorithm hmac_sha1, hmac_md5;
+        compression_algorithm deflate;
+}
+EOM
+		
+		(( counter = $counter + 1 ))
+	done
+	
+	return $rCode
+}
+
+#############################################################################################################################################################
+# function upgrade_setkey_conf($policy_names,$local_hosts_C,$local_hosts_A,$local_hosts_B,$remote_hosts,$modes,$ipsec_protocols,$remote_gateways);          #
+#                                                                                                                                                           #
+# Upgrade the setkey.conf configuration file to the latest format                                                                                           #
+#                                                                                                                                                           #
+# Parameters:                                                                                                                                               #
+# $policy_names - ordered semicolon-separated list of IPSec policy names                                                                                    #
+# $local_hosts_C - ordered semicolon-separated list of cluster IP addresses to use in IPSec policies                                                        #
+# $local_hosts_A - ordered semicolon-separated list of node A IP addresses to use in IPSec policies                                                         #
+# $local_hosts_B - ordered semicolon-separated list of node B IP addresses to use in IPSec policies                                                         #
+# $remote_hosts - ordered semicolon-separated list of remote IP addresses to use in IPSec policies                                                          #
+# $modes - ordered semicolon-separated list of modes (transport or tunnel) to use in IPSec policies                                                         #
+# $ipsec_protocols - ordered semicolon-separated list of IPSec protocols (ESP or AH or AH_ESP) to use in IPSec policies                                     #
+# $remote_gateways - ordered semicolon-separated list of remote gateways to use in IPSec policies                                                           #
+#                                                                                                                                                           #
+# Returns:                                                                                                                                                  #
+# - SUCCESS (0)                                                                                                                                             #
+# - FAILURE (1)                                                                                                                                             #
+#############################################################################################################################################################
+function upgrade_setkey_conf() {
+	local rCode=$EXIT_SUCCESS
+	
+	local policy_names=(${1//;/ })
+	local local_hosts_C=(${2//;/ })
+	local local_hosts_A=(${3//;/ })
+	local local_hosts_B=(${4//;/ })
+	local remote_hosts=(${5//;/ })
+	local modes=(${6//;/ })
+	local ipsec_protocols=(${7//;/ })
+	local remote_gateways=(${8//;/ })
+	
+	echo -e "# Flush the SAD and SPD\nflush;\nspdflush;\n# Add some SPD rules" > $SETKEY_FILE
+	
+	local policy_name
+	local local_host_C
+	local local_host_A
+	local local_host_B
+	local remote_host
+	local mode
+	local ipsec_protocol
+	local remote_gateway
+	local tunnel_out_C
+	local tunnel_out_A
+	local tunnel_out_B
+	local tunnel_in_C
+	local tunnel_in_A
+	local tunnel_in_B
+	local counter=0
+	for policy_name in "${policy_names[@]}"; do
+		local_host_C="${local_hosts_C[$counter]}"
+		local_host_A="${local_hosts_A[$counter]}"
+		local_host_B="${local_hosts_B[$counter]}"
+		remote_host="${remote_hosts[$counter]}"
+		mode="${modes[$counter]}"
+		ipsec_protocol="${ipsec_protocols[$counter]}"
+		remote_gateway="${remote_gateways[$counter]}"
+		
+		echo -e "#POLICY_NAME=$policy_name" >> $SETKEY_FILE
+		
+		tunnel_out_C=""
+		tunnel_out_A=""
+		tunnel_out_B=""
+		tunnel_in_C=""
+		tunnel_in_A=""
+		tunnel_in_B=""
+		if [ "$mode" == "tunnel" ] ; then
+			tunnel_out_C="$local_host_C-$remote_gateway"
+			tunnel_out_A="$local_host_A-$remote_gateway"
+			tunnel_out_B="$local_host_B-$remote_gateway"
+			tunnel_in_C="$remote_gateway-$local_host_C"
+			tunnel_in_A="$remote_gateway-$local_host_A"
+			tunnel_in_B="$remote_gateway-$local_host_B"
+		fi
+		
+		echo "spdadd "$local_host_C"[any] "$remote_host"[any] any -P out ipsec" >> $SETKEY_FILE
+		if [ "$ipsec_protocol" == "AH_ESP" ] ; then
+			echo -e "esp/$mode/$tunnel_out_C/require\nah/$mode/$tunnel_out_C/require;" >> $SETKEY_FILE
+		elif [ "$ipsec_protocol" == "AH" ] ; then
+			echo -e "ah/$mode/$tunnel_out_C/require;" >> $SETKEY_FILE
+		else
+			echo -e "esp/$mode/$tunnel_out_C/require;" >> $SETKEY_FILE
+		fi
+		
+		echo "spdadd "$local_host_A"[any] "$remote_host"[any] any -P out ipsec" >> $SETKEY_FILE
+		if [ "$ipsec_protocol" == "AH_ESP" ] ; then
+			echo -e "esp/$mode/$tunnel_out_A/require\nah/$mode/$tunnel_out_A/require;" >> $SETKEY_FILE
+		elif [ "$ipsec_protocol" == "AH" ] ; then
+			echo -e "ah/$mode/$tunnel_out_A/require;" >> $SETKEY_FILE
+		else
+			echo -e "esp/$mode/$tunnel_out_A/require;" >> $SETKEY_FILE
+		fi
+		
+		echo "spdadd "$local_host_B"[any] "$remote_host"[any] any -P out ipsec" >> $SETKEY_FILE
+		if [ "$ipsec_protocol" == "AH_ESP" ] ; then
+			echo -e "esp/$mode/$tunnel_out_B/require\nah/$mode/$tunnel_out_B/require;" >> $SETKEY_FILE
+		elif [ "$ipsec_protocol" == "AH" ] ; then
+			echo -e "ah/$mode/$tunnel_out_B/require;" >> $SETKEY_FILE
+		else
+			echo -e "esp/$mode/$tunnel_out_B/require;" >> $SETKEY_FILE
+		fi
+		
+		echo "spdadd "$remote_host"[any] "$local_host_C"[any] any -P in ipsec" >> $SETKEY_FILE
+		if [ "$ipsec_protocol" == "AH_ESP" ] ; then
+			echo -e "esp/$mode/$tunnel_in_C/require\nah/$mode/$tunnel_in_C/require;" >> $SETKEY_FILE
+		elif [ "$ipsec_protocol" == "AH" ] ; then
+			echo -e "ah/$mode/$tunnel_in_C/require;" >> $SETKEY_FILE
+		else
+			echo -e "esp/$mode/$tunnel_in_C/require;" >> $SETKEY_FILE
+		fi
+		
+		echo "spdadd "$remote_host"[any] "$local_host_A"[any] any -P in ipsec" >> $SETKEY_FILE
+		if [ "$ipsec_protocol" == "AH_ESP" ] ; then
+			echo -e "esp/$mode/$tunnel_in_A/require\nah/$mode/$tunnel_in_A/require;" >> $SETKEY_FILE
+		elif [ "$ipsec_protocol" == "AH" ] ; then
+			echo -e "ah/$mode/$tunnel_in_A/require;" >> $SETKEY_FILE
+		else
+			echo -e "esp/$mode/$tunnel_in_A/require;" >> $SETKEY_FILE
+		fi
+		
+		echo "spdadd "$remote_host"[any] "$local_host_B"[any] any -P in ipsec" >> $SETKEY_FILE
+		if [ "$ipsec_protocol" == "AH_ESP" ] ; then
+			echo -e "esp/$mode/$tunnel_in_B/require\nah/$mode/$tunnel_in_B/require;" >> $SETKEY_FILE
+		elif [ "$ipsec_protocol" == "AH" ] ; then
+			echo -e "ah/$mode/$tunnel_in_B/require;" >> $SETKEY_FILE
+		else
+			echo -e "esp/$mode/$tunnel_in_B/require;" >> $SETKEY_FILE
+		fi
+		
+		(( counter = $counter + 1 ))
+	done
+	
+	return $rCode
+}
+
+#######################################################################
+#                               MAIN                                  #
+#######################################################################
+sanity_check
+
+upgrade_files || exit $EXIT_FAILURE
+
+restart_racoon || exit $EXIT_FAILURE
+
+exit $EXIT_SUCCESS

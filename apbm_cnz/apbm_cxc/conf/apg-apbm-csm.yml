@@ -1,0 +1,48 @@
+csm-version: '1.0'
+components:
+- uid: acs.apbm
+  name: acs-apbm
+  description: ACS APBM component
+  availability-manager: AMF
+  software:
+    sdp: ERIC-ACS_APBMBIN-CXC1371493
+  supersedes:
+  - base-component: ERIC-APG_APBM
+  availability-properties:
+    control-policy:
+      type: ADVANCED
+    multiplicity-policy:
+      node-active: ONE
+      node-standby: NONE
+      node-active-standby: 'NO'
+      cluster-active: MANY
+      cluster-standby: NONE
+    lifecycle-control:
+      prefix: /opt/ap/acs/bin
+      start: acs_apbm_clc instantiate
+      stop: acs_apbm_clc cleanup
+      monitor-keys:
+      - key: acs_apbmd_hck
+        period: 240s
+        timeout: 180s
+      promote-demote-timeout: 200s
+      migrate-timeout: 60s
+      recovery-policy: COMPONENT_RESTART
+      start-stop-timeout: 100s
+  constraints:
+    installation:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+    upgrade:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+  meta-data:
+    component-version: 9.0.18-0
+    deliverable:
+      deployment-package: acs_apbm-9.0.18-0-deployment-CXC1371493.tar.gz
+      runtime-package: acs_apbm-9.0.18-0-runtime-CXC1371493.tar.gz
+    software:
+    - file-name: ACS_APBMBIN-CXC1371493_9-R1S.x86_64.sdp
+      bundle-name: ERIC-ACS_APBMBIN-CXC1371493_9-R1S

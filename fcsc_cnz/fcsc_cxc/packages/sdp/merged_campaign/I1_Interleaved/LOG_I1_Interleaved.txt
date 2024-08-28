@@ -1,0 +1,90 @@
+
+Aug 16 20:04:36 SC-2-1 CMW: Invoked: [cmw-campaign-start ERIC-ACS-I1-TEMPLATE-R1A01]
+Aug 16 20:04:36 SC-2-1 osafimmnd[4873]: Create implementer:<name:safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01,safApp=safSmfService, id:500, conn:597, node:2010f dead:0>
+Aug 16 20:04:36 SC-2-1 osafsmfd[5007]: rda_get_role: Active
+Aug 16 20:04:36 SC-2-1 osafsmfd[5007]: CAMP: Start upgrade campaign safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01
+Aug 16 20:04:36 SC-2-1 osafsmfd[5007]: CAMP: Check SMF repository safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01
+Aug 16 20:04:36 SC-2-1 SMF: smfRepositoryCheckCmd: [smfRepositoryCheckCmd ]
+Aug 16 20:04:36 SC-2-1 osafsmfd[5007]: CAMP: Check bundles to install and remove.
+Aug 16 20:04:36 SC-2-1 osafsmfd[5007]: CAMP: Create system backup safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01
+Aug 16 20:04:36 SC-2-1 SMF: smfBackupCreateCmd: [smfBackupCreateCmd safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01]
+Aug 16 20:04:36 SC-2-1 CMW: Invoked: [cmw-partial-backup-create SMF-BACKUP_2007-08-16T20:04:36]
+Aug 16 20:04:36 SC-2-1 osafimmnd[4873]: Epoch set to 6 in ImmModel
+Aug 16 20:04:36 SC-2-1 osafimmd[4862]: Successfully announced dump at node 2010f. New Epoch:6
+Aug 16 20:04:36 SC-2-1 osafimmd[4862]: New Epoch for IMMND process at node 2020f old epoch: 5  new epoch:6
+Aug 16 20:04:41 SC-2-1 cmwea: backup-create SMF-BACKUP_2007-08-16T20:04:36
+Aug 16 20:04:42 SC-2-1 snapshot: Snapshot starting (/cluster/snapshot/.cmwea-snapshot-SMF-BACKUP_2007-08-16T20:04:36.tar.gz)
+Aug 16 20:06:41 SC-2-1 snapshot: Snapshot completed
+Aug 16 20:06:41 SC-2-1 CMW: Backup-create executed 125 seconds
+Aug 16 20:06:41 SC-2-1 osafsmfd[5007]: CAMP: Start executing campaign safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01
+Aug 16 20:06:41 SC-2-1 osafimmnd[4873]: Create of PERSISTENT runtime object 'smfRestartInfo=info,safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01,safApp=safSmfService' by Impl safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01,safApp=safSmfService
+Aug 16 20:06:41 SC-2-1 osafimmnd[4873]: Create implementer:<name:safSmfProc=SingleStepProc,safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01,safApp=safSmfService, id:501, conn:607, node:2010f dead:0>
+Aug 16 20:06:41 SC-2-1 osafsmfd[5007]: saImmOmAccessorGet_2 failed, rc=12 object name=safSmfProc=SingleStepProc,safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01,safApp=safSmfService
+Aug 16 20:06:41 SC-2-1 osafsmfd[5007]: IMM data for procedure safSmfProc=SingleStepProc,safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01,safApp=safSmfService not found
+Aug 16 20:06:41 SC-2-1 osafimmnd[4873]: Create of PERSISTENT runtime object 'safSmfProc=SingleStepProc,safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01,safApp=safSmfService' by Impl safSmfProc=SingleStepProc,safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01,safApp=safSmfService
+Aug 16 20:06:41 SC-2-1 osafsmfd[5007]: CAMP: Campaign init, start add to IMM (0)
+Aug 16 20:06:41 SC-2-1 osafsmfd[5007]: CAMP: Campaign init, start init actions (0)
+Aug 16 20:06:41 SC-2-1 osafsmfd[5007]: CAMP: Campaign init completed
+Aug 16 20:06:41 SC-2-1 osafsmfd[5007]: PROC: Start upgrade procedure safSmfProc=SingleStepProc,safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01,safApp=safSmfService
+Aug 16 20:06:41 SC-2-1 osafsmfd[5007]: PROC: Running procedure init actions
+Aug 16 20:06:41 SC-2-1 osafimmnd[4873]: Create of PERSISTENT runtime object 'safSmfStep=1,safSmfProc=SingleStepProc,safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01,safApp=safSmfService' by Impl safSmfProc=SingleStepProc,safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01,safApp=safSmfService
+Aug 16 20:06:41 SC-2-1 osafimmnd[4873]: Create of PERSISTENT runtime object 'safSmfDu=smfDeactivationUnit,safSmfStep=1,safSmfProc=SingleStepProc,safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01,safApp=safSmfService' by Impl safSmfProc=SingleStepProc,safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01,safApp=safSmfService
+Aug 16 20:06:41 SC-2-1 osafimmnd[4873]: Create of PERSISTENT runtime object 'safSmfAu=smfActivationUnit,safSmfStep=1,safSmfProc=SingleStepProc,safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01,safApp=safSmfService' by Impl safSmfProc=SingleStepProc,safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01,safApp=safSmfService
+Aug 16 20:06:41 SC-2-1 osafimmnd[4873]: Create of PERSISTENT runtime object 'safImageNode=ERIC-ACS_APCONF-CXC1371346-R1A05,safSmfAu=smfActivationUnit,safSmfStep=1,safSmfProc=SingleStepProc,safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01,safApp=safSmfService' by Impl safSmfProc=SingleStepProc,safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01,safApp=safSmfService
+Aug 16 20:06:41 SC-2-1 osafimmnd[4873]: Create of PERSISTENT runtime object 'safImageNode=ERIC-ACS_APJTP-CXC1371324-R1A08,safSmfAu=smfActivationUnit,safSmfStep=1,safSmfProc=SingleStepProc,safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01,safApp=safSmfService' by Impl safSmfProc=SingleStepProc,safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01,safApp=safSmfService
+Aug 16 20:06:41 SC-2-1 CMW: Invoked: [cmw-addToImm ERIC-ACS_APCONF-CXC1371346-R1A05]
+Aug 16 20:06:42 SC-2-1 osafimmnd[4873]: Ccb 6 COMMITTED
+Aug 16 20:06:47 SC-2-1 osafsmfd[5007]: PROC: Start step safSmfStep=1,safSmfProc=SingleStepProc,safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01,safApp=safSmfService
+Aug 16 20:06:47 SC-2-1 osafsmfd[5007]: STEP: Executing AU lock activation step safSmfStep=1,safSmfProc=SingleStepProc,safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01,safApp=safSmfService
+Aug 16 20:06:47 SC-2-1 osafsmfd[5007]: STEP: Online installation of new software
+Aug 16 20:06:47 SC-2-1 osafsmfd[5007]: STEP: Attribute saSmfBundleInstallOnlineCmdUri is NULL or empty in bundle safSmfBundle=ERIC-ACS_APCONF-CXC1371346-R1A05
+Aug 16 20:06:47 SC-2-1 osafsmfd[5007]: STEP: Attribute saSmfBundleInstallOnlineCmdUri is NULL or empty in bundle safSmfBundle=ERIC-ACS_APJTP-CXC1371324-R1A08
+Aug 16 20:06:47 SC-2-1 osafsmfd[5007]: STEP: Lock deactivation units
+Aug 16 20:06:47 SC-2-1 osafsmfd[5007]: STEP: Terminate deactivation units
+Aug 16 20:06:47 SC-2-1 osafsmfd[5007]: STEP: Offline uninstallation of old software
+Aug 16 20:06:47 SC-2-1 osafsmfd[5007]: STEP: Modify information model and set maintenance status
+Aug 16 20:06:47 SC-2-1 osafsmfd[5007]: STEP: Offline installation of new software
+Aug 16 20:06:47 SC-2-1 CMW: Invoked: [cmw-rpm-config-add ACS_APCONF-CXC1371346-R1A05.x86_64.rpm]
+Aug 16 20:06:47 SC-2-1 cmwea: rpm-config-add ACS_APCONF-CXC1371346-R1A05.x86_64.rpm SC-2-1
+Aug 16 20:06:52 SC-2-1 cmwea: rpm-config-add, other version of rpm found. Upgrading ACS_APCONF-CXC1371346-R1A05.x86_64.75cc99ba16494512ede6e43d09525898.rpm
+Aug 16 20:06:52 SC-2-1 rpm: Upgrading ACS_APCONF-CXC1371346-R1A05.x86_64.75cc99ba16494512ede6e43d09525898.rpm on node 1
+Aug 16 20:06:56 SC-2-1 rpm: Upgrading ACS_APCONF-CXC1371346-R1A03.x86_64.rpm -> ACS_APCONF-CXC1371346-R1A05.x86_64.75cc99ba16494512ede6e43d09525898.rpm
+Aug 16 20:07:10 SC-2-1 CMW: Invoked: [cmw-rpm-config-add ACS_APJTP-CXC1371324-R1A08.x86_64.rpm]
+Aug 16 20:07:10 SC-2-1 cmwea: rpm-config-add ACS_APJTP-CXC1371324-R1A08.x86_64.rpm SC-2-1
+Aug 16 20:07:13 SC-2-1 cmwea: rpm-config-add, other version of rpm found. Upgrading ACS_APJTP-CXC1371324-R1A08.x86_64.552bb2a8cfe2959740257e240c4e4b97.rpm
+Aug 16 20:07:13 SC-2-1 rpm: Upgrading ACS_APJTP-CXC1371324-R1A08.x86_64.552bb2a8cfe2959740257e240c4e4b97.rpm on node 1
+Aug 16 20:07:16 SC-2-1 rpm: Upgrading ACS_APJTP-CXC1371324-R1A07.x86_64.rpm -> ACS_APJTP-CXC1371324-R1A08.x86_64.552bb2a8cfe2959740257e240c4e4b97.rpm
+Aug 16 20:07:23 SC-2-1 osafsmfd[5007]: STEP: Create SaAmfNodeSwBundle object
+Aug 16 20:07:23 SC-2-1 osafsmfd[5007]: saImmOmAccessorGet_2 failed, rc=12 object name=safInstalledSwBundle=safSmfBundle=ERIC-ACS_APCONF-CXC1371346-R1A05,safAmfNode=SC-1,safAmfCluster=myAmfCluster
+Aug 16 20:07:23 SC-2-1 osafimmnd[4873]: Ccb 8 COMMITTED
+Aug 16 20:07:23 SC-2-1 osafsmfd[5007]: saImmOmAccessorGet_2 failed, rc=12 object name=safInstalledSwBundle=safSmfBundle=ERIC-ACS_APCONF-CXC1371346-R1A05,safAmfNode=SC-2,safAmfCluster=myAmfCluster
+Aug 16 20:07:23 SC-2-1 osafimmnd[4873]: Ccb 9 COMMITTED
+Aug 16 20:07:23 SC-2-1 osafsmfd[5007]: saImmOmAccessorGet_2 failed, rc=12 object name=safInstalledSwBundle=safSmfBundle=ERIC-ACS_APJTP-CXC1371324-R1A08,safAmfNode=SC-1,safAmfCluster=myAmfCluster
+Aug 16 20:07:23 SC-2-1 osafimmnd[4873]: Ccb 10 COMMITTED
+Aug 16 20:07:23 SC-2-1 osafsmfd[5007]: saImmOmAccessorGet_2 failed, rc=12 object name=safInstalledSwBundle=safSmfBundle=ERIC-ACS_APJTP-CXC1371324-R1A08,safAmfNode=SC-2,safAmfCluster=myAmfCluster
+Aug 16 20:07:23 SC-2-1 osafimmnd[4873]: Ccb 11 COMMITTED
+Aug 16 20:07:23 SC-2-1 osafsmfd[5007]: STEP: Online uninstallation of old software
+Aug 16 20:07:23 SC-2-1 osafsmfd[5007]: STEP: Delete SaAmfNodeSwBundle object
+Aug 16 20:07:23 SC-2-1 osafsmfd[5007]: STEP: Activate installed software on node
+Aug 16 20:07:23 SC-2-1 SMF: smfNodeBundleActCmd: [smfNodeBundleActCmd ]
+Aug 16 20:07:23 SC-2-1 cmwea: rpm-config-activate SC-2-1
+Aug 16 20:07:23 SC-2-1 rpm: Starting RPM activation
+Aug 16 20:07:44 SC-2-1 rpm: rpm -U: This is the apconf package preinstall section
+Aug 16 20:07:44 SC-2-1 rpm: rpm -U: This is the apconf package post install section
+Aug 16 20:07:44 SC-2-1 rpm: rpm -U: This is the apjtp package preinstall section
+Aug 16 20:07:44 SC-2-1 rpm: rpm -U: This is the apjtp package post install section
+Aug 16 20:07:44 SC-2-1 rpm: rpm -U: This is the apconf package pre uninstall section
+Aug 16 20:07:44 SC-2-1 rpm: rpm -U: This is the apconf package post uninstall section
+Aug 16 20:07:44 SC-2-1 rpm: rpm -U: This is the apjtp package pre uninstall section
+Aug 16 20:07:44 SC-2-1 rpm: rpm -U: This is the apjtp package post uninstall section
+Aug 16 20:07:58 SC-2-1 rpm: Completed RPM activation
+Aug 16 20:08:31 SC-2-1 osafsmfd[5007]: STEP: Instantiate activation units
+Aug 16 20:08:31 SC-2-1 osafsmfd[5007]: STEP: Unlock activation units
+Aug 16 20:08:31 SC-2-1 osafsmfd[5007]: STEP: Upgrade AU lock activation step completed safSmfStep=1,safSmfProc=SingleStepProc,safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01,safApp=safSmfService
+Aug 16 20:08:31 SC-2-1 osafsmfd[5007]: PROC: Running procedure wrapup actions
+Aug 16 20:08:31 SC-2-1 osafsmfd[5007]: PROC: Upgrade procedure completed safSmfProc=SingleStepProc
+Aug 16 20:08:31 SC-2-1 osafsmfd[5007]: CAMP: Running campaign wrapup complete actions
+Aug 16 20:08:31 SC-2-1 osafsmfd[5007]: CAMP: Campaign complete, start executeCampComplete (0)
+Aug 16 20:08:31 SC-2-1 osafsmfd[5007]: CAMP: executeCampComplete completed
+Aug 16 20:08:31 SC-2-1 osafsmfd[5007]: CAMP: Start wait to complete timer (not implemented yet)
+Aug 16 20:08:31 SC-2-1 osafsmfd[5007]: CAMP: Upgrade campaign completed safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01

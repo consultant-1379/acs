@@ -1,0 +1,55 @@
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2016 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# models.info
+##
+# Description:
+#       Configuration file used to perform IMM model changes during software upgrade for LOGM block.
+##
+##
+# Changelog:
+# - 2016-11-17 - Suryanarayana Pammi(XPAMSUR) 
+#      AXE17A+ Changes
+# - 2016-02-08 - Ramakrishna Maturu (XRAMMAT) 
+#       First version
+##
+###################AXE17A+########################
+
+VERSION: CXC1371436_9-R1C
+log "No model changes in LOGMBIN CXC1371436_9-R1C"
+
+VERSION: CXC1371436_9-R1B
+log "No model changes in LOGMBIN CXC1371436_9-R1B"
+
+# Adaptations to SwM2.0
+
+VERSION: CXC1371436_9-R1A04
+VERSION: CXC1371436_9-R1A03
+VERSION: CXC1371436_9-R1A02
+VERSION: CXC1371436_9-R1A01
+
+VERSION: CXC1371436_6-R1A01
+log "No model changes in LOGMBIN CXC1371436_6-R1A01"
+###################  AXE17A ###################
+VERSION: CXC1371436_5-R1A04P
+immcfg -c PeriodicBasedHouseKeeping -a searchPath="SMX_LOG" -a searchPattern="*.gz" -a fileAge=0 -a numberOfFiles=3 periodicBasedHouseKeepingId=SMXLOG,logMaintenanceMId=1
+immcfg -c TimeBasedHouseKeeping -a searchPath="SMX_LOG" -a searchPattern="*.gz" -a fileAge=7 -a fileType=1 timeBasedHouseKeepingId=SMXLOG,logMaintenanceMId=1
+
+VERSION: CXC1371436_5-R1A03
+log "No model changes in LOGMBIN CXC1371436_5-R1A03"
+
+VERSION: CXC1371436_5-R1A02
+log "No model changes in LOGMBIN CXC1371436_5-R1A02"
+
+VERSION: CXC1371436_5-R1A01
+log "No model changes in LOGMBIN CXC1371436_5-R1A01"
+
+###################  AXE15A ###################
+
+VERSION: CXC1371436-R1A05
+log "No model changes in LOGMBIN CXC1371436-R1A05"
+
+VERSION: CXC1371436-R1A04
+log "No model changes in LOGMBIN CXC1371436-R1A04"

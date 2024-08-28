@@ -1,0 +1,9 @@
+acs_chb_cp_object.h
+acs_chb_error.h
+acs_chb_mtzclass.h
+libacs_chb_mtz.so.1.3.0
+libacs_chb_mtz.so.1
+libacs_chb_mtz.so
+libacs_chb_cpobject.so.2.0.0
+libacs_chb_cpobject.so.2
+libacs_chb_cpobject.so

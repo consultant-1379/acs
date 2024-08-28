@@ -1,0 +1,520 @@
+#!/bin/bash
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2013 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# Name:
+#       ipsecdef
+# Description:
+#       This script is to define rules and policies for the IPSec Racoon feature
+##
+# Usage: 
+#     ipsecdef -i <IKEV1/IKEV2>
+#
+#     ipsecdef -r remoteaddr -k key -m mode -p protocol [-e encryptalg] [-f pfsgroup] [-h hashalg] [-l lifetime] [-u dhgroup] [-v vlantag] [-w remotegw] [-s] policyname 
+#
+##
+# Changelog:
+# - Apr 23 2020 - Sowmya Pola (XSOWPOL)
+#   - Incorporated code review comments 
+# - jan 23 2019 - Pardhasaradhi
+#    - Parameters parsing, validation and configuration of Racoon is done
+##
+installPath="/opt/ap/acs/bin/"
+source $installPath"ipsec_commons"
+
+apos_common="${AP_HOME:-/opt/ap}/apos/conf/apos_common.sh"
+source $apos_common
+
+#################
+#   Functions   #
+#################
+function usage() {
+    echo -e "\nIncorrect usage" >&2
+    if is_vAPG ; then
+      echo 'Usage: 
+        ipsecdef -i <IKEV1/IKEV2>
+
+        ipsecdef -r remoteaddr -k key -m mode -p protocol [-e encryptalg] [-f pfsgroup] [-h hashalg] [-l lifetime] [-u dhgroup] [-w remotegw] policyname
+'
+    else
+      echo 'Usage: 
+        ipsecdef -i <IKEV1/IKEV2>
+
+        ipsecdef -r remoteaddr -k key -m mode -p protocol [-e encryptalg] [-f pfsgroup] [-h hashalg] [-l lifetime] [-u dhgroup] [-v vlantag] [-w remotegw] [-s] policyname
+'
+    fi
+}
+
+################
+# Main Program #
+################
+
+#Add the info to log file
+INFO "ipsecdef starts here..."
+#Flag settings for options checks
+rflag=""
+kflag=""
+mflag=""
+pflag=""
+eflag=""
+fflag=""
+hflag=""
+lflag=""
+uflag=""
+vflag=""
+wflag=""
+sflag=""
+
+#Default values
+networkprotocol="any"
+localport="any"
+remoteport="any"
+encralg="3des"
+hashalg="sha1"
+lifetime=300
+dh_group="2"
+pfs_group=""
+ike_type="IKEV1"
+
+options='-r -k -m -p -e -f -h -l -u -v -w -s'
+
+log "START: <$0 $*>"
+
+#Checking for node status
+INFO "Checking for node status and session type..."
+
+ipsec_exitnotactive
+ipsec_exitwrongsessiontype
+
+current_node_id=$(cat $CURRENT_NODE_ID_FILE)
+
+if [ ${#@} -eq 0 ] ; then
+    ipsec_exit $EXIT_INCORRECT_USAGE
+fi
+
+parameters=($@)
+policyname=${parameters[${#@} - 1]}
+ipsec_checknotempty "$policyname"
+if ipsec_checklist "$policyname" "$options" ; then
+    ipsec_exit $EXIT_INCORRECT_USAGE
+fi
+
+parameters=(${parameters[@]:0:((${#@} - 1))})
+num_parameters=${#parameters[@]}
+i=0
+while [ $i -lt $num_parameters ] ; do
+    case ${parameters[$i]} in
+        -r )  [ $rflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+	    rflag=true
+            (( i = $i + 1 ))
+            remoteaddr=${parameters[$i]}
+            ipsec_checknotempty "$remoteaddr" "-r"
+            if ipsec_checklist "$remoteaddr" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+        -k )    [ $kflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+	kflag=true
+            (( i = $i + 1 ))
+            presharedkey=${parameters[$i]}
+            ipsec_checknotempty "$presharedkey" "-k"
+            if ipsec_checklist "$presharedkey" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+        -m )    [ $mflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+		mflag=true
+            (( i = $i + 1 ))
+            mode=${parameters[$i]}
+            ipsec_checknotempty "$mode" "-m"
+            if ipsec_checklist "$mode" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+        -p )    [ $pflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+		pflag=true
+            (( i = $i + 1 ))
+            protocol=${parameters[$i]}
+            ipsec_checknotempty "$protocol" "-p"
+            if ipsec_checklist "$protocol" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;                   
+        -e )    [ $eflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+		eflag=true
+            (( i = $i + 1 ))
+            encralg=${parameters[$i]}
+            ipsec_checknotempty "$encralg" "-e"
+            if ipsec_checklist "$encralg" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+        -f )    [ $fflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+		fflag=true
+            (( i = $i + 1 ))
+            pfs_group=${parameters[$i]}
+            ipsec_checknotempty "$pfs_group" "-f"
+            if ipsec_checklist "$pfs_group" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+        -h )    [ $hflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+		hflag=true
+            (( i = $i + 1 ))
+            hashalg=${parameters[$i]}
+            ipsec_checknotempty "$hashalg" "-h"
+            if ipsec_checklist "$hashalg" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+        -l )    [ $lflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+		lflag=true
+            (( i = $i + 1 ))
+            lifetime=${parameters[$i]}
+            ipsec_checknotempty "$lifetime" "-l"
+            if ipsec_checklist "$lifetime" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+        -u )    [ $uflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+		uflag=true
+            (( i = $i + 1 ))
+            dh_group=${parameters[$i]}
+            ipsec_checknotempty "$dh_group" "-u"
+            if ipsec_checklist "$dh_group" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+        -v )    is_vAPG && ipsec_exit $EXIT_INCORRECT_USAGE
+                [ $vflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+		vflag=true
+            (( i = $i + 1 ))
+            vlantag=${parameters[$i]}
+            ipsec_checknotempty "$vlantag" "-v"
+            if ipsec_checklist "$vlantag" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+        -w )    [ $wflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+		wflag=true
+            (( i = $i + 1 ))
+            remgw=${parameters[$i]}
+            ipsec_checknotempty "$remgw" "-w"
+            if ipsec_checklist "$remgw" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+        -s ) is_vAPG && ipsec_exit $EXIT_INCORRECT_USAGE    
+            [ $sflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+		[ $vflag ] && ipsec_exit $EXIT_INCORRECT_USAGE
+		sflag=true;;
+         * )    ipsec_exit $EXIT_INCORRECT_USAGE
+    esac
+    (( i = $i + 1 ))
+done
+
+
+
+if  [ ! $rflag ] || [ ! $kflag ] || [ ! $mflag ] || [ ! $pflag ] ; then
+    ipsec_exit $EXIT_INCORRECT_USAGE
+fi
+
+    INFO "Check for remote address and presharedkey"
+    ipsec_checkip "$remoteaddr" 0
+    add=""
+    if grep "/$remoteaddr.racoon.conf" "$RACOON_BASEDIR/$RACOON_CFGFILE" &> /dev/null ; then
+        conflictname=$(grep -w $remoteaddr -B 2 "$RACOON_BASEDIR$SETKEY_CFGFILE" | grep $POLICY_NAME_MARK | sed "s|#$POLICY_NAME_MARK=||")
+        echo -e "\nPolicy definition not allowed. Conflicting policy detected: $conflictname." >&2
+        ipsec_exit $EXIT_CONFLICTING_POLICY_DETECTED;
+    else
+        add=true
+    fi
+    if [ $wflag ] ; then  
+        ipsec_checkpresharedkey "$presharedkey" "$remgw"
+    else 
+        ipsec_checkpresharedkey "$presharedkey" "$remoteaddr"
+    fi
+    if ! ipsec_checklist "$mode" "transport" "tunnel" ; then
+        ipsec_exit $EXIT_UNREASONABLE_VALUE "for mode : $mode"
+    fi
+    
+    if ! ipsec_checklist "$protocol" "AH" "ESP" "AH_ESP" ; then
+        ipsec_exit $EXIT_UNREASONABLE_VALUE "for protocol : $protocol"
+    fi
+    
+    
+    INFO "Check for encription algorithm $encralg"
+    ipsec_checkencralg "$encralg"
+    if [ $fflag ] ; then
+        ipsec_checkpfsgroup "$pfs_group"
+    fi
+    INFO "Check for hashalgorthim"$hashalg" lifetime"$lifetime" and dh_group"$dh_group""
+    ipsec_checkhashalg "$hashalg"
+    ipsec_checklifetime "$lifetime"
+    ipsec_checkdhgroup "$dh_group"
+    
+    if [ $sflag ] && [ $vflag ] ; then
+        ipsec_exit $EXIT_VLAN_PS_NOT_COMPATIBLE
+    fi
+    
+    if [ "$mode" == "transport" ] && [ $wflag ] ; then
+        ipsec_exit $EXIT_GATEWAY_NOT_APPLICABLE
+    fi
+    
+    if [ $wflag ] ; then
+        ipsec_checkip $remgw 0
+    else
+        remgw=$remoteaddr
+    fi
+    
+    if [[ ! -s $RACOON_BASEDIR/$RACOON_CFGFILE ]] ; then
+        ipsec_exit $EXIT_GENERAL_FAULT
+    fi    
+    
+    if [ $sflag ] ; then
+        ipsec_exitpsnotconfigured
+        localaddr=$(cat $PHYSEP_ADDRESS_FILE)
+        localaddr1=$(cat $PHYSEP_NODE1_ADDRESS_FILE)
+        localaddr2=$(cat $PHYSEP_NODE2_ADDRESS_FILE)
+    elif [ $vflag ] ; then
+        ipsec_exitvlannotconfigured "$vlantag"
+        vlan_name=$(ipsec_retrieve_vlan_name "$vlantag")
+        if [ "$vlan_name" != "Public" ] ; then
+    	localaddr=$(cat $VLAN_ADDRESS_FILE_PART1$vlantag$VLAN_ADDRESS_FILE_PART2)
+    	localaddr1=$(cat $VLAN_NODE1_ADDRESS_FILE_PART1$vlantag$VLAN_NODE1_ADDRESS_FILE_PART2)
+    	localaddr2=$(cat $VLAN_NODE2_ADDRESS_FILE_PART1$vlantag$VLAN_NODE2_ADDRESS_FILE_PART2)
+        else
+    	localaddr=$(cat $CLUSTER_ADDRESS_FILE)
+    	localaddr1=$(cat $NODE1_ADDRESS_FILE)
+    	localaddr2=$(cat $NODE2_ADDRESS_FILE)
+        fi
+    else
+        localaddr=$(cat $CLUSTER_ADDRESS_FILE)
+        localaddr1=$(cat $NODE1_ADDRESS_FILE)
+        localaddr2=$(cat $NODE2_ADDRESS_FILE)
+    fi
+    locgw=$localaddr
+    locgw1=$localaddr1
+    locgw2=$localaddr2
+    
+    
+    INFO "checking for policy name $policyname"
+    ipsec_checkpolicyname "$policyname"
+    
+    ipsec_remove_tmp_files
+    policy_to_search=" $remoteaddr[$remoteport] $networkprotocol -P out ipsec"
+    
+    INFO "Creating new policy......$policy_to_search"
+    if [ $add ] ; then
+        ipsec_backup
+        pfs_group_string=""
+        if [ ! -z "$pfs_group" ] ; then
+            pfs_group_string="pfs_group $pfs_group;"
+        fi
+        
+	cat <<EOF > "$RACOON_BASEDIR/$remoteaddr.racoon.tmp"
+remote $remgw {
+    exchange_mode main;
+    proposal {
+            encryption_algorithm $encralg;
+            hash_algorithm $hashalg;
+            authentication_method pre_shared_key;
+            dh_group $dh_group;
+    }
+}
+
+sainfo address $localaddr/32 any address $remoteaddr/32 any {
+        $pfs_group_string
+        lifetime time $lifetime sec;
+        encryption_algorithm 3des, aes, des, blowfish 448, twofish, rijndael;
+        authentication_algorithm hmac_sha1, hmac_md5, hmac_sha256, hmac_sha384, hmac_sha512;
+        compression_algorithm deflate;
+}
+
+sainfo address $localaddr1/32 any address $remoteaddr/32 any {
+        $pfs_group_string
+        lifetime time $lifetime sec;
+        encryption_algorithm 3des, aes, des, blowfish 448, twofish, rijndael;
+        authentication_algorithm hmac_sha1, hmac_md5, hmac_sha256, hmac_sha384, hmac_sha512;
+        compression_algorithm deflate;
+}
+
+sainfo address $localaddr2/32 any address $remoteaddr/32 any {
+        $pfs_group_string
+        lifetime time $lifetime sec;
+        encryption_algorithm 3des, aes, des, blowfish 448, twofish, rijndael;
+        authentication_algorithm hmac_sha1, hmac_md5, hmac_sha256, hmac_sha384, hmac_sha512;
+        compression_algorithm deflate;
+}
+EOF
+        INFO "Activating the policy $policy_to_search"
+        cp "$RACOON_BASEDIR$RACOON_CFGFILE" "$RACOON_BASEDIR$RACOON_CFGFILE.tmp" &> /dev/null || { ipsec_exit $EXIT_FAILED_POLICY_ACTIVATION; }
+        cp "$PSK_BASEDIR$PSK_FILE" "$PSK_BASEDIR$PSK_FILE.tmp" &> /dev/null || { ipsec_exit $EXIT_FAILED_POLICY_ACTIVATION; }
+        
+        sed -i 's|sainfo|include "'$RACOON_BASEDIR$remoteaddr.racoon.conf'";\nsainfo|' "$RACOON_BASEDIR$RACOON_CFGFILE.tmp" &> /dev/null || { ipsec_exit $EXIT_FAILED_POLICY_ACTIVATION; }    
+        
+        if [ ! $wflag ]; then
+    	    if  ! grep -w "$remoteaddr" "$PSK_BASEDIR$PSK_FILE.tmp" &> /dev/null ; then
+                echo "$remoteaddr $presharedkey" >> "$PSK_BASEDIR$PSK_FILE.tmp"
+            fi
+        else 	
+    	    if ! grep -w "$remgw" "$PSK_BASEDIR$PSK_FILE.tmp" &> /dev/null ; then 
+          		echo "$remgw $presharedkey" >> "$PSK_BASEDIR$PSK_FILE.tmp"
+    	    fi
+        fi 	 
+        sed -i '/^$/d' "$PSK_BASEDIR$PSK_FILE.tmp"
+        
+        policy_out_header="spdadd"
+        policy_out_header=$policy_out_header" $localaddr[$localport] $remoteaddr[$remoteport]"
+        policy_out_header=$policy_out_header" $networkprotocol -P out ipsec"
+        
+        policy_out_header1="spdadd"
+        policy_out_header1=$policy_out_header1" $localaddr1[$localport] $remoteaddr[$remoteport]"
+        policy_out_header1=$policy_out_header1" $networkprotocol -P out ipsec"
+        
+        policy_out_header2="spdadd"
+        policy_out_header2=$policy_out_header2" $localaddr2[$localport] $remoteaddr[$remoteport]"
+        policy_out_header2=$policy_out_header2" $networkprotocol -P out ipsec"
+    
+        policy_in_header="spdadd"
+        policy_in_header=$policy_in_header" $remoteaddr[$remoteport] $localaddr[$localport]"
+        policy_in_header=$policy_in_header" $networkprotocol -P in ipsec"
+        
+        policy_in_header1="spdadd"
+        policy_in_header1=$policy_in_header1" $remoteaddr[$remoteport] $localaddr1[$localport]"
+        policy_in_header1=$policy_in_header1" $networkprotocol -P in ipsec"
+        
+        policy_in_header2="spdadd"
+        policy_in_header2=$policy_in_header2" $remoteaddr[$remoteport] $localaddr2[$localport]"
+        policy_in_header2=$policy_in_header2" $networkprotocol -P in ipsec"
+    
+        policy_out=$policy_out_header
+        policy_out1=$policy_out_header1
+        policy_out2=$policy_out_header2
+        policy_in=$policy_in_header
+        policy_in1=$policy_in_header1
+        policy_in2=$policy_in_header2
+        
+        if [ "$mode" == "tunnel" ] ; then
+    	[[ ! $wflag ]] && remgw=$remoteaddr	
+            case $protocol in
+                "AH" )
+                    policy_out=$policy_out"\nah/tunnel/$locgw-$remgw/require;"
+                    policy_out1=$policy_out1"\nah/tunnel/$locgw1-$remgw/require;"
+                    policy_out2=$policy_out2"\nah/tunnel/$locgw2-$remgw/require;"
+            
+                    policy_in=$policy_in"\nah/tunnel/$remgw-$locgw/require;"
+                    policy_in1=$policy_in1"\nah/tunnel/$remgw-$locgw1/require;"
+                    policy_in2=$policy_in2"\nah/tunnel/$remgw-$locgw2/require;"
+                    ;;
+                "ESP" )
+                    policy_out=$policy_out"\nesp/tunnel/$locgw-$remgw/require;"
+                    policy_out1=$policy_out1"\nesp/tunnel/$locgw1-$remgw/require;"
+                    policy_out2=$policy_out2"\nesp/tunnel/$locgw2-$remgw/require;"
+            
+                    policy_in=$policy_in"\nesp/tunnel/$remgw-$locgw/require;"
+                    policy_in1=$policy_in1"\nesp/tunnel/$remgw-$locgw1/require;"
+                    policy_in2=$policy_in2"\nesp/tunnel/$remgw-$locgw2/require;"         
+                    ;;
+                "AH_ESP" )
+                    policy_out=$policy_out"\nesp/tunnel/$locgw-$remgw/require\n"
+                    policy_out1=$policy_out1"\nesp/tunnel/$locgw1-$remgw/require\n"
+                    policy_out2=$policy_out2"\nesp/tunnel/$locgw2-$remgw/require\n"
+            
+                    policy_in=$policy_in"\nesp/tunnel/$remgw-$locgw/require\n"
+                    policy_in1=$policy_in1"\nesp/tunnel/$remgw-$locgw1/require\n"
+                    policy_in2=$policy_in2"\nesp/tunnel/$remgw-$locgw2/require\n"
+            
+                 
+                    policy_out=$policy_out"ah/tunnel/$locgw-$remgw/require;"
+                    policy_out1=$policy_out1"ah/tunnel/$locgw1-$remgw/require;"
+                    policy_out2=$policy_out2"ah/tunnel/$locgw2-$remgw/require;"
+                 
+                    policy_in=$policy_in"ah/tunnel/$remgw-$locgw/require;"
+                    policy_in1=$policy_in1"ah/tunnel/$remgw-$locgw1/require;"
+                    policy_in2=$policy_in2"ah/tunnel/$remgw-$locgw2/require;"
+                    
+                    # Since the AH + ESP tunnel packet format is different between APG43L and Windows, it's better to give a WARNING to user
+                    if [[ "$protocol" == "AH_ESP" && "$mode" == "tunnel" ]] ; then
+                        echo -e "\nWARNING: remote Windows hosts cannot support this IPSec tunnel mode configuration" >&2
+                    fi
+            esac    
+    
+        else
+            case $protocol in
+                "AH" )
+                    policy_out=$policy_out"\nah/transport//require;"
+                    policy_out1=$policy_out1"\nah/transport//require;"
+                    policy_out2=$policy_out2"\nah/transport//require;"
+            
+                    policy_in=$policy_in"\nah/transport//require;"
+                    policy_in1=$policy_in1"\nah/transport//require;"
+                    policy_in2=$policy_in2"\nah/transport//require;"
+                    ;;
+                "ESP" )
+                    policy_out=$policy_out"\nesp/transport//require;"
+                    policy_out1=$policy_out1"\nesp/transport//require;"
+                    policy_out2=$policy_out2"\nesp/transport//require;"
+            
+                    policy_in=$policy_in"\nesp/transport//require;"
+                    policy_in1=$policy_in1"\nesp/transport//require;"
+                    policy_in2=$policy_in2"\nesp/transport//require;"            
+                    ;;
+                "AH_ESP" )
+                    policy_out=$policy_out"\nesp/transport//require\nah/transport//require;"
+                    policy_out1=$policy_out1"\nesp/transport//require\nah/transport//require;"
+                    policy_out2=$policy_out2"\nesp/transport//require\nah/transport//require;"
+            
+                    policy_in=$policy_in"\nesp/transport//require\nah/transport//require;"
+                    policy_in1=$policy_in1"\nesp/transport//require\nah/transport//require;"
+                    policy_in2=$policy_in2"\nesp/transport//require\nah/transport//require;" 
+            esac
+            
+        fi
+        
+        echo -e "#$POLICY_NAME_MARK=$policyname" > "$RACOON_BASEDIR/$remoteaddr.setkey.tmp"
+        echo -e $policy_out >> "$RACOON_BASEDIR/$remoteaddr.setkey.tmp"
+        echo -e $policy_out1 >> "$RACOON_BASEDIR/$remoteaddr.setkey.tmp"
+        echo -e $policy_out2 >> "$RACOON_BASEDIR/$remoteaddr.setkey.tmp"
+        
+        echo -e $policy_in >> "$RACOON_BASEDIR/$remoteaddr.setkey.tmp"
+        echo -e $policy_in1 >> "$RACOON_BASEDIR/$remoteaddr.setkey.tmp"
+        echo -e $policy_in2 >> "$RACOON_BASEDIR/$remoteaddr.setkey.tmp"
+        
+        cp "$RACOON_BASEDIR$SETKEY_CFGFILE" "$RACOON_BASEDIR$SETKEY_CFGFILE.tmp"
+        
+        cat "$RACOON_BASEDIR/$remoteaddr.setkey.tmp" >> "$RACOON_BASEDIR$SETKEY_CFGFILE.tmp"
+        rm "$RACOON_BASEDIR/$remoteaddr.setkey.tmp"
+        
+        trap "ipsec_restore;ipsec_remove_backup;ipsec_remove_tmp_files;ipsec_exit $EXIT_GENERAL_FAULT" SIGHUP SIGINT SIGQUIT SIGILL SIGABRT SIGBUS SIGSEGV SIGPIPE SIGTERM SIGCHLD SIGTSTP SIGXCPU SIGPWR SIGSYS
+        mv "$RACOON_BASEDIR$remoteaddr.racoon.tmp" "$RACOON_BASEDIR$remoteaddr.racoon.conf" &> /dev/null
+        mv "$RACOON_BASEDIR$RACOON_CFGFILE.tmp" "$RACOON_BASEDIR$RACOON_CFGFILE" &> /dev/null
+        mv "$PSK_BASEDIR$PSK_FILE.tmp" "$PSK_BASEDIR$PSK_FILE" &> /dev/null
+        mv "$RACOON_BASEDIR$SETKEY_CFGFILE.tmp" "$RACOON_BASEDIR$SETKEY_CFGFILE" &> /dev/null
+        trap - SIGHUP SIGINT SIGQUIT SIGILL SIGABRT SIGBUS SIGSEGV SIGPIPE SIGTERM SIGCHLD SIGTSTP SIGXCPU SIGPWR SIGSYS
+    
+        #apos_servicemgmt restart racoon.service &>/dev/null
+        #if [ $? -ne 0 ] ; then
+        #    INFO "Unable to start racoon, Restoring the configuaration"
+        #    ipsec_restore
+        #   ipsec_remove_backup
+        #    apos_servicemgmt restart racoon.service &>/dev/null
+        #   apos_servicemgmt restart racoon-setkey.service &>/dev/null
+        #    ipsec_exit $EXIT_FAILED_POLICY_ACTIVATION
+        #else
+        #    INFO "Racoon service has been started, restart racoon.setkey service"
+        #    apos_servicemgmt restart racoon-setkey.service &>/dev/null
+        #    [ $? -ne $TRUE ] && ipsec_exit $EXIT_FAILED_POLICY_ACTIVATION
+        #    INFO "Racoon service has been started, Removing the backup"
+        #    ipsec_remove_backup
+        #fi
+        start_stop_strongswan stop
+        start_stop_racoon stop
+        start_stop_racoon start
+    fi 
+
+
+log "END: <$0>"
+ipsec_exit $EXIT_SUCCESS

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<imm:IMM-contents xmlns:imm="http://www.saforum.org/IMMSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd">
+    <object class="TestBase">
+      <dn>testId=1</dn>
+      <attr>
+        <name>attr1</name>
+        <value>ciao</value>
+      </attr>      
+      <attr>
+        <name>attr2</name>
+        <value>hello</value>
+      </attr>  
+      <attr>
+        <name>attr3</name>
+        <value>12</value>
+      </attr>      
+    </object>
+</imm:IMM-contents>    

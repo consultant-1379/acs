@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+	Copyright (c) 2020 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Dec 9, 2020 3:15:23 PM using:
+	* com.ericsson.ecim.coremw.m2m 3.13.0.202006261811
+	* com.ericsson.ecim.coremw.dsl 3.13.0.202006261811
+	* com.ericsson.ecim.coremw.imm 3.13.0.202006261811
+--><imm:IMM-contents xmlns:imm="http://www.saforum.org/IMMSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd">
+    <object class="AxeDataRecordDataRecordM">
+        <dn>AxeDataRecorddataRecordMId=1</dn>
+    </object>
+    <object class="AxeDataRecordMessageStore">
+        <dn>messageStoreId=CHS,AxeDataRecorddataRecordMId=1</dn>
+        <attr>
+            <name>alarmLevel</name>
+            <value>25</value>
+        </attr>
+        <attr>
+            <name>messageStoreName</name>
+            <value>CHS</value>
+        </attr>
+        <attr>
+            <name>numberOfFiles</name>
+            <value>40</value>
+        </attr>
+        <attr>
+            <name>numberOfRecords</name>
+            <value>6000</value>
+        </attr>
+        <attr>
+            <name>recordSize</name>
+            <value>4096</value>
+        </attr>
+    </object>
+    <object class="AxeDataRecordMessageStore">
+        <dn>messageStoreId=CHS1,AxeDataRecorddataRecordMId=1</dn>
+        <attr>
+            <name>alarmLevel</name>
+            <value>25</value>
+        </attr>
+        <attr>
+            <name>messageStoreName</name>
+            <value>CHS1</value>
+        </attr>
+        <attr>
+            <name>numberOfFiles</name>
+            <value>40</value>
+        </attr>
+        <attr>
+            <name>numberOfRecords</name>
+            <value>6000</value>
+        </attr>
+        <attr>
+            <name>recordSize</name>
+            <value>4096</value>
+        </attr>
+    </object>
+    <object class="AxeDataRecordMessageStore">
+        <dn>messageStoreId=CHS6,AxeDataRecorddataRecordMId=1</dn>
+        <attr>
+            <name>alarmLevel</name>
+            <value>25</value>
+        </attr>
+        <attr>
+            <name>messageStoreName</name>
+            <value>CHS6</value>
+        </attr>
+        <attr>
+            <name>numberOfFiles</name>
+            <value>40</value>
+        </attr>
+        <attr>
+            <name>numberOfRecords</name>
+            <value>6000</value>
+        </attr>
+        <attr>
+            <name>recordSize</name>
+            <value>4096</value>
+        </attr>
+    </object>
+    <object class="AxeDataRecordMessageStore">
+        <dn>messageStoreId=CHS4,AxeDataRecorddataRecordMId=1</dn>
+        <attr>
+            <name>alarmLevel</name>
+            <value>25</value>
+        </attr>
+        <attr>
+            <name>messageStoreName</name>
+            <value>CHS4</value>
+        </attr>
+        <attr>
+            <name>numberOfFiles</name>
+            <value>40</value>
+        </attr>
+        <attr>
+            <name>numberOfRecords</name>
+            <value>6000</value>
+        </attr>
+        <attr>
+            <name>recordSize</name>
+            <value>4096</value>
+        </attr>
+    </object>
+    <object class="AxeDataRecordMessageStore">
+        <dn>messageStoreId=CHS7,AxeDataRecorddataRecordMId=1</dn>
+        <attr>
+            <name>alarmLevel</name>
+            <value>25</value>
+        </attr>
+        <attr>
+            <name>messageStoreName</name>
+            <value>CHS7</value>
+        </attr>
+        <attr>
+            <name>numberOfFiles</name>
+            <value>40</value>
+        </attr>
+        <attr>
+            <name>numberOfRecords</name>
+            <value>6000</value>
+        </attr>
+        <attr>
+            <name>recordSize</name>
+            <value>4096</value>
+        </attr>
+    </object>
+    <object class="AxeDataRecordMessageStore">
+        <dn>messageStoreId=CHS2,AxeDataRecorddataRecordMId=1</dn>
+        <attr>
+            <name>alarmLevel</name>
+            <value>25</value>
+        </attr>
+        <attr>
+            <name>messageStoreName</name>
+            <value>CHS2</value>
+        </attr>
+        <attr>
+            <name>numberOfFiles</name>
+            <value>40</value>
+        </attr>
+        <attr>
+            <name>numberOfRecords</name>
+            <value>6000</value>
+        </attr>
+        <attr>
+            <name>recordSize</name>
+            <value>4096</value>
+        </attr>
+    </object>
+    <object class="AxeDataRecordMessageStore">
+        <dn>messageStoreId=CHS3,AxeDataRecorddataRecordMId=1</dn>
+        <attr>
+            <name>alarmLevel</name>
+            <value>25</value>
+        </attr>
+        <attr>
+            <name>messageStoreName</name>
+            <value>CHS3</value>
+        </attr>
+        <attr>
+            <name>numberOfFiles</name>
+            <value>40</value>
+        </attr>
+        <attr>
+            <name>numberOfRecords</name>
+            <value>6000</value>
+        </attr>
+        <attr>
+            <name>recordSize</name>
+            <value>4096</value>
+        </attr>
+    </object>
+    <object class="AxeDataRecordMessageStore">
+        <dn>messageStoreId=CHS5,AxeDataRecorddataRecordMId=1</dn>
+        <attr>
+            <name>alarmLevel</name>
+            <value>25</value>
+        </attr>
+        <attr>
+            <name>messageStoreName</name>
+            <value>CHS5</value>
+        </attr>
+        <attr>
+            <name>numberOfFiles</name>
+            <value>40</value>
+        </attr>
+        <attr>
+            <name>numberOfRecords</name>
+            <value>6000</value>
+        </attr>
+        <attr>
+            <name>recordSize</name>
+            <value>4096</value>
+        </attr>
+    </object>
+</imm:IMM-contents>

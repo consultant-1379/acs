@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
+	Copyright (c) 2020 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Dec 14, 2020 11:11:59 AM using:
+	* com.ericsson.ecim.m2m 3.13.0.202006261811
+	* com.ericsson.ecim.dsl 3.13.0.202006261811
+	* com.ericsson.ecim.edm 3.13.0.202006261811
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>K</dtdVersion>
+    <momMetaData>
+        <momTitle>AXE Scaling Management function MOM</momTitle>
+        <momSubTitle/>
+        <momIdentity>
+            <docNum>19089-CXA 117 0051/7</docNum>
+            <docLang>Uen</docLang>
+            <docRev>B</docRev>
+            <docDate>2020-12-14</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>XHARBAV</signature>
+        </createdBy>
+    </momMetaData>
+    <mim author="Harika Bavana" contact="XHARBAV" correction="0" date="2020-12-14" docNo="" name="AxeScalingM" namespace="urn:com:ericsson:ecim:AxeScalingM" namespacePrefix="axescalingm" organization="" release="1" revision="B" version="1">
+        <description>AXE Scaling Management function MOM.</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="MOM_NAME"/>
+        </domainExtension>
+        <modelFeatures modelType="Template">
+            <modelFeature featureType="basic" name="CPI_HIDDEN"/>
+        </modelFeatures>
+        <enum name="AdmState">
+            <description>Administrative state of a resource.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <enumMember name="LOCKED">
+                <description>The resource is administratively prohibited from performing services for its users.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="UNLOCKED">
+                <description>The resource is administratively permitted to perform services for its users.
+This is independent of its inherent operability.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="SHUTTINGDOWN">
+                <description>Use of the resource is administratively permitted to existing instances of use only.
+While the system remains in the shutting down state the manager may at any time cause the managed object to revert to the locked state.</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="InstantiationState">
+            <description>Presence state of the compute resource role.
+The state indicates whether software instantiation for the assigned role</description>
+            <enumMember name="UNINSTANTIATED">
+                <description>Not instantiated.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="INSTANTIATING">
+                <description>Instantiating</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="INSTANTIATION_FAILED">
+                <description>Failed to instatiate.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="UNINSTANTIATION_FAILED">
+                <description>Uninstantiation failed.</description>
+                <value>4</value>
+            </enumMember>
+            <enumMember name="INSTANTIATED">
+                <description>Successfully instantiated.</description>
+                <value>5</value>
+            </enumMember>
+            <enumMember name="UNINSTANTIATING">
+                <description>Uninstantiating.</description>
+                <value>6</value>
+            </enumMember>
+        </enum>
+        <enum name="Scalability">
+            <description>Describes whether a role is scalable or not.</description>
+            <enumMember name="SCALABLE">
+                <description>The role can scale to cope with capacity changes.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="NON_SCALABLE">
+                <description>The role cannot scale to cope with capacity changes.</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="OperState">
+            <description>Operational states of a resource.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <enumMember name="DISABLED">
+                <description>The resource is  totally inoperable.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="ENABLED">
+                <description>The resource is partially or fully operable.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        
+        <class name="CrM">
+            <description>Represents the root MOC for AXE Scaling Management function MOM.
+The function allows managing the scaling of Cluster CP VMs in a Multi-CP System. </description>
+            <systemCreated/>
+            <root/>
+            <attribute name="crMId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            
+        </class>
+        <class name="ComputeResourceRole">
+            <description>Represents the service (defined by the role) provided by the compute resource.
+Logically, an instance of this class represents the state of the software stack (operating system, middleware, and application) running on the compute resource.
+
+One or more attributes setting can fail due to one of the following reasons:
+- CP Quorum is not configured : This message appears if CP Quorum is not defined when scale-in is triggered.
+- Expected CP state is NONOP : This message appears if CP is not in NONOP state when scale-in is triggered.
+- Invalid attribute value : This message appears if adminState or provides attribute is modified with wrong value.
+- Operation not allowed : This message appears if rollback is required on other MOs when scale-in is triggered.
+- Quorum size is too small : This message appears if CP Quorum is defined but not healthy when scale-in is triggered.
+- Scaling is already in progress : This message appears if a scaling operation is ongoing when scale-in is tiggered.
+- Scaling is only for Single-Sided CPs : This message appears if one or more attributes of AP/CP VMs are modified.
+</description>
+            <systemCreated/>
+            <attribute name="computeResourceRoleId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="uses">
+                <description>Reference to the compute resource which is used by this MO.
+The compute resource is identified by the DN of the ComputeResource MO.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <moRef name="ManagedObject"/>
+                </dataType>
+            </attribute>
+            <attribute name="provides">
+                <description>Reference to an instance of Role MO.
+This determines what role (which dictates what type of service) is provided by the compute resource.
+The role is identified by the DN of the Role MO.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <isNillable/>
+                <dataType>
+                    <moRef name="ManagedObject"/>
+                </dataType>
+            </attribute>
+            <attribute name="adminState">
+                <description>Administrative state of compute resource role.
+Can be used to to temporarily stop services provided by the compute resource in a graceful fashion.
+While in LOCKED state, no services is provided until set to UNLOCKED.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="AdmState">
+                        <mimName>AxeScalingM</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="instantiationState">
+                <description>Instantiation state of the compute resource role.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="InstantiationState">
+                        <mimName>AxeScalingM</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="operationalState">
+                <description>Operational state of the compute resource role.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="OperState">
+                        <mimName>AxeScalingM</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Role">
+            <description>Represents a role that determines the type of service provided by a compute resource.</description>
+            <systemCreated/>
+            <attribute name="roleId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="isProvidedBy">
+                <description>Reference to an instance of Compute Resource Role.</description>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <moRef name="ManagedObject"/>
+                        <minLength>0</minLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="scalability">
+                <description>Indicates whether or not the role can scale for capacity reasons.
+Only Cluster CPs are scalable.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="Scalability">
+                        <mimName>AxeScalingM</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="CrM_to_ComputeResourceRole">
+            <containment>
+                <parent>
+                    <hasClass name="CrM">
+                        <mimName>AxeScalingM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ComputeResourceRole">
+                        <mimName>AxeScalingM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="CrM_to_Role">
+            <containment>
+                <parent>
+                    <hasClass name="CrM">
+                        <mimName>AxeScalingM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Role">
+                        <mimName>AxeScalingM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="ComputeResourceRole_uses_to_ComputeResource">
+            <uniDirectionalAssociation>
+                <hasClass name="ComputeResourceRole">
+                    <mimName>AxeScalingM</mimName>
+                </hasClass>
+                <associationEnd name="uses">
+                    <hasClass name="ComputeResource">
+                        <mimName>AxeComputeResource</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </associationEnd>
+            </uniDirectionalAssociation>
+        </relationship>
+        <relationship name="ComputeResourceRole_provides_to_Role_isProvidedBy">
+            <biDirectionalAssociation>
+                <associationEnd name="isProvidedBy">
+                    <hasClass name="ComputeResourceRole">
+                        <mimName>AxeScalingM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </associationEnd>
+                <associationEnd name="provides">
+                    <hasClass name="Role">
+                        <mimName>AxeScalingM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </associationEnd>
+            </biDirectionalAssociation>
+        </relationship>
+    </mim>
+    <interMim>
+        <relationship name="SysM_to_CrM">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="SysM">
+                        <mimName>ComSysM</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="CrM">
+                        <mimName>AxeScalingM</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

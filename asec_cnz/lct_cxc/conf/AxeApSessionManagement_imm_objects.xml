@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+	Copyright (c) 2020 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Dec 9, 2020 2:33:14 PM using:
+	* com.ericsson.ecim.coremw.m2m 3.13.0.202006261811
+	* com.ericsson.ecim.coremw.dsl 3.13.0.202006261811
+	* com.ericsson.ecim.coremw.imm 3.13.0.202006261811
+--><imm:IMM-contents xmlns:imm="http://www.saforum.org/IMMSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd">
+    <object class="AxeApSessionManagementApSessionM">
+        <dn>AxeApSessionManagementapSessionMId=1</dn>
+        <attr>
+            <name>auditSyslog</name>
+            <value>1</value>
+        </attr>
+        <attr>
+            <name>auditTelnetServer</name>
+            <value>1</value>
+        </attr>
+        <attr>
+            <name>auditUserLevelMessages</name>
+            <value>1</value>
+        </attr>
+        <attr>
+            <name>inactivityTimer</name>
+            <value>30</value>
+        </attr>
+        <attr>
+            <name>auditCronMessages</name>
+            <value>1</value>
+        </attr>
+        <attr>
+            <name>auditFTPServer</name>
+            <value>1</value>
+        </attr>
+        <attr>
+            <name>auditSSHServer</name>
+            <value>1</value>
+        </attr>
+        <attr>
+            <name>auditSystemDaemons</name>
+            <value>1</value>
+        </attr>
+    </object>
+</imm:IMM-contents>

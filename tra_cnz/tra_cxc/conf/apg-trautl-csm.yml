@@ -1,0 +1,27 @@
+csm-version: '1.0'
+components:
+- uid: acs.trautl
+  name: acs-trautl
+  description: ACS TRAUTL component
+  availability-manager: NONE
+  software:
+    sdp: ERIC-ACS_TRAUTLBIN-CXC1371527
+  supersedes:
+  - software: ERIC-ACS_TRAUTLBIN-CXC1371527
+  constraints:
+    installation:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+    upgrade:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+  meta-data:
+    component-version: 18.0.0-1
+    deliverable:
+      deployment-package: acs_trautl-18.0.0-1-deployment-CXC1371527.tar.gz
+      runtime-package: acs_trautl-18.0.0-1-runtime-CXC1371527.tar.gz
+    software:
+    - file-name: ACS_TRAUTLBIN-CXC1371527_18-R1A01.x86_64.sdp
+      bundle-name: ERIC-ACS_TRAUTLBIN-CXC1371527_18-R1A01

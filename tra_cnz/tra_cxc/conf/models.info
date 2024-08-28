@@ -1,0 +1,117 @@
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2016 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# models.info
+##
+# Description:
+#       Configuration file used to perform IMM model changes during software upgrade for TRAUTL block.
+##
+##
+# Changelog:
+# - 2016-02-08 - Nadigoti Naresh(XNADNAR) 
+#       First version
+##
+
+# Included XBRM TRA LOGGING
+VERSION: CXC1371527_18-R1A01
+
+# AXE-20.2 LSV07: Upgrade Failure Rate Revert in CSM file
+VERSION: CXC1371527_12-R1A03
+
+# AXE-20.2 LSV06: Upgrade Failure Rate Corrections in CSM file
+VERSION: CXC1371527_12-R1A02
+
+# AXE-20.2 LSV05: ENM log extension for MCS_APCBL
+VERSION: CXC1371527_12-R1A01
+
+################## AXE-18A #####################
+
+#FIX for TR HY23561
+VERSION: CXC1371527_9-R1C
+
+# BSC log request addition for BSC_ADA & BSC_APP
+VERSION: CXC1371527_9-R1B
+
+VERSION: CXC1371527_9-R1A06
+
+# Adaptations to SwM2.0
+VERSION: CXC1371527_9-R1A05
+VERSION: CXC1371527_9-R1A04
+VERSION: CXC1371527_9-R1A03
+VERSION: CXC1371527_9-R1A02
+VERSION: CXC1371527_9-R1A01
+
+VERSION: CXC1371527_7-R1C
+log "No model changes in TRAUTLBIN CXC1371527_7-R1C"
+
+VERSION: CXC1371527_7-R1B
+log "No model changes in TRAUTLBIN CXC1371527_7-R1B"
+
+VERSION: CXC1371527_7-R1A03
+log "No model changes in TRAUTLBIN CXC1371527_7-R1A03"
+
+VERSION: CXC1371527_7-R1A02
+log "No model changes in TRAUTLBIN CXC1371527_7-R1A02"
+
+VERSION: CXC1371527_7-R1A01
+log "No model changes in TRAUTLBIN CXC1371527_7-R1A01"
+
+VERSION: CXC1371527_5-R1C
+log "No model changes in TRAUTLBIN CXC1371527_5-R1C"
+
+VERSION: CXC1371527_5-R1B
+log "No model changes in TRAUTLBIN CXC1371527_5-R1B"
+
+VERSION: CXC1371527_5-R1A08
+log "No model changes in TRAUTLBIN CXC1371527_5-R1A08"
+
+VERSION: CXC1371527_5-R1A07
+log "No model changes in TRAUTLBIN CXC1371527_5-R1A07"
+
+VERSION: CXC1371527_5-R1A06
+log "No model changes in TRAUTLBIN CXC1371527_5-R1A06"
+
+VERSION: CXC1371527_5-R1A05
+log "No model changes in TRAUTLBIN CXC1371527_5-R1A05"
+
+VERSION: CXC1371527_5-R1A04
+log "No model changes in TRAUTLBIN CXC1371527_5-R1A04"
+
+VERSION: CXC1371527_5-R1A03
+log "No model changes in TRAUTLBIN CXC1371527_5-R1A03"
+
+VERSION: CXC1371527_5-R1A02
+log "No model changes in TRAUTLBIN CXC1371527_5-R1A02"
+
+VERSION: CXC1371527_5-R1A01
+log "No model changes in TRAUTLBIN CXC1371527_5-R1A01"
+
+################## AXE-16A #####################
+VERSION: CXC1371527-R1A03
+log "No model changes in TRAUTLBIN CXC1371527-R1A03"
+
+VERSION: CXC1371527-R1A02
+log "No model changes in TRAUTLBIN CXC1371527-R1A02"
+
+VERSION: CXC1371527-R1A01
+log "No model changes in TRAUTLBIN CXC1371527-R1A01"
+##################################################
+VERSION: CXC1371527_4-R1A
+
+VERSION: CXC1371527_4-R1A01
+
+VERSION: CXC1371527-R2A01
+
+VERSION: CXC1371527-R1A04
+
+VERSION: CXC1371527-R1A03
+
+VERSION: CXC1371527-R1A02
+
+VERSION: CXC1371527-R1A01
+
+VERSION: CXC1371461-R1B
+
+

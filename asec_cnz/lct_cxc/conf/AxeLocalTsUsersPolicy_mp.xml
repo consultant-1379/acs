@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
+	Copyright (c) 2020 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Dec 14, 2020 10:51:37 AM using:
+	* com.ericsson.ecim.m2m 3.13.0.202006261811
+	* com.ericsson.ecim.dsl 3.13.0.202006261811
+	* com.ericsson.ecim.edm 3.13.0.202006261811
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>K</dtdVersion>
+    <momMetaData>
+        <momTitle>Managed Object Model for Troubleshooting Users Management Function</momTitle>
+        <momSubTitle/>
+        <momIdentity>
+            <docNum>2/19089-CXA 117 0042/13</docNum>
+            <docLang>Uen</docLang>
+            <docRev>A</docRev>
+            <docDate>2020-12-14</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>XHARBAV</signature>
+        </createdBy>
+    </momMetaData>
+    <mim author="Harika Bavana" contact="XHARBAV" correction="0" date="2020-12-14" docNo="" name="AxeLocalTsUsersPolicy" namespace="urn:com:ericsson:ecim:AxeLocalTsUsersPolicy" namespacePrefix="axelocaltsuserspolicy" organization="" release="2" revision="" version="4">
+        <description>Troubleshooting Users Management function MOM.</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="MOM_NAME"/>
+        </domainExtension>
+        <modelFeatures modelType="Template">
+            <modelFeature featureType="basic" name="CPI_HIDDEN"/>
+        </modelFeatures>
+        
+        <derivedDataType name="MinimumPasswordLengthValue">
+            <description>This attribute specifies the range for MinimumPasswordLength attribute.</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>8</min>
+                        <max>12</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>8</min>
+                            <max>12</max>
+                        </subrange>
+                    </ranges>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="MaximumAccountAgeValue">
+            <description>Specifies the valid range for attribute maximumAccountAge.</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>1</min>
+                        <max>30</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>1</min>
+                            <max>30</max>
+                        </subrange>
+                    </ranges>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="LockoutBadCountValue">
+            <description>This attribute specifies the range for LockoutBadCount attribute.</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>1</min>
+                        <max>20</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>1</min>
+                            <max>20</max>
+                        </subrange>
+                    </ranges>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="LockoutDurationValue">
+            <description>This attribute specifies the range for LockoutDuration attribute.</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>5</min>
+                        <max>60</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>5</min>
+                            <max>60</max>
+                        </subrange>
+                    </ranges>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="PasswordHistorySizeValue">
+            <description>This attribute specifies the range for PasswordHistorySize attribute.</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>1</min>
+                        <max>24</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>1</min>
+                            <max>24</max>
+                        </subrange>
+                    </ranges>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        
+        <class name="LocalTsUsersPolicyM">
+            <description>Represents the configurable settings on AP for new created TS user management.
+These include password policies and account policies.
+All changes on the class apply only for new defined TS users.
+
+One or more attributes setting can fail due to one of the following reasons:
+- Internal Error: Wrong/missing configuration file. 
+- Error connecting to server : Internal Error. 
+</description>
+            <root/>
+            <attribute name="localTsUsersPolicyMId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="lockoutDuration">
+                <description>It defines the minimum duration after which locked accounts are automatically unlocked. 
+The default value is 15 minutes.</description>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="LockoutDurationValue">
+                        <defaultValue>15</defaultValue>
+                        <mimName>AxeLocalTsUsersPolicy</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="lockoutBadCount">
+                <description>Specifies the maximum number of login attempts that are allowed before the user is locked out. 
+The default value is 3.</description>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="LockoutBadCountValue">
+                        <defaultValue>3</defaultValue>
+                        <mimName>AxeLocalTsUsersPolicy</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            
+            
+            <attribute name="minimumPasswordLength">
+                <description>Specifies the minimum number of characters to be used in a password.
+The default value is 8 characters.</description>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="MinimumPasswordLengthValue">
+                        <defaultValue>8</defaultValue>
+                        <mimName>AxeLocalTsUsersPolicy</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="passwordHistorySize">
+                <description>Specifies the maximum number of previous passwords remembered for a user.
+The default value is 24.</description>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="PasswordHistorySizeValue">
+                        <defaultValue>24</defaultValue>
+                        <mimName>AxeLocalTsUsersPolicy</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="maximumAccountAge">
+                <description>Specifies the maximum number of days a user account is valid.
+The default value is 5 days.</description>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="MaximumAccountAgeValue">
+                        <defaultValue>5</defaultValue>
+                        <mimName>AxeLocalTsUsersPolicy</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+    </mim>
+    <interMim>
+        <description>This is a contribution from AxeLocalTSUsersPolicyM class to SecurityHandling.</description>
+        <relationship name="SecurityHandling_to_LocalTsUsersPolicyM">
+            <description>This is a contribution from AxeLocalTSUsersPolicyM class to SecurityHandling.</description>
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="SecurityHandling">
+                        <mimName>AxeFunctions</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="LocalTsUsersPolicyM">
+                        <mimName>AxeLocalTsUsersPolicy</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

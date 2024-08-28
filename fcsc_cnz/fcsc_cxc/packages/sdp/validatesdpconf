@@ -1,0 +1,109 @@
+#!/bin/bash
+#
+#
+# Author : EANBUON XPHAVAL
+#
+# check_sdp_conf: <sdp.conf> <campaign_type> ($campaigntype)
+#
+
+if [ $# -ne "1" ]
+then
+	echo "Usage: `basname $0` <sdp.conf>"
+	exit 1
+fi
+
+sdpConf=$1
+
+. $sdpConf
+
+hc=`cat $sdpConf | grep "hltCHK*" | awk -F'=' '{print $2}' | tr -d '"'`;
+clc=`cat $sdpConf | grep "script*" | awk -F'=' '{print $2}' | tr -d '"'`;
+
+
+#check that safApp and ApName are in upper case
+
+if [[ ! "$ApName" =~ "^[A-Z]+$" ]]
+then
+	echo "Error Naming AppName($ApName): Should be defined in UpperCase"
+	echo "Example ApName=\"CHB\""
+	echo ""
+	echo "ERROR: AppName"
+	echo ""
+	error=1
+fi
+	
+if [[ ! "$safApp" =~ "^[A-Z]+$" ]]
+then
+	echo "Error Naming safApp($safApp): Should be defined in UpperCase"
+	echo "Example safApp=\"CHB\""
+	echo ""
+	echo "ERROR: safApp"
+	echo ""
+	error=1
+fi
+
+# APPNAME and SAFAPP name should be same 
+
+if [ "$safApp" != "$ApName" ]
+then 
+	echo ""
+	echo "[ERROR] SafApp($safApp) should be same as ApName($ApName)"
+	error=1
+fi
+
+# Healthcheck and script name validation code:
+
+for i in $hc ; do
+
+	if [[ ! "$i" =~ "^[a-z_]*_hck$" ]]
+		then
+		echo "Validation fails for healthcheck ($i)"
+		echo "ERROR: HealthCheckkey ($i)"
+		echo ""
+		error=1
+	fi
+done
+
+for j in $clc ; do
+
+	if [[ ! "$j" =~ "^[a-z_]*_clc$" ]]
+		then
+		echo "Validation fails for script ($j)"
+		echo "ERROR: script ($j)"
+		error=1
+	fi
+done
+
+#check for the syntax of pathprefixName
+
+if [[ ! "$pathnamePrefix" =~ "[\\*/[a-z]*]*" ]]
+then
+	echo "Validation fails for PathnamePrefix, check the sdp.conf"
+	echo "ERROR: pathnameprefix($pathnamePrefix)"
+	error=1
+fi	
+
+# check for the SiRank
+
+sr=`cat $sdpConf | grep "SiRank" | awk -F'=' '{print $2}' | tr -d '"'`;
+
+if [ "$sr" == "1" ]
+then
+	echo ""
+	echo "[WARNING]SiRank is set to 1, Only APOS_HA Block should set the value to 1"
+	echo "Please set the value to 2 if the block is 2N model"
+	echo ""
+fi
+
+if [ "$error" = "1" ]
+then
+	echo "--------------------------------"
+	echo "sdp.conf validation failed. Please make the changes required to the sdp.conf"
+	exit 1
+else
+	echo "----------------------------------------"
+	echo "sdp.conf successfully validated"
+	echo "Proceed with Creation of Bundle & Campaign"
+	echo "----------------------------------------"
+fi
+

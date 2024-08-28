@@ -1,0 +1,3176 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
+	Copyright (c) 2020 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Dec 14, 2020 12:05:05 PM using:
+	* com.ericsson.ecim.m2m 3.13.0.202006261811
+	* com.ericsson.ecim.dsl 3.13.0.202006261811
+	* com.ericsson.ecim.edm 3.13.0.202006261811
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>K</dtdVersion>
+    <momMetaData>
+        <momTitle>Managed Object Model for AXE Equipment Management Function</momTitle>
+        <momSubTitle/>
+        <momIdentity>
+            <docNum>1/19089-CXA 117 0046/9</docNum>
+            <docLang>Uen</docLang>
+            <docRev>B</docRev>
+            <docDate>2020-12-09</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>XHARBAV</signature>
+        </createdBy>
+    </momMetaData>
+    <mim author="Harika Bavana" contact="XHARBAV" correction="0" date="2020-12-09" docNo="" name="AxeEquipment" namespace="urn:com:ericsson:ecim:AxeEquipment" namespacePrefix="axeequipment" organization="" release="3" revision="B" version="4">
+        <description>AXE Equipment Management function MOM.</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="MOM_NAME"/>
+        </domainExtension>
+        <modelFeatures modelType="Template">
+            <modelFeature featureType="basic" name="CPI_HIDDEN"/>
+            <modelFeature featureType="basic" name="VIRTUAL_HIDDEN"/>
+            <modelFeature featureType="basic" name="VIRTUALBC_HIDDEN"/>
+            <modelFeature featureType="basic" name="VIRTUALDB_HIDDEN"/>
+        </modelFeatures>
+        <struct name="ProductInfo">
+            <description>Represents the Product Information of the Blade.</description>
+            <structMember name="productRevision">
+                <description>indicates the revision of the product. </description>
+                <string/>
+            </structMember>
+            <structMember name="productName">
+                <description>indicates the name of product. </description>
+                <string/>
+            </structMember>
+            <structMember name="manufacturingDate">
+                <description>indicates date when board is manufactured. </description>
+                <string/>
+            </structMember>
+            <structMember name="productVendor">
+                <description>Indicates the vendor of the board. </description>
+                <string/>
+            </structMember>
+            <structMember name="productNumber">
+                <description>indicates the number of product.</description>
+                <string/>
+            </structMember>
+            <structMember name="serialNumber">
+                <description>Indicates the serial number of the board.</description>
+                <string/>
+            </structMember>
+        </struct>
+        <struct name="AsyncProfileActionProgress">
+            <description>Represents the progress report of asynchronous operation in OmProfileManager MOC.</description>
+            <structMember name="state">
+                <description>state of the last operation.</description>
+                <enumRef name="AsyncActionStateType">
+                    <defaultValue>UNDEFINED</defaultValue>
+                    <mimName>AxeEquipment</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="reason">
+                <description>Textual description of the outcome/result of the action.
+It can contain an error message if the action failed.</description>
+                <string/>
+            </structMember>
+            <structMember name="actionId">
+                <description>Identifies each value of a multivalued attribute of type struct AsyncActionProgress.</description>
+                <enumRef name="AsyncActionType">
+                    <defaultValue>UNDEFINED</defaultValue>
+                    <mimName>AxeEquipment</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="result">
+                <description>Result state of completed action.
+This field has the value NOT_AVAILABLE if the action is not finished.</description>
+                <enumRef name="ActionResultType">
+                    <defaultValue>NOT_AVAILABLE</defaultValue>
+                    <mimName>AxeEquipment</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="timeOfLastAction">
+                <description>The date and time when the action was completed (successfully or unsuccessfully).</description>
+                <derivedDataTypeRef name="DateTimeWithoutOffset">
+                    <mimName>AxeEquipment</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+        </struct>
+        <struct name="MaintenanceLed">
+            <description>Indicates manual (by operator) prohibition from being used by system or not.</description>
+            <structMember name="colour">
+                <description>Yellow by default for APUB and APUB2.
+Blue by default for GEP5.</description>
+                <enumRef name="LedColour">
+                    <mimName>AxeEquipment</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="status">
+                <description>Status of LED.</description>
+                <enumRef name="LedStatusType">
+                    <mimName>AxeEquipment</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="supported">
+                <description>Indicates whether LED status is supported or not. </description>
+                <boolean/>
+            </structMember>
+        </struct>
+        <struct name="OperationalLed">
+            <description>Identifies the LED that represents the operational status of the board.</description>
+            <structMember name="colour">
+                <description>Green by default.</description>
+                <enumRef name="LedColour">
+                    <mimName>AxeEquipment</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="status">
+                <description>Status of LED.</description>
+                <enumRef name="LedStatusType">
+                    <mimName>AxeEquipment</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="supported">
+                <description>Indicates whether LED status is supported or not. </description>
+                <boolean/>
+            </structMember>
+        </struct>
+        <struct name="AsyncImportActionProgress">
+            <description>Represents the progress report of asynchronous operation in CandidateCcFile MOC.</description>
+            <structMember name="state">
+                <description>state of the last operation.</description>
+                <enumRef name="AsyncActionStateType">
+                    <defaultValue>UNDEFINED</defaultValue>
+                    <mimName>AxeEquipment</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="reason">
+                <description>Textual description of the outcome/result of the action.
+It can contain an error message if the action failed.</description>
+                <string/>
+            </structMember>
+            <structMember name="actionId">
+                <description>Identifies each value of a multivalued attribute of type struct AsyncActionProgress.</description>
+                <enumRef name="AsyncActionType">
+                    <defaultValue>UNDEFINED</defaultValue>
+                    <mimName>AxeEquipment</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="result">
+                <description>Result state of completed action.
+This field has the value NOT_AVAILABLE if the action is not finished.</description>
+                <enumRef name="ActionResultType">
+                    <defaultValue>NOT_AVAILABLE</defaultValue>
+                    <mimName>AxeEquipment</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="timeOfLastAction">
+                <description>The date and time when the action was completed (successfully or unsuccessfully).</description>
+                <derivedDataTypeRef name="DateTimeWithoutOffset">
+                    <mimName>AxeEquipment</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+        </struct>
+        <struct name="NicInfo">
+            <description>Includes the NIC information in terms of IP address, MAC address, NIC name, link status.
+
+</description>
+            <structMember name="name">
+                <description>Specifies the NIC name.
+It can be one of the following values: eth0, eth1, eth2, eth3, eth4, eth5 or eth6.</description>
+                <string/>
+            </structMember>
+            <structMember name="status">
+                <description>Specifies the NIC link status.
+
+</description>
+                <enumRef name="NicStatusType">
+                    <mimName>AxeEquipment</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="macAddress">
+                <description>Specifies the NIC MAC address.</description>
+                <string/>
+            </structMember>
+            <structMember name="ipAddress">
+                <description>Specifies the NIC IP address.</description>
+                <derivedDataTypeRef name="IpAddressType">
+                    <mimName>AxeEquipment</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+        </struct>
+        <struct name="Network">
+            <description>Represents the all networks avaiable in virtual APZ.
+Attributes are netName, netId and macAddress.</description>
+            <structMember name="nicName">
+                <description>Network identifier.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <string/>
+            </structMember>
+            <structMember name="netName">
+                <description>Specifies the network name of virtual APZ.
+netName should end with one of the following suffixes :OM,APZ-A,APZ-B,LDE,DRBD,CUST1 and CUST2.
+For example: MSC1_APZ-A, MSC1_APZ-B, ..., MSC1_CUST2</description>
+                <string/>
+            </structMember>
+            <structMember name="macAddress">
+                <description>Specifies the network MAC address.</description>
+                <derivedDataTypeRef name="AxeEquipmentNetworkmacAddress">
+                    <mimName>AxeEquipment</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+        </struct>
+        <struct name="FaultLed">
+            <description>Identifies the LED that represents the fault status of the board.</description>
+            <structMember name="colour">
+                <description>Red by default.</description>
+                <enumRef name="LedColour">
+                    <mimName>AxeEquipment</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="status">
+                <description>Status of LED.</description>
+                <enumRef name="LedStatusType">
+                    <mimName>AxeEquipment</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="supported">
+                <description>Indicates whether LED status is supported or not. </description>
+                <boolean/>
+            </structMember>
+        </struct>
+        <struct name="StatusLed">
+            <description>The status LED indicates board status related to HW-SW configuration.</description>
+            <structMember name="colour">
+                <description>Blue by default for APUB and APUB2.
+Yellow by default for GEP.</description>
+                <enumRef name="LedColour">
+                    <mimName>AxeEquipment</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="status">
+                <description>Status of LED.</description>
+                <enumRef name="LedStatusType">
+                    <mimName>AxeEquipment</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="supported">
+                <description>Indicates whether LED status is supported or not. </description>
+                <boolean/>
+            </structMember>
+        </struct>
+        <struct name="CpProductInfo">
+            <description>Represents the Product Information of the Cp Blade.</description>
+            <structMember name="productRevision">
+                <description>indicates the revision of the product. </description>
+                <string/>
+            </structMember>
+            <structMember name="productName">
+                <description>indicates the name of product. </description>
+                <string/>
+            </structMember>
+            <structMember name="manufacturingDate">
+                <description>indicates date when board is manufactured. </description>
+                <string/>
+            </structMember>
+            <structMember name="productVendor">
+                <description>Indicates the vendor of the board. </description>
+                <string/>
+            </structMember>
+            <structMember name="productNumber">
+                <description>indicates the number of product.</description>
+                <string/>
+            </structMember>
+            <structMember name="serialNumber">
+                <description>Indicates the serial number of the board.</description>
+                <string/>
+            </structMember>
+        </struct>
+        <struct name="AsyncActionProgress">
+            <description>Represents the progress report of asynchronous operation in CpCluster MOC.</description>
+            <structMember name="state">
+                <description>state of the last operation.</description>
+                <enumRef name="AsyncActionStateType">
+                    <defaultValue>UNDEFINED</defaultValue>
+                    <mimName>AxeEquipment</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="reason">
+                <description>Textual description of the outcome/result of the action.
+It can contain an error message if the action failed.</description>
+                <string/>
+            </structMember>
+            <structMember name="actionId">
+                <description>Identifies each value of a multivalued attribute of type struct AsyncActionProgress.</description>
+                <enumRef name="AsyncActionType">
+                    <defaultValue>UNDEFINED</defaultValue>
+                    <mimName>AxeEquipment</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="result">
+                <description>Result state of completed action.
+This field has the value NOT_AVAILABLE if the action is not finished.</description>
+                <enumRef name="ActionResultType">
+                    <defaultValue>NOT_AVAILABLE</defaultValue>
+                    <mimName>AxeEquipment</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="timeOfLastAction">
+                <description>The date and time when the action was completed (successfully or unsuccessfully).</description>
+                <derivedDataTypeRef name="DateTimeWithoutOffset">
+                    <mimName>AxeEquipment</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+        </struct>
+        <enum name="OmProfileState">
+            <description>Lists of OaM Profile State.</description>
+            <enumMember name="UNDEFINED">
+                <description>UNDEFINED state of the OaM Profile.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="ACTIVE">
+                <description>Active state of the OaM Profile.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="SUPPORTED">
+                <description>Supported state of the OaM Profile.</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="FunctionalBoardNameCpBlade">
+            <description>This enumerator is used to specify the functional board name of a cp blade.</description>
+            <enumMember name="CPUB">
+                <description>Central Processor Unit.</description>
+                <value>200</value>
+            </enumMember>
+            <enumMember name="MAUB">
+                <description>Maintenance Unit.</description>
+                <value>210</value>
+            </enumMember>
+            <enumMember name="RPBI_S">
+                <description>Regional Processor Bus Interface - Serial.</description>
+                <value>110</value>
+            </enumMember>
+        </enum>
+        <enum name="FunctionalBoardNameOtherBlade">
+            <description>This enumerator is used to specify the functional board name of an other blade.</description>
+            <enumMember name="SCB_RP">
+                <description>Switched Control Board - Regional Processor.</description>
+                <value>100</value>
+            </enumMember>
+            <enumMember name="GESB">
+                <description>Gigabit Ethernet Switch Board.</description>
+                <value>120</value>
+            </enumMember>
+            <enumMember name="SCXB">
+                <description>board SCXB.</description>
+                <value>340</value>
+            </enumMember>
+            <enumMember name="IPTB">
+                <description>board IPTB.</description>
+                <value>350</value>
+            </enumMember>
+            <enumMember name="EPB1">
+                <description>board EPB1.</description>
+                <value>360</value>
+            </enumMember>
+            <enumMember name="CMXB">
+                <description>board CMXB.</description>
+                <value>380</value>
+            </enumMember>
+            <enumMember name="EVOET">
+                <description>board EVOET.</description>
+                <value>370</value>
+            </enumMember>
+            <enumMember name="IPLB">
+                <description>board IPLB.</description>
+                <value>390</value>
+            </enumMember>
+            <enumMember name="SMXB">
+                <description>board SMXB.</description>
+                <value>400</value>
+            </enumMember>
+        </enum>
+        <enum name="StorageType">
+            <description>It specify the media storage status.</description>
+            <enumMember name="UNDEFINED">
+                <description>It is an intermediate status reported before to check the real status of the raid.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="ACTIVE">
+                <description>The raid is up and running.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="NOT_ACTIVE">
+                <description>The raid is down or there is a problem.</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="ClusterOpMode">
+            <description>This enumerator is used to specify the current Cluster Operation Mode.</description>
+            <enumMember name="NORMAL">
+                <value>0</value>
+            </enumMember>
+            <enumMember name="SWITCHING_TO_NORMAL">
+                <value>1</value>
+            </enumMember>
+            <enumMember name="EXPERT">
+                <value>2</value>
+            </enumMember>
+            <enumMember name="SWITCHING_TO_EXPERT">
+                <value>3</value>
+            </enumMember>
+        </enum>
+        <enum name="BiosRunningModeType">
+            <description>Specify the possible BIOS running mode.</description>
+            <enumMember name="FALLBACK">
+                <description>fallback.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="ORDINARY">
+                <description>ordinary.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="NOT_AVAILABLE">
+                <description>not available.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="UNDEFINED">
+                <description>Undefined value.</description>
+                <value>-1</value>
+            </enumMember>
+        </enum>
+        <enum name="FunctionalBoardNameApBlade">
+            <description>This enumerator is used to specify the functional board name of an AP blade.</description>
+            <enumMember name="APUB">
+                <description>Adjunct Processor Unit.</description>
+                <value>300</value>
+            </enumMember>
+            <enumMember name="DISK">
+                <description>Disk.</description>
+                <value>310</value>
+            </enumMember>
+            <enumMember name="DVD">
+                <description>Digital Versatile Disc.</description>
+                <value>320</value>
+            </enumMember>
+            <enumMember name="GEA">
+                <description>Generic Ericsson Alarm.</description>
+                <value>330</value>
+            </enumMember>
+        </enum>
+        <enum name="LedStatusType">
+            <description>It indicates the status of led.</description>
+            <enumMember name="ON">
+                <description>Led id on.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="OFF">
+                <description>Led is off.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="NOT_AVAILABLE">
+                <description>not available status.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="SLOW_BLINK">
+                <description>slow blink status.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="FAST_BLINK">
+                <description>fast blink status.</description>
+                <value>4</value>
+            </enumMember>
+        </enum>
+        <enum name="RoleType">
+            <description>Lists of role system type.</description>
+            <enumMember name="BC_TYPE">
+                <description>BC.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="CP_TYPE">
+                <description>CP.</description>
+                <value>1000</value>
+            </enumMember>
+            <enumMember name="AP_TYPE">
+                <description>AP.</description>
+                <value>2000</value>
+            </enumMember>
+            <enumMember name="IPLB_TYPE">
+                <description>IPLB role type.</description>
+                <value>3000</value>
+            </enumMember>
+            <enumMember name="UNDEF_TYPE">
+                <description>default role value type.</description>
+                <value>-1</value>
+            </enumMember>
+        </enum>
+        <enum name="ProfileScope">
+            <description>Lists possible values of OaM profile scope.</description>
+            <enumMember name="CP_AP">
+                <description>To both CP and APG.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="ONLY_APG">
+                <description>Only to APG.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="LedColour">
+            <description>LED colour.</description>
+            <enumMember name="RED">
+                <value>0</value>
+            </enumMember>
+            <enumMember name="GREEN">
+                <value>1</value>
+            </enumMember>
+            <enumMember name="YELLOW">
+                <value>2</value>
+            </enumMember>
+            <enumMember name="BLUE">
+                <value>3</value>
+            </enumMember>
+        </enum>
+        <enum name="TemperatureStatus">
+            <description>It indicates the Adjunct Processor  Blade temperature status. </description>
+            <enumMember name="UNDEFINED_TEMPERATURE">
+                <value>-1</value>
+            </enumMember>
+            <enumMember name="NORMAL_TEMPERATURE">
+                <value>0</value>
+            </enumMember>
+            <enumMember name="CRITICAL_TEMPERATURE">
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="BasicAdmState">
+            <description>Basic administrative states for a resource.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <enumMember name="LOCKED">
+                <description> The resource is administratively prohibited from performing services for its users.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="UNLOCKED">
+                <description>The resource is administratively permitted to perform services for its users.
+This is independent of its inherent operability.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="CpArchitectureType">
+            <description>It used to specify the systemType of a blade.</description>
+            <enumMember name="SINGLE_SIDED_CP">
+                <value>0</value>
+            </enumMember>
+            <enumMember name="DUAL_SIDED_CP">
+                <value>1000</value>
+            </enumMember>
+        </enum>
+        <enum name="OperState">
+            <description>Operational states of a resource.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <enumMember name="DISABLED">
+                <description>The resource is  totally inoperable.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="ENABLED">
+                <description>The resource is partially or fully operable.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="MauType">
+            <description>Lists MAU types.</description>
+            <enumMember name="UNDEFINED">
+                <description>Specifies UNDEFINED type.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="MAUB">
+                <description>Specifies hardware MAU.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="MAUS">
+                <description>Specifies software MAU.</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        
+        
+        <enum name="BoardStatusType">
+            <description>It shows the state of the boards.</description>
+            <enumMember name="WORKING">
+                <description>Working.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="FAULTY">
+                <description>Faulty.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="BLOCKED">
+                <description>Manually or automatically blocked.
+The automatic blocking status is set only if HW errors are detected for a data disk board connected to a GEP1/GEP2 based APG.
+</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="MISSING">
+                <description>Missing.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="NOT_APPLICABLE">
+                <description>Not applicable.</description>
+                <value>4</value>
+            </enumMember>
+            <enumMember name="UNDEFINED">
+                <description>Undefined state.</description>
+                <value>-1</value>
+            </enumMember>
+        </enum>
+        <enum name="NicStatusType">
+            <description>Specifies the NIC link status.
+
+</description>
+            <enumMember name="UNDEFINED">
+                <description>Indicates two condition.
+Either that the APUB the NIC belongs to is running as AP passive node
+or an intermediate NIC status before obtaining the real status of it.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="CONNECTED">
+                <description>It means NIC is working.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="MEDIA_DISCONNECTED">
+                <description>It means that NIC is not available: it happens when it is not able to answer the status request.</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="SideEnum">
+            <description>This enumerator is used to specify the side of a blade.</description>
+            <enumMember name="A">
+                <value>0</value>
+            </enumMember>
+            <enumMember name="B">
+                <value>1</value>
+            </enumMember>
+            <enumMember name="NOT_APPLICABLE">
+                <value>-1</value>
+            </enumMember>
+        </enum>
+        <enum name="AsyncActionStateType">
+            <description>Lists Action states.</description>
+            <enumMember name="UNDEFINED">
+                <description>The action state is Undefined.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="RUNNING">
+                <description>The execution of the action is currently executing.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="FINISHED">
+                <description>The action is finished.</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="AlarmStatusType">
+            <description>It indicates the alarm status.</description>
+            <enumMember name="WORKING">
+                <description>working.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="FAULTY">
+                <description>faulty.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="UNDEFINED">
+                <description>Undefined value.</description>
+                <value>-1</value>
+            </enumMember>
+        </enum>
+        
+        <enum name="VlanStackEnum">
+            <description>This enumerator is used to specify the VLAN stack.</description>
+            <enumMember name="KIP">
+                <value>0</value>
+            </enumMember>
+            <enumMember name="TIP">
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="AsyncActionType">
+            <description>Lists of action name.</description>
+            <enumMember name="UNDEFINED">
+                <description>Undefined anction.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="IMPORT_CCF">
+                <description>Import of CCF anction.</description>
+                <value>5</value>
+            </enumMember>
+            <enumMember name="ACTIVATE_CCF">
+                <description>Activation of CCF action.</description>
+                <value>4</value>
+            </enumMember>
+            <enumMember name="CHANGE_OM_PROFILE">
+                <description>Change of OaM Profile action.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="CHANGE_OP_MODE">
+                <description>Change of Operative Mode action.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="EXPORT_CCF">
+                <description>Export of CCF action.</description>
+                <value>6</value>
+            </enumMember>
+            <enumMember name="ROLLBACK_CCF">
+                <description>Rollback to the previous CCF action.</description>
+                <value>7</value>
+            </enumMember>
+            <enumMember name="REMOVE_OM_PROFILES">
+                <description>Remove of all supported OaM Profile action.</description>
+                <value>3</value>
+            </enumMember>
+        </enum>
+        
+        <enum name="ClusterOpModeRequestedEnum">
+            <description>This enumerator is used to specify the requested Cluster Operation Mode.
+         </description>
+            <enumMember name="NORMAL">
+                <value>0</value>
+            </enumMember>
+            <enumMember name="EXPERT">
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="ActionResultType">
+            <description>Lists the different results of an action.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <enumMember name="SUCCESS">
+                <description>The asynchronous action ended with success.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="FAILURE">
+                <description>The asynchronous action ended with failure.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="NOT_AVAILABLE">
+                <description>No result is available yet.</description>
+                <value>3</value>
+            </enumMember>
+        </enum>
+        <enum name="CcfState">
+            <description>Lists of CCF.</description>
+            <enumMember name="NOT_ACTIVE">
+                <description>Represents the state NOT_ACTIVE of CcFile MOC.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="ACTIVE">
+                <description>Represents the state ACTIVE of CcFile MOC.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="BACKUP">
+                <description>Represents the state BACKUP of CcFile MOC.</description>
+                <value>2</value>
+            </enumMember>
+        </enum>
+        <enum name="BoardResetType">
+            <description>Describes allowed reset types for OtherBlade objects.</description>
+            <enumMember name="NORMAL">
+                <description>Triggers the normal reset which excludes data loss on the board.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="FACTORY_DEFAULT">
+                <description>Triggers the return to the factory default settings of the board.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="NETWORK_BOOT">
+                <description>Triggers a reset where the blade is set to boot from network.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="FORCE_NORMAL">
+                <description>Triggers a normal reset of the blade regardless the status of the other blade in the same cluster.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="FORCE_NETWORK_BOOT">
+                <description>Triggers a reset where the blade is set to boot from network.
+Regardless the status of the other blade in the same cluster.</description>
+                <value>4</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="ApzSystemDualCP">
+            <description>Specifies the range for the APZ system of a Dual-Sided CP.
+The possible values are:
+0: unspecified.
+APZ 212n: where n is 50-99
+</description>
+            <baseType>
+                <string/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SystemNumber">
+            <description>Defines the number of the system that together with systemType identifies a group of blades.
+It forms a working unit (i.e. an Adjunct Processor, a blade or a Dual-Sided CP).
+The system number must be an integer within the range of 0-999. 
+</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>0</min>
+                        <max>999</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>0</min>
+                            <max>999</max>
+                        </subrange>
+                    </ranges>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="AxeEquipmentNetworkmacAddress">
+            <description>It is used to specify the MAC address.</description>
+            <baseType>
+                <string>
+                    <validValues>([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="IpAddressType">
+            <description>Specifies the range for an IP address.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="3"/>
+                <extension name="originatingMimName" value="AxeCommonLibrary"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>1</min>
+                        <max>253</max>
+                    </lengthRange>
+                    <stringLength>
+                        <subrange>
+                            <min>1</min>
+                            <max>253</max>
+                        </subrange>
+                    </stringLength>
+                    <validValues>(^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:)))(%.+)?\s*$)|(^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9])(\.([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]))*$)</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[(^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]]]><![CDATA[|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:)))(%.+)?\s*$)|(^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9])(\.([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]))*$)]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="SlotInterval">
+            <description>Specifies the range for a slot number that must be a value either in the range 0-25 or 26 or 28.</description>
+            <baseType>
+                <string>
+                    <validValues>^([0-9]|[1][0-9]|2[0-6]|28)$</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[^([0-9]|[1][0-9]|2[0-6]|28)$]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="ShelfAddress">
+            <description>Specifies the range for defining the shelf address for the magazine where the board is placed. 
+The address is made up from the address plugs in the magazine.
+Expressed as a.b.c.d where 
+a
+Address plug 0
+Integer 0-15, 255. When address plug is not present this value is 255 for GESB board and 0 for all other boards.
+b
+Address plug 1
+Integer 0-15, 255. When address plug is not present this value is 255 for GESB board and 0 for all other boards.
+c
+Address plug 2. Shall be 1 in Virtualized environment and 0 in nonVirtualized environment.
+Integer 0
+d
+Address plug 3
+Integer 0-15, 255. When address plug is not present this value is 255 for GESB board and 0 for all other boards.
+</description>
+            <baseType>
+                <string>
+                    <validValues>\b^(255|[0-9]|[1][0-5]){1}\.(255|[0-9]|[1][0-5]){1}\.(0|1)\.(255|[0-9]|[1][0-5]){1}$\b</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[\b^(255|[0-9]|[1][0-5]){1}\.(255|[0-9]|[1][0-5]){1}\.(0|1)\.(255|[0-9]|[1][0-5]){1}$\b]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="CpType">
+            <description>It is used to specify the type of the Central Processor.
+The possible values are:
+         
+	212n, where n is 50-99</description>
+            <baseType>
+                <uint16>
+                    <range>
+                        <min>21250</min>
+                        <max>21299</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>21250</min>
+                            <max>21299</max>
+                        </subrange>
+                    </ranges>
+                </uint16>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="Uuid">
+            <description>UUID as per RFC 4122.</description>
+            <baseType>
+                <string>
+                    <validValues>^([0-9a-fA-F]{8}(-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12})$</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[^([0-9a-fA-F]{8}(-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12})$]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="SequenceNumber">
+            <description>Specifies the range for the sequence number of a CP.
+-1 is used when not applicable.</description>
+            <baseType>
+                <int32>
+                    <range>
+                        <min>-1</min>
+                        <max>63</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>-1</min>
+                            <max>63</max>
+                        </subrange>
+                    </ranges>
+                </int32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="DateTimeWithoutOffset">
+            <description>Represents the international standard for the representation of local date and time (ISO 8601).
+The following pattern describes the DateTimeWithoutOffset format:
+YYYY-MM-DDThh:mm:ss[.S+]
+Where:
+YYYY    = Four digit year
+MM      = Two digit month (01=January, and so on)
+DD      = Two digit day of month (01 through 31)
+T       = Time designator (shows start of time component)
+hh      = Two digits of hour (00 through 23, AM/PM not allowed)
+mm      = Two digits of minute (00 through 59)
+ss      = Two digits of second (00 through 59, leap second not allowed)
+S+      = One or more digits of decimal fraction of a second
+
+DateTimeWithoutOffset values are compliant with ISO 8601 "Representation of dates and times" but are restricted according to RFC 3339 "Date and Time on the Internet: Timestamps". The DateTimeWithoutOffset format is further restricted as follows:
+- T designator is upper case.
+- . (dot) is used to indicate start of fractions of seconds (ISO 8601 also allows comma)</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>19</min>
+                        <max>19</max>
+                    </lengthRange>
+                    <stringLength>
+                        <subrange>
+                            <min>19</min>
+                            <max>19</max>
+                        </subrange>
+                    </stringLength>
+                    <validValues>^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])([\.][0-9]+){0,1}$</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="Must be of the format YYYY-MM-DDTHH:MM:SS[.S+] where T separates the time and the date parts. Example 2000-08-01T17:17:34.1. " format="posix_ere" name="Pattern Constraint"><![CDATA[^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])([\.][0-9]+){0,1}$]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="ApzSystemClusterCp">
+            <description>It is used to define the APZ System of a Cluster CP.
+The possible values are:
+0: unspecified.
+APZ 214n, where n is 01-99.</description>
+            <baseType>
+                <string/>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="OmProfileInterval">
+            <description>Identifies the OmProfile Interval.</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>100</min>
+                        <max>65536</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>100</min>
+                            <max>65536</max>
+                        </subrange>
+                    </ranges>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        
+        <class name="Apg">
+            <description>Represents an APG and it is the parent of all blades belonging to it.</description>
+            <systemCreated/>
+            <attribute name="apgId">
+                <description>Holds the name used when identifying the MO.
+It is the APG name.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            
+            <attribute name="apBladesDn">
+                <description>Specifies the list of DNs of the MOs representing the blades an APG consists of.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <moRef name="ManagedObject"/>
+                        <minLength>1</minLength>
+                        <maxLength>6</maxLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ApBlade">
+            <description>Represents an AP hardware blade and contains its configuration data. 
+The number of ApBlades does not change under normal operation. There is no need to recreate the corresponding ApBlade object if a hardware blade needs to be replaced.</description>
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUAL_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <action name="block">
+                <description>Requires to manually block the blade.
+
+The action can fail due to one of the following reasons:
+        - Blade not present: No Hardware is present in specified shelf and slot position.
+        - Another operation ongoing: Another operation is currently in progress.
+        - Blade already blocked: The blade in the given slot is already in state blocked.
+        - Last working DISK cannot be blocked: The last working disk cannot be blocked.
+        - Active APUB cannot be blocked: The action cannot block the currently active APUB. 
+        - Service not responding: The Adjunct Processor Blade Management (APBM) service does not respond.
+        - Error when executing (general fault): An error occurred during execution.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="0"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <action name="deblock">
+                <description>Requires to manually deblock the blade.
+
+The action can fail due to one of the following reasons:
+        - Blade not present: No Hardware is present in specified shelf and slot position.
+        - Another operation ongoing: Another operation is currently in progress.
+        - Blade already deblocked: The blade in the given slot is not blocked.
+        - Service not responding: The Adjunct Processor Blade Management (APBM) service does not respond.
+        - Error when executing (general fault): An error occurred during execution.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="1"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <action name="reset">
+                <description>Requires to manually reset the blade.
+
+The action can fail due to one of the following reasons:
+        - Blade not present: No Hardware is present in specified shelf and slot position.
+        - Another operation ongoing: Another operation is currently in progress.
+        - Active APUB cannot be reset: The action cannot reset the currently active APUB.
+        - Cannot reset blocked blade: The action cannot reset a blocked blade.
+        - Service not responding: The Adjunct Processor Blade Management (APBM) service does not respond.
+        - Error when executing (general fault): An error occurred during execution.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="2"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <attribute name="apBladeId">
+                <description>Holds the name used when identifying the MO.
+It is the shelf number, that is shelf position, of the blade. </description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SlotInterval">
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="systemNumber">
+                <description>Identifies a group of Ap blades that form a working unit.
+         
+         </description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <dataType>
+                    <derivedDataTypeRef name="SystemNumber">
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="side">
+                <description>Identifies the side of the blade (A or B).</description>
+                <noNotification/>
+                <restricted/>
+                <dataType>
+                    <enumRef name="SideEnum">
+                        <defaultValue>NOT_APPLICABLE</defaultValue>
+                        <mimName>AxeEquipment</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            
+            
+            
+            
+            
+            <attribute name="functionalBoardName">
+                <description>Identifies the functional category of the blade. 
+This attribute describes the basic functionality of the AP blade.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <dataType>
+                    <enumRef name="FunctionalBoardNameApBlade">
+                        <mimName>AxeEquipment</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            
+            
+            
+            
+            
+            
+        </class>
+        <class name="ApBladeInfo">
+            <description>Specifies the informations of an AP blade.
+All attributes of this class are updated when a trap is received from the SCB-RP/4 or SCX, 
+or when local monitoring functions (on Network Interface Cards and on RAID) discover changes.</description>
+            <systemCreated/>
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUAL_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <attribute name="apBladeInfoId">
+                <description>Holds the name used when identifying the MO.
+It is the shelf number, that is shelf position, of the blade.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            
+            <attribute name="temperatureStatus">
+                <description>Specifies the board temperature status and it is applicable only for APUB and GEA boards.
+A temperature sensor present on board monitor current internal temperature. 
+
+</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="TemperatureStatus">
+                        <mimName>AxeEquipment</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="biosRunningMode">
+                <description>Used to show which kind of BIOS image is set on APUB board.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="BiosRunningModeType">
+                        <mimName>AxeEquipment</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="storageStatus">
+                <description>Specifies the status of RAID established between the 2 GED presents in magazine.
+If a fault is detected the value is set to NOT_ACTIVE and an alarm is raised to signal it.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="StorageType">
+                        <mimName>AxeEquipment</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="boardStatus">
+                <description>Specifies the status of the board.
+
+</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="BoardStatusType">
+                        <mimName>AxeEquipment</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="alarmInterfaceStatus">
+                <description>Indicates the alarm interface status of GEA board.
+If the status is FAULTY the board can not handle alarms. </description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="AlarmStatusType">
+                        <mimName>AxeEquipment</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="biosVersion">
+                <description>Specifies the BIOS version of APUB.
+
+</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="nicInfo">
+                <description>Specifies some information related to all NICs present on an APUB running as active AP node.
+No information are printed for an AP passive node.
+
+</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <structRef name="NicInfo">
+                            <mimName>AxeEquipment</mimName>
+                        </structRef>
+                        <minLength>5</minLength>
+                        <maxLength>7</maxLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="productInfo">
+                <description>Specifies the Hardware identity of board as below.
+
+Product number (ROJ 208 841/21),
+Product Revision State (e.g. R2B),
+Product Name (e.g. APUB2),
+Serial number (e.g. A063935365)
+Manufacturing Date (e.g. 20090615)
+Vendor (e.g. Ericsson AB)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="ProductInfo">
+                        <mimName>AxeEquipment</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="operationalLed">
+                <description>Specifies the operational status LED of APUB and GEA boards.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <structRef name="OperationalLed">
+                        <mimName>AxeEquipment</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="faultLed">
+                <description>Specifies the fault status of APUB and GEA boards.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <structRef name="FaultLed">
+                        <mimName>AxeEquipment</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="maintenanceLed">
+                <description>Specifies the maintenance status of the board.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <structRef name="MaintenanceLed">
+                        <mimName>AxeEquipment</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="statusLed">
+                <description>Specifies the information status of APUB4 board.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <structRef name="StatusLed">
+                        <mimName>AxeEquipment</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            
+            
+        </class>
+        
+        
+        <class name="EquipmentM">
+            <description>Represents the root MOC for AXE Equipment function MOM.
+The function configures and manage all components present in an AXE node.</description>
+            <systemCreated/>
+            <root/>
+            <attribute name="equipmentMId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="DualSidedCp">
+            <description>Represents a set of one or more CP blades that work as one unit.</description>
+            <systemCreated/>
+            <attribute name="dualSidedCpId">
+                <description>Holds the name used when identifying the MO.
+It is the default CP name.
+The name format is CPx where x is the system number (either CP1 or CP2).</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            
+            <attribute name="apzSystem">
+                <description>Specifies the AXE (control) system the CP belongs to.</description>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="ApzSystemDualCP">
+                        <defaultValue>0</defaultValue>
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="cpType">
+                <description>Specifies the type of the Central Processor.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="CpType">
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="cpBladesDn">
+                <description>Specifies the list of DNs of the MOs representing the blades a Dual-Sided CP consists of.
+</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <moRef name="ManagedObject"/>
+                        <minLength>0</minLength>
+                        <maxLength>3</maxLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            
+            <attribute name="cpAlias">
+                <description>Represents an alternative name that an operator can use to specify a custom name for a CP.
+The alias is used instead of the default name into MML session header.
+
+It is not allowed to define in a Single-CP System.</description>
+                <dataType>
+                    <string>
+                        <defaultValue>-</defaultValue>
+                    </string>
+                </dataType>
+                <decisionPoint>
+                    <decisionStatement decisionType="basic">if-feature NOT VIRTUAL_HIDDEN</decisionStatement>
+                </decisionPoint>
+            </attribute>
+            <attribute name="mauType">
+                <description>Specifies the MAU type based on hardware or software MAU.
+</description>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="MauType">
+                        <defaultValue>UNDEFINED</defaultValue>
+                        <mimName>AxeEquipment</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="CpBlade">
+            <description>Represents a CP hardware blade and contains its configuration data. 
+For the node to operate properly, all hardware blades must have a corresponding blade object with configuration data. 
+The number of CpBlades does not change under normal operation. 
+There is no need to recreate the corresponding CpBlade object if an hardware blade needs to be replaced.</description>
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUAL_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <attribute name="cpBladeId">
+                <description>Holds the name used when identifying the MO.
+It must be set to the number of the shelf slot, or shelf position, of the blade. 
+</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SlotInterval">
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="cpArchitecture">
+                <description>Identifies the type of system.
+(i.e.a Blade Cluster Central Processor system or a non-Blade Cluster Central Processor system) the blade belongs to. 
+Together with systemNumber the systemType identifies a group of blades that form a working unit.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <dataType>
+                    <enumRef name="CpArchitectureType">
+                        <mimName>AxeEquipment</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="systemNumber">
+                <description>Represents the number of the system.
+It together with systemType identifies a group of blades that form a working unit.
+         
+         </description>
+                <noNotification/>
+                <restricted/>
+                <dataType>
+                    <derivedDataTypeRef name="SystemNumber">
+                        <defaultValue>0</defaultValue>
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="side">
+                <description>Represents the side of the blade (A or B).</description>
+                <noNotification/>
+                <restricted/>
+                <dataType>
+                    <enumRef name="SideEnum">
+                        <defaultValue>NOT_APPLICABLE</defaultValue>
+                        <mimName>AxeEquipment</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="sequenceNumber">
+                <description>Used to enumarate otherwise similar blades with the same function.
+System type and system number so that they can distinguished from each other.
+For a Blade Cluster Central Processor, the sequence number must be within the range 0-63.
+         </description>
+                <noNotification/>
+                <restricted/>
+                <dataType>
+                    <derivedDataTypeRef name="SequenceNumber">
+                        <defaultValue>-1</defaultValue>
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            
+            
+            <attribute name="ipAliasEthB">
+                <description>Internet Protocol (IP) address of the blade for the second network (B). 
+It must be an IPv4 address in a dotted decimal form expressed as a.b.c.d. 
+The use of an IP alias is application specific and the only validation done for this attribute is that it is on a correct format.</description>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddressType">
+                        <defaultValue>0.0.0.0</defaultValue>
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="ipAliasEthA">
+                <description>Internet Protocol (IP) address alias for the blade on the first network (A).
+This must be an IPv4 address in a dotted decimal form expressed as a.b.c.d.
+The alias address is used as an alternative IP address for the blade.
+The use of an IP alias is application specific and the only validation done for this attribute is that it is on a correct format.</description>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddressType">
+                        <defaultValue>0.0.0.0</defaultValue>
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="ipAddressEthB">
+                <description>Represents the Internet Protocol (IP) address of the blade for the second network (backplane). 
+It must be an IPv4 address in a dotted decimal form expressed as a.b.c.d.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddressType">
+                        <defaultValue>0.0.0.0</defaultValue>
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="ipAddressEthA">
+                <description>Represents the Internet Protocol (IP) address of the blade for the first network (backplane).
+It must be an IPv4 address in a dotted decimal form expressed as a.b.c.d.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddressType">
+                        <defaultValue>0.0.0.0</defaultValue>
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="functionalBoardName">
+                <description>Identifies the functional category of the blade. 
+This attribute describes the basic functionality of the blade.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <dataType>
+                    <enumRef name="FunctionalBoardNameCpBlade">
+                        <mimName>AxeEquipment</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="aliasNetmaskEthB">
+                <description>Represents the IP netmask for the alias IP address of network B (ipAliasEthB).
+It is specified in a dotted decimal form expressed as a.b.c.d.
+The use of an IP alias is application specific and the only validation done for this attribute is that it is on a correct format.</description>
+                <noNotification/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddressType">
+                        <defaultValue>0.0.0.0</defaultValue>
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            
+            
+            <attribute name="productInfo">
+                <description>Specifies the Hardware identity of board as below.
+Product number (21/ANZ 212 61).
+Product Revision State (e.g. R3A).
+Product Name (e.g. CPUB).</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="CpProductInfo">
+                        <mimName>AxeEquipment</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            
+            <attribute name="aliasNetmaskEthA">
+                <description>Represents the IP netmask for the alias IP address of network A (ipAliasEthA).
+It is specified in a dotted decimal form expressed as a.b.c.d.
+The use of an IP alias is application specific and the only validation done for this attribute is that it is on a correct format.</description>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddressType">
+                        <defaultValue>0.0.0.0</defaultValue>
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="HardwareMgmt">
+            <description>Represents the HW view of all boards connected in shelves.</description>
+            <systemCreated/>
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUAL_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <attribute name="hardwareMgmtId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            
+        </class>
+        <class name="OtherBlade">
+            <description>Represents a blade which is neither a CP blade nor an AP blade.</description>
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUAL_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <action name="block">
+                <description>Requires to manually block the blade.
+
+The action can fail due to one of the following reasons:
+        - Blade not present: No Hardware is present in specified shelf and slot position.
+        - SNMP Failure: A SNMP failure has occurred.
+        - Action not allowed for this Functional Board Name (FBN): The operation is not applicable to this FBN.
+        - Service not responding: A service is not responding.
+        - Error when executing (general fault): An error occurred during execution.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="1"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <parameter name="force">
+                    <description>Indicates if the action should be forced.
+Regardless the status of the other board in the same cluster.
+Only applicable for IPLB.</description>
+                    <domainExtension domain="ECIM">
+                        <extension name="isNillable" value="true"/>
+                    </domainExtension>
+                    <isNillable/>
+                    <in/>
+                    <dataType>
+                        <boolean>
+                            <defaultValue>false</defaultValue>
+                        </boolean>
+                    </dataType>
+                </parameter>
+            </action>
+            <action name="deblock">
+                <description>Requires to manually deblock the blade.
+
+The action can fail due to one of the following reasons:
+        - Blade not present: No HW is present in specified shelf and slot position.
+        - SNMP Failure: A SNMP failure has occurred.
+        - Action not allowed for this Functional Board Name (FBN): The operation is not applicable to this FBN.
+        - Service not responding: A service is not responding.
+        - Error when executing (general fault): An error occurred during execution.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="2"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <action name="reset">
+                <description>Requires to manually reset the blade.
+
+The action can fail due to one of the following reasons:
+        - Blade not present: No Hardware is present in specified shelf and slot position.
+        - SNMP Failure: An SNMP failure has occurred.
+        - Action not allowed for this Functional Board Name (FBN): The operation is not applicable to this FBN.
+        - Operation not allowed: blade blocked: Reset to factory default cannot be executed because the board is blocked,
+        - Service not responding: A service is not responding.
+        - Error when executing (general fault): An error occurred during execution.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="3"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <parameter name="type">
+                    <description>Indicates the reset type.</description>
+                    <in/>
+                    <dataType>
+                        <enumRef name="BoardResetType">
+                            <defaultValue>NORMAL</defaultValue>
+                            <mimName>AxeEquipment</mimName>
+                        </enumRef>
+                    </dataType>
+                </parameter>
+            </action>
+            <attribute name="otherBladeId">
+                <description>Holds the name used when identifying the MO.
+It must be set to the number of the shelf position of the blade. </description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="SlotInterval">
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="bladeProductNumber">
+                <description>Identifies the product number of the blade.</description>
+                <noNotification/>
+                <restricted/>
+                <dataType>
+                    <string>
+                        <defaultValue>-</defaultValue>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="currentLoadModuleVersion">
+                <description>Represents the current loaded module on the blade.
+it a refernce to either ApManagedSwPackage or CpManagedSwPackage MO of BladeSwMangement MoM.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <moRef name="ManagedObject"/>
+                </dataType>
+            </attribute>
+            
+            <attribute name="side">
+                <description>Identifies the side of the blade (A or B).</description>
+                <noNotification/>
+                <restricted/>
+                <dataType>
+                    <enumRef name="SideEnum">
+                        <defaultValue>NOT_APPLICABLE</defaultValue>
+                        <mimName>AxeEquipment</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            
+            
+            
+            
+            <attribute name="ipAddressEthB">
+                <description>Identifies the Internet Protocol (IP) address of the blade for the second network (B).
+It must be an IPv4 address in a dotted decimal form expressed as a.b.c.d.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddressType">
+                        <defaultValue>0.0.0.0</defaultValue>
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="ipAddressEthA">
+                <description>Identifies the Internet Protocol (IP) address of the blade for the first network (A).
+It must be an IPv4 address in a dotted decimal form expressed as a.b.c.d.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddressType">
+                        <defaultValue>0.0.0.0</defaultValue>
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="functionalBoardName">
+                <description>Identifies the functional category of other blade board.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <dataType>
+                    <enumRef name="FunctionalBoardNameOtherBlade">
+                        <mimName>AxeEquipment</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            
+            
+            
+            
+            <attribute name="systemNumber">
+                <description>Represents the number of the system.
+It together with systemType identifies a group of blades that form a working unit.
+         
+         </description>
+                <noNotification/>
+                <restricted/>
+                <dataType>
+                    <derivedDataTypeRef name="SystemNumber">
+                        <defaultValue>0</defaultValue>
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="sequenceNumber">
+                <description>Used to enumarate otherwise similar blades with the same function.
+System type and system number so that they can distinguished from each other.
+For a Blade Cluster Central Processor, the sequence number must be within the range 0-63.
+         </description>
+                <noNotification/>
+                <restricted/>
+                <dataType>
+                    <derivedDataTypeRef name="SequenceNumber">
+                        <defaultValue>-1</defaultValue>
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            
+        </class>
+        <class name="Shelf">
+            <description>Represents a magazine containing several blades.</description>
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUAL_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <attribute name="shelfId">
+                <description>Holds the name used when identifying the MO.
+It is used to specify the shelf address for the magazine where the board is placed.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <derivedDataTypeRef name="ShelfAddress">
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        
+        
+        <class name="LogicalMgmt">
+            <description>Represents the logical view of the configured blades.</description>
+            <systemCreated/>
+            <attribute name="logicalMgmtId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="CpCluster">
+            <description>Represents a cluster system that provides CP functionality.
+It is implemented using a variable number of Cluster CPs/CP blades.</description>
+            <systemCreated/>
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUALDB_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <action name="changeClusterOpMode">
+                <description>Changes the Cluster Operation Mode.
+
+The action can fail due to one of the following reasons:
+        - Not allowed during Cluster Operation ongoing.
+        - Error when executing (general fault): An error occurred during execution.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="1"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <parameter name="clusterOpModeRequested">
+                    <description>value of the new cluster operation mode that the system should change to.</description>
+                    <in/>
+                    <dataType>
+                        <enumRef name="ClusterOpModeRequestedEnum">
+                            <mimName>AxeEquipment</mimName>
+                        </enumRef>
+                    </dataType>
+                </parameter>
+            </action>
+            <attribute name="cpClusterId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="clusterOpMode">
+                <description>Specifies the type of activities the system is able to handle. 
+There are two types of Cluster Operation Mode, Expert Mode and Normal Mode. 
+Expert mode is a cluster level mode of operation used for maintenance purposes (e.g. SW updates/upgrades). 
+Normal mode is a cluster level mode of operation used for normal Operation and Maintanence activities. In this mode of operation the system protects itself, to some extent, from becoming inconsistent.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="ClusterOpMode">
+                        <mimName>AxeEquipment</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="reportProgress">
+                <description>Specifies the progress of the last action permormed.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="AsyncActionProgress">
+                        <mimName>AxeEquipment</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="alarmMaster">
+                <description>Specifies the default name of the CP.
+CP that is working as the alarm master CP and receives all AP alarms from all.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <uint16/>
+                </dataType>
+            </attribute>
+            <attribute name="clockMaster">
+                <description>Specifies the default name of the CP.
+CP that is working as the clock master CP, which is the master clock for all AP in the NE.
+All APs will have their clocks synchronized to the clock of the clock master CP.     </description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <uint16/>
+                </dataType>
+            </attribute>
+            <attribute name="allBcGroup">
+                <description>Specifies all Single-Sided CPs defined in the ME.</description>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <string/>
+                        <minLength>0</minLength>
+                        <maxLength>63</maxLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            <attribute name="operativeGroup">
+                <description>Specifies the  Operative Group.</description>
+                <readOnly/>
+                <dataType>
+                    <sequence>
+                        <string/>
+                        <minLength>0</minLength>
+                        <maxLength>63</maxLength>
+                        <nonUnique/>
+                    </sequence>
+                </dataType>
+            </attribute>
+            
+            
+            
+        </class>
+        <class name="ClusterCp">
+            <description>Represents a Single-Sided CP (Cluster CP) regardless the state.</description>
+            <systemCreated/>
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUALDB_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <attribute name="clusterCpId">
+                <description>Holds the name used when identifying the MO.
+It holds the default CP name.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="cpBladesDn">
+                <description>Specifies the DN of the MO representing the Single-Sided CP.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <moRef name="ManagedObject"/>
+                </dataType>
+            </attribute>
+            <attribute name="apzSystem">
+                <description>Specifies the AXE (control) system the CP belongs to.</description>
+                <dataType>
+                    <derivedDataTypeRef name="ApzSystemClusterCp">
+                        <defaultValue>0</defaultValue>
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            
+            <attribute name="cpType">
+                <description>Specifies the type of the CP.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="CpType">
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            
+            
+            
+            
+            
+            
+            
+            
+            <attribute name="cpAlias">
+                <description>Specifies an alternative name that an operator can use to specify a custom name for a CP.
+The alias is used instead of the default name into MML session header.</description>
+                <dataType>
+                    <string>
+                        <defaultValue>-</defaultValue>
+                    </string>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="OmProfile">
+            <description>Represents the OaM profile.</description>
+            <systemCreated/>
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUALDB_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <attribute name="omProfileId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="apzProfile">
+                <description>Specifies the APZ profile corresponding to the OaM profile.</description>
+                <readOnly/>
+                <dataType>
+                    <string>
+                        <defaultValue>-</defaultValue>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="aptProfile">
+                <description>Specifies the APT profile corresponding to the OaM profile.</description>
+                <readOnly/>
+                <dataType>
+                    <string>
+                        <defaultValue>-</defaultValue>
+                    </string>
+                </dataType>
+            </attribute>
+            <attribute name="state">
+                <description>Specifies the state of OaM profile.</description>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="OmProfileState">
+                        <defaultValue>UNDEFINED</defaultValue>
+                        <mimName>AxeEquipment</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="CcFile">
+            <description>Represents the CCF.</description>
+            <systemCreated/>
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUALDB_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <attribute name="ccFileId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="state">
+                <description>Specifies the state of the CCF.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="CcfState">
+                        <mimName>AxeEquipment</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="rulesVersion">
+                <description>Specifies the version of the CCF.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="OmProfileManager">
+            <description>Represents the management of OaM profile.</description>
+            <systemCreated/>
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUALDB_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <action name="changeOmProfile">
+                <description>Changes the OaM profile of the AXE node.
+This action is only valid for a Multi-CP System.
+It is an asynchronous action and the progress is readable via omProfile attribute's value.
+
+The action can fail due to one of the following reasons:
+- Not allowed during Cluster Operation ongoing.
+- Error when executing (general fault): An error occurred during execution.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="3"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <parameter name="omProfileRequested">
+                    <description>Identifies the desired OaM Profile number to set for the AXE node.</description>
+                    <in/>
+                    <dataType>
+                        <derivedDataTypeRef name="OmProfileInterval">
+                            <mimName>AxeEquipment</mimName>
+                        </derivedDataTypeRef>
+                    </dataType>
+                </parameter>
+            </action>
+            <action name="removeOmProfiles">
+                <description>Removes all supported OaM profiles by removing the related instances of MOC OmProfile.
+
+The action can fail due to one of the following reasons:
+        - Not allowed during Cluster Operation ongoing.
+        - Error when executing (general fault): An error occurred during execution.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="4"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <action name="activateCcFile">
+                <description>Activates the CCF that has been previously imported and has state NEW as CCF of active OaM profile.
+ 
+The action can fail due to one of the following reasons:
+        - Not allowed during Cluster Operation ongoing.
+        - Error when executing (general fault): An error occurred during execution.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="5"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <action name="exportCcFile">
+                <description>Exports the CCF in use on APG file system.
+
+The action can fail due to one of the following reasons:
+        - Not allowed during Cluster Operation ongoing.
+        - Error when executing (general fault): An error occurred during execution.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="7"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <action name="rollbackCcFile">
+                <description>Activates the backup CCF for the active OaM profile.
+
+The action can fail due to one of the following reasons:
+        - Not allowed during Cluster Operation ongoing.
+        - Error when executing (general fault): An error occurred during execution.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="8"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <attribute name="omProfileManagerId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="activeCcFile">
+                <description>Specifies the CCF in use. 
+For example: CXP12345-17_R2B.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="reportProgress">
+                <description>Specifies the progress of the last performed action.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="AsyncProfileActionProgress">
+                        <mimName>AxeEquipment</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="omProfile">
+                <description>Specifies the OaM profile in use.
+The OaM profile defines the OaM functional level that is in effect on APG and the CP Cluster. 
+
+The value is:
+-  PROFILE &lt;oam_profile&gt; (where &lt;oam_profile&gt; is the OaM profile in use)
+-  PROFILE &lt;oam_profile&gt;, SWITCHING TO &lt;req_oam_profile&gt; (where &lt;oam_profile&gt; is the OaM profile in use and  &lt;req_oam_profile&gt; is the new OaM profile)
+-  PROFILE &lt;oam_profile&gt;, COMMIT IN PROGRESS (where &lt;oam_profile&gt; is the new committed OaM profile but the commit operation is still ongoing)</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="scope">
+                <description>Represents the OaM profile scope. 
+It is used to establish where the OaM profile should be applied: either to both CP and APG, or only to APG.</description>
+                <dataType>
+                    <enumRef name="ProfileScope">
+                        <defaultValue>CP_AP</defaultValue>
+                        <mimName>AxeEquipment</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="CcFileManager">
+            <description>Represents the management of CCFs stored in APG file system.</description>
+            <systemCreated/>
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUALDB_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <attribute name="ccFileManagerId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="CandidateCcFile">
+            <description>Represents a CCF stored in APG file system and ready to be imported.</description>
+            <systemCreated/>
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUALDB_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <action name="importCcFile">
+                <description>Imports the CCF for the OaM profile that can be activated.
+
+The action can fail due to one of the following reasons:
+        - Error when executing (general fault): An error occurred during execution.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="6"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <attribute name="candidateCcFileId">
+                <description>Holds the name used when identifying the MO.
+It is the CCF name.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="reportProgress">
+                <description>Specifies the progress of the last performed action.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="AsyncImportActionProgress">
+                        <mimName>AxeEquipment</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="Lag">
+            <description>Represents the SCX front port for enabling the LAG.
+The MOC allows to enable and disable LAG in SCX on front port GE1 and GE2 related to CP magazine.</description>
+            <systemCreated/>
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUAL_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <attribute name="lagId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="operationalState">
+                <description>Specifies the operational state of LAG on SCX.
+It is disabled if administrativeState is set to LOCKED  or at least one SCX front ports GE1 and GE2 is down.</description>
+                <noNotification/>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="OperState">
+                        <mimName>AxeEquipment</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="administrativeState">
+                <description>Specifies the administrative state of the LAG on SCX.</description>
+                <dataType>
+                    <enumRef name="BasicAdmState">
+                        <defaultValue>LOCKED</defaultValue>
+                        <mimName>AxeEquipment</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        
+        <class name="ComputeResource">
+            <description>Represents a virtual compute resource.
+This resource can be a VM provided by a virtualization infrastructure management system.
+This is an internal class and not intended for NBI; it is made hidden at runtime.</description>
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT CPI_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <attribute name="computeResourceId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="crRoleId">
+                <description>Role Identity.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <int32/>
+                </dataType>
+            </attribute>
+            <attribute name="crRoleLabel">
+                <description>-.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="crType">
+                <description>Represents the service provided by the compute resoource.</description>
+                <mandatory/>
+                <dataType>
+                    <enumRef name="RoleType">
+                        <mimName>AxeEquipment</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="ipAddressEthA">
+                <description>Represents the Internet Protocol (IP) address of the blade for the first network (backplane).
+It must be an IPv4 address in a dotted decimal form expressed as a.b.c.d.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddressType">
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="ipAddressEthB">
+                <description>Represents the Internet Protocol (IP) address of the blade for the second network (backplane).
+It must be an IPv4 address in a dotted decimal form expressed as a.b.c.d.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <derivedDataTypeRef name="IpAddressType">
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="macAddressEthA">
+                <description>mac ethA.</description>
+                <mandatory/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="macAddressEthB">
+                <description>mac ethB.</description>
+                <mandatory/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="uuid">
+                <description>Universally unique identifier of the resource.</description>
+                <mandatory/>
+                <dataType>
+                    <derivedDataTypeRef name="Uuid">
+                        <mimName>AxeEquipment</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="network">
+                <description>network attribute of the ComputeResource MO</description>
+                <dataType>
+                    <sequence>
+                        <structRef name="Network">
+                            <mimName>AxeEquipment</mimName>
+                        </structRef>
+                        <minLength>0</minLength>
+                    </sequence>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="CrMgmt">
+            <description>Represents a placeholder for Compute resources objects.
+Only one instance of this class is needed.
+This is an internal class and not intended for NBI; it is made hidden at runtime.</description>
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT CPI_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <attribute name="crMgmtId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="SwMau">
+            <description>Represents the SW emulation of CP Maintenance Unit (MAU). The MAU is responsible for controlling the CP states, monitoring the CP-A and CP-B side for faults, and provides expert commands (CPT) that allow the operator to recover the CP in case of fault.</description>
+            <systemCreated/>
+            <attribute name="swMauId">
+                <description>Holds the name used when identitying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="administrativeState">
+                <description>Allows to change the state of SW MAU.
+When it is set to LOCKED, it can fail for the following reasons.&#13;
+- Cannot change this attribute: when PTCOI command is in progress, it inhibits locking of SW MAU.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="BasicAdmState">
+                        <mimName>AxeEquipment</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="operationalState">
+                <description>Specifies the state of SW MAU.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="OperState">
+                        <mimName>AxeEquipment</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        
+        <relationship name="Shelf_to_ApBlade">
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUAL_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <containment>
+                <parent>
+                    <hasClass name="Shelf">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ApBlade">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="Shelf_to_Cpblade">
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUAL_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <containment>
+                <parent>
+                    <hasClass name="Shelf">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="CpBlade">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="Shelf_to_Otherblade">
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUAL_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <containment>
+                <parent>
+                    <hasClass name="Shelf">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="OtherBlade">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="Hwmgmt_to_Shelf">
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUAL_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <containment>
+                <parent>
+                    <hasClass name="HardwareMgmt">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Shelf">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        
+        <relationship name="Equip_to_Hwmgmt">
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUAL_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <containment>
+                <parent>
+                    <hasClass name="EquipmentM">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="HardwareMgmt">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        
+        
+        
+        <relationship name="ApBlade_to_ApBladeInfo">
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUAL_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <containment>
+                <parent>
+                    <hasClass name="ApBlade">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ApBladeInfo">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="EquipmentM_to_LogicalMgmt">
+            <containment>
+                <parent>
+                    <hasClass name="EquipmentM">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="LogicalMgmt">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="LogicalMgmt_to_Apg">
+            <containment>
+                <parent>
+                    <hasClass name="LogicalMgmt">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Apg">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>2</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="LogicalMgmt_to_DualSidedCp">
+            <containment>
+                <parent>
+                    <hasClass name="LogicalMgmt">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="DualSidedCp">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>2</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="CpCluster_to_OaMprofileMgr">
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUALDB_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <containment>
+                <parent>
+                    <hasClass name="CpCluster">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="OmProfileManager">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="cpCluster_to_LogicalMgmt">
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUALDB_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <containment>
+                <parent>
+                    <hasClass name="LogicalMgmt">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="CpCluster">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="Cpcluster_to_ClusterCp">
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUALDB_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <containment>
+                <parent>
+                    <hasClass name="CpCluster">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ClusterCp">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>63</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="OamProfileMgr_to_OamProfile">
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUALDB_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <containment>
+                <parent>
+                    <hasClass name="OmProfileManager">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="OmProfile">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="OamProfile_to_Ccf">
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUALDB_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <containment>
+                <parent>
+                    <hasClass name="OmProfile">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="CcFile">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>3</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="OamProfileMgr_to_CcfileMgr">
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUALDB_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <containment>
+                <parent>
+                    <hasClass name="OmProfileManager">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="CcFileManager">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="CcfMgr_to_CandidateCcf">
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUALDB_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <containment>
+                <parent>
+                    <hasClass name="CcFileManager">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="CandidateCcFile">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="Otherblade_to_Lag">
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT VIRTUAL_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <containment>
+                <parent>
+                    <hasClass name="OtherBlade">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="Lag">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        
+        <relationship name="Cr_to_ComputeRes">
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT CPI_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <containment>
+                <parent>
+                    <hasClass name="CrMgmt">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ComputeResource">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="Equipment_to_CrMgmt">
+            <decisionPoint>
+                <decisionStatement decisionType="basic">if-feature NOT CPI_HIDDEN</decisionStatement>
+            </decisionPoint>
+            <containment>
+                <parent>
+                    <hasClass name="EquipmentM">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="CrMgmt">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="DualSidedCp_to_SwMau">
+            <containment>
+                <parent>
+                    <hasClass name="DualSidedCp">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="SwMau">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+        <relationship name="Apg_apBladesDn_to_ApBlade">
+            <uniDirectionalAssociation>
+                <hasClass name="Apg">
+                    <mimName>AxeEquipment</mimName>
+                </hasClass>
+                <associationEnd name="apBladesDn">
+                    <hasClass name="ApBlade">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>6</max>
+                    </cardinality>
+                </associationEnd>
+            </uniDirectionalAssociation>
+        </relationship>
+        <relationship name="DualSidedCp_cpBladesDn_to_CpBlade">
+            <uniDirectionalAssociation>
+                <hasClass name="DualSidedCp">
+                    <mimName>AxeEquipment</mimName>
+                </hasClass>
+                <associationEnd name="cpBladesDn">
+                    <hasClass name="CpBlade">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>3</max>
+                    </cardinality>
+                </associationEnd>
+            </uniDirectionalAssociation>
+        </relationship>
+        <relationship name="ClusterCp_cpBladesDn_to_CpBlade">
+            <uniDirectionalAssociation>
+                <hasClass name="ClusterCp">
+                    <mimName>AxeEquipment</mimName>
+                </hasClass>
+                <associationEnd name="cpBladesDn">
+                    <hasClass name="CpBlade">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </associationEnd>
+            </uniDirectionalAssociation>
+        </relationship>
+    </mim>
+    <interMim>
+        <relationship name="SystemComponentHandling_to_EquipmentM">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="SystemComponentHandling">
+                        <mimName>AxeFunctions</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="EquipmentM">
+                        <mimName>AxeEquipment</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

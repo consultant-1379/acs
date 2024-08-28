@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset id="rules_msc_context">
+	<rule id="1.1" name="SW RELEASE">
+		<slogan>Obtain the release of the software.</slogan>
+		<recommendation></recommendation>
+
+		<attributes>
+			<include>
+				<apz-type>ALL</apz-type>
+				<node-type>ALL</node-type>
+				<sw-level>ALL</sw-level>
+			</include>
+
+			<exclude></exclude>
+		</attributes>
+
+		<category>MANDATORY</category>
+
+		<check>
+			<mml>
+				<command>PCORP:BLOCK=MISSRA;</command>
+
+				<printout result="mml-pcorp">
+					<begin>PROGRAM CORRECTIONS</begin>
+					<header level="1">
+						<column required="true">CI</column>
+						<column required="false">S</column>
+						<column required="false">TYPE</column>
+						<column required="false">POSITION</column>
+						<column required="false">SIZE</column>
+					</header>
+					<end>
+						<normal>END</normal>
+						<normal>NONE</normal>
+
+						<error>EOT DURING PRINTOUT</error>
+						<error>FAULT INTERRUPT</error>
+						<error>NOT ACCEPTED</error>
+					</end>
+				</printout>
+
+				<filter result="mml-pcorp-ci">
+					<unite>
+						<match name="CI" value="^M"/>
+						<match name="CI" value="^B"/>
+						<match name="CI" value="^H"/>
+						<match name="CI" value="^W"/>
+					</unite>
+				</filter>				
+			</mml>
+
+			<eval>
+				<is-not-empty set="mml-pcorp-ci"/>
+			</eval>
+		</check>
+	</rule>
+	
+	<rule id="2.1" name="APZ TYPE">
+		<slogan>Obtain the type of APZ.</slogan>
+		<recommendation></recommendation>
+
+		<attributes>
+			<include>
+				<apz-type>ALL</apz-type>
+				<node-type>ALL</node-type>
+				<sw-level>ALL</sw-level>
+			</include>
+
+			<exclude></exclude>
+		</attributes>
+
+		<category>MANDATORY</category>
+
+		<check>
+			<mml>
+				<command>SAOSP;</command>
+
+				<printout result="mml-saosp">
+					<begin>OPERATING SYSTEM AREA</begin>
+					<header level="1">
+						<column required="false">POS</column>
+						<column required="false">ADDRESS</column>
+						<column required="true">VALUE</column>
+						<column required="true">MEANING</column>
+					</header>
+					<end>
+						<normal>END</normal>
+
+						<error>EOT DURING PRINTOUT</error>
+						<error>NOT ACCEPTED</error>
+					</end>
+				</printout>
+
+				<filter result="mml-saosp-apz-type">
+					<equal name="MEANING" value="APZ TYPE"/>
+				</filter>				
+
+				<filter result="mml-saosp-apz-version">
+					<equal name="MEANING" value="APZ VERSION"/>
+				</filter>				
+			</mml>
+
+			<eval>
+				<and>
+					<is-not-empty set="mml-saosp-apz-type"/>
+					<is-not-empty set="mml-saosp-apz-version"/>
+				</and>
+			</eval>
+		</check>
+	</rule>
+</ruleset>

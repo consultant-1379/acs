@@ -1,0 +1,27 @@
+csm-version: '1.0'
+components:
+- uid: acs.acs
+  name: acs-acs
+  description: ACS ACS component
+  availability-manager: NONE
+  software:
+    sdp: ERIC-ACS_ACSBIN-CXC1371428
+  supersedes:
+  - software: ERIC-ACS_ACSBIN-CXC1371428
+  constraints:
+    installation:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+    upgrade:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+  meta-data:
+    component-version: 17.0.1-0
+    deliverable:
+      deployment-package: acs_acs-17.0.1-0-deployment-CXC1371428.tar.gz
+      runtime-package: acs_acs-17.0.1-0-runtime-CXC1371428.tar.gz
+    software:
+    - file-name: ACS_ACSBIN-CXC1371428_17-R1B.x86_64.sdp
+      bundle-name: ERIC-ACS_ACSBIN-CXC1371428_17-R1B

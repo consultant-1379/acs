@@ -1,0 +1,58 @@
+        -:    0:Source:src/ACS_DSD_SocketAcceptor.cpp
+        -:    0:Graph:obj/ACS_DSD_SocketAcceptor.gcno
+        -:    0:Data:obj/ACS_DSD_SocketAcceptor.gcda
+        -:    0:Runs:2
+        -:    0:Programs:1
+        -:    1:/** @file ACS_DSD_SocketAcceptor.cpp
+        -:    2: *	@brief
+        -:    3: *	@author xnicmut (Nicola Muto)
+        -:    4: *	@date 2010-07-14
+        -:    5: *	@version 1.0.0
+        -:    6: *
+        -:    7: *	COPYRIGHT Ericsson AB, 2010
+        -:    8: *	All rights reserved.
+        -:    9: *
+        -:   10: *	The information in this document is the property of Ericsson.
+        -:   11: *	Except as specifically authorized in writing by Ericsson, the receiver of
+        -:   12: *	this document shall keep the information contained herein confidential and
+        -:   13: *	shall protect the same in whole or in part from disclosure and dissemination
+        -:   14: *	to third parties. Disclosure and disseminations to the receivers employees
+        -:   15: *	shall only be made on a strict need to know basis.
+        -:   16: *
+        -:   17: *	REVISION INFO
+        -:   18: *	+========+============+==============+=====================================+
+        -:   19: *	| REV    | DATE       | AUTHOR       | DESCRIPTION                         |
+        -:   20: *	+========+============+==============+=====================================+
+        -:   21: *	| P0.9.0 | 2010-07-14 | xnicmut      | File created.                       |
+        -:   22: *	+--------+------------+--------------+-------------------------------------+
+        -:   23: *	| P0.9.1 | 2010-08-04 | xnicmut      | Released for sprint 2               |
+        -:   24: *	+========+============+==============+=====================================+
+        -:   25: */
+        -:   26:
+        -:   27:#include "ACS_DSD_SocketAcceptor.h"
+        -:   28:
+        -:   29:template <>
+        1:   30:int __CLASS_NAME__::accept(ACS_DSD_SocketStream & new_stream, ACE_Time_Value * timeout) const {
+        -:   31:	ACS_DSD_TRACE(ACS_DSD_STRINGIZE(__CLASS_NAME__)"::accept(ACS_DSD_SocketStream & new_stream, ACE_Time_Value * timeout)");
+        -:   32:
+        -:   33:	//Check if opened. An acceptor should be opened before can accept a connection.
+        1:   34:	if (ACCEPTOR_STATE_OPEN ^ state()) return WAR_ACCEPTOR_NOT_OPEN;
+        -:   35:
+        -:   36:	//Check if the object new_stream if free and not already used for an established communication session
+        1:   37:	if (ACS_DSD_IOStream::STREAM_STATE_DISCONNECTED ^ new_stream.state()) return WAR_STREAM_ALREADY_IN_USE;
+        -:   38:
+        1:   39:	ACE_INET_Addr remote_addr;
+        -:   40:
+        -:   41:	//ATTENZIONE: Cercare di usare una sola linea con un solo return (come fatto in ACS_DSD_AcceptorProvider::accept() method
+        2:   42:	if (_acceptor.accept(new_stream._stream, &remote_addr, timeout)) return ERR_SYSTEM_ACCEPT; //ERROR
+        -:   43:
+        1:   44:	new_stream.state(ACS_DSD_IOStream::STREAM_STATE_CONNECTED);
+        -:   45:
+        -:   46:	//ONLY FOR SOCKET ACCEPTOR
+        -:   47:	//TODO:	Check remote_addr:
+        -:   48:	//TODO:		if (remote_addr == AP-Node) --> prepare the object new_stream to menage normal conversation
+        -:   49:	//TODO:		else --> prepare the object new_stream to menage OCP conversation towards a CP
+        -:   50:
+        1:   51:	return 0;
+        4:   52:}
+        2:   53:/*EOF*/

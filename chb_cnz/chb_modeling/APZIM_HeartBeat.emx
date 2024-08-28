@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--xtools2_universal_type_manager-->
+<?com.ibm.xtools.emf.core.signature <signature id="com.ibm.xtools.uml.msl.model" version="7.0.0"><feature description="" name="com.ibm.xtools.ruml.feature" url="" version="7.0.0"/></signature>?>
+<?com.ibm.xtools.emf.core.signature <signature id="com.ibm.xtools.mmi.ui.signatures.diagram" version="7.0.0"><feature description="" name="Rational Modeling Platform (com.ibm.xtools.rmp)" url="" version="7.0.0"/></signature>?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CoreMWProfile="http:///schemas/CoreMWProfile/_N6vMMGYNEeKn97j3H8U24g/59" xmlns:Default="http:///schemas/Default/_fNm3AAqoEd6-N_NOT9vsCA/2" xmlns:ECIMBaseProfile="http:///schemas/ECIMBaseProfile/_Jui_gI2UEeKQksDq40d9rA/677" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xsi:schemaLocation="http:///schemas/CoreMWProfile/_N6vMMGYNEeKn97j3H8U24g/59 pathmap://COREMW_PROFILE/CoreMW_Profile.epx#_N6xocGYNEeKn97j3H8U24g?CoreMW%20Profile/CoreMWProfile? http:///schemas/Default/_fNm3AAqoEd6-N_NOT9vsCA/2 pathmap://UML2_MSL_PROFILES/Default.epx#_fNwoAAqoEd6-N_NOT9vsCA?Default/Default? http:///schemas/ECIMBaseProfile/_Jui_gI2UEeKQksDq40d9rA/677 pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.epx#_Jui_gY2UEeKQksDq40d9rA?ECIM%20Base%20Profile/ECIMBaseProfile?">
+  <uml:Model xmi:id="_NRAMoAwOEdmFcaeZXPdWAQ" name="AXE_HeartBeat" clientDependency="_OS1OUIXLEd-lToFzlKoOsA">
+    <eAnnotations xmi:id="_NRAMoQwOEdmFcaeZXPdWAQ" source="uml2.diagrams"/>
+    <eAnnotations xmi:id="_JvHMEByLEeSJz8wYSVgIuA" source="com.ibm.xtools.common.ui.reduction.editingCapabilities">
+      <details xmi:id="_JvHzIByLEeSJz8wYSVgIuA" key="com.ericsson.ecim.dsl.uireduction.activity" value="1"/>
+      <details xmi:id="_JvHzIRyLEeSJz8wYSVgIuA" key="com.ericsson.ecim.coremw.dsl.uireduction.activity" value="2"/>
+    </eAnnotations>
+    <packageImport xmi:id="_8JbBoIW5Ed-FBpQGdJXi3g">
+      <importedPackage xmi:type="uml:Model" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_iT7qACCSEd-Egr3-YAWs7Q?EcimDataType?"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_OS1OUIXLEd-lToFzlKoOsA" name="" client="_NRAMoAwOEdmFcaeZXPdWAQ">
+      <supplier xmi:type="uml:Model" href="pathmap://ECIM_COREMW_GUIDELIB/ECIM_Core_MW_Guidelines.emx#_5vlRYnhQEd-OM9oMWC6jJQ?ECIM%20Core%20MW%20Guidelines?"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_2uKt4ByOEeSJz8wYSVgIuA" name="HeartBeat">
+      <ownedComment xmi:id="_2uVtAByOEeSJz8wYSVgIuA">
+        <body>HeartBeat</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="_1vDvYByQEeSJz8wYSVgIuA" name="HeartBeat">
+        <ownedComment xmi:id="_1vNgYByQEeSJz8wYSVgIuA">
+          <body>HeartBeat class</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_1vWDQByQEeSJz8wYSVgIuA" name="heartBeatId" visibility="public" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:id="_1vemIByQEeSJz8wYSVgIuA">
+            <body>heartBeatId</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1vnJAByQEeSJz8wYSVgIuA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1vmh8RyQEeSJz8wYSVgIuA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_Ypyz8ByREeSJz8wYSVgIuA" name="heartBeatInterval" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_Yp9MARyREeSJz8wYSVgIuA">
+            <body>heartBeatInterval</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_DxVN4CCTEd-Egr3-YAWs7Q?EcimDataType/EcimUInt32?"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YqG9AByREeSJz8wYSVgIuA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YqGV8ByREeSJz8wYSVgIuA"/>
+          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_YqFu4RyREeSJz8wYSVgIuA" value="60"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_hyxxsByREeSJz8wYSVgIuA" name="heartBeatTimeout" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_hy8JwByREeSJz8wYSVgIuA">
+            <body>heartBeatTimeout</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_DxVN4CCTEd-Egr3-YAWs7Q?EcimDataType/EcimUInt32?"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_hzEsoRyREeSJz8wYSVgIuA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_hzEsoByREeSJz8wYSVgIuA"/>
+          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_hzEFkRyREeSJz8wYSVgIuA" value="20"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_C7VHwB7TEeShdt7hZUchag" name="heartBeatAADSTdayRetry" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_DFKZMB7TEeShdt7hZUchag">
+            <body>This attribute represents the number of retry of the AADTS feature.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_DxVN4CCTEd-Egr3-YAWs7Q?EcimDataType/EcimUInt32?"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_DFVYUB7TEeShdt7hZUchag" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_DFUxQB7TEeShdt7hZUchag"/>
+          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_qakSQB7TEeShdt7hZUchag"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_mpIoAB7TEeShdt7hZUchag" name="heartBeatAADTSstart" visibility="public" isUnique="false">
+          <ownedComment xmi:id="_mpZGsR7TEeShdt7hZUchag">
+            <body>This attribute represents the number of days before starting of the DST change.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_-kmDQCCSEd-Egr3-YAWs7Q?EcimDataType/EcimInt32?"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_mpo-UB7TEeShdt7hZUchag" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_mpoXQB7TEeShdt7hZUchag"/>
+          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_mpnwMB7TEeShdt7hZUchag" value="15"/>
+        </ownedAttribute>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_uvlUcByTEeSJz8wYSVgIuA" name="heartBeat">
+      <eAnnotations xmi:id="_1HIacByVEeSJz8wYSVgIuA" source="uml2.diagrams"/>
+      <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_8YjEgByTEeSJz8wYSVgIuA" name="heartBeatInstance" classifier="_1vDvYByQEeSJz8wYSVgIuA">
+        <slot xmi:id="_8ZI6YByTEeSJz8wYSVgIuA" definingFeature="_1vWDQByQEeSJz8wYSVgIuA">
+          <value xmi:type="uml:LiteralString" xmi:id="_8ZJhcByTEeSJz8wYSVgIuA" value="1">
+            <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+          </value>
+        </slot>
+        <slot xmi:id="_Lg9twByXEeSJz8wYSVgIuA" definingFeature="_Ypyz8ByREeSJz8wYSVgIuA">
+          <value xmi:type="uml:LiteralInteger" xmi:id="_Lg-U0ByXEeSJz8wYSVgIuA" value="60"/>
+        </slot>
+        <slot xmi:id="_RiTlIByXEeSJz8wYSVgIuA" definingFeature="_hyxxsByREeSJz8wYSVgIuA">
+          <value xmi:type="uml:LiteralInteger" xmi:id="_RiUMMByXEeSJz8wYSVgIuA" value="20"/>
+        </slot>
+        <slot xmi:id="_3A2n4B7UEeShdt7hZUchag" definingFeature="_C7VHwB7TEeShdt7hZUchag">
+          <value xmi:type="uml:LiteralInteger" xmi:id="_3A32AB7UEeShdt7hZUchag"/>
+        </slot>
+        <slot xmi:id="_5cOeIB7UEeShdt7hZUchag" definingFeature="_mpIoAB7TEeShdt7hZUchag">
+          <value xmi:type="uml:LiteralInteger" xmi:id="_5cPsQB7UEeShdt7hZUchag" value="15"/>
+        </slot>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:id="_UeIAINCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAIdCzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML_PROFILES/Standard.profile.uml#_yzU58YinEdqtvbnfB2L_5w"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:id="_UeIAItCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAI9CzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML2_MSL_PROFILES/Default.epx#_fNwoAAqoEd6-N_NOT9vsCA?Default/Default?"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML2_MSL_PROFILES/Default.epx#_a_S3wNWLEdiy4IqP8whjFA?Default?"/>
+    </profileApplication>
+    <profileApplication xmi:id="_UeIAJNCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAJdCzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML2_MSL_PROFILES/Deployment.epx#_IrdAUMmBEdqBcN1R6EvWUw?Deployment/Deployment?"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML2_MSL_PROFILES/Deployment.epx#_vjbuwOvHEdiDX5bji0iVSA?Deployment?"/>
+    </profileApplication>
+    <profileApplication xmi:id="_cikwQHVqEeCBgp9CYCosRQ">
+      <eAnnotations xmi:id="_ciq24HVqEeCBgp9CYCosRQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.epx#_Jui_gY2UEeKQksDq40d9rA?ECIM%20Base%20Profile/ECIMBaseProfile?"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.epx#_cUcakNQkEd63X4o72aQidQ?ECIM%20Base%20Profile?"/>
+    </profileApplication>
+    <profileApplication xmi:id="_JwXwUByLEeSJz8wYSVgIuA">
+      <eAnnotations xmi:id="_KKPB0ByLEeSJz8wYSVgIuA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://COREMW_PROFILE/CoreMW_Profile.epx#_N6xocGYNEeKn97j3H8U24g?CoreMW%20Profile/CoreMWProfile?"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://COREMW_PROFILE/CoreMW_Profile.epx#_Br2_QBSXEd-ZjqYFUyJzOw?CoreMW%20Profile?"/>
+    </profileApplication>
+  </uml:Model>
+  <ECIMBaseProfile:EcimModel xmi:id="_cqA1AHVqEeCBgp9CYCosRQ" base_Model="_NRAMoAwOEdmFcaeZXPdWAQ"/>
+  <CoreMWProfile:CmwMom xmi:id="_2uT30ByOEeSJz8wYSVgIuA" base_Package="_2uKt4ByOEeSJz8wYSVgIuA"/>
+  <ECIMBaseProfile:EcimMom xmi:id="_2uVF8ByOEeSJz8wYSVgIuA" hideGroupName="" specification="" statusInformation="" base_Package="_2uKt4ByOEeSJz8wYSVgIuA" author="" contact="" date="" docNo="" revision="" version="1" release="1" organization=""/>
+  <Default:Documentation xmi:id="_2udo0ByOEeSJz8wYSVgIuA" base_Comment="_2uVtAByOEeSJz8wYSVgIuA"/>
+  <CoreMWProfile:CmwClass xmi:id="_1vMSQByQEeSJz8wYSVgIuA" base_Class="_1vDvYByQEeSJz8wYSVgIuA"/>
+  <ECIMBaseProfile:EcimRootMoClass xmi:id="_1vM5UByQEeSJz8wYSVgIuA" hideGroupName="" specification="" statusInformation="" base_Class="_1vDvYByQEeSJz8wYSVgIuA"/>
+  <Default:Documentation xmi:id="_1vVcMByQEeSJz8wYSVgIuA" base_Comment="_1vNgYByQEeSJz8wYSVgIuA"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_1vd_EByQEeSJz8wYSVgIuA" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_1vWDQByQEeSJz8wYSVgIuA"/>
+  <Default:Documentation xmi:id="_1vmh8ByQEeSJz8wYSVgIuA" base_Comment="_1vemIByQEeSJz8wYSVgIuA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_Yp794ByREeSJz8wYSVgIuA" base_Property="_Ypyz8ByREeSJz8wYSVgIuA" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_Yp9MAByREeSJz8wYSVgIuA" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_Ypyz8ByREeSJz8wYSVgIuA"/>
+  <Default:Documentation xmi:id="_YqFu4ByREeSJz8wYSVgIuA" base_Comment="_Yp9MARyREeSJz8wYSVgIuA"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_hy6UkByREeSJz8wYSVgIuA" base_Property="_hyxxsByREeSJz8wYSVgIuA" isConfigurable="true"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_hy7isByREeSJz8wYSVgIuA" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_hyxxsByREeSJz8wYSVgIuA"/>
+  <Default:Documentation xmi:id="_hzEFkByREeSJz8wYSVgIuA" base_Comment="_hy8JwByREeSJz8wYSVgIuA"/>
+  <ECIMBaseProfile:EcimInstances xmi:id="_uvqM8ByTEeSJz8wYSVgIuA" base_Package="_uvlUcByTEeSJz8wYSVgIuA" version="1" release="1"/>
+  <ECIMBaseProfile:EcimMocInstance xmi:id="_8YokEByTEeSJz8wYSVgIuA" base_InstanceSpecification="_8YjEgByTEeSJz8wYSVgIuA"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_DFH88B7TEeShdt7hZUchag" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_C7VHwB7TEeShdt7hZUchag"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_DFJyIB7TEeShdt7hZUchag" base_Property="_C7VHwB7TEeShdt7hZUchag" isConfigurable="true"/>
+  <Default:Documentation xmi:id="_DFUKMB7TEeShdt7hZUchag" base_Comment="_DFKZMB7TEeShdt7hZUchag"/>
+  <ECIMBaseProfile:EcimAttribute_RW xmi:id="_mpX4kB7TEeShdt7hZUchag" hideGroupName="" specification="" statusInformation="" dependencies="" disturbances="" precondition="" sideEffects="" takesEffect="" isNotifiable="true" base_Property="_mpIoAB7TEeShdt7hZUchag"/>
+  <CoreMWProfile:CmwAttribute xmi:id="_mpZGsB7TEeShdt7hZUchag" base_Property="_mpIoAB7TEeShdt7hZUchag" isConfigurable="true"/>
+  <Default:Documentation xmi:id="_mpnJIB7TEeShdt7hZUchag" base_Comment="_mpZGsR7TEeShdt7hZUchag"/>
+</xmi:XMI>

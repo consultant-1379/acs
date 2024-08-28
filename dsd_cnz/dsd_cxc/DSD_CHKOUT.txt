@@ -1,0 +1,4 @@
+T:\ntacs\dsd_cnz\dsd_cxc\bin\acs_dsdd
+T:\ntacs\dsd_cnz\dsd_cxc\bin\dsdls
+T:\ntacs\dsd_cnz\dsd_cxc\bin\lib_ext\libacs_dsd.so.2.5.2
+T:\ntacs\dsd_cnz\dsd_cxc\packages\rpm\ACS_DSD-CXC1371326-R1A21.x86_64.rpm

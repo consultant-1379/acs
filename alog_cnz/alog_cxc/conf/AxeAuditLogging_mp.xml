@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
+	Copyright (c) 2022 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Jul 7, 2022 6:03:09 PM using:
+	* com.ericsson.ecim.m2m 3.13.0.202006261811
+	* com.ericsson.ecim.dsl 3.13.0.202006261811
+	* com.ericsson.ecim.edm 3.13.0.202006261811
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>K</dtdVersion>
+    <momMetaData>
+        <momTitle>Managed Object Model for Audit Logging Management Function</momTitle>
+        <momSubTitle/>
+        <momIdentity>
+            <docNum>19089-CXA 117 0018/16</docNum>
+            <docLang>Uen</docLang>
+            <docRev>A</docRev>
+            <docDate>2022-06-06</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>XHARBAV</signature>
+        </createdBy>
+    </momMetaData>
+    <mim author="Harika Bavana" contact="XHARBAV" correction="0" date="2022-06-06" docNo="" name="AxeAuditLogging" namespace="urn:com:ericsson:ecim:AxeAuditLogging" namespacePrefix="axeauditlogging" organization="" release="5" revision="" version="3">
+        <description>Audit Logging Management function MOM.</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="MOM_NAME"/>
+        </domainExtension>
+        <modelFeatures modelType="Template">
+            <modelFeature featureType="basic" name="CPI_HIDDEN"/>
+            <modelFeature featureType="basic" name="VIRTUALDB_HIDDEN"/>
+        </modelFeatures>
+		<enum name="BasicAdmState">
+            <description>Basic administrative states for a resource.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <enumMember name="LOCKED">
+                <description> The resource is administratively prohibited from performing services for its users.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="UNLOCKED">
+                <description>The resource is administratively permitted to perform services for its users.
+This is independent of its inherent operability.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="TemplateFormatType">
+            <description>Lists the possible filename template formats for "audit log files" and "protected audit log files".</description>
+            <enumMember name="AUDIT">
+                <description>AUDIT template format. 
+
+When such template format is in use:
+- the file names generated for "audit log files" have the format:
+audit.yyyymmdd-HHMMSS
+- the file names generated for "protected audit log files" have the format:
+paudit.yyyymmdd-HHMMSS.zip
+
+yyyy 
+indicates the year in four digits.
+
+mm
+indicates the month in two digits.
+
+dd
+indicates the day in two digits.
+
+HH
+indicates the hour (00-23) in two digits.
+
+MM 
+indicates the minutes in two digits.
+
+SS 
+indicates the seconds in two digits.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="LOGFILE">
+                <description>LOGFILE template format. 
+
+When such template format is in use:
+- the file names generated for "audit log files" have the format:
+LOGFILE-yyyy-mm-dd-HHMM
+- the file names generated for "Protected audit log files" have the format:
+PLOGFILE_yyyy_mm_dd_HHMM.zip
+
+yyyy 
+indicates the year in four digits.
+
+mm
+indicates the month in two digits.
+
+dd
+indicates the day in two digits.
+
+HH
+indicates the hour (00-23) in two digits.
+
+MM 
+indicates the minutes in two digits.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+		<enum name="ItemType">
+            <description>Indicates the type of item, command or printout, to be excluded from logging.</description>
+            <enumMember name="MC">
+                <description>MML command.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="MP">
+                <description>MML printout.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="MPA">
+                <description>MML command parameter.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="NC">
+                <description>TS/AP session command.</description>
+                <value>5</value>
+            </enumMember>
+        </enum>
+        <enum name="OperState">
+            <description>Operational states of a resource.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <enumMember name="DISABLED">
+                <description>The resource is  totally inoperable.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="ENABLED">
+                <description>The resource is partially or fully operable.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="EcimPasswordString">
+            <baseType>
+                <string>
+                    <isPassphrase/>
+                </string>
+            </baseType>
+        </derivedDataType>
+        <class name="AuditLoggingM">
+            <description>Represents the root MOC for Audit Logging Management function MOM.&#13;
+It is created by the system and allows activating/deactivating ALOG function, excluding some kind of commands from the logging and showing the excluded items. It also allows enabling of MML over syslog function.&#13;
+&#13;
+In particular it allows setting the following parameters:&#13;
+&#13;
+- Status of the ALOG function.
+- Enabling MML over syslog function using key.
+- Activating/deactivating MML over syslog function.
+- Activating/deactivating logging over audit log files.&#13;
+- Capability to log MML command and MML session identification in the audit log.&#13;
+- Capability to skip events with size greater than 1 MB.&#13;
+- Name of the TQ, defined in Data Transfer Management function MOM, to be used for transferring audit events to a remote destination.
+- Template format to be used by ALOG function when generating the file names of the "audit log files" and the "protected audit log files". 
+&#13;
+One or more attributes setting or action can fail due to one of the following reasons: 
+- Transfer Queue not defined in the output handler: The specified TQ name does not exist in Data Transfer Management function MOM.
+- Command Log Transfer Queue configuration is allowed only in Multi-CP system:  The TQ for CLOG files can be configured only in Multi CP system. 
+- Not allowed to deactivate Audit Log function in Multi-CP system: The status of ALOG function can be set to LOCKED value (deactivation of the function) only in Multi-CP System. 
+- File Naming Template already configured: The specified template format for the names of  "audit log files" and "protected audit log files" is already assigned to the attribute.
+- Not allowed to enable MML over syslog function if invalid key is provided.
+- Not allowed to activate MML over syslog if the function is not enabled.</description>
+            <systemCreated/>
+            <root/>
+            <action name="enableMmlSyslog">
+                <description>Enables MML over syslog function.
+The action can fail due to one of the  following reasons:
+- Invalid key is provided.
+- Function already enabled.
+- Internal Program Error: When service encounters internal fault like inter service communication failure.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="0"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+                <parameter name="key">
+                    <description>Specifies the key to enable MML over syslog function.</description>
+                    <in/>
+                    <dataType>
+                        <derivedDataTypeRef name="EcimPasswordString">
+                            <mimName>AxeAuditLogging</mimName>
+                        </derivedDataTypeRef>
+                    </dataType>
+                </parameter>
+            </action>
+            <attribute name="auditLoggingMId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="largeEventDataSkipped">
+                <description>Specifies if events (having size) bigger than 1 MB are truncated.
+If truncation is applied, event size after truncation is exacly 1 MB.</description>
+                <mandatory/>
+                <noNotification/>
+                <dataType>
+                    <boolean/>
+                </dataType>
+            </attribute>
+            <attribute name="transferQueue">
+                <description>Specifies the identifier of the TQ to be used by ALOG for "audit logging files".
+Only file based transfer is supported.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="alogAdmState">
+                <description>Specifies the status of the Audit Log function.</description>
+                <dataType>
+                    <enumRef name="BasicAdmState">
+                        <defaultValue>UNLOCKED</defaultValue>
+                        <mimName>AxeAuditLogging</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="commandAndSessionAdmState">
+                <description>Specifies the status of the "MML command/session identification" logging feature.
+If status is UNLOCKED, the event infos "MML command identification" and "MML session identification" are logged (if available).
+If status is LOCKED, the event infos "MML command identification" and "MML session identification" are NOT logged.
+</description>
+                <dataType>
+                    <enumRef name="BasicAdmState">
+                        <defaultValue>LOCKED</defaultValue>
+                        <mimName>AxeAuditLogging</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="transferQueueDn">
+                <description>Specifies the DN for the MO representing the TQ used by ALOG function for "audit logging files".</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <moRef name="ManagedObject"/>
+                </dataType>
+            </attribute>
+            <attribute name="templateFormat">
+                <description>Specifies the filename template format for "audit log files" and "protected audit log files".
+The change of a format does not affect previous generated audit files.</description>
+                <dataType>
+                    <enumRef name="TemplateFormatType">
+                        <defaultValue>AUDIT</defaultValue>
+                        <mimName>AxeAuditLogging</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="commandLogTransferQueue">
+                <description>Specifies the identifier of the TQ to be used for CLOG files.
+Only file based transfer is supported.
+The attribute can be set only in Multi-CP System.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <isNillable/>
+                <dataType>
+                    <string/>
+                </dataType>
+                <decisionPoint>
+                    <decisionStatement decisionType="basic">if-feature NOT VIRTUALDB_HIDDEN</decisionStatement>
+                </decisionPoint>
+            </attribute>
+            <attribute name="commandLogTransferQueueDn">
+                <description>Specifies the DN for the MO representing the TQ used for CLOG files.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <moRef name="ManagedObject"/>
+                </dataType>
+                <decisionPoint>
+                    <decisionStatement decisionType="basic">if-feature NOT VIRTUALDB_HIDDEN</decisionStatement>
+                </decisionPoint>
+            </attribute>
+            <attribute name="mmlSyslogAdmState">
+                <description>Specifies the status of the MML over syslog function.</description>
+                <dataType>
+                    <enumRef name="BasicAdmState">
+                        <defaultValue>LOCKED</defaultValue>
+                        <mimName>AxeAuditLogging</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="alogFileAdmState">
+                <description>Specifies the status of the logging over audit log files.</description>
+                <dataType>
+                    <enumRef name="BasicAdmState">
+                        <defaultValue>UNLOCKED</defaultValue>
+                        <mimName>AxeAuditLogging</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="mmlSyslogAvailabilityState">
+                <description>Specifies the availability state of MML over syslog.</description>
+                <readOnly/>
+                <dataType>
+                    <enumRef name="OperState">
+                        <defaultValue>DISABLED</defaultValue>
+                        <mimName>AxeAuditLogging</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="ExclusionItem">
+            <description>Represents the set of items, command or printout, to be excluded from logging.
+</description>
+            <attribute name="exclusionItemId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="type">
+                <description>Indicates the item type to be excluded from ALOG file.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <dataType>
+                    <enumRef name="ItemType">
+                        <mimName>AxeAuditLogging</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="item">
+                <description>Indicates the item string to be excluded from the logging. 
+All the events including such item are not stored in ALOG file.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="AuditLogging_to_ExclusionItem">
+            <containment>
+                <parent>
+                    <hasClass name="AuditLoggingM">
+                        <mimName>AxeAuditLogging</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ExclusionItem">
+                        <mimName>AxeAuditLogging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </mim>
+    <interMim>
+        <relationship name="SecurityHandling_to_AuditLoggingM">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="SecurityHandling">
+                        <mimName>AxeFunctions</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="AuditLoggingM">
+                        <mimName>AxeAuditLogging</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

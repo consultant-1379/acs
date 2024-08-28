@@ -1,0 +1,46 @@
+csm-version: '1.0'
+components:
+- uid: acs.apsesh
+  name: acs-apsesh
+  description: ACS APSESH component
+  availability-manager: AMF
+  software:
+    sdp: ERIC-ACS_APSESHBIN-CXC1371367
+  supersedes:
+  - base-component: ERIC-APG_APSESH
+  availability-properties:
+    control-policy:
+      type: ADVANCED
+    multiplicity-policy:
+      node-active: ONE
+      node-standby: ONE
+      cluster-active: ONE
+      cluster-standby: ONE
+    lifecycle-control:
+      prefix: /opt/ap/acs/bin
+      start: acs_apsesh_clc instantiate
+      stop: acs_apsesh_clc cleanup
+      monitor-keys:
+      - key: acs_apseshd_hck
+        period: 180s
+        timeout: 240s
+      promote-demote-timeout: 200s
+      migrate-timeout: 60s
+      start-stop-timeout: 100s
+  constraints:
+    installation:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+    upgrade:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+  meta-data:
+    component-version: 9.0.6-0
+    deliverable:
+      deployment-package: acs_apsesh-9.0.6-0-deployment-CXC1371367.tar.gz
+      runtime-package: acs_apsesh-9.0.6-0-runtime-CXC1371367.tar.gz
+    software:
+    - file-name: ACS_APSESHBIN-CXC1371367_9-R1G.x86_64.sdp
+      bundle-name: ERIC-ACS_APSESHBIN-CXC1371367_9-R1G

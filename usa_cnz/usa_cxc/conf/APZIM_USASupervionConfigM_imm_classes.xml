@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Copyright (c) 2011 Ericsson AB.
+  All rights reserved
+
+  DX ECIM Tool-chain generated this file on Sep 20, 2011 2:57:52 PM using
+    * coremw.m2m (1.3.0.Release)
+    * coremw.m2t (1.3.0.Release)
+    * coremw.dsl (1.3.0.Release)
+    * coremw.imm (1.3.0.Release)
+--><imm:IMM-contents xmlns:imm="http://www.saforum.org/IMMSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd">
+
+    <class name="USASupervisonConfig">
+        <category>SA_CONFIG</category>
+        <rdn>
+            <name>usaSupervisonConfigId</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_INITIALIZED</flag>
+        </rdn>
+    </class>
+
+    <class name="USASupervison">
+	<category>SA_CONFIG</category>
+	<rdn>
+		<name>usaSupervisonId</name>
+		<type>SA_STRING_T</type>
+            	<category>SA_CONFIG</category>
+            	<flag>SA_INITIALIZED</flag>
+	</rdn>
+
+        <attr>
+            <name>object</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+	    <flag>SA_WRITABLE</flag>
+	    <default-value>none</default-value>
+        </attr>
+        <attr>
+            <name>scope</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>60</default-value>
+        </attr>
+        <attr>
+            <name>maxAllowed</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>3</default-value>
+        </attr>
+        <attr>
+            <name>matchType</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>pattern</default-value>
+        </attr>
+        <attr>
+            <name>pattern</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>none</default-value>
+        </attr>
+        <attr>
+            <name>specificProblem</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>8799</default-value>
+        </attr>
+        <attr>
+            <name>perceivedSeverity</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>none</default-value>
+        </attr>
+        <attr>
+            <name>probableCause</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>none</default-value>
+        </attr>
+        <attr>
+            <name>objectOfRefSuffix</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>GENERAL</default-value>
+        </attr>
+        <attr>
+            <name>problemText</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>none</default-value>
+    	</attr>
+        <attr>
+            <name>command</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value></default-value>
+        </attr>
+        <attr>
+            <name>node</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>none</default-value>
+        </attr>
+        <attr>
+            <name>disableAlarmFilter</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>NO</default-value>
+        </attr>
+        <attr>
+            <name>ceaseDuration</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>900</default-value>
+        </attr>
+    </class>
+
+    <class name="USAConfig">
+        <category>SA_CONFIG</category>
+        <rdn>
+                <name>usaConfigId</name>
+                <type>SA_STRING_T</type>
+                <category>SA_CONFIG</category>
+                <flag>SA_INITIALIZED</flag>
+        </rdn>
+
+        <attr>
+            <name>retrieveSyslogRecordsMax</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>20000</default-value>
+        </attr>
+        <attr>
+            <name>recordBufferSize</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>2048</default-value>
+        </attr>
+        <attr>
+            <name>defaultSpecificProblem</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>8799</default-value>
+        </attr>
+        <attr>
+            <name>shortTermInterval</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>1200</default-value>
+        </attr>
+        <attr>
+            <name>alarmFilterInterval</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>60</default-value>
+        </attr>
+        <attr>
+            <name>recordsPrioThreshold</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>100</default-value>
+        </attr>
+        <attr>
+            <name>secondsPrioThreshold</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>60</default-value>
+    	</attr>
+        <attr>
+            <name>timeStampFormat</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>YYYY-MM-DD hh:mm:ss</default-value>
+	</attr>
+
+    </class>
+
+    <class name="USAZombieConfig">
+       <category>SA_CONFIG</category>
+        <rdn>
+		<name>usaZombieConfigId</name>
+		<type>SA_STRING_T</type>
+		<category>SA_CONFIG</category>
+		<flag>SA_INITIALIZED</flag>
+        </rdn>
+	<attr>
+            <name>zombieMonitorInterval</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>300</default-value>
+    	</attr>
+	<attr>
+            <name>minor</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>10</default-value>
+    	</attr>
+	<attr>
+            <name>major</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>15</default-value>
+    	</attr>
+	<attr>
+            <name>critical</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>20</default-value>
+    	</attr>
+        <attr>
+            <name>disableAlarmFilter</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>NO</default-value>
+        </attr>
+   </class>
+
+   <class name="USACPULoadAvgConfig">
+       <category>SA_CONFIG</category>
+        <rdn>
+		<name>USACPULoadAvgConfigId</name>
+		<type>SA_STRING_T</type>
+		<category>SA_CONFIG</category>
+		<flag>SA_INITIALIZED</flag>
+        </rdn>
+	<attr>
+            <name>CPULoadAvgMonitorInterval</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>300</default-value>
+    	</attr>
+	<attr>
+            <name>minor</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>75</default-value>
+    	</attr>
+	<attr>
+            <name>major</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>95</default-value>
+    	</attr>
+	<attr>
+            <name>critical</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>100</default-value>
+    	</attr>
+        <attr>
+            <name>disableAlarmFilter</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>NO</default-value>
+        </attr>
+   </class>
+
+</imm:IMM-contents>
+    
+

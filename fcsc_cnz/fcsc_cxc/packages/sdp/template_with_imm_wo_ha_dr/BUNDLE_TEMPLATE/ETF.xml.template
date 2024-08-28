@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entityTypesFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="ERIC-#TAG_NAME#-#TAG_CXP#-#TAG_REV#" provider="ERIC">
+  <swBundle name="safSmfBundle=ERIC-#TAG_NAME#-#TAG_CXP#-#TAG_REV#">
+    <removal>
+      <offline>
+        <command>remove_rpms.sh</command>
+        <args></args>
+        <serviceUnit/>
+      </offline>
+      <online>
+        <command></command>
+        <args></args>
+      </online>
+    </removal>
+    <installation>
+      <offline>
+        <command>install_rpms.sh</command>
+        <args></args>
+        <serviceUnit/>
+      </offline>
+      <online>
+        <command></command>
+        <args></args>
+      </online>
+    </installation>
+  </swBundle>
+</entityTypesFile>
+

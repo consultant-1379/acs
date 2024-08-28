@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="ASCII"?>
+  <upgradeCampaign safSmfCampaign="safSmfCampaign=ERIC-#TAG_NAME#-U1-TEMPLATE-#TAG_CXP#-#TAG_REV#">
+    <campaignInfo>
+      <campaignPeriod/>
+    </campaignInfo>
+    <campaignInitialization>
+      <addToImm>
+        <amfEntityTypes>
+          <CompBaseType safCompType="safCompType=ERIC-#TAG_COMPT#">
+            <CompType safVersion="safVersion=#TAG_REV#">
+              <providesCSType saAmfCtCompCapability="1" saAmfCtDefNumMaxActiveCsi="0" saAmfCtDefNumMaxStandbyCsi="0" safSupportedCsType="safSupportedCsType=safVersion=#TAG_SAF_VER#\,safCSType=ERIC-#TAG_CST#"/>
+              <compTypeDefaults saAmfCtCompCategory="1" saAmfCtDefCallbackTimeout="#TAG_DEFAULTCALLBACKTIMEOUT_LOWERBOUND#" saAmfCtDefClcCliTimeout="#TAG_DEFAULTCLCCLITIMEOUT_LOWERBOUND#" saAmfCtDefDisableRestart="#TAG_DISABLERESTART#" saAmfCtDefInstantiationLevel="0" saAmfCtDefQuiescingCompleteTimeout="10000000000" saAmfCtDefRecoveryOnError="#TAG_RECOVERYONERROR#"/>
+              <instantiateCmd saAmfCtRelPathInstantiateCmd="#TAG_SCRIPT#">
+                <cmdArgv>instantiate</cmdArgv>
+              </instantiateCmd>
+              <cleanupCmd saAmfCtRelPathCleanupCmd="#TAG_SCRIPT#">
+                <cmdArgv>cleanup</cmdArgv>
+              </cleanupCmd>
+              <healthCheck saAmfHealthcheckMaxDuration="#TAG_HCMAXDURATION_LOWERBOUND#" saAmfHealthcheckPeriod="#TAG_HCPERIOD_LOWERBOUND#" safHealthcheckKey="safHealthcheckKey=#TAG_HLT_CHK#"/>
+              <swBundle saAmfCtSwBundle="safSmfBundle=ERIC-#TAG_NAME#-#TAG_CXP#-#TAG_REV#"/>
+            </CompType>
+          </CompBaseType>
+          <CompBaseType safCompType="safCompType=ERIC-#TAG_COMPT#1">
+            <CompType safVersion="safVersion=#TAG_REV#">
+              <providesCSType saAmfCtCompCapability="1" saAmfCtDefNumMaxActiveCsi="0" saAmfCtDefNumMaxStandbyCsi="0" safSupportedCsType="safSupportedCsType=safVersion=#TAG_SAF_VER#\,safCSType=ERIC-#TAG_CST#1"/>
+              <compTypeDefaults saAmfCtCompCategory="1" saAmfCtDefCallbackTimeout="#TAG_DEFAULTCALLBACKTIMEOUT_LOWERBOUND#" saAmfCtDefClcCliTimeout="#TAG_DEFAULTCLCCLITIMEOUT_LOWERBOUND#" saAmfCtDefDisableRestart="#TAG_DISABLERESTART#" saAmfCtDefInstantiationLevel="0" saAmfCtDefQuiescingCompleteTimeout="10000000000" saAmfCtDefRecoveryOnError="#TAG_RECOVERYONERROR#"/>
+              <instantiateCmd saAmfCtRelPathInstantiateCmd="#TAG_SCRIPT1#">
+                <cmdArgv>instantiate</cmdArgv>
+              </instantiateCmd>
+              <cleanupCmd saAmfCtRelPathCleanupCmd="#TAG_SCRIPT1#">
+                <cmdArgv>cleanup</cmdArgv>
+              </cleanupCmd>
+              <healthCheck saAmfHealthcheckMaxDuration="#TAG_HCMAXDURATION_LOWERBOUND#" saAmfHealthcheckPeriod="#TAG_HCPERIOD_LOWERBOUND#" safHealthcheckKey="safHealthcheckKey=#TAG_HLT_CHK1#"/>
+              <swBundle saAmfCtSwBundle="safSmfBundle=ERIC-#TAG_NAME#-#TAG_CXP#-#TAG_REV#"/>
+            </CompType>
+          </CompBaseType>
+          <CompBaseType safCompType="safCompType=ERIC-#TAG_COMPT#2">
+            <CompType safVersion="safVersion=#TAG_REV#">
+              <providesCSType saAmfCtCompCapability="1" saAmfCtDefNumMaxActiveCsi="0" saAmfCtDefNumMaxStandbyCsi="0" safSupportedCsType="safSupportedCsType=safVersion=#TAG_SAF_VER#\,safCSType=ERIC-#TAG_CST#2"/>
+              <compTypeDefaults saAmfCtCompCategory="1" saAmfCtDefCallbackTimeout="#TAG_DEFAULTCALLBACKTIMEOUT_LOWERBOUND#" saAmfCtDefClcCliTimeout="#TAG_DEFAULTCLCCLITIMEOUT_LOWERBOUND#" saAmfCtDefDisableRestart="#TAG_DISABLERESTART#" saAmfCtDefInstantiationLevel="0" saAmfCtDefQuiescingCompleteTimeout="10000000000" saAmfCtDefRecoveryOnError="#TAG_RECOVERYONERROR#"/>
+              <instantiateCmd saAmfCtRelPathInstantiateCmd="#TAG_SCRIPT2#">
+                <cmdArgv>instantiate</cmdArgv>
+              </instantiateCmd>
+              <cleanupCmd saAmfCtRelPathCleanupCmd="#TAG_SCRIPT2#">
+                <cmdArgv>cleanup</cmdArgv>
+              </cleanupCmd>
+              <healthCheck saAmfHealthcheckMaxDuration="#TAG_HCMAXDURATION_LOWERBOUND#" saAmfHealthcheckPeriod="#TAG_HCPERIOD_LOWERBOUND#" safHealthcheckKey="safHealthcheckKey=#TAG_HLT_CHK2#"/>
+              <swBundle saAmfCtSwBundle="safSmfBundle=ERIC-#TAG_NAME#-#TAG_CXP#-#TAG_REV#"/>
+            </CompType>
+          </CompBaseType>
+        </amfEntityTypes>
+      </addToImm>
+    </campaignInitialization>
+    <upgradeProcedure safSmfProcedure="safSmfProc=RollingUpgrade" saSmfExecLevel="1">
+      <outageInfo>
+        <acceptableServiceOutage>
+          <all/>
+        </acceptableServiceOutage>
+        <procedurePeriod saSmfProcPeriod="60000000000"/>
+      </outageInfo>
+      <procInitAction>
+        <immCCB ccbFlags="0">
+          <create objectClassName="SaAmfSutCompType" parentObjectDN="safVersion=#TAG_SAF_VER#,safSuType=ERIC-#TAG_SUT#2">
+            <attribute name="safMemberCompType" type="SA_IMM_ATTR_SANAMET">
+              <value>safMemberCompType=safVersion=#TAG_REV#\,safCompType=ERIC-#TAG_COMPT#</value>
+            </attribute>
+            <attribute name="saAmfSutMinNumComponents" type="SA_IMM_ATTR_SAUINT32T">
+              <value>0</value>
+            </attribute>
+            <attribute name="safMemberCompType" type="SA_IMM_ATTR_SANAMET">
+              <value>safMemberCompType=safVersion=#TAG_REV#\,safCompType=ERIC-#TAG_COMPT#1</value>
+            </attribute>
+            <attribute name="saAmfSutMinNumComponents" type="SA_IMM_ATTR_SAUINT32T">
+              <value>0</value>
+            </attribute>
+            <attribute name="safMemberCompType" type="SA_IMM_ATTR_SANAMET">
+              <value>safMemberCompType=safVersion=#TAG_REV#\,safCompType=ERIC-#TAG_COMPT#2</value>
+            </attribute>
+            <attribute name="saAmfSutMinNumComponents" type="SA_IMM_ATTR_SAUINT32T">
+              <value>0</value>
+            </attribute>
+          </create>
+        </immCCB>
+      </procInitAction>
+      <upgradeMethod>
+        <rollingUpgrade>
+          <upgradeScope>
+            <byTemplate>
+              <targetNodeTemplate objectDN="safAmfNodeGroup=SCs,safAmfCluster=myAmfCluster">
+                <swRemove bundleDN="safSmfBundle=ERIC-#TAG_NAME#-#TAG_CXP#-#TAG_OLD_REV#"/>
+                <swAdd bundleDN="safSmfBundle=ERIC-#TAG_NAME#-#TAG_CXP#-#TAG_REV#" pathnamePrefix="#TAG_PATHNAMEPREFIX#"/>
+              </targetNodeTemplate>
+              <targetEntityTemplate>
+                <type objectDN="safVersion=#TAG_OLD_REV#,safCompType=ERIC-#TAG_COMPT#"/>
+                <modifyOperation operation="SA_IMM_ATTR_VALUES_REPLACE">
+                  <attribute name="saAmfCompType" type="SA_IMM_ATTR_SANAMET">
+                    <value>safVersion=#TAG_REV#,safCompType=ERIC-#TAG_COMPT#</value>
+                  </attribute>
+                </modifyOperation>
+              </targetEntityTemplate>
+              <targetEntityTemplate>
+                <type objectDN="safVersion=#TAG_OLD_REV#,safCompType=ERIC-#TAG_COMPT#1"/>
+                <modifyOperation operation="SA_IMM_ATTR_VALUES_REPLACE">
+                  <attribute name="saAmfCompType" type="SA_IMM_ATTR_SANAMET">
+                    <value>safVersion=#TAG_REV#,safCompType=ERIC-#TAG_COMPT#1</value>
+                  </attribute>
+                </modifyOperation>
+              </targetEntityTemplate>
+              <targetEntityTemplate>
+                <type objectDN="safVersion=#TAG_OLD_REV#,safCompType=ERIC-#TAG_COMPT#2"/>
+                <modifyOperation operation="SA_IMM_ATTR_VALUES_REPLACE">
+                  <attribute name="saAmfCompType" type="SA_IMM_ATTR_SANAMET">
+                    <value>safVersion=#TAG_REV#,safCompType=ERIC-#TAG_COMPT#2</value>
+                  </attribute>
+                </modifyOperation>
+              </targetEntityTemplate>
+            </byTemplate>
+          </upgradeScope>
+          <upgradeStep saSmfStepRestartOption="0" saSmfStepMaxRetry="8"/>
+        </rollingUpgrade>
+      </upgradeMethod>
+      <procWrapupAction>
+        <immCCB ccbFlags="0">
+          <delete objectDN="safMemberCompType=safVersion=#TAG_OLD_REV#\,safCompType=ERIC-#TAG_COMPT#,safVersion=#TAG_SAF_VER#,safSuType=ERIC-#TAG_SUT#"/>
+          <delete objectDN="safMemberCompType=safVersion=#TAG_OLD_REV#\,safCompType=ERIC-#TAG_COMPT#1,safVersion=#TAG_SAF_VER#,safSuType=ERIC-#TAG_SUT#1"/>
+          <delete objectDN="safMemberCompType=safVersion=#TAG_OLD_REV#\,safCompType=ERIC-#TAG_COMPT#2,safVersion=#TAG_SAF_VER#,safSuType=ERIC-#TAG_SUT#2"/>
+        </immCCB>
+      </procWrapupAction>
+    </upgradeProcedure>
+    <campaignWrapup>
+      <waitToCommit/>
+      <waitToAllowNewCampaign/>
+      <removeFromImm>
+        <amfEntityTypeDN objectDN="safVersion=#TAG_OLD_REV#,safCompType=ERIC-#TAG_COMPT#"/>
+        <amfEntityTypeDN objectDN="safVersion=#TAG_OLD_REV#,safCompType=ERIC-#TAG_COMPT#1"/>
+        <amfEntityTypeDN objectDN="safVersion=#TAG_OLD_REV#,safCompType=ERIC-#TAG_COMPT#2"/>
+      </removeFromImm>
+    </campaignWrapup>
+  </upgradeCampaign>
+

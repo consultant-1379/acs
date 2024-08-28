@@ -1,0 +1,106 @@
+# **********************************************************************
+#
+# Short description:
+# Makefile template for CS service binary
+# **********************************************************************
+#
+# Ericsson AB 2010 All rights reserved.
+# The information in this document is the property of Ericsson.
+# Except as specifically authorized in writing by Ericsson, the receiver of this
+# document shall keep the information contained herein confidential and shall protect
+# the same in whole or in part from disclosure and dissemination to third parties.
+# Disclosure and disseminations to the receivers employees shall only be made
+# on a strict need to know basis.
+#
+# **********************************************************************
+#
+# Rev        Date         Name      What
+# -----      -------      --------  --------------------------
+#            2010-08-27   xgalrob   Created
+#            2010-09-08   x  Updated
+# **********************************************************************
+
+
+VOB_NAME = ntacs
+VOB_PATH = ../../../../../cm4ap/$(VOB_NAME)
+
+CNZ_NAME = cs_cnz
+CNZ_PATH = $(VOB_PATH)/$(CNZ_NAME)
+NTACS_PATH = ../../../
+export NTACS_PATH
+COMMON_PATH = ../../../../../IO_Developments/Tools/linux_conf_file
+
+include $(COMMON_PATH)/common.mk
+
+
+CAA_NAME = cssrv_caa
+CAA_PATH = $(CNZ_PATH)/$(CAA_NAME)
+
+CXC_NAME = cs_cxc
+CXC_PATH = $(CNZ_PATH)/$(CXC_NAME)
+
+OUTDIR = $(CXC_PATH)/bin
+OBJDIR = obj
+SRCDIR = src
+INCDIR = inc
+TESTDIR = test
+
+
+# here you can add own lib paths
+LIBSDIR  += -L../csapi_caa/object
+LIBSDIR += -L/vobs/IO_Developments/AP_SDK/Lib
+
+CFLAGS += -O3 -fPIC -fmessage-length=0
+CCOVFLAGS += -fprofile-arcs -ftest-coverage
+
+LDFLAGS += -L../csapi_caa/object 
+BIN_FILENAME = acs_cs_api_test
+
+# here you can add own Include paths and/or other includes
+CINCLUDES += -I inc -I ../csprot_caa/inc -I ../csapi_caa/inc -I ../csmodd_caa/inc
+LIBS += -lrt -lpthread -lacs_csapi# -l acs_csimm
+
+SOURCES = acs_cs_api_test.cpp 
+
+OBJ = $(SOURCES:.cpp=.obj)
+OBJFILES = $(addprefix $(OBJDIR)/,$(OBJ))
+OUTFILE = $(OBJDIR)/$(BIN_FILENAME)
+TARGETDIR = ../cs_cxc/bin
+
+vpath %.cpp src
+#temporary added below
+vpath %.cpp ../csprot_caa/src
+vpath %.h inc
+vpath %.obj object
+
+
+all: $(OBJ)
+	$(NEW_LINE)
+	$(SEPARATOR_STR)
+	$(SILENT)$(ECHO) 'Creating executable : $(BIN_FILENAME)'
+	$(SILENT)$(RM) $(OBJDIR)/$(BIN_FILENAME)
+	$(CC) $(CFLAGS) $(APGINCLUDE) $(CINCLUDES) -o $(OUTFILE) $(OBJFILES) $(LDFLAGS) $(LIBSDIR) $(LIBS)
+	$(SEPARATOR_STR)
+	$(NEW_LINE)
+#	$(SILENT)cp -af $(OUTFILE) $(TARGETDIR)/$(LIB_FILENAME)
+#	$(SILENT)cp -af $(OBJDIR)/$(LIB_LINKER_NAME) $(TARGETDIR)
+
+release: $(OBJ)
+	$(NEW_LINE)
+	$(SEPARATOR_STR)
+	$(SILENT)$(ECHO) 'Creating library: $(BIN_FILENAME)'
+	$(SILENT)$(RM) $(OUTDIR)/$(BIN_FILENAME)
+	$(CC) $(CFLAGS) $(APGINCLUDE) $(CINCLUDES) -o $(OUTFILE) $(OBJFILES) $(LDFLAGS) $(LIBSDIR) $(LIBS)
+	$(SEPARATOR_STR)
+	$(NEW_LINE)
+#
+clean:
+	$(SILENT)$(ECHO) 'Cleaning file: $@'
+	$(SILENT)$(RM) $(wildcard $(OUTDIR)/*) $(wildcard $(OBJDIR)/*)
+	$(SILENT)$(RM) $(TARGETDIR)/$(LIB_FILENAME)
+	$(SILENT)$(RM) $(TARGETDIR)/$(LIB_LINKER_NAME)
+
+depend: $(SRCFILES)
+	makedepend $(CINCLUDES) $^
+
+## DO NOT DELETE THIS LINE -- make depend needs it

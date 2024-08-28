@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright (c) 2020 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Dec 9, 2020 2:39:54 PM using:
+	* com.ericsson.ecim.m2m 3.13.0.202006261811
+	* com.ericsson.ecim.dsl 3.13.0.202006261811
+	* com.ericsson.ecim.edm 3.13.0.202006261811
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>K</dtdVersion>
+    <momMetaData>
+        <momTitle>Managed Object Model for Audit Logging Management Function</momTitle>
+        <momSubTitle/>
+        <momIdentity>
+            <docNum>19089-CXA 117 0018/13</docNum>
+            <docLang>Uen</docLang>
+            <docRev>A</docRev>
+            <docDate>2020-12-09</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>XHARBAV</signature>
+        </createdBy>
+    </momMetaData>
+    <mib correction="0" name="AxeAuditLoggingAuditLoggingInstances" release="0" version="1">
+        <object parentDn="">
+            <hasClass name="AuditLoggingM">
+                <mimName>AxeAuditLogging</mimName>
+            </hasClass>
+            <slot name="auditLoggingMId">
+                <value>1</value>
+            </slot>
+            <slot name="largeEventDataSkipped">
+                <value>false</value>
+            </slot>
+        </object>
+    </mib>
+</models>

@@ -1,0 +1,48 @@
+csm-version: '1.0'
+components:
+- uid: acs.trapds
+  name: acs-trapds
+  description: ACS TRAPDS component
+  availability-manager: AMF
+  software:
+    sdp: ERIC-ACS_TRAPDSBIN-CXC1371470
+  supersedes:
+  - base-component: ERIC-APG_TRAPDS
+  availability-properties:
+    control-policy:
+      type: ADVANCED
+    multiplicity-policy:
+      node-active: ONE
+      node-standby: ONE
+      node-active-standby: 'NO'
+      cluster-active: ONE
+      cluster-standby: ONE
+    lifecycle-control:
+      prefix: /opt/ap/acs/bin
+      start: acs_trapds_clc instantiate
+      stop: acs_trapds_clc cleanup
+      monitor-keys:
+      - key: acs_trapdsd_hck
+        period: 240s
+        timeout: 180s
+      promote-demote-timeout: 200s
+      migrate-timeout: 60s
+      recovery-policy: COMPONENT_RESTART
+      start-stop-timeout: 100s
+  constraints:
+    installation:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+    upgrade:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+  meta-data:
+    component-version: 9.0.2-0
+    deliverable:
+      deployment-package: acs_trapds-9.0.2-0-deployment-CXC1371470.tar.gz
+      runtime-package: acs_trapds-9.0.2-0-runtime-CXC1371470.tar.gz
+    software:
+    - file-name: ACS_TRAPDSBIN-CXC1371470_9-R1C.x86_64.sdp
+      bundle-name: ERIC-ACS_TRAPDSBIN-CXC1371470_9-R1C

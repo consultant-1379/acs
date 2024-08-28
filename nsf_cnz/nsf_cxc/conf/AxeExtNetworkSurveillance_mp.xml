@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
+	Copyright (c) 2020 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Dec 14, 2020 10:11:10 AM using:
+	* com.ericsson.ecim.m2m 3.13.0.202006261811
+	* com.ericsson.ecim.dsl 3.13.0.202006261811
+	* com.ericsson.ecim.edm 3.13.0.202006261811
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>K</dtdVersion>
+    <momMetaData>
+        <momTitle>Managed Object Model for Network Surveillance Management Function</momTitle>
+        <momSubTitle/>
+        <momIdentity>
+            <docNum>19089-CXA 117 0035/5</docNum>
+            <docLang>Uen</docLang>
+            <docRev>D</docRev>
+            <docDate>2020-12-14</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>XHARBAV</signature>
+        </createdBy>
+    </momMetaData>
+    <mim author="Harika Bavana" contact="XHARBAV" correction="0" date="2020-12-14" docNo="" name="AxeExtNetworkSurveillance" namespace="urn:com:ericsson:ecim:AxeExtNetworkSurveillance" namespacePrefix="axeextnetworksurveillance" organization="" release="2" revision="" version="2">
+        <description>Network Surveillance Management function MOM.</description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="MOM_NAME"/>
+        </domainExtension>
+        <modelFeatures modelType="Template">
+            <modelFeature featureType="basic" name="CPI_HIDDEN"/>
+        </modelFeatures>
+        <enum name="StatusType">
+            <description>StatusType is an enumeration having values NO and YES.</description>
+            <enumMember name="YES">
+                <value>1</value>
+            </enumMember>
+            <enumMember name="NO">
+                <value>0</value>
+            </enumMember>
+        </enum>
+        <enum name="PriorityType">
+            <description>Lists the possible failover algorithms used to supervise the APG network in case the physical separation support is configured.</description>
+            <enumMember name="PUBLIC_NET">
+                <description>The public network connected to NIC(s) ETH0/ETH1 has higher priority than the one connected to NIC ETH2 in the failover algorithm. A failover is ordered only in case the network on ETH0/ETH1 is still reachable by APG.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="PUBLIC2_NET">
+                <description>The public network connected to NIC(s) ETH2 has higher priority than the one connected to NIC ETH0/ETH1 in the failover algorithm. A failover is ordered only in case the network on ETH2 is still reachable by APG.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <class name="ExternalNetworkSurveillanceM">
+            <description>Represents the root MOC for Network Surveillance Management function MOM.
+Network Surveillance Management function pings all default gateways for the network adapter used for external communication.
+If PS is configured, gateway configured on the separated network are monitored as well.
+Alarms are raised when routers not responding and a failover is requested when none of the routers responds to the active node.
+If PS is configured, the failover algorithm is based on a configurable parameter that sets a priority between the two external networks.</description>
+            <root/>
+            <action name="resetFailoverCount">
+                <description>Resets the attribute failoverCount to zero.
+Whenever Network Surveillance Management function triggers a failover the attribute failoverCount is incremented
+and no other failover is performed for 60 minutes post the failover trigger time.
+After 60 minutes, the attribute failoverCount is reset to zero and a new failover might be triggered.
+The action allows resetting the attribute without waiting 60 minutes.
+The action is not allowed in BSP.
+
+The action can fail due to one of the following reasons:
+Not allowed operation for this system configuration : The action is not allowed in BSP.</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="1"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <attribute name="isSurveillanceActive">
+                <description>Specifies the current status of Network Surveillance Management function.
+Default value is YES, meaning that external network surveillance is active after first APG installation.
+In BSP default value is NO, meaning that external network surveillance is not active.
+
+The modification can fail due to one of the following reasons:
+Not allowed operation for this system configuration: The attribute change is not allowed in BSP.</description>
+                <dataType>
+                    <enumRef name="StatusType">
+                        <defaultValue>YES</defaultValue>
+                        <mimName>AxeExtNetworkSurveillance</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="failoverCount">
+                <description>Specifies the number of performed failovers.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <uint32/>
+                </dataType>
+            </attribute>
+            <attribute name="externalNetworkSurveillanceMId">
+                <description>Holds the name used when identifying the MO.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="failoverPriority">
+                <description>Specifies the public network to be prioritized by the failover algorithm in case physical separation support is configured.
+By default, public network on ETH0/ETH1 has higher priority than the physically separated public network.
+In BSP, no physical separation support can be configured, hence this attribute cannot be modified.
+
+A failover is performed during the following conditions
+(a) If the routers connected to the prioritized network are not responding 
+on the active node but are responding on passive node, the failover is ordered. 
+(b) If the not prioritized network is not receiving response by its routers on active node, the failover is ordered only if on passive node both networks are receiving response by the respective routers.
+(c) If both networks are not working on the active node the failover is ordered only if at least 
+one network is receiving response by the respective routers on passive node.
+
+The modification can fail due to one of the following reasons:
+Not allowed operation for this system configuration: The attribute change is not allowed in BSP or when PS support is not configured.</description>
+                <dataType>
+                    <enumRef name="PriorityType">
+                        <defaultValue>PUBLIC_NET</defaultValue>
+                        <mimName>AxeExtNetworkSurveillance</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+        
+        
+    </mim>
+    <interMim>
+        <relationship name="SuperVisionHandling_to_ExternalNetworkSurveillance">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="SupervisionHandling">
+                        <mimName>AxeFunctions</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ExternalNetworkSurveillanceM">
+                        <mimName>AxeExtNetworkSurveillance</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

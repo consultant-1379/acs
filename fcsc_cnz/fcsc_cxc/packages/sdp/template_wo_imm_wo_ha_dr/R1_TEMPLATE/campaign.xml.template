@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<upgradeCampaign xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  safSmfCampaign="safSmfCampaign=ERIC-#TAG_NAME#-R-TEMPLATE-#TAG_CXP#-#TAG_REV#">
+  <campaignInfo>
+    <campaignPeriod/>
+  </campaignInfo>
+  <campaignInitialization>
+    <addToImm/>
+  </campaignInitialization>
+  <upgradeProcedure safSmfProcedure="safSmfProc=SingleStepProc">
+    <outageInfo>
+      <acceptableServiceOutage>
+        <all/>
+      </acceptableServiceOutage>
+      <procedurePeriod saSmfProcPeriod="60000000000"/>
+    </outageInfo>
+    <upgradeMethod>
+      <singleStepUpgrade>
+        <upgradeScope>
+          <forAddRemove>
+            <deactivationUnit>
+              <swRemove bundleDN="safSmfBundle=ERIC-#TAG_NAME#-#TAG_CXP#-#TAG_REV#">
+                <plmExecEnv amfNode="safAmfNode=SC-1,safAmfCluster=myAmfCluster"/>
+                <!-- Remove next line if only one SC on the system -->
+                <plmExecEnv amfNode="safAmfNode=SC-2,safAmfCluster=myAmfCluster"/>
+              </swRemove>
+            </deactivationUnit>
+            <activationUnit/>
+          </forAddRemove>
+        </upgradeScope>
+        <upgradeStep/>
+      </singleStepUpgrade>
+    </upgradeMethod>
+   </upgradeProcedure>
+  <campaignWrapup>
+    <campCompleteAction> 
+      <doCliCommand command="$OSAFCAMPAIGNROOT/remove_do_wrapup.sh" args="ERIC-#TAG_NAME#-#TAG_CXP#-#TAG_REV#"/>
+      <undoCliCommand command="$OSAFCAMPAIGNROOT/remove_undo_wrapup.sh" args="ERIC-#TAG_NAME#-#TAG_CXP#-#TAG_REV#"/>
+      <plmExecEnv amfNode="safAmfNode=SC-1,safAmfCluster=myAmfCluster"/>
+    </campCompleteAction> 
+    <waitToCommit/>
+    <waitToAllowNewCampaign/>
+    <removeFromImm/>
+  </campaignWrapup>
+</upgradeCampaign>

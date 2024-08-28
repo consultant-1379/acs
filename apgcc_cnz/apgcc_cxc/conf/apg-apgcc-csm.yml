@@ -1,0 +1,27 @@
+csm-version: '1.0'
+components:
+- uid: acs.apgcc
+  name: acs-apgcc
+  description: ACS APGCC component
+  availability-manager: NONE
+  software:
+    sdp: ERIC-ACS_APGCCBIN-CXC1371511
+  supersedes:
+  - software: ERIC-ACS_APGCCBIN-CXC1371511
+  constraints:
+    installation:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+    upgrade:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+  meta-data:
+    component-version: 12.0.1-0
+    deliverable:
+      deployment-package: acs_apgcc-12.0.1-0-deployment-CXC1371511.tar.gz
+      runtime-package: acs_apgcc-12.0.1-0-runtime-CXC1371511.tar.gz
+    software:
+    - file-name: ACS_APGCCBIN-CXC1371511_12-R1B.x86_64.sdp
+      bundle-name: ERIC-ACS_APGCCBIN-CXC1371511_12-R1B

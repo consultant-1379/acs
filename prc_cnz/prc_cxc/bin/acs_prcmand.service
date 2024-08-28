@@ -1,0 +1,12 @@
+[Unit]
+Description= acs_prcmand daemon
+After=opensafd.service lde-sshd.target 
+Requires=cyclic-boot-delay.service
+
+[Service]
+LimitCORE=infinity
+ExecStart=/opt/ap/acs/bin/acs_prcmand
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

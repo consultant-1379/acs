@@ -1,0 +1,368 @@
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2014 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# models.info
+##
+# Descript:ion:
+#       Configuration file used to perform IMM model changes during software upgrade for LCTBIN.
+##
+##
+# Changelog:
+# - Jan 16 2014 - Phaninder Gattu (XPHAGAT)
+#       First version
+##
+# log($message) ===> Use it to append a notice to the system log
+# log_error($message) ===> Use it to append an error message to the system log
+##
+##
+#-----------------------------------------------------------------------
+#       CHANGE-LOG
+#----------------------------------------------------------------------
+#APG 5.3.0 IA72764 TR Fix - LSV2416
+VERSION: CXC1371491_19-R1A02
+
+#APG 5.3 LSV2407 KPN Requirment
+VERSION: CXC1371491_19-R1A01
+#IA25179 TR fix
+VERSION: CXC1371491_17-R1B
+#GEP2 secondary
+VERSION: CXC1371491_17-R1A03
+#HZ94931 TR Fix
+VERSION: CXC1371491_17-R1A02
+
+#Offline Baseline Creation
+VERSION: CXC1371491_17-R1A01
+#APG 5.0
+VERSION: CXC1371491_16-R1D
+
+VERSION: CXC1371491_16-R1C
+
+VERSION: CXC1371491_16-R1B
+
+VERSION: CXC1371491_16-R1A01
+
+#APG 4.3 CM001
+VERSION: CXC1371491_14-R1F
+
+VERSION: CXC1371491_14-R1E
+VERSION: CXC1371491_14-R1D
+VERSION: CXC1371491_14-R1C
+VERSION: CXC1371491_14-R1B
+VERSION: CXC1371491_14-R1A04
+VERSION: CXC1371491_14-R1A03
+VERSION: CXC1371491_14-R1A02
+VERSION: CXC1371491_14-R1A01
+#APG 4.1 CM01
+VERSION: CXC1371491_13-R1B
+VERSION: CXC1371491_13-R1A05
+VERSION: CXC1371491_13-R1A04
+VERSION: CXC1371491_13-R1A03
+VERSION: CXC1371491_13-R1A02
+VERSION: CXC1371491_13-R1A01
+#APG 4.0 CM03
+VERSION: CXC1371491_12-R1C
+#APG 4.0 RM001
+VERSION: CXC1371491_12-R1B
+VERSION: CXC1371491_12-R1A01
+#APG 4.0
+VERSION: CXC1371491_11-R1F
+VERSION: CXC1371491_11-R1E
+#APG 3.8.1 
+VERSION: CXC1371491_11-R1D
+#APG 3.8 cm001 Rev B
+VERSION: CXC1371491_11-R1C
+#APG 3.8 cm001
+VERSION: CXC1371491_11-R1B
+#APG 3.8 LSV04
+VERSION: CXC1371491_11-R1A01
+#APG 3.8 LSV03
+VERSION: CXC1371491_10-R1C
+log "Model files updated by generating with new version of modelling tool"
+#APG43L 3.6.2
+
+# Adaptations to SwM2.0
+VERSION: CXC1371491_10-R1B
+VERSION: CXC1371491_10-R1A04
+VERSION: CXC1371491_10-R1A03
+VERSION: CXC1371491_10-R1A02
+VERSION: CXC1371491_10-R1A01
+VERSION: CXC1371491_9-R1B
+log " No models changes introduced in version CXC1371491_8-R1B"
+VERSION: CXC1371491_9-R1A10
+VERSION: CXC1371491_9-R1A09
+VERSION: CXC1371491_9-R1A08
+VERSION: CXC1371491_9-R1A07
+VERSION: CXC1371491_9-R1A06
+VERSION: CXC1371491_9-R1A05
+VERSION: CXC1371491_9-R1A04
+VERSION: CXC1371491_9-R1A03
+VERSION: CXC1371491_9-R1A02
+VERSION: CXC1371491_9-R1A01
+
+VERSION: CXC1371491_8-R1B
+
+#ENM Spillover 7 OAM-SA support
+VERSION: CXC1371491_8-R1A07
+log " No models changes introduced in version CXC1371491_8-R1A07"
+
+# TRs HW80585 & HW76647  
+VERSION: CXC1371491_8-R1A06
+log " No models changes introduced in version CXC1371491_8-R1A06"
+
+# CMW 4.5 impacts
+VERSION: CXC1371491_8-R1A06
+log " No models changes introduced in version CXC1371491_8-R1A05"
+
+VERSION: CXC1371491_8-R1A05
+log " No models changes introduced in version CXC1371491_8-R1A05"
+
+#TR HW61578
+VERSION: CXC1371491_8-R1A04
+log " No models changes introduced in version CXC1371491_8-R1A04"
+
+VERSION: CXC1371491_8-R1A03
+log " No models changes introduced in version CXC1371491_8-R1A03"
+
+VERSION: CXC1371491_8-R1A02
+log " No models changes introduced in version CXC1371491_8-R1A02"
+
+# GEP7 support
+VERSION: CXC1371491_8-R1A01
+log " No models changes introduced in version CXC1371491_8-R1A01"
+
+VERSION: CXC1371491_7-R1C
+log " No models changes introduced in version CXC1371491_7-R1C"
+
+VERSION: CXC1371491_7-R1B
+log " No models changes introduced in version CXC1371491_7-R1B"
+
+VERSION: CXC1371491_7-R1A
+log " No models changes introduced in version CXC1371491_7-R1A"
+
+VERSION: CXC1371491_6-R1A04
+log " No models changes introduced in version CXC1371491_6-R1A04"
+
+VERSION: CXC1371491_6-R1A03
+log " Executing model changes to create swmgr directory"
+immfind | grep -q 'lctApdirDataId=apdirdata61,apdirdataMId=1' || immcfg -c LCTapdirData -a dirPath=/data/ext/swmgr -a fileOwner=apgswmgr -a fileGroupOwner=apgsys -a fileBasicPermissions=765 -a fileSpecialPermissions=0 lctApdirDataId=apdirdata61,apdirdataMId=1
+
+VERSION: CXC1371491_6-R1A02
+log " No models changes introduced in version CXC1371491_6-R1A02"
+
+VERSION: CXC1371491_6-R1A01
+log " No models changes introduced in version CXC1371491_6-R1A01"
+
+VERSION: CXC1371491_5-R2A
+log " No models changes introduced in version CXC1371491_5-R2A"
+
+VERSION: CXC1371491_5-R1C
+log " No models changes introduced in version CXC1371491_5-R1C"
+
+VERSION: CXC1371491_5-R1B
+log " No models changes introduced in version CXC1371491_5-R1B"
+
+VERSION: CXC1371491_5-R1A12
+log " No models changes introduced in version CXC1371491_5-R1A12"
+
+VERSION: CXC1371491_5-R1A11
+log " No models changes introduced in version CXC1371491_5-R1A11"
+
+VERSION: CXC1371491_5-R1A10
+log " No models changes introduced in version CXC1371491_5-R1A10"
+
+VERSION: CXC1371491_5-R1A09
+log " No models changes introduced in version CXC1371491_5-R1A09"
+
+VERSION: CXC1371491_5-R1A08
+log " No models changes introduced in version CXC1371491_5-R1A08"
+
+#Rebasing from apg43l_3_2
+VERSION: CXC1371491_5-R1A07
+log " No models changes introduced in version CXC1371491_5-R1A07"
+
+VERSION: CXC1371491_5-R1A06
+log " No models changes introduced in version CXC1371491_5-R1A06"
+
+#rebase from apg43ldm branch
+VERSION: CXC1371491_5-R1A05
+log " No models changes introduced in version CXC1371491_5-R1A05"
+
+VERSION: CXC1371491_5-R1A04
+log " Executing model changes introduced in version CXC1371491_5-R1A04"
+immcfg -a fileBasicPermissions=775  lctApdirDataId=apdirdata57,apdirdataMId=1
+immcfg -c LCTapdirData -a dirPath=/data/opt/ap/internal_root/health_check/reports -a fileOwner=root -a fileGroupOwner=HELTHCHKGRP -a fileBasicPermissions=775 -a fileSpecialPermissions=2 lctApdirDataId=apdirdata58,apdirdataMId=1 
+immcfg -c LCTapdirData -a dirPath=/data/opt/ap/internal_root/health_check/rules -a fileOwner=root -a fileGroupOwner=HELTHCHKGRP -a fileBasicPermissions=775 -a fileSpecialPermissions=2 lctApdirDataId=apdirdata59,apdirdataMId=1 
+
+VERSION: CXC1371491_5-R1A03
+log " No models changes introduced in version CXC1371491_5-R1A03"
+
+
+VERSION: CXC1371491_5-R1A02
+log " No models changes introduced in version CXC1371491_5-R1A02"
+log "Model changes done to add new attribute maximumAccountAge"
+cmw-immclass-modify $BUNDLE_NAME AxeLocalTsUsersPolicyLocalTsUsersPolicyM
+log " Model changes done to change permissions for Certificate folder"
+immcfg -a fileBasicPermissions=777 lctApdirDataId=apdirdata57,apdirdataMId=1
+
+
+VERSION: CXC1371491_5-R1A01
+log " No models changes introduced in version CXC1371491_5-R1A01"
+
+VERSION: CXC1371491-R1E
+log " No models changes introduced in version CXC1371491-R1E"
+
+VERSION: CXC1371491-R1D
+log " No models changes introduced in version CXC1371491-R1D"
+
+VERSION: CXC1371491-R1C
+log " No models changes introduced in version CXC1371491-R1C"
+
+VERSION: CXC1371491-R1B
+log " No models changes introduced in version CXC1371491-R1B"
+
+VERSION: CXC1371491-R1A06
+log " No models changes introduced in version CXC1371491-R1A06"
+
+VERSION: CXC1371491-R1A05
+log " No models changes introduced in version CXC1371491-R1A05"
+
+
+VERSION: CXC1371491-R1A04
+log " Model changes done to change permissions for Certificate folder in CXC1371491-R1A04"
+immcfg -a fileBasicPermissions=777 lctApdirDataId=apdirdata57,apdirdataMId=1
+
+
+VERSION: CXC1371491-R1A03
+log " No models changes introduced in version CXC1371491-R1A03"
+
+
+VERSION: CXC1371491-R1A02
+log " No models changes introduced in version CXC1371491-R1A02"
+
+VERSION: CXC1371491-R1A01
+log "Model changes done to add new attribute maximumAccountAge"
+cmw-immclass-modify $BUNDLE_NAME AxeLocalTsUsersPolicyLocalTsUsersPolicyM
+
+VERSION: CXC1371473-R1H
+log " No models changes introduced in version CXC1371473-R1H"
+
+VERSION: CXC1371473-R1G
+log " No models changes introduced in version CXC1371473-R1G"
+
+VERSION: CXC1371473-R1F
+log " No models changes introduced in version CXC1371473-R1F"
+
+VERSION: CXC1371473-R1E
+log " No models changes introduced in version CXC1371473-R1E"
+
+VERSION: CXC1371473-R1D
+log " No model changes introduced in version CXC1371473-R1D"
+
+VERSION: CXC1371473-R1C
+log "No model changes introduced in version CXC1371473-R1C"
+
+VERSION: CXC1371473-R1B
+log "ApSession attribute welcomemessage has been made hidden for Banner Message impacts and also for backward compatiablity"
+
+VERSION: CXC1371473-R1B01
+log "ApSession attribute welcomemessage has been made hidden for Banner Message impacts and also for backward compatiablity"
+
+VERSION: CXC1371473-R1A17
+log "Model is validated and fixed warnings in versions CXC1371473-R1A17"
+
+VERSION: CXC1371473-R1A16
+log "Model is validated and fixed warnings in versions CXC1371473-R1A16"
+
+VERSION: CXC1371473-R1A15
+log "Model is validated and fixed warnings in versions CXC1371473-R1A15"
+
+VERSION: CXC1371473-R1A14
+log " Coverity fixes in version CXC1371473-R1A14 "
+
+VERSION: CXC1371473-R1A13
+log " Model is validated and fixed the warnings in version CXC1371473-R1A13 "
+
+VERSION: CXC1371473-R1A12
+log " Model is validated and fixed the warnings in version CXC1371473-R1A12 "
+
+VERSION: CXC1371473-R1A11
+log " model changes introduced in version CXC1371473-R1A11 "
+
+
+VERSION: CXC1371473-R1A10
+log " No model changes introduced in version CXC1371473-R1A10 "
+
+VERSION: CXC1371473-R1A09
+log "Performing model changes introduced in version CXC1371473-R1A09"
+immcfg -a fileGroupOwner=SUPPTDATGRP lctApdirDataId=apdirdata35,apdirdataMId=1
+immcfg -a fileGroupOwner=SUPPTDATGRP lctApdirDataId=apdirdata36,apdirdataMId=1
+immcfg -c LCTapdirData lctApdirDataId=apdirdata60,apdirdataMId=1
+immcfg -a dirPath=/data/ext lctApdirDataId=apdirdata60,apdirdataMId=1
+immcfg -a fileOwner=root lctApdirDataId=apdirdata60,apdirdataMId=1
+immcfg -a fileGroupOwner=root lctApdirDataId=apdirdata60,apdirdataMId=1
+immcfg -a fileBasicPermissions=755 lctApdirDataId=apdirdata60,apdirdataMId=1
+immcfg -a fileSpecialPermissions=0 lctApdirDataId=apdirdata60,apdirdataMId=1
+
+
+
+VERSION: CXC1371473-R1A08
+log " No model changes introduced in version CXC1371473-R1A08 "
+
+
+
+VERSION: CXC1371473-R1A07
+log " No model changes introduced in version CXC1371473-R1A07 "
+
+
+VERSION: CXC1371473-R1A06
+log "Performing model changes introduced in version CXC1371473-R1A06"
+immcfg -a fileOwner=root lctApdirDataId=apdirdata15,apdirdataMId=1
+immcfg -a fileOwner=root lctApdirDataId=apdirdata46,apdirdataMId=1
+
+VERSION: CXC1371473-R1A05
+log " No model changes introduced in version CXC1371473-R1A05 "
+
+
+VERSION: CXC1371473-R1A04
+log "Performing model changes introduced in version CXC1371473-R1A04"
+immcfg -a fileOwner=apgusersvc lctApdirDataId=apdirdata46,apdirdataMId=1
+
+
+
+VERSION: CXC1371473-R1A03
+log "Performing model changes introduced in version CXC1371473-R1A03"
+immcfg -a fileBasicPermissions=777 lctApdirDataId=apdirdata35,apdirdataMId=1
+immcfg -a fileBasicPermissions=777 lctApdirDataId=apdirdata36,apdirdataMId=1
+
+
+VERSION: CXC1371473-R1A02
+log "Performing model changes introduced in version CXC1371473-R1A02"
+immcfg -a fileOwner=apgusersvc lctApdirDataId=apdirdata15,apdirdataMId=1
+
+
+
+VERSION: CXC1371473-R1A01
+log "Performing model changes introduced in version CXC1371473-R1A01"
+immcfg -c LCTapdirData lctApdirDataId=apdirdata35,apdirdataMId=1
+immcfg -a dirPath=/data/IPT/DATA lctApdirDataId=apdirdata35,apdirdataMId=1
+immcfg -a fileOwner=root lctApdirDataId=apdirdata35,apdirdataMId=1
+immcfg -a fileGroupOwner=IPTDATAGRP lctApdirDataId=apdirdata35,apdirdataMId=1
+immcfg -a fileBasicPermissions=775 lctApdirDataId=apdirdata35,apdirdataMId=1
+immcfg -a fileSpecialPermissions=2 lctApdirDataId=apdirdata35,apdirdataMId=1
+immcfg -c LCTapdirData lctApdirDataId=apdirdata36,apdirdataMId=1
+immcfg -a dirPath=/data/IPT/LOGS lctApdirDataId=apdirdata36,apdirdataMId=1
+immcfg -a fileOwner=root lctApdirDataId=apdirdata36,apdirdataMId=1
+immcfg -a fileGroupOwner=IPTLOGSGRP lctApdirDataId=apdirdata36,apdirdataMId=1
+immcfg -a fileBasicPermissions=775 lctApdirDataId=apdirdata36,apdirdataMId=1
+immcfg -a fileSpecialPermissions=2 lctApdirDataId=apdirdata36,apdirdataMId=1
+ 
+VERSION: CXC1371351-R2A
+log "No model changes"
+
+VERSION: CXC1371351-R1Z
+log "Performing model changes introduced in version CXC1371351-R1Z"
+immcfg -a fileOwner=root lctApdirDataId=apdirdata15,apdirdataMId=1
+
+VERSION: CXC1371351-R1Y

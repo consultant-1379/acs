@@ -1,0 +1,550 @@
+#!/bin/bash
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2013 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# Name:
+#       ipsecdef
+# Description:
+#       This script is to define rules and policies for the IPsec Strongswan feature
+##
+#Usage:
+#      ipsecdef -i <IKEV1/IKEV2>
+#
+#      For Pre-shared Key Authentication:
+#      ipsecdef -r remoteaddr -k key -m mode -p protocol [-e encryptalg] [-g integrity] [-u dhgroup] [-h esnmode] [-l lifetime] [-a ikealg] [-v vlantag] [-w remotegw] [-s] policyname 
+#
+#      For Certificate-based Authentication: 
+#      ipsecdef -r remoteaddr -m mode -p protocol -t trustcategoryid -n nodecredentialid -d remotecertdn [-e encryptalg] [-g integrity] [-u dhgroup] [-h esnmode] [-l lifetime] [-a ikealg] [-v vlantag] [-w remotegw] [-s] policyname
+#
+##
+# Changelog:
+# - Jun 10 2020 - Sowmya Pola (XSOWPOL)
+#   - Update code to support IPV6 functionality in case vAPG.
+# - jan 23 2019 - Pardhasardhi
+#    -Parameters parsing, validation and configuration of Strongswan is done
+##
+installPath="/opt/ap/acs/bin/"
+source $installPath"ipsec_commons"
+
+apos_common="${AP_HOME:-/opt/ap}/apos/conf/apos_common.sh"
+source $apos_common
+
+#################
+#   Functions   #
+#################
+function usage() {
+    echo -e "\nIncorrect usage" >&2
+    if is_vAPG ; then
+        echo 'Usage: 
+          ipsecdef -i <IKEV1/IKEV2>
+
+          For Pre-shared Key Authentication:
+          ipsecdef -r remoteaddr -k key -m mode -p protocol [-e encryptalg] [-g integrity] [-u dhgroup] [-h esnmode] [-l lifetime] [-a ikealg] [-w remotegw] policyname 
+
+          For Certificate-based Authentication: 
+          ipsecdef -r remoteaddr -m mode -p protocol -t trustcategoryid -n nodecredentialid -d remotecertdn [-e encryptalg] [-g integrity] [-u dhgroup] [-h esnmode] [-l lifetime] [-a ikelag] [-w remotegw] policyname
+'
+    else
+        echo 'Usage: 
+          ipsecdef -i <IKEV1/IKEV2>
+
+          For Pre-shared Key Authentication:
+          ipsecdef -r remoteaddr -k key -m mode -p protocol [-e encryptalg] [-g integrity] [-u dhgroup] [-h esnmode] [-l lifetime] [-a ikealg] [-v vlantag] [-w remotegw] [-s] policyname 
+
+          For Certificate-based Authentication:
+          ipsecdef -r remoteaddr -m mode -p protocol -t trustcategoryid -n nodecredentialid -d remotecertdn [-e encryptalg] [-g integrity] [-u dhgroup] [-h esnmode] [-l lifetime] [-a ikealg] [-v vlantag] [-w remotegw] [-s] policyname
+'
+    fi
+}
+
+################
+# Main Program #
+################
+
+#Add the info to log file
+INFO "ipsecdef starts here..."
+#Flag settings for options checks
+rflag=""
+kflag=""
+mflag=""
+pflag=""
+eflag=""
+hflag=""
+lflag=""
+uflag=""
+vflag=""
+wflag=""
+sflag=""
+tflag=""
+nflag=""
+gfalg=""
+qfalg=""
+bflag=""
+ridflag=""
+lidflag=""
+
+#Default values
+networkprotocol="any"
+localport="any"
+remoteport="any"
+encralg="aes256"
+integrity="sha512"
+esnmode="noesn"
+lifetime=1h
+dh_group="modp4096"
+leftid=""
+ikealg="aes256-sha512-modp4096"
+remotecertdn=""
+ikelifetime=1h
+remoteVirtualIp="no"
+ike_type="IKEV2"
+authentication="PKI"
+nparameter=0
+tparameter=0
+STRONGSWAN_CFGFILE="/etc/ipsec.conf"
+STRONGSWAN_SECRETS="/etc/ipsec.secrets"
+STRONGSWAN_BASEDIR="/etc/ipsec.d/"
+
+options='-a -d -e -g -h -k -l -m -n -p -q -r -s -t -u -v -w'
+
+log "START: <$0 $*>"
+
+#Checking for node status
+INFO "Checking for node status and session type..."
+
+ipsec_exitnotactive
+ipsec_exitwrongsessiontype
+
+current_node_id=$(cat $CURRENT_NODE_ID_FILE)
+
+if [ ${#@} -eq 0 ] ; then
+    ipsec_exit $EXIT_INCORRECT_USAGE
+fi
+
+parameters=($@)
+policyname=${parameters[${#@} - 1]}
+ipsec_checknotempty "$policyname"
+if ipsec_checklist "$policyname" "$options" ; then
+    ipsec_exit $EXIT_INCORRECT_USAGE
+fi
+
+parameters=(${parameters[@]:0:((${#@} - 1))})
+num_parameters=${#parameters[@]}
+i=0
+while [ $i -lt $num_parameters ] ; do
+    case ${parameters[$i]} in
+        -a )  [ $aflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+	         aflag=true
+            (( i = $i + 1 ))
+            ikealg=${parameters[$i]}
+            ipsec_checknotempty "$ikealg"
+            if ipsec_checklist "$ikealg" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+	    ;;
+	-d )  [ $dflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+	         dflag=true
+            (( i = $i + 1 ))
+            remotecertdn=${parameters[$i]}
+            ipsec_checknotempty "$remotecertdn"
+            if ipsec_checklist "$remotecertdn" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+        -e )    [ $eflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+		    eflag=true
+            (( i = $i + 1 ))
+            encralg=${parameters[$i]}
+            ipsec_checknotempty "$encralg"
+            if ipsec_checklist "$encralg" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+	-g ) [ $gflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+                gflag=true
+            (( i = $i + 1 ))
+            integrity=${parameters[$i]}
+            ipsec_checknotempty "$integrity"
+            if ipsec_checklist "$integrity" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi 
+            ;;
+	-h )    [ $hflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+		    hflag=true
+            (( i = $i + 1 ))
+            esnmode=${parameters[$i]}
+            ipsec_checknotempty "$esnmode"
+            if ipsec_checklist "$esnmode" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+        -k )    [ $kflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+            [ $tflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+            [ $nflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+	        kflag=true
+            (( i = $i + 1 ))
+            presharedkey=${parameters[$i]}
+            ipsec_checknotempty "$presharedkey"
+            if ipsec_checklist "$presharedkey" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+	-l )    [ $lflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+		    lflag=true
+            (( i = $i + 1 ))
+            lifetime=${parameters[$i]}
+            ipsec_checknotempty "$lifetime"
+            if ipsec_checklist "$lifetime" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+	-m )    [ $mflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+		    mflag=true
+            (( i = $i + 1 ))
+            mode=${parameters[$i]}
+            ipsec_checknotempty "$mode"
+            if ipsec_checklist "$mode" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+	-n ) [ $kflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+             [ $nflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+             nflag=true
+            (( i = $i + 1 ))
+            nparameter=${parameters[$i]}
+            ipsec_checknotempty "$nparameter"
+            if ipsec_checklist "$nparameter" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+	-p )    [ $pflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+		    pflag=true
+            (( i = $i + 1 ))
+            protocol=${parameters[$i]}
+            ipsec_checknotempty "$protocol"
+            if ipsec_checklist "$protocol" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+	-q )    [ $qflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+		    qflag=true
+            (( i = $i + 1 ))
+            remoteVirtualIp=${parameters[$i]}
+            ipsec_checknotempty "$remoteVirtualIp"
+            if ipsec_checklist "$remoteVirtualIp" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+        -r )  [ $rflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+	        rflag=true
+            (( i = $i + 1 ))
+            remoteaddr=${parameters[$i]}
+            ipsec_checknotempty "$remoteaddr"
+            if ipsec_checklist "$remoteaddr" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+        -s ) is_vAPG && ipsec_exit $EXIT_INCORRECT_USAGE    
+            [ $sflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+		    [ $vflag ] && ipsec_exit $EXIT_INCORRECT_USAGE
+		    sflag=true
+            ;;
+	-t ) [ $kflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+             [ $tflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+             tflag=true
+            (( i = $i + 1 ))
+            tparameter=${parameters[$i]}
+            ipsec_checknotempty "$tparameter"
+            if ipsec_checklist "$tparameter" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+        -u )    [ $uflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+		    uflag=true
+            (( i = $i + 1 ))
+            dh_group=${parameters[$i]}
+            ipsec_checknotempty "$dh_group"
+            if ipsec_checklist "$dh_group" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+	-v )    is_vAPG && ipsec_exit $EXIT_INCORRECT_USAGE
+                [ $vflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+		    vflag=true
+            (( i = $i + 1 ))
+            vlantag=${parameters[$i]}
+            ipsec_checknotempty "$vlantag"
+            if ipsec_checklist "$vlantag" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+	-w )    [ $wflag ] &&  ipsec_exit $EXIT_INCORRECT_USAGE
+		    wflag=true
+            (( i = $i + 1 ))
+            remgw=${parameters[$i]}
+            ipsec_checknotempty "$remgw"
+            if ipsec_checklist "$remgw" "$options" ; then
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            ;;
+         * )    ipsec_exit $EXIT_INCORRECT_USAGE
+    esac
+    (( i = $i + 1 ))
+done
+
+#Mandatory Arguments
+if  [ ! $rflag ] || [ ! $mflag ] || [ ! $pflag ] ; then
+    ipsec_exit $EXIT_INCORRECT_USAGE
+fi
+
+#VLAN PS NOT COMPATIBLE
+if [ $sflag ] && [ $vflag ] ; then
+    ipsec_exit $EXIT_VLAN_PS_NOT_COMPATIBLE
+fi
+
+#Either PSK or certificates to be used
+if [ $kflag ] ; then
+    if  [ $tflag ] || [ $nflag ] ; then
+         ipsec_exit $EXIT_INCORRECT_USAGE
+    fi
+    authentication="PSK"
+else
+    if  [ ! $tflag ] || [ ! $nflag ] ; then
+         ipsec_exit $EXIT_INCORRECT_USAGE
+    fi
+    authentication="PKI"
+
+    #remotecertdnis mandatory
+    if [ ! $dflag ] ; then
+        echo -e "\nRemote Certificate DN is mandatory argument." >&2
+        ipsec_exit $EXIT_INCORRECT_USAGE
+    fi
+fi
+
+#Remoteaddress check
+INFO "Check for remote address"
+if [ "$remoteaddr" != "%any" ] ; then    
+    ipsec_checkipaddress "$remoteaddr"
+    add=""
+    if grep "right=$remoteaddr" "$STRONGSWAN_CFGFILE" &> /dev/null ; then
+        echo -e "\nPolicy definition not allowed. Connection to this address already exists: $remoteaddr." >&2
+        ipsec_exit $EXIT_CONFLICTING_POLICY_DETECTED
+    else
+        add=true
+    fi
+else
+    add=true
+fi
+
+#Remoteaddress check - vAPG Single Stack
+ipformat=$ipversion
+oam_ip_format=""
+if [ -d "/etc/cluster/nodes/this/mip/nbi" ] && [ -d "/etc/cluster/nodes/this/mip/nbi_v6" ]; then
+    oam_ip_format="4,6"
+elif [ -d "/etc/cluster/nodes/this/mip/nbi" ]; then
+    oam_ip_format="4"
+elif [ -d "/etc/cluster/nodes/this/mip/nbi_v6" ]; then
+    oam_ip_format="6"
+fi
+if is_vAPG ; then
+    stack_value=$(cat $IP_VERSION_FILE)
+    if [ "$oam_ip_format" != "4,6" ] ; then
+        if [ "$ipversion" == "6" ] && [ "$oam_ip_format" != "6" ] ; then
+            ipsec_exit $EXIT_INVALID_IP_ADDRESS_CONFIGURATION $remoteaddr $stack_value
+        elif [ "$ipversion" == "4" ] && [ "$oam_ip_format" != "4" ] ; then
+            ipsec_exit $EXIT_INVALID_IP_ADDRESS_CONFIGURATION $remoteaddr $stack_value
+        fi
+    fi
+fi
+
+#local address in case of vAPG
+INFO "Check whether cluster files exists and configuration is valid"
+if is_vAPG ; then
+    if [ "$ipversion" == "6" ] ; then
+	localaddr=$(cat $CLUSTER_IPV6_ADDRESS_FILE)
+    elif [ "$ipversion" == "4" ] ; then
+	localaddr=$(cat $CLUSTER_ADDRESS_FILE)
+    fi    
+fi
+
+#policy check
+INFO "checking for policy name $policyname"
+ipsec_checkpolicyname "$policyname" "IKEV2"
+
+if ! ipsec_checklist "$mode" "transport" "tunnel" ; then
+        ipsec_exit $EXIT_UNREASONABLE_VALUE "for mode: $mode"
+fi
+
+#vpn check
+INFO "checking for remoteVirtualIp $remoteVirtualIp"
+if [ $qflag ] ; then
+    if ! ipsec_checklist "$remoteVirtualIp" "no" "yes" ; then
+        ipsec_exit $EXIT_UNREASONABLE_VALUE "for vpn : $remoteVirtualIp"
+    fi
+fi
+
+#If PSK
+if [ $kflag ] ; then
+    if [ $wflag ] ; then  
+        ipsec_checkpresharedkey "$presharedkey" "$remgw"
+    else 
+        ipsec_checkpresharedkey "$presharedkey" "$remoteaddr"
+    fi
+
+    if ! ipsec_checklist "$mode" "transport" "tunnel" ; then
+        ipsec_exit $EXIT_UNREASONABLE_VALUE "for mode : $mode"
+    fi
+fi
+
+if [ ! $kflag ] ; then
+        ipsec_checktrustcategory "$tparameter"
+        ipsec_checknodecredentials "$nparameter"
+fi
+
+INFO "Check for Protocol $protocol"    
+if ! ipsec_checklist "$protocol" "ESP" "AH" ; then
+    ipsec_exit $EXIT_UNREASONABLE_VALUE "for protocol : $protocol"
+fi
+
+if [ "$protocol" == "ESP" ] ; then
+    protocol="esp"
+elif [ "$protocol" == "AH" ] ; then
+    protocol="ah"
+fi
+
+INFO "Check for integrity $integrity"
+if [ $gflag ] ; then
+    ipsec_checkintegrity "$integrity"
+fi
+
+INFO "Check for dhgroup $dh_group"
+if [ $uflag ] ; then
+    ipsec_checkdhgroup "$dh_group" "IKEV2"
+fi
+
+INFO "Check for esnmode $esnmode"
+if [ $hflag ] ; then
+    ipsec_checkesn "$esnmode"
+fi
+
+INFO "Check for lifetime $lifetime"
+if [ $lflag ] ; then
+    ipsec_checklifetime "$lifetime" "IKEV2"
+    ikelifetime=$lifetime
+fi
+
+if [ $sflag ] && [ $vflag ] ; then
+    ipsec_exit $EXIT_VLAN_PS_NOT_COMPATIBLE
+fi
+
+if [ "$mode" == "transport" ] && [ $wflag ] ; then
+    ipsec_exit $EXIT_GATEWAY_NOT_APPLICABLE
+fi
+
+if [ $wflag ] ; then
+    ipsec_checkipaddress $remgw
+
+    #RemoteGatewayAddress check - vAPG Single Stack
+    if is_vAPG ; then
+        if [ "$stack_value" != "4,6" ] ; then
+            if [ "$ipversion" == "6" ] && [ "$stack_value" != "6" ] ; then
+	        ipsec_exit $EXIT_INVALID_IP_ADDRESS_CONFIGURATION $remgw $stack_value 
+            elif [ "$ipversion" == "4" ] && [ "$stack_value" != "4" ] ; then
+                ipsec_exit $EXIT_INVALID_IP_ADDRESS_CONFIGURATION $remgw $stack_value
+            fi
+        fi
+	
+	if [ "$ipversion" != $ipformat ] ; then
+            ipsec_exit $EXIT_MISMATCH_GATEWAY_ADDRESS
+        fi
+    fi
+
+else
+   remgw=$remoteaddr
+fi
+
+if [ $eflag ] ; then
+   ipsec_checkencralg $encralg "IKEV2"
+fi
+
+INFO "Check ikealg"
+if [ $aflag ] ; then
+   ipsec_checkikealg $ikealg
+fi
+
+
+INFO "Creating new protocol"
+protocol_string=""
+ if [ $add ] ; then
+        ipsec_backup
+        if [ ! -z "$protocol" ] ; then
+            protocol_string="$protocol="
+        fi
+
+	if [ ! -z "$encralg" ] ; then
+            protocol_string="$protocol_string$encralg-"
+        fi
+
+        if [ ! -z "$integrity" ] ; then
+            protocol_string="$protocol_string$integrity-"
+        fi
+
+	if [ ! -z "$dh_group" ] ; then
+            protocol_string="$protocol_string$dh_group-"
+        fi
+
+        if [ ! -z "$esnmode" ] ; then
+            protocol_string="$protocol_string$esnmode"
+        fi
+
+INFO "Local address checking"
+if ! is_vAPG ; then
+    if [ $sflag ] ; then
+        ipsec_exitpsnotconfigured
+        localaddr=$(cat $PHYSEP_ADDRESS_FILE)
+    elif [ $vflag ] ; then
+        ipsec_exitvlannotconfigured "$vlantag"
+        vlan_name=$(ipsec_retrieve_vlan_name "$vlantag")
+        if [ "$vlan_name" != "Public" ] ; then
+    	    localaddr=$(cat $VLAN_ADDRESS_FILE_PART1$vlantag$VLAN_ADDRESS_FILE_PART2)
+	else
+	    localaddr=$(cat $CLUSTER_ADDRESS_FILE)
+        fi
+    else
+	localaddr=$(cat $CLUSTER_ADDRESS_FILE)
+    fi
+fi
+
+#Local address check in case of vAPG
+#INFO "Local address check in case of vAPG"
+#if is_vAPG ; then
+#    if [ "$ipversion" != "6" ] ; then
+#        localaddr=$(cat $CLUSTER_ADDRESS_FILE)
+#    else
+#        localaddr=$(cat $CLUSTER_IPV6_ADDRESS_FILE)
+#    fi
+#fi
+
+     INFO "Writing new connection to IMM"
+     immcfg -c IpsecConnection -a type=$mode -a remoteIP=$remoteaddr -a ipsecParam=$localaddr -a protocol=$protocol_string -a lifetime=$lifetime -a key=$presharedkey -a nodeCredentialId=$nparameter -a trustCategoryId=$tparameter -a authentication=$authentication -a ikeEncryptAlg=$ikealg -a remoteCertDn=$remotecertdn -a ikelifetime=$ikelifetime -a remoteVirtualIP=$remoteVirtualIp ipsecConnectionId=$policyname,acsSecurityMId=1 2> /dev/null
+
+    if [ $? -gt 0 ] ; then
+        #echo -e "\nFailed to create new Connection $policyname" >&2
+        ipsec_exit $EXIT_CONNECTION_CREATION_FAILED $policyname 
+	#need to change the error message
+    fi
+
+        trap "ipsec_restore;ipsec_remove_backup;ipsec_remove_tmp_files;ipsec_exit $EXIT_GENERAL_FAULT" SIGHUP SIGINT SIGQUIT SIGILL SIGABRT SIGBUS SIGSEGV SIGPIPE SIGTERM SIGCHLD SIGTSTP SIGXCPU SIGPWR SIGSYS
+
+        trap - SIGHUP SIGINT SIGQUIT SIGILL SIGABRT SIGBUS SIGSEGV SIGPIPE SIGTERM SIGCHLD SIGTSTP SIGXCPU SIGPWR SIGSYS
+
+        start_stop_racoon stop
+        start_stop_strongswan stop
+        start_stop_strongswan start
+
+fi
+
+log "END: <$0>"
+ipsec_exit $EXIT_SUCCESS

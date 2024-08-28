@@ -1,0 +1,200 @@
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2014 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# models.info
+##
+# Description:
+#       Configuration file used to perform IMM model changes during software upgrade for LMBIN.
+##
+##
+# Changelog:
+# - Feb 11 2014 - Kiran Apuri (XKIRAPU)
+#       First version
+##
+# log($message) ===> Use it to append a notice to the system log
+# log_error($message) ===> Use it to append an error message to the system log
+##
+##
+#-----------------------------------------------------------------------
+#       CHANGE-LOG
+#----------------------------------------------------------------------
+#APG 5.0 CM002
+VERSION: CXC1371494_14-R1D
+
+#APG 4.3 LSV2217
+VERSION: CXC1371494_14-R1C
+
+#APG 4.2 CM02
+VERSION: CXC1371494_14-R1B
+
+#APG 4.2 LSV2138
+VERSION: CXC1371494_14-R1A01
+
+#APG 4.1 CM02
+VERSION: CXC1371494_13-R1B
+
+#APG 4.1 LSV03
+VERSION: CXC1371494_13-R1A01
+log "Model files Updated for descriptions of fingerprint and hashedfingerprint attributes"
+
+#APG 4.0 CM001
+VERSION: CXC1371494_12-R1B
+
+#APG 4.0 LSV07
+VERSION: CXC1371494_12-R1A05
+
+VERSION: CXC1371494_12-R1A04
+
+#APG 4.0 LSV05
+VERSION: CXC1371494_12-R1A03
+
+#APG 4.0 LSV04
+VERSION: CXC1371494_12-R1A02
+
+#APG 4.0 LSV03
+VERSION: CXC1371494_12-R1A01
+
+#APG 3.8 RM001
+VERSION: CXC1371494_9-R1G
+
+#APG 3.8 LSV03 
+VERSION: CXC1371494_9-R1F
+
+#APG 3.8 LSV03
+VERSION: CXC1371494_9-R1E
+log "Model files updated by generating with new version of modelling tool"
+
+#Sentinel V8.6.2
+VERSION: CXC1371494_9-R1D
+
+#TR_HX61400
+VERSION: CXC1371494_9-R1C
+
+#no change in CXC1371494_9-R1B
+VERSION: CXC1371494_9-R1B
+
+VERSION: CXC1371494_9-R1A05
+#TR_HX20968
+VERSION: CXC1371494_9-R1A04
+
+#no change in CXC1371494_9-R1A03
+VERSION: CXC1371494_9-R1A03
+
+# Adaptations to SwM2.0
+VERSION: CXC1371494_9-R1A02
+VERSION: CXC1371494_9-R1A01
+
+#no change in CXC1371494_7-R1B
+VERSION: CXC1371494_7-R1B
+
+#no change in CXC1371494_7-R1A03
+VERSION: CXC1371494_7-R1A03
+
+#no change in CXC1371494_7-R1A02
+VERSION: CXC1371494_7-R1A02
+
+#no change in CXC1371494_7-R1A01
+VERSION: CXC1371494_7-R1A01
+
+#no change in CXC1371494_5-R1B
+VERSION: CXC1371494_5-R1B
+
+#no change in CXC1371494_5-R1A06
+VERSION: CXC1371494_5-R1A06
+
+#no change in CXC1371494_5-R1A05
+VERSION: CXC1371494_5-R1A05
+
+#no change in CXC1371494_5-R1A04
+VERSION: CXC1371494_5-R1A04
+
+#no change in CXC1371494_5-R1A03
+VERSION: CXC1371494_5-R1A03
+
+#no change in CXC1371494_5-R1A02
+VERSION: CXC1371494_5-R1A02
+
+#no change in CXC1371494_5-R1A01
+VERSION: CXC1371494_5-R1A01
+
+#no change in CXC1371494-R1A07
+#Enum "AdmState" is changed to "BasicAdmState".
+VERSION: CXC1371494-R1A07
+
+#no change in CXC1371494-R1A06
+VERSION: CXC1371494-R1A06
+
+#no change in CXC1371494-R1A05
+VERSION: CXC1371494-R1A05
+
+#no change in CXC1371494-R1A04
+VERSION: CXC1371494-R1A04
+
+#no change in CXC1371494-R1A03
+VERSION: CXC1371494-R1A03
+
+#no change in CXC1371494-R1A02
+VERSION: CXC1371494-R1A02
+
+#Rel 3.0
+#no change in CXC1371494-R1A01
+VERSION: CXC1371494-R1A01
+
+#Rel 2.0 --> Corrections
+#CM3BSP(CM006) - no change in CXC1371451-R1F
+VERSION: CXC1371451-R1F
+
+#LSV35(CM005) - no change in CXC1371451-R1E
+VERSION: CXC1371451-R1E
+ 
+#LSV35(CM004) - no change in CXC1371451-R1D
+VERSION: CXC1371451-R1D
+
+#LSV35(CM003) - no change
+VERSION: CXC1371451-R1C
+
+#LSV34(CM002) - no change
+VERSION: CXC1371451-R1B
+
+#Rel 2.0 --> PRA 
+#LLV33- "New Action "exportLicenseKeyFile" is introduced" 
+VERSION: CXC1371451-R1A21
+log "Performing model changes introduced in version CXC1371451-R1A21 for ExportLKF action"
+
+#LSV32 - no change
+VERSION: CXC1371451-R1A20
+
+#LSV31 - New attribute (hashedFingerprint) has been added due to OP#373 
+VERSION: CXC1371451-R1A19
+log "Performing model changes introduced in version CXC1371451-R1A19"
+cmw-immclass-modify $BUNDLE_NAME AxeLicenseManagementLicenseM
+
+#LSV30 - no change
+
+#LSV30_ID - no change
+VERSION: CXC1371451-R1A18
+
+#LSV28 - no changes
+VERSION: CXC1371451-R1A17
+
+#LSV27 - no changes
+VERSION: CXC1371451-R1A16
+
+#LSV26 - no changes
+VERSION: CXC1371451-R1A15
+
+#LSV25 - no changes
+VERSION: CXC1371451-R1A14
+
+#LSV24 - no changes
+VERSION: CXC1371451-R1A13
+
+#LSV23 - no changes
+VERSION: CXC1371451-R1A12
+
+
+#Rel 1.0 
+VERSION: CXC1371365-R1V
+

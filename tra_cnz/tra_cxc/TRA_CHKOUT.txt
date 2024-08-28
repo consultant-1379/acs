@@ -1,0 +1,3 @@
+T:\ntacs\tra_cnz\tra_cxc\bin\libACS_TRA.so.2.4.1
+T:\ntacs\tra_cnz\tra_cxc\bin\trautil
+T:\ntacs\tra_cnz\tra_cxc\packages\rpm\ACS_TRA-CXC1371321-R1A14.x86_64.rpm

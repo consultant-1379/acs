@@ -1,0 +1,242 @@
+#!/bin/bash
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2013 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# Name:
+#       ipsecdef
+# Description:
+#       This script is to define rules and policies for the IPSec feature
+##
+# Usage: ipsecdef -i IKEV1/IKV2
+##
+# Changelog:
+# - Jun 10 2020 - Sowmya Pola (XSOWPOL)
+#   - Updated code accordingly to support IPV6 functionality in case of vAPG.
+# - jan 23 2019 - Pardhasaradhi
+#   - -i option is supported
+#   - Racoon and Strongswan funcionality is moved to ipsecde_racoon and ipsecdef_strongswan scripts respectively
+# - Apr 4 2017 - Rajashekar Narla (XCSRAJN)
+#   - Updated command syntax not to allow usage of -s option in virtual environment
+# - Mar 1 2017 - Rajashekar Narla (XCSRAJN)
+#   - Updated command syntax not to allow usage of -v option in virtual environment
+# - Mar 28 2016 - Nikhila Sattala (XNIKSAT)
+#   - Updated with SLES12 impacts
+# - Aug 12 2015 - Furqunan Ullah(XFURULL)
+#   - Fix for TR HT94442
+# - Mar 16 2015 - Nazeema Begum (XNAZBEG)
+#   - Fix for TR HT39687 
+#	+ Added logging mechanism
+#	+ Validation of options
+# - nov 24 2014 - Fabio Imperato (XFABIMP)
+#   - Fix for TR HT26511
+# - jun 4 2014 - Fabrizio Paglia (XFABPAG)
+#   - Avoided blank lines in setkey.conf
+# - jun 3 2014 - Fabrizio Paglia (XFABPAG)
+#   - Fix for TR HS62885
+#        + Added -l option
+#   - VLAN handling changed: adapted for Public VLAN, added exit codes for not existing VLAN/VLAN not defined
+# - feb 14 2014 - Quyen Dao (XQUYDAO)
+#   - Updated command syntax and code to allow user to choose PFS group
+# - jan 14 2014 - Danh Nguyen / Quyen Dao (XNGUDAN / XQUYDAO)
+#   - Updated command syntax and code to allow user to choose IPsec protocol: AH, ESP or AH_ESP
+# - nov 29 2013 - Quyen Dao (XQUYDAO)
+#    - Added pre-shared key check
+# - nov 27 2013 - Quyen Dao (XQUYDAO)
+#    - Update the conflicting policy behaviour
+#        + Removed the conflicting policy replacement
+#        + Print error slogan "Conflicting policy detected: <policy name>"
+# - oct 15 2013 - Fabrizio Paglia (XFABPAG)
+#    - Added VLAN support
+# - oct 14 2013 - Fabrizio Paglia (XFABPAG)
+#    - Bug fixed in conflicting policy search
+#    - Confirm printout corrected
+# - oct 08 2013 - Fabrizio Paglia (XFABPAG)
+#    - Removed single nodes IP addresses from the printout
+# - oct 07 2013 - Fabrizio Paglia (XFABPAG)
+#    - Printout aligned with ipsecls (only shown in case of policy replacement)
+# - oct 06 2013 - Fabrizio Paglia (XFABPAG)
+#    - Policies created also for single nodes IP addresses
+# - oct 02 2013 - Fabrizio Paglia (XFABPAG)
+#    - Usage and options changed.
+#    - Re-added AH support in tunnel mode.
+# - sep 30 2013 - Fabrizio Paglia (XFABPAG)
+#    - Usage and options changed.
+#    - Tunnel mode handling changed.
+#    - Added check for not allowing bash shell execution from port 4422-4423.
+# - sep 23 2013 - Fabrizio Paglia (XFABPAG)
+#    - Added option -t
+#    - Added removal of backup after restore
+#    - Added removal of previous temp files
+# - sep 16 2013 - Fabrizio Paglia (XFABPAG)
+#    - Changed after the meeting in Pagani (usage/options changed, unified policy/remote directive insert)
+# - sep 13 2013 - Fabrizio Paglia (XFABPAG)
+#    - Added new line before security policies
+#    - Changed ?[y=yes, n=no] in (y/n)
+# - sep 12 2013 - Fabrizio Paglia (XFABPAG)
+#    - Bug fixed in policy building
+#    - Temporarily removed the option -n
+# - sep 11 2013 - Fabrizio Paglia (XFABPAG)
+#    - Support of direction "fwd" deleted
+#    - Check for not allowing subnets in a remote directive
+#    - Bug fixed in policy building
+# - sep 9 2013 - Fabrizio Paglia (XFABPAG)
+#    - Printouts changed
+#    - Added backup/restore of configuration in case of failed racoon restart
+#    - Support of direction "fwd"
+#    - Bug fixed in racoon.conf file inclusion
+# - sep 3-5 2013 - Alessandro Mortari / Fabrizio Paglia
+#    - First draft
+
+##
+installPath="/opt/ap/acs/bin/"
+source $installPath"ipsec_commons"
+IKE_VER_CLUSTER_FILE="/cluster/storage/system/config/asec/strongswan/ikeversion"
+
+apos_common="${AP_HOME:-/opt/ap}/apos/conf/apos_common.sh"
+source $apos_common
+
+#################
+#   Functions   #
+#################
+function usage() {
+    echo -e "\nIncorrect usage" >&2
+    if is_vAPG ; then
+      echo 'Usage:
+	ipsecdef -i <IKEV1/IKEV2>
+
+        For IKEV1: 
+        ipsecdef -r remoteaddr -k key -m mode -p protocol [-e encryptalg] [-f pfsgroup] [-h hashalg] [-l lifetime] [-u dhgroup] [-w remotegw] policyname 
+
+        For IKEV2 with Pre-shared Key Authentication:
+        ipsecdef -r remoteaddr -k key -m mode -p protocol [-e encryptalg] [-g integrity] [-u dhgroup] [-h esnmode] [-l lifetime] [-a ikealg] [-w remotegw] policyname 
+
+        For IKEV2 with Certificate-based Authentication: 
+        ipsecdef -r remoteaddr -m mode -p protocol -t trustcategoryid -n nodecredentialid [-e encryptalg] [-g integrity] [-u dhgroup] [-h esnmode] [-l lifetime] [-a ikelag] [-d remotecertdn] [-w remotegw] policyname
+'
+    else
+      echo 'Usage:
+	ipsecdef -i <IKEV1/IKEV2>
+
+        For IKEV1: 
+        ipsecdef -r remoteaddr -k key -m mode -p protocol [-e encryptalg] [-f pfsgroup] [-h hashalg] [-l lifetime] [-u dhgroup] [-v vlantag] [-w remotegw] [-s] policyname 
+
+        For IKEV2 with Pre-shared Key Authentication:
+        ipsecdef -r remoteaddr -k key -m mode -p protocol [-e encryptalg] [-g integrity] [-u dhgroup] [-h esnmode] [-l lifetime] [-a ikealg] [-v vlantag] [-w remotegw] [-s] policyname 
+
+        For IKEV2 with Certificate-based Authentication: 
+        ipsecdef -r remoteaddr -m mode -p protocol -t trustcategoryid -n nodecredentialid [-e encryptalg] [-g integrity] [-u dhgroup] [-h esnmode] [-l lifetime] [-a ikealg] [-d remotecertdn] [-v vlantag] [-w remotegw] [-s] policyname
+'
+    fi
+}
+
+
+################
+# Main Program #
+################
+
+#Add the info to log file
+INFO "ipsecdef starts here..."
+
+options='-i'
+exitFlag=0
+
+log "START: <$0 $*>"
+
+#Checking for node status
+INFO "Checking for node status and session type..."
+
+ipsec_exitnotactive
+ipsec_exitwrongsessiontype
+
+current_node_id=$(cat $CURRENT_NODE_ID_FILE)
+
+#check for parameters
+if [ ${#@} -eq 0 ] ; then
+    ipsec_exit $EXIT_INCORRECT_USAGE
+fi
+
+#create version file
+touch $IKE_VER_FILE
+
+parameters=($@)
+num_parameters=${#parameters[@]}
+i=0
+
+#Parsing the parameters
+case ${parameters[$i]} in
+    -i )    (( i = $i + 1 ))
+            ike_type=${parameters[$i]}
+            ipsec_checknotempty "$ike_type" 
+            if [[ $num_parameters -gt 2 ]] ; then
+                #echo "" > $IKE_VER_FILE
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+            INFO "checking for IKE type $ike_type"
+            if ! ipsec_checklist "$ike_type" "IKEV1" "IKEV2" ; then
+                #echo "" > $IKE_VER_FILE
+                ipsec_exit $EXIT_UNREASONABLE_VALUE "for IKE protocol version: $ike_type"
+            fi
+            iketypefromfile=$(cat $IKE_VER_FILE)
+            if [[ "$ike_type" == "$iketypefromfile" ]] ; then
+                ipsec_exit $EXIT_PROTOCOL_SET
+            fi
+            if [[ "$ike_type" == "IKEV1" ]] ; then
+		if is_vAPG ; then	
+		    if [ "$(cat $IP_VERSION_FILE)" == "4,6" ] || [ "$(cat $IP_VERSION_FILE)" == "4" ] ; then 
+		        remove_strongswan_protocols
+                        start_stop_strongswan stop
+                        start_stop_racoon stop
+                        start_stop_racoon start
+                        INFO -e "\nStore $ike_type version in file $IKE_VER_FILE " >&2
+                        echo $ike_type > $IKE_VER_FILE
+                        echo $ike_type > $IKE_VER_CLUSTER_FILE
+		    else
+		        ipsec_exit $EXIT_INVALID_IKE_VERSION_CONFIGURATION
+		    fi
+		else
+		    remove_strongswan_protocols
+                    start_stop_strongswan stop
+                    start_stop_racoon stop
+                    start_stop_racoon start                                 
+                    INFO -e "\nStore $ike_type version in file $IKE_VER_FILE " >&2                   
+                    echo $ike_type > $IKE_VER_FILE
+                    echo $ike_type > $IKE_VER_CLUSTER_FILE			
+		fi
+            elif [[ "$ike_type" == "IKEV2" ]] ; then
+                remove_racoon_protocols
+                start_stop_racoon stop
+                start_stop_strongswan stop
+                start_stop_strongswan start
+                INFO -e "\nStore $ike_type version in file $IKE_VER_FILE " >&2
+                echo $ike_type > $IKE_VER_FILE
+                echo $ike_type > $IKE_VER_CLUSTER_FILE
+            fi
+        ;;
+    * )     ike_type=$(cat $IKE_VER_FILE)
+            #if [[ "$ike_type" == "" ]] ; then
+                #setting default IKEV1 version
+            #    ike_type="IKEV1"
+            #    echo $ike_type > $IKE_VER_FILE
+            #    echo $ike_type > $IKE_VER_CLUSTER_FILE
+            #fi
+            if [[ "$ike_type" == "IKEV1" ]] ; then
+                INFO -e "\nStart ipsec_racoon " >&2
+                /opt/ap/acs/bin/ipsecdef_racoon "$@"
+		exitFlag=$?
+		exit $exitFlag
+            elif [[ "$ike_type" == "IKEV2" ]] ; then
+                INFO -e "\nStart ipsec_strongswan " >&2
+                /opt/ap/acs/bin/ipsecdef_strongswan "$@"
+		exitFlag=$?
+		exit $exitFlag
+            else
+                INFO "Invalid value in version file: $ike_type"
+                ipsec_exit $EXIT_INCORRECT_USAGE
+            fi
+esac
+
+
+log "END: <$0>"
+ipsec_exit $EXIT_SUCCESS

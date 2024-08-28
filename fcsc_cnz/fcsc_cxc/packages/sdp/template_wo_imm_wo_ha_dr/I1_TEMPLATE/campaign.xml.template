@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<upgradeCampaign xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  safSmfCampaign="safSmfCampaign=ERIC-#TAG_NAME#-I1-#TAG_CXP#-#TAG_REV#">
+  <campaignInfo>
+    <campaignPeriod/>
+  </campaignInfo>
+  <campaignInitialization>
+    <addToImm/>
+<!-- 
+    <campInitAction>
+       <doCliCommand command="$OSAFCAMPAIGNROOT/procInit.sh" />
+       <undoCliCommand command="$OSAFCAMPAIGNROOT/procInitRollback.sh" />
+       <plmExecEnv amfNode="safAmfNode=SC-1,safAmfCluster=myAmfCluster"/>
+    </campInitAction>
+-->
+  </campaignInitialization>
+  <upgradeProcedure safSmfProcedure="safSmfProc=SingleStepProc">
+    <outageInfo>
+      <acceptableServiceOutage>
+        <all/>
+      </acceptableServiceOutage>
+      <procedurePeriod saSmfProcPeriod="60000000000"/>
+    </outageInfo>
+    <upgradeMethod>
+      <singleStepUpgrade>
+        <upgradeScope>
+          <forAddRemove>
+            <deactivationUnit/>
+            <activationUnit>
+              <swAdd bundleDN="safSmfBundle=ERIC-#TAG_NAME#-#TAG_CXP#-#TAG_REV#" pathnamePrefix="/home/coremw/repository">
+                <plmExecEnv amfNode="safAmfNode=SC-1,safAmfCluster=myAmfCluster"/>
+                <!-- Remove next line if only one SC on the system -->
+                <plmExecEnv amfNode="safAmfNode=SC-2,safAmfCluster=myAmfCluster"/>
+              </swAdd>
+            </activationUnit>
+          </forAddRemove>
+        </upgradeScope>
+        <upgradeStep/>
+      </singleStepUpgrade>
+    </upgradeMethod>
+  </upgradeProcedure>
+   <campaignWrapup>
+<!-- 
+    <campCompleteAction>
+       <doCliCommand command="$OSAFCAMPAIGNROOT//procComplete.sh" />
+       <undoCliCommand command="$OSAFCAMPAIGNROOT/procCompleteRollback.sh" />
+       <plmExecEnv amfNode="safAmfNode=SC-1,safAmfCluster=myAmfCluster"/>
+    </campCompleteAction>
+-->
+    <waitToCommit/>
+<!--
+    <campWrapupAction>
+       <doCliCommand command="$OSAFCAMPAIGNROOT/procWrapup.sh" />
+       <undoCliCommand command="$OSAFCAMPAIGNROOT/procWrapupRollback.sh" />
+       <plmExecEnv amfNode="safAmfNode=SC-1,safAmfCluster=myAmfCluster"/>
+    </campWrapupAction>
+-->
+    <waitToAllowNewCampaign/>
+    <removeFromImm/>
+  </campaignWrapup>
+</upgradeCampaign>

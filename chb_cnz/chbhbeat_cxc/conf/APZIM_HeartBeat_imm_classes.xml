@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+	Copyright (c) 2014 Ericsson AB. 
+	All rights reserved 
+
+	DX ECIM Tool-chain generated this file on Aug 8, 2014 10:41:18 AM using:
+	* com.ericsson.ecim.coremw.m2m 2.6.3.201303201006
+	* com.ericsson.ecim.coremw.dsl 2.6.3.201303201006
+	* com.ericsson.ecim.coremw.imm 2.6.3.201303201006
+--><imm:IMM-contents xmlns:imm="http://www.saforum.org/IMMSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd">
+    <class name="HeartBeat">
+        <category>SA_CONFIG</category>
+        <rdn>
+            <name>heartBeatId</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_INITIALIZED</flag>
+        </rdn>
+        <attr>
+            <name>heartBeatInterval</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>60</default-value>
+        </attr>
+        <attr>
+            <name>heartBeatTimeout</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>20</default-value>
+        </attr>
+        <attr>
+            <name>heartBeatAADSTdayRetry</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>0</default-value>
+        </attr>
+        <attr>
+            <name>heartBeatAADTSstart</name>
+            <type>SA_INT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>15</default-value>
+        </attr>
+    </class>
+</imm:IMM-contents>

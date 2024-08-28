@@ -1,0 +1,248 @@
+#!/bin/bash
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2013 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# Name:
+#       ipsecrm
+# Description:
+#       This script is to remove remote directives and policies for the IPSec feature
+##
+# Usage: ipsecrm policyname...
+##
+# Changelog:
+# - Mar 28 2016 - Nikhila Sattala (XNIKSAT)
+#   - Updated with SLES12 impacts
+# - Aug 12 2015 - Furqunan Ullah(XFURULL)
+#   - Fix for TR HT94442
+# - Mar 16 2015 - Nazeema Begum (XNAZBEG)
+#   - added logging mechanism
+# - feb 14 2014 - Quyen Dao (XQUYDAO)
+#    - Replace tab with 4 spaces
+# - oct 14 2013 - Fabrizio Paglia (XFABPAG)
+#    - Bug fixed
+# - sep 30 2013 - Fabrizio Paglia (XFABPAG)
+#    - Added check for not allowing bash shell execution from port 4422-4423.
+# - sep 24 2013 - Fabrizio Paglia (XFABPAG)
+#    - Printouts aligned with ipsecrm_PA6 manpage
+#    - Incorrect usage when passing more than one parameter
+#    - Backup/Restore/Temp files handling aligned with IPSECDEF
+#    - Avoided blank lines in racoon.conf
+# - sep 19 2013 - Alessandro Mortari (XALMORT)
+#    - Aligned code to ipsecrm_PA4 manpage
+#        - removed options
+#        - policies are provided as CSV
+# - sep 13 2013 - Fabrizio Paglia (XFABPAG)
+#    - Bug fixed in calling the backup removal function
+# - sep 12 2013 - Fabrizio Paglia (XFABPAG)
+#    - First version
+##
+installPath="/opt/ap/acs/bin/"
+source $installPath"ipsec_commons"
+
+apos_common="${AP_HOME:-/opt/ap}/apos/conf/apos_common.sh"
+source $apos_common
+
+#################
+#   Functions   #
+#################
+function usage() {
+    echo -e "\nIncorrect usage" >&2
+    echo "Usage: ipsecrm policyname..."
+}
+
+################
+# Main Program #
+################
+
+#Log the parameters in the system log
+log "START: <$0>"
+INFO "ipsecrm starts here...."
+
+function restore_configuration(){
+        ipsec_restore
+        ipsec_remove_backup
+        INFO "Restarting the racoon service, after the restore"
+        apos_servicemgmt restart racoon.service &> /dev/null
+        apos_servicemgmt restart racoon-setkey.service &>/dev/null
+        ipsec_exit $EXIT_FAILED_POLICIES_REMOVAL
+}
+
+function stop_racoon(){
+        INFO "stopping the racoon.service..."
+        local rCode
+        apos_servicemgmt stop racoon.service &>/dev/null &> /dev/null
+        rCode=$?
+        if [ $rCode -ne 0 ] ; then
+                INFO "Unable to stop racoon service."
+        else
+                INFO "stopping the racoon-setkey.service."
+                apos_servicemgmt stop racoon-setkey.service &>/dev/null &> /dev/null
+                rCode=$?
+                if [ $rCode -ne 0 ] ; then
+                   INFO "Unable to stop racoon-setkey.service."
+                fi
+        fi
+        return $rCode
+}
+
+function start_racoon(){
+        local rCode
+        INFO "starting the racoon.service..."
+        apos_servicemgmt start racoon.service &>/dev/null &> /dev/null
+        rCode=$?
+        if [ $rCode -ne 0 ] ; then
+                INFO "Unable to start racoon.service."
+        else
+                INFO "starting the racoon-setkey.service."
+                apos_servicemgmt start racoon-setkey.service &>/dev/null &> /dev/null
+                rCode=$?
+                if [ $rCode -ne 0 ] ; then
+                        INFO "Unable to start racoon service."
+                fi
+        fi
+        return $rCode
+}
+
+function start_stop_raccon(){
+	local MAX_RETRY_CNT=5,rCode=0,count=0
+        while [[ $count -le $MAX_RETRY_CNT ]]
+        do
+                usleep 500000
+                $1_racoon
+                rCode=$?
+                if [ $rCode -eq 0 ]; then
+			break
+		fi
+		(( count = count + 1 ))
+	done	 
+
+	if [ $rCode -ne 0 ]; then
+		INFO "Restoring the configuration"
+		restore_configuration
+	fi
+}
+
+ipsec_exitnotactive
+ipsec_exitwrongsessiontype
+
+if [ $# -ne 1 ] ; then
+    ipsec_exit $EXIT_INCORRECT_USAGE;
+fi
+
+restart_racoon=""
+policynames=$@
+ipsec_checknotempty "$policynames"
+
+if [ "$policynames" != "all" ] ; then
+    policynames_array=${policynames//","/ }
+    for i in $policynames_array ; do
+        ipsec_checkifpolicyexists $i
+    done
+fi
+
+ike_type=$(cat $IKE_VER_FILE)
+if [ "$ike_type" == "IKEV2" ] ; then
+    if [ "$policynames" != "all" ] ; then
+    	policynames_array=${policynames//","/ }
+    	for i in $policynames_array 
+	do
+      	    immcfg -d ipsecConnectionId=$i,acsSecurityMId=1
+    	done
+    else
+	immListCount=$(immfind | grep -i ipsecConnectionId | wc -l)
+	if [[ "$immListCount" -eq 0 ]] ; then
+		echo "No Connections defined for IKEV2."
+	else
+		immList=$(immfind | grep -i ipsecConnectionId)
+        	for list in $immList
+	        do
+        	        immcfg -d $list
+	        done
+    	fi
+    fi
+else
+	INFO "removing tmp files and backup ..."
+	ipsec_remove_tmp_files
+	ipsec_backup
+
+	cp "$RACOON_BASEDIR$SETKEY_CFGFILE" "$RACOON_BASEDIR$SETKEY_CFGFILE.tmp" &> /dev/null || { ipsec_exit $EXIT_FAILED_POLICIES_REMOVAL; }
+	cp "$PSK_BASEDIR$PSK_FILE" "$PSK_BASEDIR$PSK_FILE.tmp" &> /dev/null || { ipsec_exit $EXIT_FAILED_POLICIES_REMOVAL; }
+	cp "$RACOON_BASEDIR$RACOON_CFGFILE" "$RACOON_BASEDIR$RACOON_CFGFILE.tmp" &> /dev/null || { ipsec_exit $EXIT_FAILED_POLICIES_REMOVAL; }
+
+	if [ "$policynames" == "all" ] ; then
+	    policynames_array=$(ipsec_get_policynames)
+	    #ipaddresses_array=$(ipsec_get_ipaddresses)
+	fi
+	
+	for i in $policynames_array ; do
+	    rh_ipaddress=$(ipsec_remove_policy $i "$RACOON_BASEDIR$SETKEY_CFGFILE.tmp")
+	    gw_ipaddress=$(ipsec_remove_gateway_policy $i "$RACOON_BASEDIR$SETKEY_CFGFILE.tmp")
+	    #ipaddresses_array=("${ipaddresses_array[@]} $rh_ipaddress")
+	    if [ -z "$gw_ipaddress" ] ; then
+		gw_count=1
+		remote_true=1
+	    else 
+		gw_count=$(grep -w "$gw_ipaddress" "$RACOON_BASEDIR"*."$RACOON_CFGFILE" | grep -c "remote")
+		remote_true=0
+	    fi
+	    rh_count=$(grep -w "$rh_ipaddress" "$RACOON_BASEDIR"*."$RACOON_CFGFILE" | grep -c "remote")      
+	    if [ "$rh_count" == 0 ] ||  [ "$rh_count" == 1 ] ; then
+		if  [ "$gw_count" == 1 ]; then
+	           if [ "$remote_true" == 1 ]; then
+	               psk_line=$(grep -nE "^$rh_ipaddress\s" "$PSK_BASEDIR$PSK_FILE.tmp") &> /dev/null
+	           else
+	               psk_line=$(grep -nE "^$gw_ipaddress\s" "$PSK_BASEDIR$PSK_FILE.tmp") &> /dev/null
+	           fi
+	           psk_line_components=(${psk_line//":"/ })
+	           psk_line_number=${psk_line_components[0]}
+	           sed -i $psk_line_number"d" "$PSK_BASEDIR$PSK_FILE.tmp" &> /dev/null
+	        fi
+	    fi
+	    ipsec_remove_in_out_policy $i "$RACOON_BASEDIR$SETKEY_CFGFILE.tmp"	
+	    include_line=$(grep -n 'include "'$RACOON_BASEDIR$rh_ipaddress.racoon.conf'";' "$RACOON_BASEDIR$RACOON_CFGFILE.tmp")
+	    include_line_components=(${include_line//":"/ })
+	    include_line_number=${include_line_components[0]}
+	    file_to_remove=$(head -$include_line_number  "$RACOON_BASEDIR$RACOON_CFGFILE.tmp" | tail -1 | cut -d "/" -f4)
+	    file_to_remove=$(echo ${file_to_remove::${#file_to_remove}-2})
+	    rm "$RACOON_BASEDIR$file_to_remove"
+	
+	    sed -i $include_line_number"d" "$RACOON_BASEDIR$RACOON_CFGFILE.tmp" &> /dev/null
+	    #sed -i 's|include "'$RACOON_BASEDIR$rh_ipaddress.racoon.conf'";||' "$RACOON_BASEDIR$RACOON_CFGFILE.tmp" &> /dev/null
+	done
+	
+	trap "ipsec_restore;ipsec_remove_backup;ipsec_remove_tmp_files;ipsec_exit $EXIT_GENERAL_FAULT" SIGHUP SIGINT SIGQUIT SIGILL SIGABRT SIGBUS SIGSEGV SIGPIPE SIGTERM SIGCHLD SIGTSTP SIGXCPU SIGPWR SIGSYS
+	mv "$RACOON_BASEDIR$SETKEY_CFGFILE.tmp" "$RACOON_BASEDIR$SETKEY_CFGFILE" &> /dev/null
+	mv "$PSK_BASEDIR$PSK_FILE.tmp" "$PSK_BASEDIR$PSK_FILE" &> /dev/null
+	mv "$RACOON_BASEDIR$RACOON_CFGFILE.tmp" "$RACOON_BASEDIR$RACOON_CFGFILE" &> /dev/null
+	#for i in $ipaddresses_array ; do
+	#    rm "$RACOON_BASEDIR$i.racoon.conf" &> /dev/null
+	#done
+	trap - SIGHUP SIGINT SIGQUIT SIGILL SIGABRT SIGBUS SIGSEGV SIGPIPE SIGTERM SIGCHLD SIGTSTP SIGXCPU SIGPWR SIGSYS
+	
+	INFO "restarting the racoon service..."
+	#apos_servicemgmt restart racoon.service &>/dev/null &> /dev/null
+	#if [ $? -ne 0 ] ; then
+	#    INFO "Unable to start racoon service... Restoring the configuration"
+	#    ipsec_restore
+	#   ipsec_remove_backup
+	#   INFO "Restarting the racoon service, after the restore"
+	#    apos_servicemgmt restart racoon.service &> /dev/null
+	#    apos_servicemgmt restart racoon-setkey.service &>/dev/null
+	#    ipsec_exit $EXIT_FAILED_POLICIES_REMOVAL
+	#else
+	#    INFO "Racoon service has been started, restart racoon.setkey service"
+	#    apos_servicemgmt restart racoon-setkey.service &>/dev/null
+	#    [ $? -ne $TRUE ] && ipsec_exit $EXIT_FAILED_POLICY_ACTIVATION
+	#    INFO "Racoon service has been started, Removing the backup"
+	#    ipsec_remove_backup
+	#fi
+
+	start_stop_raccon stop
+	start_stop_raccon start
+fi
+	
+log "END: <$0>"
+ipsec_exit $EXIT_SUCCESS
+

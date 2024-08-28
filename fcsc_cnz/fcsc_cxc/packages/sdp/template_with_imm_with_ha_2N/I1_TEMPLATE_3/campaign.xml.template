@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="ASCII"?>
+  <upgradeCampaign safSmfCampaign="safSmfCampaign=ERIC-#TAG_NAME#-#TAG_UC#-TEMPLATE-#TAG_CXP#-#TAG_REV#">
+    <campaignInfo>
+      <campaignPeriod saSmfCmpgExpectedTime="600000000"/>
+    </campaignInfo>
+    <campaignInitialization>
+      <addToImm>
+        <amfEntityTypes>
+          <CompBaseType safCompType="safCompType=ERIC-#TAG_COMPT#">
+            <CompType safVersion="safVersion=#TAG_COMP_VER#">
+              <providesCSType saAmfCtCompCapability="1" saAmfCtDefNumMaxActiveCsi="0" saAmfCtDefNumMaxStandbyCsi="0" safSupportedCsType="safSupportedCsType=safVersion=#TAG_SAF_VER#\,safCSType=ERIC-#TAG_CST#"/>
+              <compTypeDefaults saAmfCtCompCategory="1" saAmfCtDefCallbackTimeout="#TAG_DEFAULTCALLBACKTIMEOUT_LOWERBOUND#" saAmfCtDefClcCliTimeout="#TAG_DEFAULTCLCCLITIMEOUT_LOWERBOUND#" saAmfCtDefDisableRestart="#TAG_DISABLERESTART#" saAmfCtDefInstantiationLevel="0" saAmfCtDefQuiescingCompleteTimeout="10000000000" saAmfCtDefRecoveryOnError="#TAG_RECOVERYONERROR#"/>
+              <instantiateCmd saAmfCtRelPathInstantiateCmd="#TAG_SCRIPT#">
+                <cmdArgv>instantiate</cmdArgv>
+              </instantiateCmd>
+              <cleanupCmd saAmfCtRelPathCleanupCmd="#TAG_SCRIPT#">
+                <cmdArgv>cleanup</cmdArgv>
+              </cleanupCmd>
+              <healthCheck saAmfHealthcheckMaxDuration="#TAG_HCMAXDURATION_LOWERBOUND#" saAmfHealthcheckPeriod="#TAG_HCPERIOD_LOWERBOUND#" safHealthcheckKey="safHealthcheckKey=#TAG_HLT_CHK#"/>
+              <swBundle saAmfCtSwBundle="safSmfBundle=ERIC-#TAG_NAME#-#TAG_CXP#-#TAG_REV#"/>
+            </CompType>
+          </CompBaseType>
+          <CompBaseType safCompType="safCompType=ERIC-#TAG_COMPT#1">
+            <CompType safVersion="safVersion=#TAG_COMP_VER#">
+              <providesCSType saAmfCtCompCapability="1" saAmfCtDefNumMaxActiveCsi="0" saAmfCtDefNumMaxStandbyCsi="0" safSupportedCsType="safSupportedCsType=safVersion=#TAG_SAF_VER#\,safCSType=ERIC-#TAG_CST#1"/>
+              <compTypeDefaults saAmfCtCompCategory="1" saAmfCtDefCallbackTimeout="#TAG_DEFAULTCALLBACKTIMEOUT_LOWERBOUND#" saAmfCtDefClcCliTimeout="#TAG_DEFAULTCLCCLITIMEOUT_LOWERBOUND#" saAmfCtDefDisableRestart="#TAG_DISABLERESTART#" saAmfCtDefInstantiationLevel="0" saAmfCtDefQuiescingCompleteTimeout="10000000000" saAmfCtDefRecoveryOnError="#TAG_RECOVERYONERROR#"/>
+              <instantiateCmd saAmfCtRelPathInstantiateCmd="#TAG_SCRIPT1#">
+                <cmdArgv>instantiate</cmdArgv>
+              </instantiateCmd>
+              <cleanupCmd saAmfCtRelPathCleanupCmd="#TAG_SCRIPT1#">
+                <cmdArgv>cleanup</cmdArgv>
+              </cleanupCmd>
+              <healthCheck saAmfHealthcheckMaxDuration="#TAG_HCMAXDURATION_LOWERBOUND#" saAmfHealthcheckPeriod="#TAG_HCPERIOD_LOWERBOUND#" safHealthcheckKey="safHealthcheckKey=#TAG_HLT_CHK1#"/>
+              <swBundle saAmfCtSwBundle="safSmfBundle=ERIC-#TAG_NAME#-#TAG_CXP#-#TAG_REV#"/>
+            </CompType>
+          </CompBaseType>
+          <CompBaseType safCompType="safCompType=ERIC-#TAG_COMPT#2">
+            <CompType safVersion="safVersion=#TAG_COMP_VER#">
+              <providesCSType saAmfCtCompCapability="1" saAmfCtDefNumMaxActiveCsi="0" saAmfCtDefNumMaxStandbyCsi="0" safSupportedCsType="safSupportedCsType=safVersion=#TAG_SAF_VER#\,safCSType=ERIC-#TAG_CST#2"/>
+              <compTypeDefaults saAmfCtCompCategory="1" saAmfCtDefCallbackTimeout="#TAG_DEFAULTCALLBACKTIMEOUT_LOWERBOUND#" saAmfCtDefClcCliTimeout="#TAG_DEFAULTCLCCLITIMEOUT_LOWERBOUND#" saAmfCtDefDisableRestart="#TAG_DISABLERESTART#" saAmfCtDefInstantiationLevel="0" saAmfCtDefQuiescingCompleteTimeout="10000000000" saAmfCtDefRecoveryOnError="#TAG_RECOVERYONERROR#"/>
+              <instantiateCmd saAmfCtRelPathInstantiateCmd="#TAG_SCRIPT2#">
+                <cmdArgv>instantiate</cmdArgv>
+              </instantiateCmd>
+              <cleanupCmd saAmfCtRelPathCleanupCmd="#TAG_SCRIPT2#">
+                <cmdArgv>cleanup</cmdArgv>
+              </cleanupCmd>
+              <healthCheck saAmfHealthcheckMaxDuration="#TAG_HCMAXDURATION_LOWERBOUND#" saAmfHealthcheckPeriod="#TAG_HCPERIOD_LOWERBOUND#" safHealthcheckKey="safHealthcheckKey=#TAG_HLT_CHK2#"/>
+              <swBundle saAmfCtSwBundle="safSmfBundle=ERIC-#TAG_NAME#-#TAG_CXP#-#TAG_REV#"/>
+            </CompType>
+          </CompBaseType>
+          <SUBaseType safSuType="safSuType=ERIC-#TAG_SUT#">
+            <SUType safVersion="safVersion=#TAG_SAF_VER#">
+              <mandatoryAttrs saAmfSutDefSUFailover="1" saAmfSutIsExternal="0"/>
+              <componentType saAmfSutMaxNumComponents="0" saAmfSutMinNumComponents="1" safMemberCompType="safMemberCompType=safVersion=#TAG_COMP_VER#\,safCompType=ERIC-#TAG_COMPT#"/>
+              <supportedSvcType saAmfSutProvidesSvcType="safVersion=#TAG_SAF_VER#,safSvcType=ERIC-#TAG_SVCT#"/>
+            </SUType>
+          </SUBaseType>
+          <SUBaseType safSuType="safSuType=ERIC-#TAG_SUT#1">
+            <SUType safVersion="safVersion=#TAG_SAF_VER#">
+              <mandatoryAttrs saAmfSutDefSUFailover="1" saAmfSutIsExternal="0"/>
+              <componentType saAmfSutMaxNumComponents="0" saAmfSutMinNumComponents="1" safMemberCompType="safMemberCompType=safVersion=#TAG_COMP_VER#\,safCompType=ERIC-#TAG_COMPT#1"/>
+              <supportedSvcType saAmfSutProvidesSvcType="safVersion=#TAG_SAF_VER#,safSvcType=ERIC-#TAG_SVCT#1"/>
+            </SUType>
+          </SUBaseType>
+          <SUBaseType safSuType="safSuType=ERIC-#TAG_SUT#2">
+            <SUType safVersion="safVersion=#TAG_SAF_VER#">
+              <mandatoryAttrs saAmfSutDefSUFailover="1" saAmfSutIsExternal="0"/>
+              <componentType saAmfSutMaxNumComponents="0" saAmfSutMinNumComponents="1" safMemberCompType="safMemberCompType=safVersion=#TAG_COMP_VER#\,safCompType=ERIC-#TAG_COMPT#2"/>
+              <supportedSvcType saAmfSutProvidesSvcType="safVersion=#TAG_SAF_VER#,safSvcType=ERIC-#TAG_SVCT#2"/>
+            </SUType>
+          </SUBaseType>
+          <SGBaseType safSgType="safSgType=ERIC-#TAG_SGT#">
+            <SGType safVersion="safVersion=#TAG_SAF_VER#">
+              <suType saAmfSgtValidSuTypes="safVersion=#TAG_SAF_VER#,safSuType=ERIC-#TAG_SUT#"/>
+              <redundancy saAmfSgtRedundancyModel="1"/>
+              <compRestart saAmfSgtDefCompRestartMax="#TAG_COMPPROB_COUNTERMAX#" saAmfSgtDefCompRestartProb="#TAG_COMPPROB_PERIOD#"/>
+              <suRestart saAmfSgtDefSuRestartMax="#TAG_SUPROB_COUNTERMAX#" saAmfSgtDefSuRestartProb="#TAG_SUPROB_PERIOD#"/>
+              <autoAttrs saAmfSgtDefAutoAdjustProb="#TAG_AUTOADJUST_PERIOD#" safAmfSgtDefAutoAdjust="1" safAmfSgtDefAutoRepair="0"/>
+            </SGType>
+          </SGBaseType>
+          <SGBaseType safSgType="safSgType=ERIC-#TAG_SGT#1">
+            <SGType safVersion="safVersion=#TAG_SAF_VER#">
+              <suType saAmfSgtValidSuTypes="safVersion=#TAG_SAF_VER#,safSuType=ERIC-#TAG_SUT#1"/>
+              <redundancy saAmfSgtRedundancyModel="1"/>
+              <compRestart saAmfSgtDefCompRestartMax="#TAG_COMPPROB_COUNTERMAX#" saAmfSgtDefCompRestartProb="#TAG_COMPPROB_PERIOD#"/>
+              <suRestart saAmfSgtDefSuRestartMax="#TAG_SUPROB_COUNTERMAX#" saAmfSgtDefSuRestartProb="#TAG_SUPROB_PERIOD#"/>
+              <autoAttrs saAmfSgtDefAutoAdjustProb="#TAG_AUTOADJUST_PERIOD#" safAmfSgtDefAutoAdjust="1" safAmfSgtDefAutoRepair="0"/>
+            </SGType>
+          </SGBaseType>
+          <SGBaseType safSgType="safSgType=ERIC-#TAG_SGT#2">
+            <SGType safVersion="safVersion=#TAG_SAF_VER#">
+              <suType saAmfSgtValidSuTypes="safVersion=#TAG_SAF_VER#,safSuType=ERIC-#TAG_SUT#2"/>
+              <redundancy saAmfSgtRedundancyModel="1"/>
+              <compRestart saAmfSgtDefCompRestartMax="#TAG_COMPPROB_COUNTERMAX#" saAmfSgtDefCompRestartProb="#TAG_COMPPROB_PERIOD#"/>
+              <suRestart saAmfSgtDefSuRestartMax="#TAG_SUPROB_COUNTERMAX#" saAmfSgtDefSuRestartProb="#TAG_SUPROB_PERIOD#"/>
+              <autoAttrs saAmfSgtDefAutoAdjustProb="#TAG_AUTOADJUST_PERIOD#" safAmfSgtDefAutoAdjust="1" safAmfSgtDefAutoRepair="0"/>
+            </SGType>
+          </SGBaseType>
+          <AppBaseType safAppType="safAppType=ERIC-#TAG_APPT#">
+            <AppType safVersion="safVersion=#TAG_SAF_VER#">
+              <serviceGroupType saAmfApptSGTypes="safVersion=#TAG_SAF_VER#,safSgType=ERIC-#TAG_SGT#"/>
+              <serviceGroupType saAmfApptSGTypes="safVersion=#TAG_SAF_VER#,safSgType=ERIC-#TAG_SGT#1"/>
+              <serviceGroupType saAmfApptSGTypes="safVersion=#TAG_SAF_VER#,safSgType=ERIC-#TAG_SGT#2"/>
+            </AppType>
+          </AppBaseType>
+          <CSBaseType safCSType="safCSType=ERIC-#TAG_CST#">
+            <CSType safVersion="safVersion=#TAG_SAF_VER#"/>
+          </CSBaseType>
+          <CSBaseType safCSType="safCSType=ERIC-#TAG_CST#1">
+            <CSType safVersion="safVersion=#TAG_SAF_VER#"/>
+          </CSBaseType>
+          <CSBaseType safCSType="safCSType=ERIC-#TAG_CST#2">
+            <CSType safVersion="safVersion=#TAG_SAF_VER#"/>
+          </CSBaseType>
+          <ServiceBaseType safSvcType="safSvcType=ERIC-#TAG_SVCT#">
+            <ServiceType safVersion="safVersion=#TAG_SAF_VER#">
+              <csType saAmfSvctMaxNumCSIs="0" safMemberCSType="safMemberCSType=safVersion=#TAG_SAF_VER#\,safCSType=ERIC-#TAG_CST#"/>
+            </ServiceType>
+          </ServiceBaseType>
+          <ServiceBaseType safSvcType="safSvcType=ERIC-#TAG_SVCT#1">
+            <ServiceType safVersion="safVersion=#TAG_SAF_VER#">
+              <csType saAmfSvctMaxNumCSIs="0" safMemberCSType="safMemberCSType=safVersion=#TAG_SAF_VER#\,safCSType=ERIC-#TAG_CST#1"/>
+            </ServiceType>
+          </ServiceBaseType>
+          <ServiceBaseType safSvcType="safSvcType=ERIC-#TAG_SVCT#2">
+            <ServiceType safVersion="safVersion=#TAG_SAF_VER#">
+              <csType saAmfSvctMaxNumCSIs="0" safMemberCSType="safMemberCSType=safVersion=#TAG_SAF_VER#\,safCSType=ERIC-#TAG_CST#2"/>
+            </ServiceType>
+          </ServiceBaseType>
+        </amfEntityTypes>
+      </addToImm>
+    </campaignInitialization>
+    <upgradeProcedure safSmfProcedure="safSmfProc=SingleStepProc">
+      <outageInfo>
+        <acceptableServiceOutage>
+          <all/>
+        </acceptableServiceOutage>
+        <procedurePeriod saSmfProcPeriod="600000000"/>
+      </outageInfo>
+      <procInitAction>
+        <doCliCommand command="cmw-addToImm" args="ERIC-#TAG_NAME#-#TAG_CXP#-#TAG_REV#"/>
+         <undoCliCommand command="/bin/false" args=""/>
+        <plmExecEnv amfNode="safAmfNode=SC-1,safAmfCluster=myAmfCluster"/>
+      </procInitAction>
+	<procInitAction>
+        <doCliCommand command="comsa-mim-tool" args="add ERIC-#TAG_NAME#-#TAG_CXP#-#TAG_REV#"/>
+         <undoCliCommand command="/bin/false" args=""/>
+        <plmExecEnv amfNode="safAmfNode=SC-1,safAmfCluster=myAmfCluster"/>
+      </procInitAction>
+      <procInitAction>
+        <doCliCommand command="comsa-mim-tool" args="commit"/>
+         <undoCliCommand command="/bin/false" args=""/>
+        <plmExecEnv amfNode="safAmfNode=SC-1,safAmfCluster=myAmfCluster"/>
+      </procInitAction>
+      <procInitAction>
+        <doCliCommand command="comsa-mim-tool" args="com_switchover"/>
+         <undoCliCommand command="/bin/false" args=""/>
+        <plmExecEnv amfNode="safAmfNode=SC-1,safAmfCluster=myAmfCluster"/>
+      </procInitAction>
+      <procInitAction>
+        <immCCB ccbFlags="0">
+          <create objectClassName="SaAmfApplication" parentObjectDN="=">
+            <attribute name="safApp" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safApp=#TAG_APP#</value>
+            </attribute>
+            <attribute name="saAmfAppType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=#TAG_SAF_VER#,safAppType=ERIC-#TAG_APPT#</value>
+            </attribute>
+            <attribute name="saAmfApplicationAdminState" type="SA_IMM_ATTR_SAUINT32T">
+              <value>1</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfSG" parentObjectDN="safApp=#TAG_APP#">
+            <attribute name="safSg" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safSg=#TAG_SG#</value>
+            </attribute>
+            <attribute name="saAmfSGType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=#TAG_SAF_VER#,safSgType=ERIC-#TAG_SGT#</value>
+            </attribute>
+            <attribute name="saAmfSGSuHostNodeGroup" type="SA_IMM_ATTR_SANAMET">
+              <value>safAmfNodeGroup=SCs,safAmfCluster=myAmfCluster</value>
+            </attribute>
+            <attribute name="saAmfSGNumPrefInserviceSUs" type="SA_IMM_ATTR_SAUINT32T">
+              <value>2</value>
+            </attribute>
+            <attribute name="saAmfSGAdminState" type="SA_IMM_ATTR_SAUINT32T">
+              <value>1</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfSU" parentObjectDN="safSg=#TAG_SG#,safApp=#TAG_APP#">
+            <attribute name="safSu" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safSu=#TAG_SU1#</value>
+            </attribute>
+            <attribute name="saAmfSUType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=#TAG_SAF_VER#,safSuType=ERIC-#TAG_SUT#</value>
+            </attribute>
+            <attribute name="saAmfSURank" type="SA_IMM_ATTR_SAUINT32T">
+              <value>0</value>
+            </attribute>
+            <attribute name="saAmfSUHostNodeOrNodeGroup" type="SA_IMM_ATTR_SANAMET">
+              <value>safAmfNode=SC-1,safAmfCluster=myAmfCluster</value>
+            </attribute>
+            <attribute name="saAmfSUFailover" type="SA_IMM_ATTR_SAUINT32T">
+              <value>#TAG_SAAMFSUFAILOVER#</value>
+            </attribute>
+            <attribute name="saAmfSUAdminState" type="SA_IMM_ATTR_SAUINT32T">
+              <value>3</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfComp" parentObjectDN="safSu=#TAG_SU1#,safSg=#TAG_SG#,safApp=#TAG_APP#">
+            <attribute name="safComp" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safComp=#TAG_COMP#</value>
+            </attribute>
+            <attribute name="saAmfCompType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=#TAG_COMP_VER#,safCompType=ERIC-#TAG_COMPT#</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfHealthcheck" parentObjectDN="safComp=#TAG_COMP#,safSu=#TAG_SU1#,safSg=#TAG_SG#,safApp=#TAG_APP#">
+            <attribute name="safHealthcheckKey" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safHealthcheckKey=#TAG_HLT_CHK#</value>
+            </attribute>
+            <attribute name="saAmfHealthcheckPeriod" type="SA_IMM_ATTR_SATIMET">
+              <value>#TAG_HCPERIOD_LOWERBOUND#</value>
+            </attribute>
+            <attribute name="saAmfHealthcheckMaxDuration" type="SA_IMM_ATTR_SATIMET">
+              <value>#TAG_HCMAXDURATION_LOWERBOUND#</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfCompCsType" parentObjectDN="safComp=#TAG_COMP#,safSu=#TAG_SU1#,safSg=#TAG_SG#,safApp=#TAG_APP#">
+            <attribute name="safSupportedCsType" type="SA_IMM_ATTR_SANAMET">
+              <value>safSupportedCsType=safVersion=#TAG_SAF_VER#\,safCSType=ERIC-#TAG_CST#</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfSU" parentObjectDN="safSg=#TAG_SG#,safApp=#TAG_APP#">
+            <attribute name="safSu" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safSu=#TAG_SU2#</value>
+            </attribute>
+            <attribute name="saAmfSUType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=#TAG_SAF_VER#,safSuType=ERIC-#TAG_SUT#</value>
+            </attribute>
+            <attribute name="saAmfSURank" type="SA_IMM_ATTR_SAUINT32T">
+              <value>0</value>
+            </attribute>
+            <attribute name="saAmfSUHostNodeOrNodeGroup" type="SA_IMM_ATTR_SANAMET">
+              <value>safAmfNode=SC-2,safAmfCluster=myAmfCluster</value>
+            </attribute>
+            <attribute name="saAmfSUFailover" type="SA_IMM_ATTR_SAUINT32T">
+              <value>true</value>
+            </attribute>
+            <attribute name="saAmfSUAdminState" type="SA_IMM_ATTR_SAUINT32T">
+              <value>3</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfComp" parentObjectDN="safSu=#TAG_SU2#,safSg=#TAG_SG#,safApp=#TAG_APP#">
+            <attribute name="safComp" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safComp=#TAG_COMP#</value>
+            </attribute>
+            <attribute name="saAmfCompType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=#TAG_COMP_VER#,safCompType=ERIC-#TAG_COMPT#</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfHealthcheck" parentObjectDN="safComp=#TAG_COMP#,safSu=#TAG_SU2#,safSg=#TAG_SG#,safApp=#TAG_APP#">
+            <attribute name="safHealthcheckKey" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safHealthcheckKey=#TAG_HLT_CHK#</value>
+            </attribute>
+            <attribute name="saAmfHealthcheckPeriod" type="SA_IMM_ATTR_SATIMET">
+              <value>#TAG_HCPERIOD_LOWERBOUND#</value>
+            </attribute>
+            <attribute name="saAmfHealthcheckMaxDuration" type="SA_IMM_ATTR_SATIMET">
+              <value>#TAG_HCMAXDURATION_LOWERBOUND#</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfCompCsType" parentObjectDN="safComp=#TAG_COMP#,safSu=#TAG_SU2#,safSg=#TAG_SG#,safApp=#TAG_APP#">
+            <attribute name="safSupportedCsType" type="SA_IMM_ATTR_SANAMET">
+              <value>safSupportedCsType=safVersion=#TAG_SAF_VER#\,safCSType=ERIC-#TAG_CST#</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfSG" parentObjectDN="safApp=#TAG_APP#">
+            <attribute name="safSg" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safSg=#TAG_SG#1</value>
+            </attribute>
+            <attribute name="saAmfSGType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=#TAG_SAF_VER#,safSgType=ERIC-#TAG_SGT#1</value>
+            </attribute>
+            <attribute name="saAmfSGSuHostNodeGroup" type="SA_IMM_ATTR_SANAMET">
+              <value>safAmfNodeGroup=SCs,safAmfCluster=myAmfCluster</value>
+            </attribute>
+            <attribute name="saAmfSGNumPrefInserviceSUs" type="SA_IMM_ATTR_SAUINT32T">
+              <value>2</value>
+            </attribute>
+            <attribute name="saAmfSGAdminState" type="SA_IMM_ATTR_SAUINT32T">
+              <value>1</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfSU" parentObjectDN="safSg=#TAG_SG#1,safApp=#TAG_APP#">
+            <attribute name="safSu" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safSu=#TAG_SU1#1</value>
+            </attribute>
+            <attribute name="saAmfSUType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=#TAG_SAF_VER#,safSuType=ERIC-#TAG_SUT#1</value>
+            </attribute>
+            <attribute name="saAmfSURank" type="SA_IMM_ATTR_SAUINT32T">
+              <value>0</value>
+            </attribute>
+            <attribute name="saAmfSUHostNodeOrNodeGroup" type="SA_IMM_ATTR_SANAMET">
+              <value>safAmfNode=SC-1,safAmfCluster=myAmfCluster</value>
+            </attribute>
+            <attribute name="saAmfSUFailover" type="SA_IMM_ATTR_SAUINT32T">
+              <value>true</value>
+            </attribute>
+            <attribute name="saAmfSUAdminState" type="SA_IMM_ATTR_SAUINT32T">
+              <value>3</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfComp" parentObjectDN="safSu=#TAG_SU1#1,safSg=#TAG_SG#1,safApp=#TAG_APP#">
+            <attribute name="safComp" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safComp=#TAG_COMP#1</value>
+            </attribute>
+            <attribute name="saAmfCompType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=#TAG_COMP_VER#,safCompType=ERIC-#TAG_COMPT#1</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfHealthcheck" parentObjectDN="safComp=#TAG_COMP#1,safSu=#TAG_SU1#1,safSg=#TAG_SG#1,safApp=#TAG_APP#">
+            <attribute name="safHealthcheckKey" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safHealthcheckKey=#TAG_HLT_CHK1#</value>
+            </attribute>
+            <attribute name="saAmfHealthcheckPeriod" type="SA_IMM_ATTR_SATIMET">
+              <value>#TAG_HCPERIOD_LOWERBOUND#</value>
+            </attribute>
+            <attribute name="saAmfHealthcheckMaxDuration" type="SA_IMM_ATTR_SATIMET">
+              <value>#TAG_HCMAXDURATION_LOWERBOUND#</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfCompCsType" parentObjectDN="safComp=#TAG_COMP#1,safSu=#TAG_SU1#1,safSg=#TAG_SG#1,safApp=#TAG_APP#">
+            <attribute name="safSupportedCsType" type="SA_IMM_ATTR_SANAMET">
+              <value>safSupportedCsType=safVersion=#TAG_SAF_VER#\,safCSType=ERIC-#TAG_CST#1</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfSU" parentObjectDN="safSg=#TAG_SG#1,safApp=#TAG_APP#">
+            <attribute name="safSu" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safSu=#TAG_SU2#1</value>
+            </attribute>
+            <attribute name="saAmfSUType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=#TAG_SAF_VER#,safSuType=ERIC-#TAG_SUT#1</value>
+            </attribute>
+            <attribute name="saAmfSURank" type="SA_IMM_ATTR_SAUINT32T">
+              <value>0</value>
+            </attribute>
+            <attribute name="saAmfSUHostNodeOrNodeGroup" type="SA_IMM_ATTR_SANAMET">
+              <value>safAmfNode=SC-2,safAmfCluster=myAmfCluster</value>
+            </attribute>
+            <attribute name="saAmfSUFailover" type="SA_IMM_ATTR_SAUINT32T">
+              <value>true</value>
+            </attribute>
+            <attribute name="saAmfSUAdminState" type="SA_IMM_ATTR_SAUINT32T">
+              <value>3</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfComp" parentObjectDN="safSu=#TAG_SU2#1,safSg=#TAG_SG#1,safApp=#TAG_APP#">
+            <attribute name="safComp" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safComp=#TAG_COMP#1</value>
+            </attribute>
+            <attribute name="saAmfCompType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=#TAG_COMP_VER#,safCompType=ERIC-#TAG_COMPT#1</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfHealthcheck" parentObjectDN="safComp=#TAG_COMP#1,safSu=#TAG_SU2#1,safSg=#TAG_SG#1,safApp=#TAG_APP#">
+            <attribute name="safHealthcheckKey" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safHealthcheckKey=#TAG_HLT_CHK1#</value>
+            </attribute>
+            <attribute name="saAmfHealthcheckPeriod" type="SA_IMM_ATTR_SATIMET">
+              <value>#TAG_HCPERIOD_LOWERBOUND#</value>
+            </attribute>
+            <attribute name="saAmfHealthcheckMaxDuration" type="SA_IMM_ATTR_SATIMET">
+              <value>#TAG_HCMAXDURATION_LOWERBOUND#</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfCompCsType" parentObjectDN="safComp=#TAG_COMP#1,safSu=#TAG_SU2#1,safSg=#TAG_SG#1,safApp=#TAG_APP#">
+            <attribute name="safSupportedCsType" type="SA_IMM_ATTR_SANAMET">
+              <value>safSupportedCsType=safVersion=#TAG_SAF_VER#\,safCSType=ERIC-#TAG_CST#1</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfSG" parentObjectDN="safApp=#TAG_APP#">
+            <attribute name="safSg" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safSg=#TAG_SG#2</value>
+            </attribute>
+            <attribute name="saAmfSGType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=#TAG_SAF_VER#,safSgType=ERIC-#TAG_SGT#2</value>
+            </attribute>
+            <attribute name="saAmfSGSuHostNodeGroup" type="SA_IMM_ATTR_SANAMET">
+              <value>safAmfNodeGroup=SCs,safAmfCluster=myAmfCluster</value>
+            </attribute>
+            <attribute name="saAmfSGNumPrefInserviceSUs" type="SA_IMM_ATTR_SAUINT32T">
+              <value>2</value>
+            </attribute>
+            <attribute name="saAmfSGAdminState" type="SA_IMM_ATTR_SAUINT32T">
+              <value>1</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfSU" parentObjectDN="safSg=#TAG_SG#2,safApp=#TAG_APP#">
+            <attribute name="safSu" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safSu=#TAG_SU1#2</value>
+            </attribute>
+            <attribute name="saAmfSUType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=#TAG_SAF_VER#,safSuType=ERIC-#TAG_SUT#2</value>
+            </attribute>
+            <attribute name="saAmfSURank" type="SA_IMM_ATTR_SAUINT32T">
+              <value>0</value>
+            </attribute>
+            <attribute name="saAmfSUHostNodeOrNodeGroup" type="SA_IMM_ATTR_SANAMET">
+              <value>safAmfNode=SC-1,safAmfCluster=myAmfCluster</value>
+            </attribute>
+            <attribute name="saAmfSUFailover" type="SA_IMM_ATTR_SAUINT32T">
+              <value>true</value>
+            </attribute>
+            <attribute name="saAmfSUAdminState" type="SA_IMM_ATTR_SAUINT32T">
+              <value>3</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfComp" parentObjectDN="safSu=#TAG_SU1#2,safSg=#TAG_SG#2,safApp=#TAG_APP#">
+            <attribute name="safComp" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safComp=#TAG_COMP#2</value>
+            </attribute>
+            <attribute name="saAmfCompType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=#TAG_COMP_VER#,safCompType=ERIC-#TAG_COMPT#2</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfHealthcheck" parentObjectDN="safComp=#TAG_COMP#2,safSu=#TAG_SU1#2,safSg=#TAG_SG#2,safApp=#TAG_APP#">
+            <attribute name="safHealthcheckKey" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safHealthcheckKey=#TAG_HLT_CHK2#</value>
+            </attribute>
+            <attribute name="saAmfHealthcheckPeriod" type="SA_IMM_ATTR_SATIMET">
+              <value>#TAG_HCPERIOD_LOWERBOUND#</value>
+            </attribute>
+            <attribute name="saAmfHealthcheckMaxDuration" type="SA_IMM_ATTR_SATIMET">
+              <value>#TAG_HCMAXDURATION_LOWERBOUND#</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfCompCsType" parentObjectDN="safComp=#TAG_COMP#2,safSu=#TAG_SU1#2,safSg=#TAG_SG#2,safApp=#TAG_APP#">
+            <attribute name="safSupportedCsType" type="SA_IMM_ATTR_SANAMET">
+              <value>safSupportedCsType=safVersion=#TAG_SAF_VER#\,safCSType=ERIC-#TAG_CST#2</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfSU" parentObjectDN="safSg=#TAG_SG#2,safApp=#TAG_APP#">
+            <attribute name="safSu" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safSu=#TAG_SU2#2</value>
+            </attribute>
+            <attribute name="saAmfSUType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=#TAG_SAF_VER#,safSuType=ERIC-#TAG_SUT#2</value>
+            </attribute>
+            <attribute name="saAmfSURank" type="SA_IMM_ATTR_SAUINT32T">
+              <value>0</value>
+            </attribute>
+            <attribute name="saAmfSUHostNodeOrNodeGroup" type="SA_IMM_ATTR_SANAMET">
+              <value>safAmfNode=SC-2,safAmfCluster=myAmfCluster</value>
+            </attribute>
+            <attribute name="saAmfSUFailover" type="SA_IMM_ATTR_SAUINT32T">
+              <value>true</value>
+            </attribute>
+            <attribute name="saAmfSUAdminState" type="SA_IMM_ATTR_SAUINT32T">
+              <value>3</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfComp" parentObjectDN="safSu=#TAG_SU2#2,safSg=#TAG_SG#2,safApp=#TAG_APP#">
+            <attribute name="safComp" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safComp=#TAG_COMP#2</value>
+            </attribute>
+            <attribute name="saAmfCompType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=#TAG_COMP_VER#,safCompType=ERIC-#TAG_COMPT#2</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfHealthcheck" parentObjectDN="safComp=#TAG_COMP#2,safSu=#TAG_SU2#2,safSg=#TAG_SG#2,safApp=#TAG_APP#">
+            <attribute name="safHealthcheckKey" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safHealthcheckKey=#TAG_HLT_CHK2#</value>
+            </attribute>
+            <attribute name="saAmfHealthcheckPeriod" type="SA_IMM_ATTR_SATIMET">
+              <value>#TAG_HCPERIOD_LOWERBOUND#</value>
+            </attribute>
+            <attribute name="saAmfHealthcheckMaxDuration" type="SA_IMM_ATTR_SATIMET">
+              <value>#TAG_HCMAXDURATION_LOWERBOUND#</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfCompCsType" parentObjectDN="safComp=#TAG_COMP#2,safSu=#TAG_SU2#2,safSg=#TAG_SG#2,safApp=#TAG_APP#">
+            <attribute name="safSupportedCsType" type="SA_IMM_ATTR_SANAMET">
+              <value>safSupportedCsType=safVersion=#TAG_SAF_VER#\,safCSType=ERIC-#TAG_CST#2</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfSI" parentObjectDN="safApp=#TAG_APP#">
+            <attribute name="safSi" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safSi=#TAG_SI#</value>
+            </attribute>
+            <attribute name="saAmfSvcType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=#TAG_SAF_VER#,safSvcType=ERIC-#TAG_SVCT#</value>
+            </attribute>
+            <attribute name="saAmfSIProtectedbySG" type="SA_IMM_ATTR_SANAMET">
+              <value>safSg=#TAG_SG#,safApp=#TAG_APP#</value>
+            </attribute>
+            <attribute name="saAmfSIRank" type="SA_IMM_ATTR_SAUINT32T">
+              <value>#TAG_SI_RANK#</value>
+            </attribute>
+            <attribute name="saAmfSIAdminState" type="SA_IMM_ATTR_SAUINT32T">
+              <value>1</value>
+            </attribute>
+          </create>
+		  <create objectClassName="SaAmfSIDependency" parentObjectDN="safSi=#TAG_SI#,safApp=#TAG_APP#">
+      	    <attribute name="safDepend" type="SA_IMM_ATTR_SANAMET">
+        	    <value>safDepend=safSi=APG_SI_Agent\,safApp=APG_Agent</value>
+            </attribute>
+            <attribute name="saAmfToleranceTime" type="SA_IMM_ATTR_SATIMET">
+            	  <value>0</value>
+            </attribute>
+		  </create>
+          <create objectClassName="SaAmfCSI" parentObjectDN="safSi=#TAG_SI#,safApp=#TAG_APP#">
+            <attribute name="safCsi" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safCsi=#TAG_CSI#</value>
+            </attribute>
+            <attribute name="saAmfCSType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=#TAG_SAF_VER#,safCSType=ERIC-#TAG_CST#</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfSI" parentObjectDN="safApp=#TAG_APP#">
+            <attribute name="safSi" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safSi=#TAG_SI#1</value>
+            </attribute>
+            <attribute name="saAmfSvcType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=#TAG_SAF_VER#,safSvcType=ERIC-#TAG_SVCT#1</value>
+            </attribute>
+            <attribute name="saAmfSIProtectedbySG" type="SA_IMM_ATTR_SANAMET">
+              <value>safSg=#TAG_SG#1,safApp=#TAG_APP#</value>
+            </attribute>
+            <attribute name="saAmfSIRank" type="SA_IMM_ATTR_SAUINT32T">
+              <value>#TAG_SI_RANK#</value>
+            </attribute>
+            <attribute name="saAmfSIAdminState" type="SA_IMM_ATTR_SAUINT32T">
+              <value>1</value>
+            </attribute>
+          </create>
+		  <create objectClassName="SaAmfSIDependency" parentObjectDN="safSi=#TAG_SI#1,safApp=#TAG_APP#">
+      	    <attribute name="safDepend" type="SA_IMM_ATTR_SANAMET">
+        	    <value>safDepend=safSi=APG_SI_Agent\,safApp=APG_Agent</value>
+            </attribute>
+            <attribute name="saAmfToleranceTime" type="SA_IMM_ATTR_SATIMET">
+            	  <value>0</value>
+            </attribute>
+		  </create>
+          <create objectClassName="SaAmfCSI" parentObjectDN="safSi=#TAG_SI#1,safApp=#TAG_APP#">
+            <attribute name="safCsi" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safCsi=#TAG_CSI#1</value>
+            </attribute>
+            <attribute name="saAmfCSType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=#TAG_SAF_VER#,safCSType=ERIC-#TAG_CST#1</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfSI" parentObjectDN="safApp=#TAG_APP#">
+            <attribute name="safSi" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safSi=#TAG_SI#2</value>
+            </attribute>
+            <attribute name="saAmfSvcType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=#TAG_SAF_VER#,safSvcType=ERIC-#TAG_SVCT#2</value>
+            </attribute>
+            <attribute name="saAmfSIProtectedbySG" type="SA_IMM_ATTR_SANAMET">
+              <value>safSg=#TAG_SG#2,safApp=#TAG_APP#</value>
+            </attribute>
+            <attribute name="saAmfSIRank" type="SA_IMM_ATTR_SAUINT32T">
+              <value>#TAG_SI_RANK#</value>
+            </attribute>
+            <attribute name="saAmfSIAdminState" type="SA_IMM_ATTR_SAUINT32T">
+              <value>1</value>
+            </attribute>
+          </create>
+		  <create objectClassName="SaAmfSIDependency" parentObjectDN="safSi=#TAG_SI#2,safApp=#TAG_APP#">
+      	    <attribute name="safDepend" type="SA_IMM_ATTR_SANAMET">
+        	    <value>safDepend=safSi=APG_SI_Agent\,safApp=APG_Agent</value>
+            </attribute>
+            <attribute name="saAmfToleranceTime" type="SA_IMM_ATTR_SATIMET">
+            	  <value>0</value>
+            </attribute>
+		  </create>
+          <create objectClassName="SaAmfCSI" parentObjectDN="safSi=#TAG_SI#2,safApp=#TAG_APP#">
+            <attribute name="safCsi" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safCsi=#TAG_CSI#2</value>
+            </attribute>
+            <attribute name="saAmfCSType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=#TAG_SAF_VER#,safCSType=ERIC-#TAG_CST#2</value>
+            </attribute>
+          </create>
+        </immCCB>
+      </procInitAction>
+      <upgradeMethod>
+        <singleStepUpgrade>
+          <upgradeScope>
+            <forAddRemove>
+              <deactivationUnit/>
+              <activationUnit>
+                <actedOn>
+                  <byName objectDN="safSu=#TAG_SU1#,safSg=#TAG_SG#,safApp=#TAG_APP#"/>
+                  <byName objectDN="safSu=#TAG_SU2#,safSg=#TAG_SG#,safApp=#TAG_APP#"/>
+                  <byName objectDN="safSu=#TAG_SU1#1,safSg=#TAG_SG#1,safApp=#TAG_APP#"/>
+                  <byName objectDN="safSu=#TAG_SU2#1,safSg=#TAG_SG#1,safApp=#TAG_APP#"/>
+                  <byName objectDN="safSu=#TAG_SU1#2,safSg=#TAG_SG#2,safApp=#TAG_APP#"/>
+                  <byName objectDN="safSu=#TAG_SU2#2,safSg=#TAG_SG#2,safApp=#TAG_APP#"/>
+                </actedOn>
+                <swAdd bundleDN="safSmfBundle=ERIC-#TAG_NAME#-#TAG_CXP#-#TAG_REV#" pathnamePrefix="#TAG_PATHNAMEPREFIX#">
+                  <plmExecEnv amfNode="safAmfNode=SC-1,safAmfCluster=myAmfCluster"/>
+                  <plmExecEnv amfNode="safAmfNode=SC-2,safAmfCluster=myAmfCluster"/>
+                </swAdd>
+              </activationUnit>
+            </forAddRemove>
+          </upgradeScope>
+          <upgradeStep/>
+        </singleStepUpgrade>
+      </upgradeMethod>
+    </upgradeProcedure>
+    <campaignWrapup>
+      <waitToCommit/>
+      <waitToAllowNewCampaign/>
+      <removeFromImm/>
+    </campaignWrapup>
+  </upgradeCampaign>

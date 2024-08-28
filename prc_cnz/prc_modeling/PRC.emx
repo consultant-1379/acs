@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--xtools2_universal_type_manager-->
+<?com.ibm.xtools.emf.core.signature <signature id="com.ibm.xtools.uml.msl.model" version="7.0.0"><feature description="" name="com.ibm.xtools.ruml.feature" url="" version="7.0.0"/></signature>?>
+<?com.ibm.xtools.emf.core.signature <signature id="com.ibm.xtools.mmi.ui.signatures.diagram" version="7.0.0"><feature description="" name="Rational Modeling Platform (com.ibm.xtools.rmp)" url="" version="7.0.0"/></signature>?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CoreMWProfile="http:///schemas/CoreMWProfile/_B36ecIUKEd-VbsCZgg4ZBQ/10" xmlns:Default="http:///schemas/Default/1" xmlns:ECIMBaseProfile="http:///schemas/ECIMBaseProfile/_f_TfgKRpEd-7HNHZlNEoSg/497" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/2.1.0/UML" xsi:schemaLocation="http:///schemas/CoreMWProfile/_B36ecIUKEd-VbsCZgg4ZBQ/10 pathmap://COREMW_PROFILE/CoreMW_Profile.epx#_B386sIUKEd-VbsCZgg4ZBQ?CoreMW%20Profile/CoreMWProfile? http:///schemas/Default/1 pathmap://UML2_MSL_PROFILES/Default.epx#_IN8k8MmBEdqBcN1R6EvWUw?Default/Default? http:///schemas/ECIMBaseProfile/_f_TfgKRpEd-7HNHZlNEoSg/497 pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.epx#_f_Wi0KRpEd-7HNHZlNEoSg?ECIM%20Base%20Profile/ECIMBaseProfile?">
+  <uml:Model xmi:id="_NRAMoAwOEdmFcaeZXPdWAQ" name="PRC" clientDependency="_Rde1IIW6Ed-FBpQGdJXi3g _OS1OUIXLEd-lToFzlKoOsA">
+    <eAnnotations xmi:id="_NRAMoQwOEdmFcaeZXPdWAQ" source="uml2.diagrams"/>
+    <eAnnotations xmi:id="_BuXPIDT5EeCH44aS1gXhLQ" source="com.ibm.xtools.common.ui.reduction.editingCapabilities">
+      <details xmi:id="_BuXPITT5EeCH44aS1gXhLQ" key="com.ericsson.ecim.dsl.uireduction.activity" value="1"/>
+      <details xmi:id="_BuXPIjT5EeCH44aS1gXhLQ" key="com.ericsson.ecim.coremw.dsl.uireduction.activity" value="2"/>
+    </eAnnotations>
+    <ownedComment xmi:id="_qB8LMDT6EeCH44aS1gXhLQ">
+      <body>EcimModel </body>
+    </ownedComment>
+    <packageImport xmi:id="_8JbBoIW5Ed-FBpQGdJXi3g">
+      <importedPackage xmi:type="uml:Model" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_iT7qACCSEd-Egr3-YAWs7Q?EcimDataType?"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_Rde1IIW6Ed-FBpQGdJXi3g" name="" client="_NRAMoAwOEdmFcaeZXPdWAQ">
+      <supplier xmi:type="uml:Model" href="pathmap://ECIM_GUIDELIB/ECIM_Guidelines.emx#_tFUKaXhYEd-e29ZwYMJd6w?ECIM%20Guidelines?"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_OS1OUIXLEd-lToFzlKoOsA" name="" client="_NRAMoAwOEdmFcaeZXPdWAQ">
+      <supplier xmi:type="uml:Model" href="pathmap://ECIM_COREMW_GUIDELIB/ECIM_Core_MW_Guidelines.emx#_5vlRYnhQEd-OM9oMWC6jJQ?ECIM%20Core%20MW%20Guidelines?"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_vuFrIDT5EeCH44aS1gXhLQ" name="PRC">
+      <ownedComment xmi:id="_vuTGgDT5EeCH44aS1gXhLQ">
+        <body>EcimMom documentation for PRC</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="_vu48YDT5EeCH44aS1gXhLQ" name="PRC">
+        <ownedComment xmi:id="_vu6KgDT5EeCH44aS1gXhLQ">
+          <body>PRC root class</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_vvbu8DT5EeCH44aS1gXhLQ" name="prvPrcId" isReadOnly="true">
+          <ownedComment xmi:id="_vvn8MTT5EeCH44aS1gXhLQ">
+            <body>rdn attribute of class PRC</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="__uBVwDT9EeCH44aS1gXhLQ" name="Instances">
+        <packagedElement xmi:type="uml:InstanceSpecification" xmi:id="_Ad9LoDUDEeCH5IaS1gXhLQ" name="PRC=1" classifier="_vu48YDT5EeCH44aS1gXhLQ">
+          <slot xmi:id="_AeHjsDUDEeCH5IaS1gXhLQ" definingFeature="_vvbu8DT5EeCH44aS1gXhLQ">
+            <value xmi:type="uml:LiteralString" xmi:id="_AeIKwDUDEeCH5IaS1gXhLQ" value="1">
+              <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+            </value>
+          </slot>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_aBgbMDT_EeCH44aS1gXhLQ" name="PRCNodeStatus">
+        <ownedComment xmi:id="_aBhpUDT_EeCH44aS1gXhLQ">
+          <body>Class PRCNodeStatus provides information about the node status and run level</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_aCM-wDT_EeCH44aS1gXhLQ" name="prcNodeStatus" isReadOnly="true">
+          <ownedComment xmi:id="_aCXW0DT_EeCH44aS1gXhLQ">
+            <body>rdn attribute of class PRCNodeStatus</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_7LZ54CCSEd-Egr3-YAWs7Q?EcimDataType/EcimString?"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_dhE5YDT_EeCH44aS1gXhLQ" name="stateNodeA" isReadOnly="true">
+          <ownedComment xmi:id="_j8DYwDT_EeCH44aS1gXhLQ">
+            <body>information about the state fo the node A</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_-kmDQCCSEd-Egr3-YAWs7Q?EcimDataType/EcimInt32?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_dhFgcDT_EeCH44aS1gXhLQ"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_otaO8DT_EeCH44aS1gXhLQ" name="stateNodeB" isReadOnly="true">
+          <ownedComment xmi:id="_otiKwTT_EeCH44aS1gXhLQ">
+            <body>information about state node B</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_-kmDQCCSEd-Egr3-YAWs7Q?EcimDataType/EcimInt32?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ota2ADT_EeCH44aS1gXhLQ"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_uYHvADT_EeCH44aS1gXhLQ" name="runlevelNodeA" isReadOnly="true">
+          <ownedComment xmi:id="_uYPDwDT_EeCH44aS1gXhLQ">
+            <body>information about runlevel node A</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_-kmDQCCSEd-Egr3-YAWs7Q?EcimDataType/EcimInt32?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_uYIWEDT_EeCH44aS1gXhLQ"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_4ybKsDT_EeCH44aS1gXhLQ" name="runlevelNodeB" isReadOnly="true">
+          <ownedComment xmi:id="_4yjtkDT_EeCH44aS1gXhLQ">
+            <body>information about runlevel node B</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="pathmap://ECIM_DATA_TYPES/EcimDataTypes.emx#_-kmDQCCSEd-Egr3-YAWs7Q?EcimDataType/EcimInt32?"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4ybxwDT_EeCH44aS1gXhLQ"/>
+        </ownedAttribute>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:id="_UeIAINCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAIdCzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML_PROFILES/Standard.profile.uml#_yzU58YinEdqtvbnfB2L_5w"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:id="_UeIAItCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAI9CzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML2_MSL_PROFILES/Default.epx#_IN8k8MmBEdqBcN1R6EvWUw?Default/Default?"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML2_MSL_PROFILES/Default.epx#_a_S3wNWLEdiy4IqP8whjFA?Default?"/>
+    </profileApplication>
+    <profileApplication xmi:id="_UeIAJNCzEdqK7KjEh4hvHw">
+      <eAnnotations xmi:id="_UeIAJdCzEdqK7KjEh4hvHw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML2_MSL_PROFILES/Deployment.epx#_IrdAUMmBEdqBcN1R6EvWUw?Deployment/Deployment?"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML2_MSL_PROFILES/Deployment.epx#_vjbuwOvHEdiDX5bji0iVSA?Deployment?"/>
+    </profileApplication>
+    <profileApplication xmi:id="_0tSnQIW5Ed-FBpQGdJXi3g">
+      <eAnnotations xmi:id="_0tT1YIW5Ed-FBpQGdJXi3g" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.epx#_f_Wi0KRpEd-7HNHZlNEoSg?ECIM%20Base%20Profile/ECIMBaseProfile?"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://ECIM_BASE_PROFILE/ECIM_Base_Profile.epx#_cUcakNQkEd63X4o72aQidQ?ECIM%20Base%20Profile?"/>
+    </profileApplication>
+    <profileApplication xmi:id="_BvyygDT5EeCH44aS1gXhLQ">
+      <eAnnotations xmi:id="_Bv4SEDT5EeCH44aS1gXhLQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://COREMW_PROFILE/CoreMW_Profile.epx#_B386sIUKEd-VbsCZgg4ZBQ?CoreMW%20Profile/CoreMWProfile?"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://COREMW_PROFILE/CoreMW_Profile.epx#_Br2_QBSXEd-ZjqYFUyJzOw?CoreMW%20Profile?"/>
+    </profileApplication>
+  </uml:Model>
+  <ECIMBaseProfile:EcimModel xmi:id="_0tUccIW5Ed-FBpQGdJXi3g" base_Model="_NRAMoAwOEdmFcaeZXPdWAQ"/>
+  <ECIMBaseProfile:EcimMom xmi:id="_vuSfcDT5EeCH44aS1gXhLQ" hideGroupName="" specification="" base_Package="_vuFrIDT5EeCH44aS1gXhLQ" author="" contact="" date="" docNo="" revision="" version="1" release="1" namespacePrefix="apg" organization=""/>
+  <Default:Documentation xmi:id="_vubCUDT5EeCH44aS1gXhLQ" base_Comment="_vuTGgDT5EeCH44aS1gXhLQ"/>
+  <Default:Documentation xmi:id="_vvCGUDT5EeCH44aS1gXhLQ" base_Comment="_vu6KgDT5EeCH44aS1gXhLQ"/>
+  <ECIMBaseProfile:EcimRootMoClass_RW xmi:id="_vvIM8DT5EeCH44aS1gXhLQ" hideGroupName="" specification="" base_Class="_vu48YDT5EeCH44aS1gXhLQ"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_vvn8MDT5EeCH44aS1gXhLQ" hideGroupName="" specification="" unit="" base_Property="_vvbu8DT5EeCH44aS1gXhLQ"/>
+  <Default:Documentation xmi:id="_vvup4DT5EeCH44aS1gXhLQ" base_Comment="_vvn8MTT5EeCH44aS1gXhLQ"/>
+  <Default:Documentation xmi:id="_qCC44DT6EeCH44aS1gXhLQ" base_Comment="_qB8LMDT6EeCH44aS1gXhLQ"/>
+  <ECIMBaseProfile:EcimInstancePackage xmi:id="__uIqgDT9EeCH44aS1gXhLQ" base_Package="__uBVwDT9EeCH44aS1gXhLQ"/>
+  <Default:Documentation xmi:id="_aBnI4DT_EeCH44aS1gXhLQ" base_Comment="_aBhpUDT_EeCH44aS1gXhLQ"/>
+  <ECIMBaseProfile:EcimMoClass_RO xmi:id="_aBsocDT_EeCH44aS1gXhLQ" hideGroupName="" specification="" base_Class="_aBgbMDT_EeCH44aS1gXhLQ"/>
+  <ECIMBaseProfile:EcimKeyAttribute xmi:id="_aCWvwDT_EeCH44aS1gXhLQ" hideGroupName="" specification="" unit="" base_Property="_aCM-wDT_EeCH44aS1gXhLQ"/>
+  <Default:Documentation xmi:id="_aCeEgDT_EeCH44aS1gXhLQ" base_Comment="_aCXW0DT_EeCH44aS1gXhLQ"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_dhNcQDT_EeCH44aS1gXhLQ" hideGroupName="" specification="" unit="" base_Property="_dhE5YDT_EeCH44aS1gXhLQ"/>
+  <CoreMWProfile:CoreMwAttribute xmi:id="_dhODUDT_EeCH44aS1gXhLQ" base_Property="_dhE5YDT_EeCH44aS1gXhLQ"/>
+  <Default:Documentation xmi:id="_j8KGcDT_EeCH44aS1gXhLQ" base_Comment="_j8DYwDT_EeCH44aS1gXhLQ"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_othjsDT_EeCH44aS1gXhLQ" hideGroupName="" specification="" unit="" base_Property="_otaO8DT_EeCH44aS1gXhLQ"/>
+  <CoreMWProfile:CoreMwAttribute xmi:id="_otiKwDT_EeCH44aS1gXhLQ" base_Property="_otaO8DT_EeCH44aS1gXhLQ"/>
+  <Default:Documentation xmi:id="_oto4cDT_EeCH44aS1gXhLQ" base_Comment="_otiKwTT_EeCH44aS1gXhLQ"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_uYOcsDT_EeCH44aS1gXhLQ" hideGroupName="" specification="" unit="" base_Property="_uYHvADT_EeCH44aS1gXhLQ"/>
+  <CoreMWProfile:CoreMwAttribute xmi:id="_uYOcsTT_EeCH44aS1gXhLQ" base_Property="_uYHvADT_EeCH44aS1gXhLQ"/>
+  <Default:Documentation xmi:id="_uYVKYDT_EeCH44aS1gXhLQ" base_Comment="_uYPDwDT_EeCH44aS1gXhLQ"/>
+  <ECIMBaseProfile:EcimAttribute_RO xmi:id="_4yjGgDT_EeCH44aS1gXhLQ" hideGroupName="" specification="" unit="" base_Property="_4ybKsDT_EeCH44aS1gXhLQ"/>
+  <CoreMWProfile:CoreMwAttribute xmi:id="_4yjGgTT_EeCH44aS1gXhLQ" base_Property="_4ybKsDT_EeCH44aS1gXhLQ"/>
+  <Default:Documentation xmi:id="_4yp0MDT_EeCH44aS1gXhLQ" base_Comment="_4yjtkDT_EeCH44aS1gXhLQ"/>
+  <ECIMBaseProfile:EcimInstance xmi:id="_AeGVkDUDEeCH5IaS1gXhLQ" base_InstanceSpecification="_Ad9LoDUDEeCH5IaS1gXhLQ"/>
+</xmi:XMI>

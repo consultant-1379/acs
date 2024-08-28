@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<upgradeCampaign xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  safSmfCampaign="safSmfCampaign=ERIC-ACS-I1-TEMPLATE-R1A01">
+  <campaignInfo>
+    <campaignPeriod/>
+  </campaignInfo>
+  <campaignInitialization>
+    <addToImm/>
+  </campaignInitialization>
+  <upgradeProcedure safSmfProcedure="safSmfProc=SingleStepProc">
+    <outageInfo>
+      <acceptableServiceOutage>
+        <all/>
+      </acceptableServiceOutage>
+      <procedurePeriod saSmfProcPeriod="60000000000"/>
+    </outageInfo>
+<procInitAction>
+	<doCliCommand command="cmw-addToImm" args="ERIC-ACS_APCONF-CXC1371346-R1A05"/>
+         <undoCliCommand command="/bin/false" args=""/>
+        <plmExecEnv amfNode="safAmfNode=SC-1,safAmfCluster=myAmfCluster"/>
+</procInitAction>
+    <upgradeMethod>
+      <singleStepUpgrade>
+        <upgradeScope>
+          <forAddRemove>
+            <deactivationUnit/>
+            <activationUnit>
+              <swAdd bundleDN="safSmfBundle=ERIC-ACS_APCONF-CXC1371346-R1A05" pathnamePrefix="/home/coremw/repository">
+			   <plmExecEnv amfNode="safAmfNode=SC-1,safAmfCluster=myAmfCluster"/>
+                <plmExecEnv amfNode="safAmfNode=SC-2,safAmfCluster=myAmfCluster"/>
+			   </swAdd>
+			  <swAdd bundleDN="safSmfBundle=ERIC-ACS_APJTP-CXC1371324-R1A08" pathnamePrefix="/home/coremw/repository">
+                <plmExecEnv amfNode="safAmfNode=SC-1,safAmfCluster=myAmfCluster"/>
+                <plmExecEnv amfNode="safAmfNode=SC-2,safAmfCluster=myAmfCluster"/>
+              </swAdd>
+            </activationUnit>
+          </forAddRemove>
+        </upgradeScope>
+        <upgradeStep/>
+      </singleStepUpgrade>
+    </upgradeMethod>
+  </upgradeProcedure>
+ <campaignWrapup>
+    <waitToCommit/>
+    <waitToAllowNewCampaign/>
+    <removeFromImm/>
+ </campaignWrapup>
+</upgradeCampaign>

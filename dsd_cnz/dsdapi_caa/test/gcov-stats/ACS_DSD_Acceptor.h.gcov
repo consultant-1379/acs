@@ -1,0 +1,241 @@
+        -:    0:Source:inc/ACS_DSD_Acceptor.h
+        -:    0:Graph:obj/ACS_DSD_SocketAcceptor.gcno
+        -:    0:Data:obj/ACS_DSD_SocketAcceptor.gcda
+        -:    0:Runs:2
+        -:    0:Programs:1
+        -:    1:#ifndef HEADER_GUARD_CLASS__ACS_DSD_Acceptor
+        -:    2:#define HEADER_GUARD_CLASS__ACS_DSD_Acceptor ACS_DSD_Acceptor
+        -:    3:
+        -:    4:/** @file ACS_DSD_Acceptor.h
+        -:    5: *	@brief
+        -:    6: *	@author xnicmut (Nicola Muto)
+        -:    7: *	@date 2010-07-14
+        -:    8: *	@version 1.0.0
+        -:    9: *
+        -:   10: *	COPYRIGHT Ericsson AB, 2010
+        -:   11: *	All rights reserved.
+        -:   12: *
+        -:   13: *	The information in this document is the property of Ericsson.
+        -:   14: *	Except as specifically authorized in writing by Ericsson, the receiver of
+        -:   15: *	this document shall keep the information contained herein confidential and
+        -:   16: *	shall protect the same in whole or in part from disclosure and dissemination
+        -:   17: *	to third parties. Disclosure and disseminations to the receivers employees
+        -:   18: *	shall only be made on a strict need to know basis.
+        -:   19: *
+        -:   20: *	REVISION INFO
+        -:   21: *	+========+============+==============+=====================================+
+        -:   22: *	| REV    | DATE       | AUTHOR       | DESCRIPTION                         |
+        -:   23: *	+========+============+==============+=====================================+
+        -:   24: *	| P0.9.0 | 2010-07-14 | xnicmut      | File created.                       |
+        -:   25: *	+--------+------------+--------------+-------------------------------------+
+        -:   26: *	| P0.9.1 | 2010-08-04 | xnicmut      | Released for sprint 2               |
+        -:   27: *	+========+============+==============+=====================================+
+        -:   28: */
+        -:   29:
+        -:   30:#include "ace/Time_Value.h"
+        -:   31:#include "ace/Addr.h"
+        -:   32:
+        -:   33:#include "ACS_DSD_Macros.h"
+        -:   34:#include "ACS_DSD_IOStream.h"
+        -:   35:
+        -:   36:#undef __CLASS_NAME__
+        -:   37:#define __CLASS_NAME__ HEADER_GUARD_CLASS__ACS_DSD_Acceptor
+        -:   38:
+        -:   39:/** @class ACS_DSD_Acceptor ACS_DSD_Acceptor.h
+        -:   40: *	@brief ACS_DSD_Acceptor class
+        -:   41: *	@author xnicmut (Nicola Muto)
+        -:   42: *	@date 2010-07-14
+        -:   43: *	@version 1.0.0
+        -:   44: *
+        -:   45: *	ACS_DSD_Acceptor Class detailed description
+        -:   46: */
+        -:   47:class __CLASS_NAME__ {
+        -:   48:	//===========//
+        -:   49:	// Constants //
+        -:   50:	//===========//
+        -:   51:public:
+        -:   52:	/** @brief Acceptor warning constants.
+        -:   53:	 *
+        -:   54:	 *	AcceptorWarningConstants enumeration detailed description
+        -:   55:	 */
+        -:   56:	enum AcceptorWarningConstants {
+        -:   57:		WAR_ACCEPTOR_NOT_CLOSED		= ACS_DSD_WAR_ACCEPTOR_NOT_CLOSED,		///< WAR_ACCEPTOR_NOT_CLOSED description
+        -:   58:		WAR_ACCEPTOR_NOT_OPEN			= ACS_DSD_WAR_ACCEPTOR_NOT_OPEN,			///< WAR_ACCEPTOR_NOT_OPEN description
+        -:   59:		WAR_STREAM_ALREADY_IN_USE	= ACS_DSD_WAR_STREAM_ALREADY_IN_USE,	///< WAR_STREAM_ALREADY_IN_USE description
+        -:   60:		WAR_WRONG_STREAM_TYPE			= ACS_DSD_WAR_WRONG_STREAM_TYPE,			///< WAR_WRONG_STREAM_TYPE description
+        -:   61:		WAR_WRONG_ADDRESS_TYPE		= ACS_DSD_WAR_WRONG_ADDRESS_TYPE,			///< WAR_WRONG_ADDRESS_TYPE description
+        -:   62:		WAR_REMOVE_NOT_ALLOWED		= ACS_DSD_WAR_REMOVE_NOT_ALLOWED			///< WAR_REMOVE_NOT_ALLOWED description
+        -:   63:	};
+        -:   64:
+        -:   65:	/** @brief Acceptor error constants.
+        -:   66:	 *
+        -:   67:	 *	AcceptorErrorConstants enumeration detailed description
+        -:   68:	 */
+        -:   69:	enum AcceptorErrorConstants {
+        -:   70:		ERR_SYSTEM_ERROR				= ACS_DSD_ERR_SYSTEM_ERROR,				///< ERR_SYSTEM_ERROR description (check errno)
+        -:   71:		ERR_SYSTEM_OPEN					= ACS_DSD_ERR_SYSTEM_OPEN,				///< ERR_SYSTEM_OPEN description (check errno)
+        -:   72:		ERR_SYSTEM_ACCEPT				= ACS_DSD_ERR_SYSTEM_ACCEPT,			///< ERR_SYSTEM_ACCEPT description (check errno)
+        -:   73:		ERR_SYSTEM_CLOSE				= ACS_DSD_ERR_SYSTEM_CLOSE,				///< ERR_SYSTEM_CLOSE description (check errno)
+        -:   74:		ERR_SYSTEM_REMOVE				= ACS_DSD_ERR_SYSTEM_REMOVE,			///< ERR_SYSTEM_REMOVE description (check errno)
+        -:   75:		ERR_SYSTEM_GET_ADDRESS	= ACS_DSD_ERR_SYSTEM_GET_ADDRESS,	///< ERR_SYSTEM_GET_ADDRESS description (check errno)
+        -:   76:		ERR_SYSTEM_GET_OPTION		= ACS_DSD_ERR_SYSTEM_GET_OPTION,	///< ERR_SYSTEM_GET_OPTION description (check errno)
+        -:   77:		ERR_SYSTEM_SET_OPTION		= ACS_DSD_ERR_SYSTEM_SET_OPTION		///< ERR_SYSTEM_SET_OPTION description (check errno)
+        -:   78:	};
+        -:   79:
+        -:   80:	/** @brief Acceptor state constants.
+        -:   81:	 *
+        -:   82:	 *	AcceptorStateConstants enumeration detailed description
+        -:   83:	 */
+        -:   84:	enum AcceptorStateConstants {
+        -:   85:		ACCEPTOR_STATE_CLOSED	= ACS_DSD_ACCEPTOR_STATE_CLOSED,	///< ACCEPTOR_STATE_CLOSED description
+        -:   86:		ACCEPTOR_STATE_OPEN		= ACS_DSD_ACCEPTOR_STATE_OPEN			///< ACCEPTOR_STATE_OPEN description
+        -:   87:	};
+        -:   88:
+        -:   89:	//==============//
+        -:   90:	// Constructors //
+        -:   91:	//==============//
+        -:   92:protected:
+        -:   93:	/** @brief ACS_DSD_Acceptor Default constructor
+        -:   94:	 *
+        -:   95:	 *	ACS_DSD_Acceptor Constructor detailed description
+        -:   96:	 *
+        -:   97:	 *	@remarks Remarks
+        -:   98:	 */
+        -:   99:	inline ACS_DSD_MEMBER_PROTO_CTOR() : _state(ACCEPTOR_STATE_CLOSED) {
+        -:  100:		ACS_DSD_TRACE(ACS_DSD_STRINGIZE(__CLASS_NAME__)"::"ACS_DSD_STRINGIZE(__CLASS_NAME__)"()");
+        -:  101:	}
+        -:  102://	inline __CLASS_NAME__() : _state(ACCEPTOR_STATE_CLOSED) {
+        -:  103://		ACS_DSD_TRACE(ACS_DSD_STRINGIZE(__CLASS_NAME__)"::"ACS_DSD_STRINGIZE(__CLASS_NAME__)"()");
+        -:  104://	}
+        -:  105:
+        -:  106:	//============//
+        -:  107:	// Destructor //
+        -:  108:	//============//
+        -:  109:public:
+        -:  110:	/** @brief ACS_DSD_Acceptor Destructor
+        -:  111:	 *
+        -:  112:	 *	ACS_DSD_Acceptor Destructor detailed description
+        -:  113:	 *
+        -:  114:	 *	@remarks Remarks
+        -:  115:	 */
+        -:  116:	inline virtual ~__CLASS_NAME__() {
+        -:  117:		ACS_DSD_TRACE(ACS_DSD_STRINGIZE(__CLASS_NAME__)"::~"ACS_DSD_STRINGIZE(__CLASS_NAME__)"()");
+        -:  118:	}
+        -:  119:
+        -:  120:	//===========//
+        -:  121:	// Functions //
+        -:  122:	//===========//
+        -:  123:public:
+        -:  124:	/** @brief open method
+        -:  125:	 *
+        -:  126:	 *	open method detailed description
+        -:  127:	 *
+        -:  128:	 *	@param[in] local_sap Description
+        -:  129:	 *	@param[in] reuse_addr Description
+        -:  130:	 *	@return Return Description
+        -:  131:	 *	@remarks Remarks
+        -:  132:	 */
+        -:  133:	virtual int open(const ACE_Addr & local_sap, int reuse_addr = 0) = 0;
+        -:  134:
+        -:  135:	/** @brief accept method
+        -:  136:	 *
+        -:  137:	 *	accept method detailed description
+        -:  138:	 *
+        -:  139:	 *	@param[out] new_stream Description
+        -:  140:	 *	@param[in] timeout Description
+        -:  141:	 *	@return Return Description
+        -:  142:	 *	@remarks Remarks
+        -:  143:	 */
+        -:  144:	virtual int accept(ACS_DSD_IOStream & new_stream, ACE_Time_Value * timeout = 0) const = 0;
+        -:  145:
+        -:  146:	/** @brief close method
+        -:  147:	 *
+        -:  148:	 *	close method detailed description
+        -:  149:	 *
+        -:  150:	 *	@return Return Description
+        -:  151:	 *	@remarks Remarks
+        -:  152:	 */
+        -:  153:	virtual int close() = 0;
+        -:  154:
+        -:  155:	/** @brief remove method
+        -:  156:	 *
+        -:  157:	 *	remove method detailed description
+        -:  158:	 *
+        -:  159:	 *	@return Return Description
+        -:  160:	 *	@remarks Remarks
+        -:  161:	 */
+        -:  162:	virtual int remove() = 0;
+        -:  163:
+        -:  164:	/** @brief get_local_addr method
+        -:  165:	 *
+        -:  166:	 *	get_local_addr method detailed description
+        -:  167:	 *
+        -:  168:	 *	@param[out] sa Description
+        -:  169:	 *	@return Return Description
+        -:  170:	 *	@remarks Remarks
+        -:  171:	 */
+        -:  172:	virtual int get_local_addr(ACE_Addr & sa) const = 0;
+        -:  173:
+        -:  174:	/** @brief get_option method
+        -:  175:	 *
+        -:  176:	 *	get_option method detailed description
+        -:  177:	 *
+        -:  178:	 *	@param[in] level Description
+        -:  179:	 *	@param[in] option Description
+        -:  180:	 *	@param[out] optval Description
+        -:  181:	 *	@param[in,out] optlen Description
+        -:  182:	 *	@return Return Description
+        -:  183:	 *	@remarks Remarks
+        -:  184:	 */
+        -:  185:	virtual int get_option(int level, int option, void * optval, int * optlen) const = 0;
+        -:  186:
+        -:  187:	/** @brief set_option method
+        -:  188:	 *
+        -:  189:	 *	set_option method detailed description
+        -:  190:	 *
+        -:  191:	 *	@param[in] level Description
+        -:  192:	 *	@param[in] option Description
+        -:  193:	 *	@param[in] optval Description
+        -:  194:	 *	@param[in] optlen Description
+        -:  195:	 *	@return Return Description
+        -:  196:	 *	@remarks Remarks
+        -:  197:	 */
+        -:  198:	virtual int set_option(int level, int option, void * optval, int optlen) const = 0;
+        -:  199:
+        -:  200:	/** @brief state method
+        -:  201:	 *
+        -:  202:	 *	state method detailed description
+        -:  203:	 *
+        -:  204:	 *	@return Return Description
+        -:  205:	 *	@remarks Remarks
+        -:  206:	 */
+        1:  207:	inline AcceptorStateConstants state() const {
+        -:  208:		ACS_DSD_TRACE(ACS_DSD_STRINGIZE(__CLASS_NAME__)"::state()");
+        -:  209:
+        1:  210:		return _state;
+        -:  211:	}
+        -:  212:
+        -:  213:protected:
+        -:  214:	/** @brief state method
+        -:  215:	 *
+        -:  216:	 *	state method detailed description
+        -:  217:	 *
+        -:  218:	 *	@param[in] new_state Description
+        -:  219:	 *	@return Return Description
+        -:  220:	 *	@remarks Remarks
+        -:  221:	 */
+        -:  222:	inline AcceptorStateConstants state(AcceptorStateConstants new_state) {
+        -:  223:		ACS_DSD_TRACE(ACS_DSD_STRINGIZE(__CLASS_NAME__)"::state(AcceptorStateConstants new_state)");
+        -:  224:
+        -:  225:		const AcceptorStateConstants old_state = _state;
+        -:  226:		return (_state = new_state, old_state);
+        -:  227:	}
+        -:  228:
+        -:  229:	//========//
+        -:  230:	// Fields //
+        -:  231:	//========//
+        -:  232:private:
+        -:  233:	AcceptorStateConstants _state;
+        -:  234:};
+        -:  235:
+        -:  236:#endif // HEADER_GUARD_CLASS__ACS_DSD_Acceptor

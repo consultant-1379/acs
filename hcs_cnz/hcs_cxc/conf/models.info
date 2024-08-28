@@ -1,0 +1,128 @@
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2014 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# models.info
+##
+# Description:
+#       Configuration file used to perform IMM model changes during software upgrade for HCBIN.
+##
+##
+# Changelog:
+#       First version
+##
+# log($message) ===> Use it to append a notice to the system log
+# log_error($message) ===> Use it to append an error message to the system log
+##
+##
+#-----------------------------------------------------------------------
+#       CHANGE-LOG
+#----------------------------------------------------------------------
+
+# APG43L 4.2 LSV06
+VERSION: CXC1371509_9-R1G
+log "Model files updated to remove extra \ sign character in Time DerivedType"
+
+# APG43L 4.1 LSV03
+VERSION: CXC1371509_9-R1F
+log "Model files updated by generating with new version of modelling tool"
+
+# APG43L 4.0 RM01
+VERSION: CXC1371509_9-R1E
+log " No model changes introduced in version CXC1371509_9-R1E"
+
+#APG 3.8 LSV03
+VERSION: CXC1371509_9-R1D
+log "Model files updated by generating with new version of modelling tool"
+
+# APG43L 3.7 LSV06
+VERSION: CXC1371509_9-R1C
+log " No model changes introduced in version CXC1371509_9-R1C"
+
+VERSION: CXC1371509_9-R1B
+log " No model changes introduced in version CXC1371509_9-R1B"
+
+VERSION: CXC1371509_9-R1A04
+log " No model changes introduced in version CXC1371509_9-R1A04"
+
+# Adaptations to SwM2.0
+VERSION: CXC1371509_9-R1A03
+VERSION: CXC1371509_9-R1A02
+VERSION: CXC1371509_9-R1A01
+
+# TR HW62522
+VERSION: CXC1371509_8-R1A02
+log " No model changes introduced in version CXC1371509_8-R1A02"
+
+#sles 12 sp2
+VERSION: CXC1371509_8-R1A01
+log " No model changes introduced in version CXC1371509_8-R1A01"
+
+VERSION: CXC1371509_5-R1D
+log " No model changes introduced in version CXC1371509_5-R1D"
+
+VERSION: CXC1371509_5-R1C
+log " Changes made to handle new axeApplicaion IPSTP"
+
+VERSION: CXC1371509_5-R1B
+log " No model changes introduced in version CXC1371509_5-R1B"
+
+VERSION: CXC1371509_5-R1A06
+log " No model changes introduced in version CXC1371509_5-R1A06"
+
+VERSION: CXC1371509_5-R1A05
+log " No model changes introduced, opened to add CXC1371509-R1E for 3.1 to LSV14 upgrade"
+
+VERSION: CXC1371509_5-R1A04
+log " No model changes introduced in version CXC1371509_5-R1A04"
+
+VERSION: CXC1371509_5-R1A03
+log " No model changes introduced in version CXC1371509_5-R1A03"
+
+VERSION: CXC1371509_5-R1A02
+log " No model changes introduced in version CXC1371509_5-R1A02"
+
+VERSION: CXC1371509_5-R1A01
+log " No model changes introduced in version CXC1371509_5-R1A01"
+
+VERSION: CXC1371509-R1E
+log " No model changes introduced in version CXC1371509-R1E"
+
+VERSION: CXC1371509-R1D
+log " No model changes introduced in version CXC1371509-R1D"
+
+VERSION: CXC1371509-R1C
+log " No model changes introduced in version CXC1371509-R1C"
+
+VERSION: CXC1371509-R1B
+log " No model changes introduced in version CXC1371509-R1B"
+
+VERSION: CXC1371509-R1A03
+log " Added a new structure and defined progress report of that type."
+#immcfg -d -u HealthCheckhealthCheckMId=1
+#immcfg --delete-class "HealthCheckHealthCheckM" "HealthCheckCategory" "HealthCheckRule" "HealthCheckLogic" "HealthCheckSource" "HealthCheckVerdict" "HealthCheckRuleSetFile" "HealthCheckRuleFileManager" "HealthCheckInUse" "HealthCheckReadyToUse" "HealthCheckJob" "HealthCheckSingleEvent" "HealthCheckPeriodicEvent" "HealthCheckCalendarPeriodicEvent" "HealthCheckJobScheduler" "HealthCheckAsyncActionProgress"
+
+#immcfg -f /opt/ap/acs/conf/c_HealthCheck_imm_classes.xml
+#immcfg -f /opt/ap/acs/conf/o_HealthCheckInstances_imm_objects.xml
+
+VERSION: CXC1371509-R1A02
+log " Textual changes and progress report attributes type got changed in version CXC1371509-R1A02"
+
+VERSION: CXC1371509-R1A01
+log " No model changes introduced in version CXC1371509-R1A01"
+
+VERSION: CXC1371458-R1E
+log " No model changes introduced in version CXC1371458-R1E"
+
+
+VERSION: CXC1371458-R1D
+log " No model changes introduced in version CXC1371458-R1D"
+
+VERSION: CXC1371458-R1C
+log " No model changes introduced in version CXC1371458-R1C"
+
+VERSION: CXC1371458-R1B
+log " No model changes introduced in version CXC1371458-R1B"
+
+

@@ -1,0 +1,27 @@
+#!/bin/bash
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2013 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# Name:
+#       pwdresetlaadmin
+# Description:
+#       A script to wrap the invocation of pwdresetlaadmin command.
+# Note:
+#       None.
+##
+# Usage:
+#       None.
+##
+# Output:
+#       None.
+##
+# Changelog:
+# - Tue Mar 17 2016 - Antonio Buonocunto (eanbuon)
+#       First version.
+##
+
+/usr/bin/sudo /opt/ap/acs/bin/acs_lct_pwdresetlaadmin.sh "$@"
+
+

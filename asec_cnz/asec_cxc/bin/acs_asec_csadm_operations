@@ -1,0 +1,1532 @@
+#!/bin/bash
+##
+# ------------------------------------------------------------------------
+#     Copyright (C) 2015 Ericsson AB. All rights reserved.
+# ------------------------------------------------------------------------
+##
+# Description:
+#       Script used by csadm to verify/add/modify iptables rule
+##
+##
+# Changelog:
+# - Feb 16 2022 - Sowjanya Medak (XSOWMED)
+#	Removed Telnet related functionality
+# - May 21 2020 - Neelam Kumar (XNEELKU)
+#       Updation of iptables rules for custom networks.
+# - Mar 19 2020 - Neelam Kumar (XNEELKU)
+#       Updation of ip6tables rules for IPv6.
+# - Nov 7 2019 - Rajeshwari Padavala (XCSRPAD)
+#       Updation of SSH MO with CBC Ciphers and removed updation of SSH config files 
+# - Oct 31 2019 - Rajeshwari Padavala (XCSRPAD)
+#       Fix of Ssh Services restart 
+# - Feb 01 2019 - Dharma Theja (XDHATEJ)
+#       Fix for TR:HX32512
+# - Mar 15 2018 - Prabhakaran dayalan (XPRADAY)
+#	Fixed the issue for TRHW38970
+# - Feb 07 2017 - Prabhakaran dayalan (XPRADAY)
+#       Fixed bug for csadm -s command when ps is defined
+# - Jun 08 2016 - Mallikarjuna Rao (XSWAPBA)
+#       Rebasing the code from io_apg43l_dm_3_2 to vAPZ_dev 
+# - Mar 18 2015 - Furquan Ullah (XFURULL)
+#       Improvement: AXE IO, CBC cipher handling in csadm
+# - Feb 9 2015 - Dharma Teja (XDHATEJ)
+#       Improvement: Including CBC ciphers handling
+# - Nov 6 2014 - Fabrizio Paglia (XFABPAG)
+#       Improvement: remove old backup copies of cluster.conf
+#                    eventually left by previous operations
+# - May 20 2014 - Fabrizio Paglia (XFABPAG)
+#       Fixed bug with consecutive VLAN tags
+#       Reload the cluster.conf and restart the iptables service only once
+#       in order to reduce the execution time
+##
+
+# Common variables
+TRUE=$( true; echo $? )
+FALSE=$( false; echo $? )
+
+exit_success=0
+exit_failure=1
+exit_exists=2
+exit_failure3=3
+PROT_STATE="all"
+STATE_FTP=""
+VALID_FTP="true"
+CSADM_STATUS="OFF"
+CIPHER_STATE=""
+PS_VAR=0
+VLAN_VAR=0
+PUB_ETH="eth1"
+PUB_ETH2="eth2"
+CLUSTER_RELOAD=0
+SHELF_ARCH=0
+VAPG_VLAN_INTERFACES=''
+
+#commnd list to use
+CLUSTERCONF="/opt/ap/apos/bin/clusterconf/clusterconf"
+VLAN_MAPING_CONF=/cluster/etc/ap/apos/vlan_adapter_maping.conf
+CMD_APOS_HWTYPE='/opt/ap/apos/conf/apos_hwtype.sh'
+ECHO=/bin/echo
+SED=/bin/sed
+CAT=/bin/cat
+GREP=/bin/grep
+AWK=/usr/bin/awk
+IMMFIND="/usr/bin/cmw-utility immfind"
+IMMLIST="/usr/bin/cmw-utility immlist"
+IMMCFG="/usr/bin/cmw-utility immcfg"
+RHOST=$(</etc/cluster/nodes/peer/hostname)
+SERVICEMGMT=/opt/ap/apos/bin/servicemgmt/servicemgmt
+FILE_LIST='/etc/ssh/sshd_config_22 /etc/ssh/sshd_config_830 /etc/ssh/sshd_config_4422 /etc/ssh/sshd_config_mssd'
+
+FILE="/opt/ap/acs/conf/acs_asec_csadm_template.conf"
+CBCCIPHER1="aes128-cbc"
+CBCCIPHER2="aes256-cbc"
+SSH_DN="sshId=1,SecSecMsecMId=1"
+
+function log() {
+  /bin/logger -t acs_asec_csadm_operations "$@"
+}
+
+function retry_imm() {
+  local COMMANDLINE=$@
+  for (( i=0; i<5; i++ )); do
+    ${COMMANDLINE}
+    local RETCODE=$?
+    if [ $RETCODE -eq 0 ]; then
+      return $RETCODE
+    else      
+      sleep 2
+    fi
+  done
+  exit $exit_failure
+}
+
+function fetchStatusCipher() {
+  local immflag=0
+  local fetch_failed=$TRUE
+  local CIPHERVALUE=""
+  CIPHER_STATUS=$(</cluster/storage/system/config/asec/sshcbc_state.conf)
+  STATE_imm_SSHCBC=$(retry_imm ${IMMLIST} asecConfigdataId=SSHCBC,acsSecurityMId=1 | ${GREP} "state" | ${AWK} -F= '{print $2}')
+  CIPHERVALUE=$(retry_imm ${IMMLIST} -a selectedCiphers ${SSH_DN}  | cut -d "=" -f2)
+  if [ -n "$CIPHERVALUE" ] ;then    
+    for i in $(echo $CIPHERVALUE | sed "s/:/ /g")
+    do
+      if [ "$i" == "$CBCCIPHER1" ] || [ "$i" == "$CBCCIPHER2" ]; then
+        immflag=$((immflag+1))
+        continue
+      fi
+    done
+
+    if [ $immflag -lt 2 ] ; then
+      if [ "$STATE_imm_SSHCBC" == "ACCEPT" ]; then
+        $(retry_imm ${IMMCFG} -a state="DROP" asecConfigdataId=SSHCBC,acsSecurityMId=1 > /dev/null)
+      fi
+      if [ "$CIPHER_STATUS" == 1 ]; then
+        echo 0 > /cluster/storage/system/config/asec/sshcbc_state.conf
+        echo 0 > /opt/ap/acs/conf/acs_asec_sshcbc.conf
+      fi
+      return 0
+    else
+      if [ "$STATE_imm_SSHCBC" == "DROP" ]; then 
+        $(retry_imm ${IMMCFG} -a state="ACCEPT" asecConfigdataId=SSHCBC,acsSecurityMId=1 > /dev/null)
+      fi
+      if [ "$CIPHER_STATUS" == 0 ]; then
+        echo 1 > /cluster/storage/system/config/asec/sshcbc_state.conf
+        echo 1 > /opt/ap/acs/conf/acs_asec_sshcbc.conf
+      fi
+      return 1
+    fi
+  fi
+  return $(</cluster/storage/system/config/asec/sshcbc_state.conf)       
+}
+
+function checkCustomInterfaces() {
+  if ! isvAPG; then
+    return
+  fi
+  CUST_INTERFACE_LIST=''  
+  INTERFACE_LIST=$( ${CLUSTERCONF} interface -D | ${GREP} -w ethernet | awk '{print $4}' | sort | uniq)
+
+  for eth in $INTERFACE_LIST; do
+      if echo $eth | grep -Eq 'eth7|eth8|eth9|eth10' ; then 
+        CUST_INTERFACE_LIST="$CUST_INTERFACE_LIST $eth"
+      fi 
+  done
+
+  if [ -z "$CUST_INTERFACE_LIST" ]; then
+    log "CUSTOM interfaces found NULL"
+    exit $exit_failure
+  fi
+}
+
+AP_type=$(retry_imm ${IMMLIST} -a apNodeNumber axeFunctionsId=1 | cut -d "=" -f2)
+apgOamAccess=$(retry_imm ${IMMLIST} -a apgOamAccess axeFunctionsId=1 | cut -d = -f2)
+SHELF_ARCH=$(retry_imm ${IMMLIST} -a apgShelfArchitecture axeFunctionsId=1 |  cut -d = -f2)
+
+if [ ! -f /opt/ap/apos/bin/clusterconf/clusterconf ];then
+  ${ECHO} "Required Apos package is not Installed" 
+  exit $exit_failure3
+fi
+
+if [ ! -f "/cluster/storage/system/config/asec/sshcbc_state.conf" ];then
+  log "Configuration Fault:SSHCBC status file is missing" 
+  exit $exit_failure3
+fi
+
+fetchStatusCipher
+STATUS_Cipher=$?
+# Improvement: remove old backup copies of cluster.conf
+#              eventually left by previous operations
+`${CLUSTERCONF} mgmt --cluster --commit &> /dev/null`
+
+if [ ! -f $FILE ];then
+  ${ECHO} "$FILE: does not exist"
+  exit $exit_failure3
+fi
+
+if [ ! -f $CMD_APOS_HWTYPE ]; then
+  log "apos_hwtype.sh script not found!!!"
+fi
+
+if [ ! -r $FILE ];then
+  ${ECHO} "$FILE : is not readable"
+  exit $exit_failure3
+fi
+
+if ${GREP} -qn "BEGIN DESTINATION PORTS" $FILE|${AWK} 'BEGIN {FS = "[:]"} {print $1}' 2>/dev/null; then 
+  START=`${CAT} $FILE |${GREP} -n "BEGIN DESTINATION PORTS"|${AWK} 'BEGIN {FS = "[:]"} {print $1}'`
+else
+  ${ECHO} "$FILE is not correct"
+  exit $exit_failure3
+fi
+
+if ${GREP} -qn "END DESTINATION PORTS" $FILE|${AWK} 'BEGIN {FS = "[:]"} {print $1}' 2>/dev/null; then 
+  END=`${CAT} $FILE |${GREP} -n "END DESTINATION PORTS"|${AWK} 'BEGIN {FS = "[:]"} {print $1}'`
+else
+  ${ECHO} "$FILE is not correct"
+  exit $exit_failure3
+fi
+
+function usage_error() {
+    ${ECHO} >&2
+    ${ECHO} "Usage: $0 <options>"
+    ${ECHO} "where options include:"
+    ${ECHO} "-p on|off -r on|off -f on|off -t on|off -m on|off -T on|off -c on|off"
+	${ECHO} "-p	                   state of protocol"
+	${ECHO} "-r					   state of reset"
+	${ECHO} "-t					   state of Telnet"
+	${ECHO} "-f			           state of Ftp"
+	${ECHO} "-m					   state of MTS"
+    ${ECHO} "-c					   state of SSHCBC"
+	${ECHO} >&2
+}
+
+function checkPSstatus() {
+  $(retry_imm ${IMMLIST} northBoundId=1,networkConfigurationId=1 >/dev/null)
+  if [ $? -eq 0 ];then
+    PS_VAR=$(retry_imm ${IMMLIST} northBoundId=1,networkConfigurationId=1 | grep physicalSeparationStatus | awk -F= '{print $2}')
+    if [[ -z "$PS_VAR" || $PS_VAR -eq 0 ]]; then
+      PS_VAR=0
+      log "PS is not configured"
+    else
+      log "PS is configured"
+    fi
+  else
+    PS_VAR=0
+    log "PS is not configured"
+  fi
+}
+
+function Server_file_status() {
+  [ "$AP_type" == "2" ] && FILE_LIST='/etc/ssh/sshd_config_22 /etc/ssh/sshd_config_830 /etc/ssh/sshd_config_4422'
+  STATE_imm_SSHCBC=$(retry_imm ${IMMLIST} asecConfigdataId=SSHCBC,acsSecurityMId=1 | ${GREP} "state" | ${AWK} -F= '{print $2}')
+  if [ "$STATE_imm_SSHCBC" == "ACCEPT" ]; then
+    IMM_VAL=1
+  elif [ "$STATE_imm_SSHCBC" == "DROP" ]; then 
+    IMM_VAL=0
+  else 
+    log "Configuration Fault:IMM value incorrect"
+    return 4
+  fi
+  if [ "$IMM_VAL" == "$STATUS_Cipher" ];then
+    for FILE1 in $FILE_LIST
+    do  
+      $( ${CAT} $FILE1 | grep -i '^Cipher' &>/dev/null)
+      val_cipher=$?
+      $( ssh $RHOST ${CAT} $FILE1 | grep -i '^Cipher' &>/dev/null)
+      val_cipher_rsh=$?
+      if [ "$val_cipher" == 1 ] || [ "$val_cipher_rsh" == 1 ] ;then
+        log "Configuration Fault:Cipher entry is missing in the $FILE1 on 1 node" 
+	exit $exit_failure3
+      fi
+      $( ${CAT} $FILE1 | grep -v "^#" | grep -i "aes128-cbc,aes256-cbc" &>/dev/null)
+      val_align_ssh=$?
+      $( ssh $RHOST ${CAT} $FILE1 | grep -v "^#" | grep -i "aes128-cbc,aes256-cbc" &>/dev/null)
+      val_align_rsh=$?
+      [ "$val_align_ssh" != "$val_align_rsh" ] && return 1
+      [ "$STATUS_Cipher" == "$val_align_ssh" ] && return 2
+    done
+  else
+    log "Error in configuration"
+    return 3
+  fi
+  return 0
+
+}
+
+function sshd_services_restart() {	
+  SSHD_SERVICES_LIST_AP1='lde-sshd@sshd_config_830.service
+                        lde-sshd@sshd_config_22.service
+                        lde-sshd@sshd_config_4422.service
+                        lde-sshd@sshd_config_mssd.service'
+
+  SSHD_SERVICES_LIST_AP2='lde-sshd@sshd_config_830.service
+                        lde-sshd@sshd_config_22.service
+                        lde-sshd@sshd_config_4422.service'
+
+  CONFIG_FILE_LIST=$SSHD_SERVICES_LIST_AP1
+  [ "$AP_type" == "2" ] && CONFIG_FILE_LIST=$SSHD_SERVICES_LIST_AP2
+
+  for SERVICE in $CONFIG_FILE_LIST; do
+    $SERVICEMGMT restart $SERVICE
+    if [ $? -eq 0 ]; then
+      ssh $RHOST $SERVICEMGMT restart $SERVICE			
+      if [ $? -ne 0 ]; then
+        log " $SERVICE restart failed on $RHOST"
+        exit $exit_failure
+      fi
+    else 
+      log " $SERVICE restart failed on current node"
+      exit $exit_failure
+    fi        
+  done
+}
+
+function checkVLANstatus() {
+  [[ -s $VLAN_MAPING_CONF ]] && VLAN_VAR=1
+}
+
+function checkPublicInterface() {
+  # Determine the public interface by checking teaming status. 1 -> bond1, other -> eth1 (default) 
+  imm_class_name=$(retry_imm ${IMMFIND} -c NorthBound)
+  if [ ! -z "$imm_class_name" ]; then
+    local rif_status=$(retry_imm ${IMMLIST} -a teamingStatus $imm_class_name | awk 'BEGIN { FS = "=" } ; { print $2 }')
+       
+    if isvAPG; then
+      PUB_ETH='eth1'
+    elif [[ $rif_status -eq 1 || $apgOamAccess -eq 1 ]]; then
+      PUB_ETH='bond1'
+    fi	
+  fi    
+}
+
+function modifyRule() {
+  RECEIVED_PORT=$1
+  RECEIVED_STATE=$2
+  RECEIVED_PROTOCOL=$3
+  RECEIVED_ETHERNET=$4
+  IPVERSION=$5
+
+  if [ -z "$IPVERSION" ]; then 
+    IPVERSION=4
+  fi
+
+  if [ $IPVERSION -eq 4 ]; then
+    RULE=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $RECEIVED_PORT"|${GREP} $RECEIVED_PROTOCOL |${GREP} " $RECEIVED_ETHERNET " | ${AWK} '{print $1}'`
+    $( ${CLUSTERCONF} iptables --m_modify $RULE:iptables all -A INPUT -p $RECEIVED_PROTOCOL --dport $RECEIVED_PORT -i $RECEIVED_ETHERNET -j $RECEIVED_STATE > /dev/null)
+
+    #check for return code and report in logs if an error
+    if [ $? -ne 0 ]; then
+      log "modifyRule: FTP iptable rule modification failed"
+    fi
+  fi
+
+  if [ $IPVERSION -eq 6 ]; then
+    # modify rule for ipv6 as well.
+    RULE=$( ${CLUSTERCONF} ip6tables -D |${GREP} "tcp \-\-dport $RECEIVED_PORT"|${GREP} $RECEIVED_PROTOCOL |${GREP} " $RECEIVED_ETHERNET " | ${AWK} '{print $1}')
+    $( ${CLUSTERCONF} ip6tables --m_modify $RULE:ip6tables all -A INPUT -p $RECEIVED_PROTOCOL --dport $RECEIVED_PORT -i $RECEIVED_ETHERNET -j $RECEIVED_STATE > /dev/null)
+
+    #check for return code and report in logs if an error
+    if [ $? -ne 0 ]; then
+      log "modifyRule: FTP IPv6 iptable rule modification failed"
+    fi
+  fi
+  CLUSTER_RELOAD=1
+}
+
+
+function addRule() {
+  RECEIVED_PORT=$1
+  RECEIVED_STATE=$2
+  RECEIVED_PROTOCOL=$3
+  RECEIVED_ETHERNET=$4
+  IPVERSION=$5
+
+  if [ -z "$IPVERSION" ]; then 
+    IPVERSION=4
+  fi
+
+  if [ $IPVERSION -eq 4 ]; then
+    $( ${CLUSTERCONF} iptables --m_add all -A INPUT -p $RECEIVED_PROTOCOL --dport $RECEIVED_PORT -i $RECEIVED_ETHERNET -j $RECEIVED_STATE > /dev/null)
+
+    # checck return code and report in messsages if fail
+    if [ $? -ne 0 ]; then
+      log "addRule: FTP IPv6 iptable rule add failed"
+    fi
+  fi   
+
+  if [ $IPVERSION -eq 6 ]; then
+    # add rule for ipv6 as well.
+    $( ${CLUSTERCONF} ip6tables --m_add all -A INPUT -p $RECEIVED_PROTOCOL --dport $RECEIVED_PORT -i $RECEIVED_ETHERNET -j $RECEIVED_STATE > /dev/null)
+
+    # checck return code and report in messsages if fail
+    if [ $? -ne 0 ]; then
+      log "addRule: FTP IPv6 iptable rule add failed"
+    fi
+  fi
+  CLUSTER_RELOAD=1
+}
+
+function deleteRule() {
+  PROTOCOL=$1
+  MakeArray $PROTOCOL
+  HW_TYPE=$($CMD_APOS_HWTYPE 2>&1)
+  local FTP_PORT=21
+
+  for PORT in "${ARRAY[@]}"
+  do
+    ETH_INTERFACES=($PUB_ETH $PUB_ETH2)
+    if [ "$HW_TYPE" == "GEP7" ]; then
+      ETH_INTERFACES=($PUB_ETH eth7 eth8)
+    elif isvAPG ; then
+      ETH_INTERFACES=($PUB_ETH $CUST_INTERFACE_LIST)
+    fi
+    for i in "${ETH_INTERFACES[@]}"
+    do
+      NoOfRule=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} "[[:space:]]$i" | wc -l`
+      if [ $? -eq 0 ];then
+        for (( j=1;j<=$NoOfRule;j++))
+        do
+          Rule_No=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} -m 1 "[[:space:]]$i" |${AWK} '{print $1}'`
+
+          if [ $? -eq 0 ];then
+            `${CLUSTERCONF} iptables --m_delete $Rule_No > /dev/null`
+          fi
+        done
+      fi
+
+      # begin: add a check to remove FTP IPv6 Rule
+      if [ $PORT -eq $FTP_PORT ]; then 
+        NoOfRule=$( ${CLUSTERCONF} ip6tables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} "[[:space:]]$i" | wc -l)
+        if [ $? -eq 0 ];then
+          for (( j=1;j<=$NoOfRule;j++))
+          do
+            Rule_No=$( ${CLUSTERCONF} ip6tables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} -m 1 "[[:space:]]$i" |${AWK} '{print $1}')
+
+            if [ $? -eq 0 ];then
+              $( ${CLUSTERCONF} ip6tables --m_delete $Rule_No > /dev/null)
+              if [ $? -ne 0 ]; then
+                log "deleteRule: FTP IPv6 iptable rule delete failed"
+              fi
+            fi
+          done
+	fi
+      fi # end
+
+    done
+  done
+
+  CLUSTER_RELOAD=1
+}
+
+function imm_update() {
+  for protocol in FTP SSHCBC
+  do 
+    PORT=`${SED} -n ''$START','$END'p' $FILE |${GREP} -iw "$protocol"|${AWK} 'BEGIN {FS = "[:]"} {print $2}'`
+    PORT_STATUS=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} -m 1 "[[:space:]]${PUB_ETH}" | ${AWK} '{print $13}'` 
+    if [[ -z "$PORT_STATUS" && "$protocol" == 'FTP' ]]; then 
+      PORT_STATUS=$( ${CLUSTERCONF} ip6tables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} -m 1 "[[:space:]]${PUB_ETH}" | ${AWK} '{print $13}')
+    fi
+
+    OBJECT=`${ECHO} "asecConfigdataId=$protocol,acsSecurityMId=1"`		
+
+    if [ ! -z $PORT_STATUS ];then
+      $(retry_imm ${IMMFIND} | ${GREP} $OBJECT > /dev/null)
+      if [ $? == 0 ];then
+        $(retry_imm ${IMMCFG} -a state=$PORT_STATUS $OBJECT > /dev/null)
+      else
+        $(retry_imm ${IMMCFG} -c ASECConfigData -a protocolName=$protocol $OBJECT > /dev/null)
+        $(retry_imm ${IMMCFG} -a state=$PORT_STATUS $OBJECT > /dev/null)
+      fi
+    else
+      $(retry_imm ${IMMFIND}| grep $OBJECT > /dev/null)
+      if [ $? == 0 ];then
+        `${IMMCFG} -d $OBJECT > /dev/null`	
+      fi
+    fi
+
+  done
+
+}
+
+function imm_status() {
+  for protocol in FTP SSHCBC
+  do 
+    OBJECT=`${ECHO} "asecConfigdataId=$protocol,acsSecurityMId=1"`
+    $(retry_imm ${IMMFIND}| ${GREP} $OBJECT > /dev/null)
+    if [ $? == 0 ];then
+      STATE=$(retry_imm ${IMMLIST} $OBJECT | ${GREP} "state" | ${AWK} -F= '{print $2}')
+      eval STATE_$protocol=${STATE} > /dev/null
+    else
+      eval STATE_$protocol="INVALID"
+    fi
+  done
+
+  if [ "$STATE_FTP" != "INVALID" ];then
+     PROT_STATE="all"
+  else
+     PROT_STATE="none"
+  fi
+}
+			
+function imm_validate() {
+  protocol=$1
+  HW_TYPE=$($CMD_APOS_HWTYPE 2>&1)	
+  if [ "$protocol" == "tcp" ];then 
+    list="FTP"
+  else
+    list="FTP"
+  fi
+
+  if [ "$PROT_STATE" == "none" ];then
+    return 1
+  fi
+
+  for protocol in $list
+  do 
+    if [ "$protocol" == "FTP" ];then
+      var="tcp"
+    fi
+	
+    NumberOfPort=`${SED} -n ''$START','$END'p' $FILE |${GREP} -wi "$protocol"|${AWK} 'BEGIN {FS = "[:]"} {print NF}'`
+	
+    for (( i=2;i<=$NumberOfPort;i++ ))
+    do
+      PORT=`${SED} -n ''$START','$END'p' $FILE |${GREP} -iw "$protocol"|${AWK} 'BEGIN {FS = "[:]"} {print $'$i'}'`
+      if [ $PS_VAR -eq 0 ];then
+        PORT_STATUS=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} -m 1 "[[:space:]]${PUB_ETH}" | ${AWK} '{print $13}'`
+        PROTOCOL_STATUS=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} -m 1 "[[:space:]]${PUB_ETH}" | ${AWK} '{print $7}'`
+        if [[ ("$HW_TYPE" == "GEP7") && ( $PORT == 21) ]]; then
+          PORT_STATUS_eth7=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} -m 1 "[[:space:]]eth7" | ${AWK} '{print $13}'`
+          PROTOCOL_STATUS_eth7=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} -m 1 "[[:space:]]eth7" | ${AWK} '{print $7}'`
+
+          PORT_STATUS_eth8=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} -m 1 "[[:space:]]eth8" | ${AWK} '{print $13}'`
+          PROTOCOL_STATUS_eth8=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} -m 1 "[[:space:]]eth8" | ${AWK} '{print $7}'`
+          eval "IMM_PORT_STATUS=\$STATE_$protocol"
+          if [ "$PORT_STATUS_eth7" != "$IMM_PORT_STATUS" ] || [ "$PORT_STATUS_eth8" != "$IMM_PORT_STATUS" ];then
+            eval VALID_$protocol="false"
+          fi
+          if [ "$PROTOCOL_STATUS_eth7" != "$var" ] || [ "$PROTOCOL_STATUS_eth8" != "$var" ];then
+            eval VALID_$protocol="false"
+          fi
+        fi
+
+        if isvAPG; then
+          for CUST_ETH in $CUST_INTERFACE_LIST; do
+            PORT_STATUS_cust=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} -m 1 "[[:space:]]${CUST_ETH}" | ${AWK} '{print $13}'`
+            PROTOCOL_STATUS_cust=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} -m 1 "[[:space:]]${CUST_ETH}" | ${AWK} '{print $7}'`
+
+            eval "IMM_PORT_STATUS=\$STATE_$protocol"
+            if [ "$PORT_STATUS_cust" != "$IMM_PORT_STATUS" ];then
+              eval VALID_$protocol="false"
+            fi
+            if [ "$PROTOCOL_STATUS_cust" != "$var" ];then
+              eval VALID_$protocol="false"
+            fi
+          done
+
+          # ipv6 check
+          if [[ ( $PORT == 21) ]]; then
+            if [[ ( -z "$PORT_STATUS" || -z "$PROTOCOL_STATUS") ]]; then
+              PORT_STATUS=`${CLUSTERCONF} ip6tables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} -m 1 "[[:space:]]${PUB_ETH}" | ${AWK} '{print $13}'`
+              PROTOCOL_STATUS=`${CLUSTERCONF} ip6tables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} -m 1 "[[:space:]]${PUB_ETH}" | ${AWK} '{print $7}'`
+            fi
+          fi
+        fi
+
+        eval "IMM_PORT_STATUS=\$STATE_$protocol"
+        if [ "$PORT_STATUS" != "$IMM_PORT_STATUS" ];then
+          eval VALID_$protocol="false"
+        fi
+        if [ "$PROTOCOL_STATUS" != "$var" ];then
+          eval VALID_$protocol="false"
+        fi
+      else
+        IMM_PORT_STATUS=`echo \$STATE_$protocol`
+        PORT_STATUS1=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} "[[:space:]]${PUB_ETH}" | ${AWK} '{print $13}' | uniq`
+        PORT_STATUS2=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} eth2 | ${AWK} '{print $13}'| uniq`
+        PROTOCOL_STATUS1=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} "[[:space:]]${PUB_ETH}" |${AWK} '{print $7}'| uniq`
+        PROTOCOL_STATUS2=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} eth2 |${AWK} '{print $7}'| uniq`
+
+        eval "IMM_PORT_STATUS=\$STATE_$protocol"	
+					
+        if [ "$PORT_STATUS1" != "$IMM_PORT_STATUS" ];then
+          eval VALID_$protocol="false"
+          break
+        fi
+        if [ "$PROTOCOL_STATUS1" != "$var" ];then
+          eval VALID_$protocol="false"
+          break
+        fi
+					
+        if [ "$PORT_STATUS2" != "$IMM_PORT_STATUS" ];then
+          eval VALID_$protocol="false"
+          break
+        fi
+        if [ "$PROTOCOL_STATUS2" != "$var" ];then
+          eval VALID_$protocol="false"
+          break
+        fi
+      fi
+      if [ $VLAN_VAR == 1 ];then
+        VLAN_TAG=$( GET_VLANTAGS)
+        for TAG in $VLAN_TAG
+        do
+          PORT_STATUS3=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} ".$TAG " | ${AWK} '{print $13}'`
+          PROTOCOL_STATUS3=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} ".$TAG " |${AWK} '{print $7}'`
+          eval "IMM_PORT_STATUS=\$STATE_$protocol"
+							
+          if [ "$PORT_STATUS3" != "$IMM_PORT_STATUS" ];then
+            eval VALID_$protocol="false"
+            break
+          fi
+          if [ "$PROTOCOL_STATUS3" != "$var" ];then
+            eval VALID_$protocol="false"
+	    break
+          fi
+        done
+      fi
+    done
+  done
+		
+
+  for status in $VALID_FTP  
+  do 
+    if [ $status == "false" ]
+    then
+      return 1
+    fi
+  done
+  return 0
+}
+
+function CBC_Initialize(){
+  [ "$AP_type" == "2" ] && FILE_LIST='/etc/ssh/sshd_config_22 /etc/ssh/sshd_config_830 /etc/ssh/sshd_config_4422'
+  Server_file_status
+  if [ "$?" != 0 ] ;then
+    CBC_RemoveCiphers
+  fi
+  #sshd_services_restart
+}
+
+function PROTOCOL_Initialize() {
+  INPUT_SERVICE=$1
+  INPUT_STATE=$2
+  HW_TYPE=$($CMD_APOS_HWTYPE 2>&1)
+  INPUT_PROTOCOL=tcp
+	
+  NumberOfPort=`${SED} -n ''$START','$END'p' $FILE |${GREP} -wi "$INPUT_SERVICE"|${AWK} 'BEGIN {FS = "[:]"} {print NF}'`
+  VLAN_TAG_TEMP=$( GET_VLANTAGS)
+  log "csadm VLAN_TAG:$VLAN_TAG_TEMP"	
+  for (( i=2;i<=$NumberOfPort;i++))
+  do
+    PORT=`${SED} -n ''$START','$END'p' $FILE |${GREP} -iw "$INPUT_SERVICE"|${AWK} 'BEGIN {FS = "[:]"} {print $'$i'}'`
+    if [ $PS_VAR -eq 0 ];then
+      `${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} $INPUT_PROTOCOL | ${GREP} "[[:space:]]${PUB_ETH}" > /dev/null`
+       if [ $? -eq 1 ];then
+         addRule $PORT $INPUT_STATE $INPUT_PROTOCOL ${PUB_ETH}
+       fi
+
+       if [[ ("$HW_TYPE" == "GEP7") && ( $PORT == 21) ]]; then
+         `${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} $INPUT_PROTOCOL | ${GREP} "[[:space:]]eth7" > /dev/null`
+          if [ $? -eq 1 ];then
+            addRule $PORT $INPUT_STATE $INPUT_PROTOCOL eth7
+          fi
+         `${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} $INPUT_PROTOCOL | ${GREP} "[[:space:]]eth8" > /dev/null`
+          if [ $? -eq 1 ];then
+            addRule $PORT $INPUT_STATE $INPUT_PROTOCOL eth8
+          fi
+       fi
+
+       if isvAPG; then
+         for CUST_ETH in $CUST_INTERFACE_LIST; do
+           `${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} $INPUT_PROTOCOL | ${GREP} "[[:space:]]${CUST_ETH}" > /dev/null`         
+           if [ $? -eq 1 ];then
+             addRule $PORT $INPUT_STATE $INPUT_PROTOCOL ${CUST_ETH}
+           fi
+         done
+
+         # add ipv6 rule on vAPG
+         if [[ ( $PORT == 21) ]]; then
+           local IPVERSION=6
+	   local INPUT_STATE=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} -m 1 "[[:space:]]${PUB_ETH}" | ${AWK} '{print $13}'`
+ 
+           $( ${CLUSTERCONF} ip6tables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} $INPUT_PROTOCOL | ${GREP} "[[:space:]]${PUB_ETH}" > /dev/null)
+           if [ $? -eq 1 ];then
+             addRule $PORT $INPUT_STATE $INPUT_PROTOCOL ${PUB_ETH} $IPVERSION
+           fi
+
+           for CUST_ETH in $CUST_INTERFACE_LIST; do
+             $( ${CLUSTERCONF} ip6tables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} $INPUT_PROTOCOL | ${GREP} "[[:space:]]${CUST_ETH}" > /dev/null)
+             if [ $? -eq 1 ];then
+               addRule $PORT $INPUT_STATE $INPUT_PROTOCOL ${CUST_ETH} $IPVERSION
+             fi
+           done
+
+         fi 
+       fi
+    else
+      `${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} $INPUT_PROTOCOL | ${GREP} "[[:space:]]${PUB_ETH}" > /dev/null`		
+      if [ $? -eq 1 ];then
+	 addRule $PORT $INPUT_STATE $INPUT_PROTOCOL ${PUB_ETH}
+      fi
+			
+      `${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} $INPUT_PROTOCOL | ${GREP} eth2 > /dev/null`
+      if [ $? -eq 1 ];then
+	 addRule $PORT $INPUT_STATE $INPUT_PROTOCOL eth2
+      fi
+     fi
+     [[ -s $VLAN_MAPING_CONF ]] && VLAN_VAR=1
+     if [ $VLAN_VAR -eq 1 ];then
+       for TAG in $VLAN_TAG_TEMP
+       do
+	 `${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT"|${GREP} $INPUT_PROTOCOL | ${GREP} ".$TAG " > /dev/null`
+	 rCode=$?
+				
+	 if [ $rCode -eq 1 ];then
+	   addRule $PORT $INPUT_STATE $INPUT_PROTOCOL $TAG
+         fi
+       done 
+     fi	
+  done
+}
+
+function CBC_AddCiphers(){
+  local CMD=${IMMCFG}
+  local immflag=0
+  local fetch_failed=$TRUE
+  local cmd_failed=$TRUE
+  local CIPHERVALUE=""
+  CIPHERVALUE=$(retry_imm ${IMMLIST} -a selectedCiphers ${SSH_DN}  | cut -d "=" -f2)
+  if [ -n "$CIPHERVALUE" ] ;then    
+    for i in $(echo $CIPHERVALUE | sed "s/:/ /g")
+    do
+      if [ "$i" == "$CBCCIPHER1" ] || [ "$i" == "$CBCCIPHER2" ]; then
+        immflag=$((immflag+1))
+        continue
+      fi
+      CMD="${CMD} -a selectedCiphers=$i"
+    done
+
+    # Adding CBC Ciphers to IMM using a retry mechanism
+    if [ $immflag -lt 2 ] ; then	
+      CMD="${CMD} -a selectedCiphers=${CBCCIPHER1} -a selectedCiphers=${CBCCIPHER2} ${SSH_DN}"
+      $(retry_imm ${CMD})
+      if [ $? -eq 0 ]; then
+        cmd_failed=$FALSE; 
+      fi	        
+    else
+      cmd_failed=$FALSE;
+      log "CBC Ciphers are already present in IMM"
+    fi
+    if [ $cmd_failed == $TRUE ] ;then
+      log "Unable to Add Selected Ciphers in Ssh MO"
+      exit $exit_failure
+    else
+      echo 1 > /cluster/storage/system/config/asec/sshcbc_state.conf
+      echo 1 > /opt/ap/acs/conf/acs_asec_sshcbc.conf
+    fi	
+  else    
+    log "Unable to fetch the Selected Ciphers from the Ssh MO"
+    exit $exit_failure
+
+  fi
+}
+
+function CBC_RemoveCiphers(){
+  local CMD=${IMMCFG}
+  local immflag=0
+  local fetch_failed=$TRUE
+  local cmd_failed=$TRUE
+  local CIPHERVALUE=""
+  CIPHERVALUE=$(retry_imm ${IMMLIST} -a selectedCiphers ${SSH_DN}  | cut -d "=" -f2)
+  if [ -n $CIPHERVALUE ]; then
+    fetch_failed=$FALSE;
+  fi
+
+  if [ $fetch_failed == $TRUE ] ;then
+    log "Unable to fetch the Selected Ciphers from the Ssh MO"
+    exit $exit_failure
+  else
+    for i in $(echo $CIPHERVALUE | sed "s/:/ /g")
+    do
+      if [ "$i" == "$CBCCIPHER1" ] || [ "$i" == "$CBCCIPHER2" ]; then
+        immflag=$((immflag+1))
+        continue
+      fi
+      CMD="${CMD} -a selectedCiphers=$i"
+    done
+
+    # Adding non CBC Ciphers to IMM using a retry mechanism
+    if [ $immflag -gt 0 ]; then
+      CMD="${CMD} ${SSH_DN}"
+      $(retry_imm ${CMD})
+      if [ $? -eq 0 ]; then
+        cmd_failed=$FALSE; 
+      fi	        
+    else
+      cmd_failed=$FALSE;
+      log "CBC Ciphers are not present in IMM"
+    fi
+    if [ $cmd_failed = $TRUE ] ;then
+      log "Unable to Remove Selected Ciphers from Ssh MO"
+      exit $exit_failure
+    else
+        echo 0 > /cluster/storage/system/config/asec/sshcbc_state.conf
+        echo 0 > /opt/ap/acs/conf/acs_asec_sshcbc.conf
+    fi
+  fi
+}
+
+function CBC_ALLOW() {
+  [ "$AP_type" == "2" ] && FILE_LIST='/etc/ssh/sshd_config_22 /etc/ssh/sshd_config_830 /etc/ssh/sshd_config_4422'
+  Server_file_status
+  [ "$?" != 0 ] &&  exit $exit_failure
+  if [ "$STATUS_Cipher" != 0 ] && [ "$STATUS_Cipher" != 1 ];then
+    log "Invalid STATUS_Cipher value : $STATUS_Cipher"
+    exit $exit_failure
+  fi
+  if [ "$STATUS_Cipher" == 0 ];then
+    CBC_AddCiphers
+    #sshd_services_restart 
+  
+  elif [ "$STATUS_Cipher" == 1 ];then
+    if  [ "$PROTOCOL_STATE" != "all" ];then
+      log "Ciphers are already enabled" 
+      exit $exit_exists
+    fi
+  fi
+			
+}
+
+function CBC_BLOCK() {
+  [ "$AP_type" == "2" ] && FILE_LIST='/etc/ssh/sshd_config_22 /etc/ssh/sshd_config_830 /etc/ssh/sshd_config_4422'
+  Server_file_status 
+  [ "$?" != 0 ] &&  exit $exit_failure
+  if [ "$STATUS_Cipher" != 0 ] && [ "$STATUS_Cipher" != 1 ];then
+    log "Invalid STATUS_Cipher value : $STATUS_Cipher"
+    exit $exit_failure
+  fi
+  if [ "$STATUS_Cipher" == 1 ];then	
+    CBC_RemoveCiphers
+    #sshd_services_restart 
+  elif [ "$STATUS_Cipher" == 0 ];then
+    if [ "$PROTOCOL_STATE" != "all" ];then
+      log "Ciphers are already disabled"
+      exit $exit_exists
+    fi  	       
+  fi
+}
+
+function check_PROTOCOL() {
+  INPUT_SERVICE=$1
+  INPUT_STATE=$2
+  HW_TYPE=$($CMD_APOS_HWTYPE 2>&1)
+  INPUT_PROTOCOL=tcp
+
+  NumberOfPort=`${SED} -n ''$START','$END'p' $FILE |${GREP} -wi "$INPUT_SERVICE"|${AWK} 'BEGIN {FS = "[:]"} {print NF}'`
+	
+  for (( i=2;i<=$NumberOfPort;i++))
+  do
+    PORT=`${SED} -n ''$START','$END'p' $FILE |${GREP} -iw "$INPUT_SERVICE"|${AWK} 'BEGIN {FS = "[:]"} {print $'$i'}'`
+    if [ $PS_VAR -eq 0 ];then
+      PORT_STATUS=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} "[[:space:]]${PUB_ETH}" | ${AWK} '{print $13}'`
+      PORT_STATUS_IPV6=`${CLUSTERCONF} ip6tables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} "[[:space:]]${PUB_ETH}" | ${AWK} '{print $13}'`
+         
+      if [[ ("$HW_TYPE" == "GEP7") && ( $PORT == 21) ]]; then
+        PORT_STATUS_vAPG1=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} "[[:space:]]eth7" | ${AWK} '{print $13}'`
+        PORT_STATUS_vAPG2=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} "[[:space:]]eth8" | ${AWK} '{print $13}'`
+        if [ "$PORT_STATUS_vAPG1" != "$INPUT_STATE" ] && [ "$PORT_STATUS_vAPG2" != "$INPUT_STATE" ];then
+          modifyRule $PORT $INPUT_STATE $INPUT_PROTOCOL eth7
+          modifyRule $PORT $INPUT_STATE $INPUT_PROTOCOL eth8
+        fi
+      fi
+       
+      if isvAPG; then
+        for CUST_ETH in $CUST_INTERFACE_LIST; do
+          PORT_STATUS_vAPG=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} "[[:space:]]${CUST_ETH}" | ${AWK} '{print $13}'`
+          if [ "$PORT_STATUS_vAPG" != "$INPUT_STATE" ];then
+            modifyRule $PORT $INPUT_STATE $INPUT_PROTOCOL ${CUST_ETH}
+          fi
+        done
+
+        if [[ ( $PORT == 21) ]]; then
+          local IPVERSION=6
+
+          if [[ ! -z "$PORT_STATUS_IPV6" && "$PORT_STATUS_IPV6" != "$INPUT_STATE" ]];then
+            modifyRule $PORT $INPUT_STATE $INPUT_PROTOCOL ${PUB_ETH} $IPVERSION
+          fi
+
+          for CUST_ETH in $CUST_INTERFACE_LIST; do
+            local PORT_STATUS_CUST_IPV6=`${CLUSTERCONF} ip6tables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} "[[:space:]]${CUST_ETH}" | ${AWK} '{print $13}'`
+            if [[ ! -z "$PORT_STATUS_CUST_IPV6" && "$PORT_STATUS_CUST_IPV6" != "$INPUT_STATE" ]];then
+              modifyRule $PORT $INPUT_STATE $INPUT_PROTOCOL ${CUST_ETH} $IPVERSION
+            fi
+          done
+
+        fi   
+      fi
+
+      if [[ ! -z "$PORT_STATUS" && "$PORT_STATUS" != "$INPUT_STATE" ]];then
+        modifyRule $PORT $INPUT_STATE $INPUT_PROTOCOL ${PUB_ETH}
+      fi
+
+    else
+
+      PORT_STATUS1=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} "[[:space:]]${PUB_ETH}" |${AWK} '{print $13}'`
+      PORT_STATUS2=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} eth2 |${AWK} '{print $13}'`
+  
+      if [ "$PORT_STATUS1" != "$INPUT_STATE" ];then
+        modifyRule $PORT $INPUT_STATE $INPUT_PROTOCOL ${PUB_ETH}
+      fi
+
+      if [ "$PORT_STATUS2" != "$INPUT_STATE" ];then
+        modifyRule $PORT $INPUT_STATE $INPUT_PROTOCOL eth2
+      fi
+    fi
+    if [ $VLAN_VAR -eq 1 ];then
+      VLAN_TAG=$( GET_VLANTAGS)
+      for TAG in $VLAN_TAG	
+      do
+        PORT_STATUS3=`${CLUSTERCONF} iptables -D |${GREP} "tcp \-\-dport $PORT" | ${GREP} ".$TAG " |${AWK} '{print $13}'`
+
+        if [ "$PORT_STATUS3" != "$INPUT_STATE" ];then
+          modifyRule $PORT $INPUT_STATE $INPUT_PROTOCOL $TAG
+        fi
+      done
+    fi
+  done
+			
+}
+
+function MakeArray() {
+
+  PROTOCOL=$1
+
+  if [ "$PROTOCOL" == "tcp" ];then
+    k=0
+    unset ARRAY
+
+    NumberOfFtpPort=`${SED} -n ''$START','$END'p' $FILE |${GREP} -wi "ftp"|${AWK} 'BEGIN {FS = "[:]"} {print NF}'`
+
+    for (( i=2;i<=$NumberOfFtpPort;i++))
+    do
+      PORT=`${SED} -n ''$START','$END'p' $FILE |${GREP} -iw "ftp"|${AWK} 'BEGIN {FS = "[:]"} {print $'$i'}'`
+      ARRAY[$k]=$PORT
+      k=$((k+1))
+    done
+
+  fi
+
+}
+
+function isvAPG(){
+  [ $SHELF_ARCH -eq 3 ] && return $TRUE
+  return $FALSE
+}
+
+function GET_VLANTAGS(){
+  local VLANTAGS=''
+  local V_DOMAIN=''
+  local V_ADAPTER=''
+  local INTERFACE=''
+  local V_NAME=''
+
+  # check if the network is defined for the perticular vlan
+  if isvAPG; then
+    while read line
+    do
+      V_DOMAIN=$( echo $line | awk -F " " '{print $2}')
+      V_ADAPTER=$( echo $line | awk -F " " '{print $3}')
+      INTERFACE=$( echo $V_ADAPTER | cut -d . -f2)
+			[ "$V_DOMAIN" == "" ] && continue
+      if [ "$V_DOMAIN" == 'AP' ]; then
+        if $( ${CLUSTERCONF} interface -D | grep -qw $INTERFACE &>/dev/null); then
+          VLANTAGS="$VLANTAGS $INTERFACE"
+        fi
+      fi
+    done < $VLAN_MAPING_CONF
+  else
+    while read line
+    do
+      V_NAME=$( echo $line | awk -F " " '{print $1}')
+      V_ADAPTER=$( echo $line | awk -F " " '{print $2}')
+      [[ "$V_NAME" == "" ]] && continue
+      if $( ${CLUSTERCONF} interface -D | grep -qw "$V_ADAPTER" &>/dev/null); then
+        VLANTAGS="$VLANTAGS $V_ADAPTER"
+      fi
+    done < $VLAN_MAPING_CONF
+  fi
+
+  echo $VLANTAGS
+}
+
+function GET_VLANCOUNT(){
+
+  local V_DOMAIN=''
+  local V_ADAPTER=''
+  local INTERFACE=''
+  local V_NAME=''
+  local VLAN_COUNT=0
+
+  # check if the network is defined for the perticular vlan
+  if isvAPG; then
+    while read line
+    do
+      V_DOMAIN=$( echo $line | awk -F " " '{print $2}')
+      V_ADAPTER=$( echo $line | awk -F " " '{print $3}')
+      INTERFACE=$( echo $V_ADAPTER | cut -d . -f2)
+      if [ "$V_DOMAIN" == 'AP' ]; then
+        if $( ${CLUSTERCONF} interface -D | grep -qw $INTERFACE &>/dev/null); then
+          (( VLAN_COUNT = VLAN_COUNT + 1 ))
+        fi
+      fi
+    done < $VLAN_MAPING_CONF
+  else
+    while read line
+    do
+      V_NAME=$( echo $line | awk -F " " '{print $1}')
+      V_ADAPTER=$( echo $line | awk -F " " '{print $2}')
+      [[ "$V_NAME" == "" ]] && continue
+      if $( ${CLUSTERCONF} interface -D | grep -qw "$V_ADAPTER" &>/dev/null); then
+        (( VLAN_COUNT = VLAN_COUNT + 1 ))
+      fi
+    done < $VLAN_MAPING_CONF
+  fi
+  echo $VLAN_COUNT
+}
+
+function GET_VLANINTERFACES(){
+  local INTERFACES=''
+
+  if isvAPG; then
+    if [ ! -f $VLAN_MAPING_CONF ]; then 
+      echo "$INTERFACES"  # print empty string
+      return
+    fi
+
+    while read line
+    do
+      V_DOMAIN=$( echo $line | awk -F " " '{print $2}')
+      V_ADAPTER=$( echo $line | awk -F " " '{print $3}')
+      INTERFACE=$( echo $V_ADAPTER | cut -d . -f2)
+      if [ "$V_DOMAIN" == 'AP' ]; then
+        INTERFACES="$INTERFACES $INTERFACE"
+      fi
+    done < $VLAN_MAPING_CONF
+  fi
+  echo "$INTERFACES"
+}
+
+function checkValidity() {
+
+  PROTOCOL=$1;TEMP=0
+  local VLAN_COUNT=0
+  HW_TYPE=$($CMD_APOS_HWTYPE 2>&1)
+  MakeArray $PROTOCOL
+
+  var=${#ARRAY[@]}
+  TotalPort=`echo ${#ARRAY[@]}`
+  [ $PS_VAR != 0 ]  && TotalPort=`echo $((var * 2))`
+  [[ -s $VLAN_MAPING_CONF ]] && {
+  VLAN_VAR=1
+  VLAN_COUNT=$( GET_VLANCOUNT)
+  }
+  [ $VLAN_VAR == 1 ] && TotalPort=`expr $TotalPort + $(( VLAN_COUNT * var))` 
+
+  if [ "$HW_TYPE" == "GEP7" ]; then
+    TOTAL_INTERFACES="${PUB_ETH} $( GET_VLANINTERFACES) eth7 eth8"
+    echo $TOTAL_INTERFACES
+  elif isvAPG; then
+    TOTAL_INTERFACES="${PUB_ETH} $CUST_INTERFACE_LIST"
+    echo $TOTAL_INTERFACES
+  else
+    TOTAL_INTERFACES="${PUB_ETH} $( GET_VLANINTERFACES) ${PUB_ETH2}"
+  fi
+
+  TOTAL_INTERFACES=$( echo $TOTAL_INTERFACES)
+
+  for INTERFACE in $TOTAL_INTERFACES
+  do
+    for val in "${ARRAY[@]}"
+    do
+      NoOfRule=$( ${CLUSTERCONF} iptables -D | ${GREP} -w "\-\-dport $val" | ${GREP} "[[:space:]]${INTERFACE}" | wc -l)
+      [ $? -eq 0 ] && TEMP=$((TEMP+NoOfRule))
+    done
+  done
+
+  [ $TEMP -eq 0 ] && return 2
+  if [ $TEMP -ne $TotalPort ] && [ isvAPG ];then
+    return 0
+  elif [ $TEMP -ne $TotalPort ];then
+    return 1
+  else
+    return 0
+  fi
+
+}
+
+##############################################################################
+#   MAIN
+##############################################################################
+
+#Option Check
+[[ $# < 1 ]] && {
+	usage_error
+	exit $exit_failure3
+}
+
+
+args=$(getopt  p:r:f:t:c:m:T:s: "$@")
+if [ $? -ne 0 ];then
+	usage_error
+	exit $exit_failure3
+fi 
+
+TEMP=$(getopt p:r:m:t:c:f:T:s: $@)
+
+eval set -- "$TEMP"
+
+while true; do
+
+case "$1" in
+
+-f)
+
+
+        case "$2" in
+        on|ON)
+                FTP_STATE=ON
+                shift 2
+                ;;
+        off|OFF)
+                FTP_STATE=OFF
+		shift 2
+                ;;
+        *)
+                ${ECHO} "Invalid Option"
+                usage_error
+                exit $exit_failure3
+                ;;
+                esac
+        ;;
+
+-t)
+
+
+        case "$2" in
+        on|ON)
+                TELNET_STATE=ON
+                shift 2
+                ;;
+        off|OFF)
+               TELNET_STATE=OFF
+		shift 2
+                ;;
+        *)
+                ${ECHO} "Invalid Option"
+                usage_error
+                exit $exit_failure3
+                ;;
+                esac
+        ;;
+
+-m)
+
+
+        case "$2" in
+        on|ON)
+                MTS_STATE=ON
+                shift 2
+                ;;
+        off|OFF)
+                MTS_STATE=OFF
+		shift 2	
+                ;;
+        *)
+                ${ECHO} "Invalid Option"
+                usage_error
+                exit $exit_failure3
+                ;;
+                esac
+        ;;
+
+-p)
+
+         case "$2" in
+        tcp|TCP)
+                PROTOCOL_STATE=tcp
+                shift 2
+		;;
+	all|ALL)
+                PROTOCOL_STATE=all
+		shift 2
+                ;;
+
+        *)
+                ${ECHO} "Invalid Option"
+                usage_error
+                exit $exit_failure3
+                ;;
+                esac
+        ;;
+-r)
+
+         case "$2" in
+        on|ON)
+                RESET_STATE=ON
+                shift 2
+                ;;
+        off|OFF)
+                RESET_STATE=OFF
+		if [ "$PROTOCOL_STATE" == "all" ] && [ $# -eq 3 ];then
+			CSADM_STATUS=ON
+		fi
+		shift 2
+                ;;
+        *)
+                ${ECHO} "Invalid Option"
+                usage_error
+                exit $exit_failure3
+                ;;
+                esac
+        ;;
+
+-s) 
+	 case "$2" in
+        on|ON)
+                PORT_STATE=ON
+                shift 2
+                ;;
+        off|OFF)
+                PORT_STATE=OFF
+                shift 2
+                ;;
+        *)
+                ${ECHO} "Invalid Option"
+                usage_error
+                exit $exit_failure3
+                ;;
+                esac
+        ;;
+
+
+-c)
+	case "$2" in
+       on|ON)
+	       CIPHER_STATE=cbc
+	       RESET_STATE=ON
+                shift 2
+	       ;;
+       off|OFF)
+			
+	       CIPHER_STATE=cbc
+	       RESET_STATE=OFF
+                shift 2
+	       ;;
+       *)
+	       ${ECHO} "Invalid Option"
+	       usage_error
+	       exit $exit_failure3
+	       ;;
+	       esac
+       ;;	
+
+	--)     break
+			;;
+
+
+esac
+
+
+done
+
+#Start command
+                                           
+checkPSstatus
+checkVLANstatus
+checkPublicInterface
+checkCustomInterfaces
+
+imm_status
+if [ "$CIPHER_STATE" == "cbc" ];then
+checkValidity tcp
+[ $? -ne 0 ] && exit $exit_failure
+imm_validate tcp
+[ $? -ne 0 ] && exit $exit_failure
+	[ "$RESET_STATE" == "ON" ] && CBC_ALLOW
+	[ "$RESET_STATE" == "OFF" ] && CBC_BLOCK
+		
+		 
+elif [ "$PROTOCOL_STATE" == "tcp" ] && [ "$RESET_STATE" == "ON" ];then
+	checkValidity tcp
+	value=$?
+	if [ $value == 1 ]
+	then
+		deleteRule tcp;
+	elif [ $value == 0 ]
+	then
+
+		imm_validate tcp
+		if [ $? == 1 ];then
+			deleteRule tcp
+		fi
+	fi
+		
+		
+	PROTOCOL_Initialize ftp DROP 
+  	CBC_Initialize
+  
+elif [ "$PROTOCOL_STATE" == "all" ] && [ "$RESET_STATE" == "ON" ];then
+	checkValidity tcp
+	val_tcp=$?
+
+    if [ $val_tcp == 2 ];then
+        PROTOCOL_Initialize ftp DROP
+        CBC_Initialize
+    fi
+
+	if [ $val_tcp == 1 ];then
+		deleteRule tcp
+	PROTOCOL_Initialize ftp DROP
+        CBC_Initialize
+	fi
+	
+
+	if [ $val_tcp == 0 ];then
+		imm_validate tcp
+		val_imm_tcp=$?
+
+		if [ $val_imm_tcp == 1 ];then
+			deleteRule tcp
+            PROTOCOL_Initialize ftp DROP
+            CBC_Initialize
+		fi
+	fi	
+
+
+elif [ "$PROTOCOL_STATE" == "tcp" ] && [ "$RESET_STATE" == "OFF" ];then
+	if [ "$PROT_STATE" == "none" ];then
+                ${ECHO} "Reinitialise with -i or -u option"
+                exit $exit_failure
+        fi
+
+	if [ "$PROT_STATE" == "tcp" ];then
+		checkValidity tcp
+        	if [ $? == 0 ];then
+        		imm_validate tcp
+            		if [ $? == 0 ];then
+					
+					Server_file_status
+					[ "$?" != 0 ] && exit $exit_failure	
+                		if [ "$FTP_STATE" == "ON" ];then
+					if [ "$STATE_FTP" == "ACCEPT" ];then
+						${ECHO} "FTP already allowed"
+						exit $exit_exists
+					fi	
+                                        check_PROTOCOL ftp ACCEPT
+                        	elif [ "$FTP_STATE" == "OFF" ];then
+                                       if [ "$STATE_FTP" == "DROP" ];then
+                                                ${ECHO} "FTP already blocked"
+						exit $exit_exists
+                                        fi
+
+					check_PROTOCOL ftp DROP
+                        	fi
+                 	else
+                        	${ECHO} "Reinitialise with -i option"
+				exit $exit_failure
+                 	fi
+        	else
+              		${ECHO} "Reinitialise with -i option"
+			exit $exit_failure
+        	fi
+	fi
+
+
+	if [ "$PROT_STATE" == "all" ];then
+                checkValidity tcp
+                val_tcp=$?
+
+                if [ $val_tcp == 0 ];then
+                        imm_validate tcp
+                        imm_tcp=$?
+
+                        if [ $imm_tcp == 0 ];then
+				Server_file_status
+				[ "$?" != 0 ] && exit $exit_failure	
+				 if [ "$FTP_STATE" == "ON" ];then
+                                        if [ "$STATE_FTP" == "ACCEPT" ];then
+                                                ${ECHO} "FTP already allowed"
+						exit $exit_exists
+                                        fi
+                                        check_PROTOCOL ftp ACCEPT
+                                elif [ "$FTP_STATE" == "OFF" ];then
+                                       if [ "$STATE_FTP" == "DROP" ];then
+                                                ${ECHO} "FTP already blocked"
+						exit $exit_exists
+                                        fi
+
+                                        check_PROTOCOL ftp DROP
+                                fi
+                        else
+                                ${ECHO} "Reinitialise with -i option"
+				exit $exit_failure
+                        fi
+                else
+                        ${ECHO} "Reinitialise with -i option"
+			exit $exit_failure
+
+		fi
+	fi
+
+elif [ "$PROTOCOL_STATE" == "all" ] && [ "$RESET_STATE" == "OFF" ];then
+
+	if [ "$PROT_STATE" == "none" ];then
+		${ECHO} "Reinitialise with -i option"
+		exit $exit_failure
+	fi
+
+	if [ "$CSADM_STATUS" == "ON" ];then 
+		if [ "$PROT_STATE" == "tcp" ];then
+                	checkValidity tcp
+                	if [ $? == 0 ];then
+                        	imm_validate tcp
+                        	if [ $? == 0 ];then
+					Server_file_status 
+					[ "$?" == 0 ] && exit $exit_success
+				fi
+			fi
+			exit $exit_failure
+		fi
+
+		if [ "$PROT_STATE" == "all" ];then
+                	checkValidity tcp
+                	val_tcp=$?
+
+                	if [ $val_tcp == 0 ];then
+                        	imm_validate tcp
+                        	imm_tcp=$?
+				Server_file_status
+                        	if [ "$?" == 0 ] && [ $imm_tcp == 0 ] ;then
+					exit $exit_success
+				fi
+			fi
+			exit $exit_failure
+		fi
+
+	fi
+
+
+
+
+	if [ "$PROT_STATE" == "tcp" ];then
+		checkValidity tcp
+		if [ $? == 0 ];then
+			imm_validate tcp
+			if [ $? == 0 ];then
+					Server_file_status
+					[ "$?" != 0 ] && exit $exit_failure	
+			
+				if [ "$PORT_STATE" == "ON" ];then
+					if [ "$STATE_FTP" == "ACCEPT" ] && [ "$STATE_SSHCBC" == "ACCEPT" ];then
+						${ECHO} "protocols already allowed"
+						exit $exit_exists
+					fi
+                			check_PROTOCOL ftp ACCEPT
+					CBC_ALLOW
+
+        			elif [ "$PORT_STATE" == "OFF" ];then
+					 if [ "$STATE_FTP" == "DROP" ] && [ "$STATE_SSHCBC" == "DROP" ];then
+                                                ${ECHO} "protocols already blocked"
+						exit $exit_exists
+                                        fi
+                			check_PROTOCOL ftp DROP
+					CBC_BLOCK
+       			 	fi
+
+			else
+				${ECHO} "Reinitialise with -i option"
+				exit $exit_failure
+			fi
+		else
+			${ECHO} "Reinitialise with -i option"
+			exit $exit_failure
+		fi
+	fi
+
+	if [ "$PROT_STATE" == "all" ];then
+                checkValidity tcp
+		val_tcp=$?
+		
+		if [ $val_tcp == 0 ];then
+			imm_validate tcp
+			imm_tcp=$?
+	
+			if [ $imm_tcp == 0 ];then
+					Server_file_status
+					[ "$?" != 0 ] && exit $exit_failure	
+
+				 if [ "$PORT_STATE" == "ON" ];then
+					if [ "$STATE_FTP" == "ACCEPT" ] && [ "$STATE_SSHCBC" == "ACCEPT" ];then
+						${ECHO} "protocols already allowed"
+						exit $exit_exists
+					fi
+                                        check_PROTOCOL ftp ACCEPT
+                                        CBC_ALLOW
+
+                                elif [ "$PORT_STATE" == "OFF" ];then
+					if [ "$STATE_FTP" == "DROP" ] && [ "$STATE_SSHCBC" == "DROP" ];then
+                                        	${ECHO} "protocols already blocked"
+						exit $exit_exists
+                                        fi
+                                        check_PROTOCOL ftp DROP
+                                        CBC_BLOCK
+                                fi
+
+
+				
+			else
+				${ECHO} "Reinitialise with -i option"
+				exit $exit_failure
+			fi
+		else
+			${ECHO} "Reinitialise with -i option"
+			exit $exit_failure
+		fi
+	fi
+fi
+
+if [ $CLUSTER_RELOAD -eq 1 ]; then
+	$CLUSTERCONF mgmt --cluster --verify > /dev/null
+	[ "$?" != 0 ] && exit $exit_failure
+	log 'sleep(3): allow verify to settle down'
+	sleep 3
+	$CLUSTERCONF mgmt --cluster --reload > /dev/null
+	[ "$?" != 0 ] && exit $exit_failure
+	$CLUSTERCONF mgmt --cluster --commit > /dev/null
+	[ "$?" != 0 ] && exit $exit_failure
+	$SERVICEMGMT restart lde-iptables.service
+	[ "$?" != 0 ] && exit $exit_failure
+fi
+
+exit $exit_success

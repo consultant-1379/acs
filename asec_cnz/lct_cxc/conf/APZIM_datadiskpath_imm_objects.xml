@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="utf-8"?><!-- 
+  Copyright (c) 2012 Ericsson AB.
+  All rights reserved
+
+  DX ECIM Tool-chain generated this file on Feb 8, 2012 12:43:05 AM using 
+    * coremw.m2m (1.4.4.201109271606)
+    * coremw.m2t (1.4.4.201109271606)
+    * coremw.dsl (1.4.4.201109271606)
+    * coremw.imm (1.4.4.201109271606)
+--><imm:IMM-contents xmlns:imm="http://www.saforum.org/IMMSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd">
+    <object class="DataDiskPathM">
+        <dn>dataDiskPathMId=1</dn>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=IMAGES,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>IMAGES</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/images</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=FTP_VOL,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>FTP_VOL</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/ftpvol</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=APZ_LOGS,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>APZ_LOGS</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/apz/logs</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=CPS_LOGS,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>CPS_LOGS</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/cps/logs</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=STS_LOGS,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>STS_LOGS</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/sts/logs</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=OCS_LOGS,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>OCS_LOGS</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/ocs/logs</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=MAS_LOGS,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>MAS_LOGS</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/mas/logs</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=CPS_CONF,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>CPS_CONF</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/cps/conf</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=SGS_DATA,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>SGS_DATA</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/sgs/data</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=ACS_LOGS,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>ACS_LOGS</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/acs/logs</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=MCS_DATA,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>MCS_DATA</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/mcs/data</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=FMS_LOGS,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>FMS_LOGS</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/fms/logs</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=FMS_DATA,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>FMS_DATA</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/fms/data</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=AES_DATA,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>AES_DATA</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/aes/data</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=MAS_DATA,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>MAS_DATA</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/mas/data</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=CQS_DATA,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>CQS_DATA</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/cqs/data</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=CPS_DATA,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>CPS_DATA</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/cps/data</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=SGS_LOGS,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>SGS_LOGS</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/sgs/logs</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=APZ_DATA,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>APZ_DATA</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/apz/data</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=STS_DATA,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>STS_DATA</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/sts/data</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=ACS_DATA,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>ACS_DATA</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/acs/data</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=AES_LOGS,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>AES_LOGS</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/aes/logs</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=CQS_LOGS,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>CQS_LOGS</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/cqs/logs</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=MCS_LOGS,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>MCS_LOGS</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/mcs/logs</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=STS_OUTPUT,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>STS_OUTPUT</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/sts/output</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=FCR_UPGRADE,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>FCR_UPGRADE</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/ftpvol/fcr_upgrade</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=STS_PERSIST,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>STS_PERSIST</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/sts/data/stmd</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=ACS_SSU_DATA,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>ACS_SSU_DATA</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/acs/data/ssu</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=ACS_RTR_DATA,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>ACS_RTR_DATA</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/acs/data/rtr</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=ACS_ACA_DATA,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>ACS_ACA_DATA</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/acs/data/aca</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=ACS_CHB_DATA,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>ACS_CHB_DATA</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/acs/data/chb</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=ACS_MTZ_DATA,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>ACS_MTZ_DATA</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/acs/data/mtz</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=ACS_LOGS_BASE,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>ACS_LOGS_BASE</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/acs</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=CQS_LOGS_BASE,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>CQS_LOGS_BASE</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/cqs</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=CQS_DATA_BASE,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>CQS_DATA_BASE</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/cqs</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=STS_LOGS_BASE,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>STS_LOGS_BASE</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/sts</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=FMS_LOGS_BASE,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>FMS_LOGS_BASE</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/fms</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=MCS_DATA_BASE,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>MCS_DATA_BASE</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/mcs</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=CPS_CONF_BASE,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>CPS_CONF_BASE</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/cps</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=SGS_LOGS_BASE,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>SGS_LOGS_BASE</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/sgs</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=ACS_ALEC_DATA,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>ACS_ALEC_DATA</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/acs/data/alec</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=AES_LOGS_BASE,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>AES_LOGS_BASE</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/aes</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=STS_DATA_BASE,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>STS_DATA_BASE</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/sts</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=FMS_DATA_BASE,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>FMS_DATA_BASE</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/fms</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=APZ_DATA_BASE,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>APZ_DATA_BASE</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/apz</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=CPS_DATA_BASE,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>CPS_DATA_BASE</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/cps</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=SGS_DATA_BASE,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>SGS_DATA_BASE</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/sgs</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=APZ_LOGS_BASE,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>APZ_LOGS_BASE</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/apz</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=MCS_LOGS_BASE,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>MCS_LOGS_BASE</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/mcs</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=AES_DATA_BASE,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>AES_DATA_BASE</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/aes</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=OCS_LOGS_BASE,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>OCS_LOGS_BASE</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/ocs</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=STS_OUTPUT_BASE,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>STS_OUTPUT_BASE</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/sts</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=ACS_DATA_BASE,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>ACS_DATA_BASE</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/acs</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=IPT_DATA,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>IPT_DATA</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/IPT/DATA</value>
+        </attr>
+    </object>
+    <object class="DataDiskPath">
+        <dn>dataDiskPathId=IPT_LOGS,dataDiskPathMId=1</dn>
+        <attr>
+            <name>dataDiskLogName</name>
+            <value>IPT_LOGS</value>
+        </attr>
+        <attr>
+            <name>dataDiskPath</name>
+            <value>/data/IPT/LOGS</value>
+        </attr>
+    </object>
+</imm:IMM-contents>

@@ -1,0 +1,27 @@
+csm-version: '1.0'
+components:
+- uid: acs.swr
+  name: acs-swr
+  description: ACS SWR component
+  availability-manager: NONE
+  software:
+    sdp: ERIC-ACS_SWRBIN-CXC1371487
+  supersedes:
+  - software: ERIC-ACS_SWRBIN-CXC1371487
+  constraints:
+    installation:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+    upgrade:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+  meta-data:
+    component-version: 16.0.0-2
+    deliverable:
+      deployment-package: acs_swr-16.0.0-2-deployment-CXC1371487.tar.gz
+      runtime-package: acs_swr-16.0.0-2-runtime-CXC1371487.tar.gz
+    software:
+    - file-name: ACS_SWRBIN-CXC1371487_16-R1A02.x86_64.sdp
+      bundle-name: ERIC-ACS_SWRBIN-CXC1371487_16-R1A02

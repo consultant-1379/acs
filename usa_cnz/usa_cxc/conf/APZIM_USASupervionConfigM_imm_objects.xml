@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Copyright (c) 2011 Ericsson AB.
+  All rights reserved
+
+  DX ECIM Tool-chain generated this file on Sep 8, 2011 3:33:29 AM using
+    * coremw.m2m (1.3.0.Release)
+    * coremw.m2t (1.3.0.Release)
+    * coremw.dsl (1.3.0.Release)
+    * coremw.imm (1.3.0.Release)
+--><imm:IMM-contents xmlns:imm="http://www.saforum.org/IMMSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd">
+
+	<object class="USASupervisonConfig">
+		<dn>usaSupervisonConfigId=1</dn>
+	</object>
+
+	<object class="USASupervison">
+		<dn>usaSupervisonId=1,usaSupervisonConfigId=1</dn>
+		<attr>
+			<name>object</name>
+			<value>DHCPv4</value>
+		</attr>
+		<attr>
+			<name>scope</name>
+			<value>60</value>
+		</attr>		
+		<attr>
+			<name>maxAllowed</name>
+			<value>3</value>
+		</attr>
+		<attr>
+			<name>matchType</name>
+			<value>pattern</value>
+		</attr>
+		<attr>
+			<name>pattern</name>
+			<value>Stopped ISC DHCPv4 Server</value>
+		</attr>
+		<attr>
+			<name>specificProblem</name>
+			<value>8723</value>
+		</attr>
+		<attr>
+			<name>perceivedSeverity</name>
+			<value>O1</value>
+		</attr>
+		<attr>
+			<name>probableCause</name>
+			<value>AP FUNCTION NOT AVAILABLE</value>
+		</attr>
+		<attr>
+			<name>objectOfRefSuffix</name>
+			<value>dhcpd</value>
+		</attr>
+		<attr>
+			<name>problemText</name>
+			<value>dhcpd terminated</value>
+		</attr>
+		<attr>
+			<name>disableAlarmFilter</name>
+			<value>NO</value>
+		</attr>
+		<attr>
+			<name>ceaseDuration</name>
+			<value>900</value>
+		</attr>
+	</object>
+
+	<object class="USASupervison">
+		<dn>usaSupervisonId=2,usaSupervisonConfigId=1</dn>
+		<attr>
+			<name>object</name>
+			<value>rsyslog</value>
+		</attr>
+		<attr>
+			<name>scope</name>
+			<value>60</value>
+		</attr>		
+		<attr>
+			<name>maxAllowed</name>
+			<value>3</value>
+		</attr>
+		<attr>
+			<name>matchType</name>
+			<value>pattern</value>
+		</attr>
+		<attr>
+			<name>pattern</name>
+			<value>Stopping rsyslog daemon</value>
+		</attr>
+		<attr>
+			<name>specificProblem</name>
+			<value>8723</value>
+		</attr>
+		<attr>
+			<name>perceivedSeverity</name>
+			<value>O1</value>
+		</attr>
+		<attr>
+			<name>probableCause</name>
+			<value>AP FUNCTION NOT AVAILABLE</value>
+		</attr>
+		<attr>
+			<name>objectOfRefSuffix</name>
+			<value>rsyslog</value>
+		</attr>
+		<attr>
+			<name>problemText</name>
+			<value>rsyslog terminated</value>
+		</attr>
+		<attr>
+			<name>disableAlarmFilter</name>
+			<value>NO</value>
+		</attr>
+		<attr>
+			<name>ceaseDuration</name>
+			<value>900</value>
+		</attr>
+	</object>
+
+	<object class="USASupervison">
+		<dn>usaSupervisonId=3,usaSupervisonConfigId=1</dn>
+		<attr>
+			<name>object</name>
+			<value>acs_prcispd</value>
+		</attr>
+		<attr>
+			<name>scope</name>
+			<value>60</value>
+		</attr>		
+		<attr>
+			<name>maxAllowed</name>
+			<value>3</value>
+		</attr>
+		<attr>
+			<name>matchType</name>
+			<value>pattern</value>
+		</attr>
+		<attr>
+			<name>pattern</name>
+			<value>Stopping acs_prcispd daemon</value>
+		</attr>
+		<attr>
+			<name>specificProblem</name>
+			<value>8723</value>
+		</attr>
+		<attr>
+			<name>perceivedSeverity</name>
+			<value>O1</value>
+		</attr>
+		<attr>
+			<name>probableCause</name>
+			<value>AP FUNCTION NOT AVAILABLE</value>
+		</attr>
+		<attr>
+			<name>objectOfRefSuffix</name>
+			<value>acs_prcispd</value>
+		</attr>
+		<attr>
+			<name>problemText</name>
+			<value>acs_prcispd Terminated</value>
+		</attr>
+		<attr>
+			<name>disableAlarmFilter</name>
+			<value>NO</value>
+		</attr>
+		<attr>
+			<name>ceaseDuration</name>
+			<value>900</value>
+		</attr>
+	</object>
+
+	<object class="USASupervison">
+		<dn>usaSupervisonId=4,usaSupervisonConfigId=1</dn>
+		<attr>
+			<name>object</name>
+			<value>acs_prcmand</value>
+		</attr>
+		<attr>
+			<name>scope</name>
+			<value>60</value>
+		</attr>		
+		<attr>
+			<name>maxAllowed</name>
+			<value>3</value>
+		</attr>
+		<attr>
+			<name>matchType</name>
+			<value>pattern</value>
+		</attr>
+		<attr>
+			<name>pattern</name>
+			<value>Stopping acs_prcmand daemon</value>
+		</attr>
+		<attr>
+			<name>specificProblem</name>
+			<value>8723</value>
+		</attr>
+		<attr>
+			<name>perceivedSeverity</name>
+			<value>O1</value>
+		</attr>
+		<attr>
+			<name>probableCause</name>
+			<value>AP FUNCTION NOT AVAILABLE</value>
+		</attr>
+		<attr>
+			<name>objectOfRefSuffix</name>
+			<value>acs_prcmand</value>
+		</attr>
+		<attr>
+			<name>problemText</name>
+			<value>acs_prcmand Terminated</value>
+		</attr>
+		<attr>
+			<name>disableAlarmFilter</name>
+			<value>NO</value>
+		</attr>
+		<attr>
+			<name>ceaseDuration</name>
+			<value>900</value>
+		</attr>
+	</object>
+
+	<object class="USASupervison">
+		<dn>usaSupervisonId=5,usaSupervisonConfigId=1</dn>
+		<attr>
+			<name>object</name>
+			<value>auditd</value>
+		</attr>
+		<attr>
+			<name>scope</name>
+			<value>60</value>
+		</attr>		
+		<attr>
+			<name>maxAllowed</name>
+			<value>3</value>
+		</attr>
+		<attr>
+			<name>matchType</name>
+			<value>pattern</value>
+		</attr>
+		<attr>
+			<name>pattern</name>
+			<value>Stopping auditd daemon</value>
+		</attr>
+		<attr>
+			<name>specificProblem</name>
+			<value>8723</value>
+		</attr>
+		<attr>
+			<name>perceivedSeverity</name>
+			<value>O1</value>
+		</attr>
+		<attr>
+			<name>probableCause</name>
+			<value>AP FUNCTION NOT AVAILABLE</value>
+		</attr>
+		<attr>
+			<name>objectOfRefSuffix</name>
+			<value>auditd</value>
+		</attr>
+		<attr>
+			<name>problemText</name>
+			<value>auditd Terminated</value>
+		</attr>
+		<attr>
+			<name>disableAlarmFilter</name>
+			<value>NO</value>
+		</attr>
+		<attr>
+			<name>ceaseDuration</name>
+			<value>900</value>
+		</attr>
+	</object>
+
+	<object class="USASupervison">
+		<dn>usaSupervisonId=6,usaSupervisonConfigId=1</dn>
+		<attr>
+			<name>object</name>
+			<value>sshd</value>
+		</attr>
+		<attr>
+			<name>scope</name>
+			<value>60</value>
+		</attr>		
+		<attr>
+			<name>maxAllowed</name>
+			<value>3</value>
+		</attr>
+		<attr>
+			<name>matchType</name>
+			<value>pattern</value>
+		</attr>
+		<attr>
+			<name>pattern</name>
+			<value>Stopping LSB</value>
+		</attr>
+		<attr>
+			<name>specificProblem</name>
+			<value>8723</value>
+		</attr>
+		<attr>
+			<name>perceivedSeverity</name>
+			<value>O1</value>
+		</attr>
+		<attr>
+			<name>probableCause</name>
+			<value>AP FUNCTION NOT AVAILABLE</value>
+		</attr>
+		<attr>
+			<name>objectOfRefSuffix</name>
+			<value>sshd</value>
+		</attr>
+		<attr>
+			<name>problemText</name>
+			<value>sshd terminated</value>
+		</attr>
+		<attr>
+			<name>disableAlarmFilter</name>
+			<value>NO</value>
+		</attr>
+		<attr>
+			<name>ceaseDuration</name>
+			<value>900</value>
+		</attr>
+
+	</object>
+
+	<object class="USASupervison">
+		<dn>usaSupervisonId=7,usaSupervisonConfigId=1</dn>
+		<attr>
+			<name>object</name>
+			<value>sshd</value>
+		</attr>
+		<attr>
+			<name>scope</name>
+			<value>60</value>
+		</attr>		
+		<attr>
+			<name>maxAllowed</name>
+			<value>0</value>
+		</attr>
+		<attr>
+			<name>matchType</name>
+			<value>pattern</value>
+		</attr>
+		<attr>
+			<name>pattern</name>
+			<value>Failed keyboard-interactive</value>
+		</attr>
+		<attr>
+			<name>specificProblem</name>
+			<value>8799</value>
+		</attr>
+		<attr>
+			<name>perceivedSeverity</name>
+			<value>EVENT</value>
+		</attr>
+		<attr>
+			<name>probableCause</name>
+			<value>ILLEGAL LOGON ATTEMPTS</value>
+		</attr>
+		<attr>
+			<name>objectOfRefSuffix</name>
+			<value>sshd</value>
+		</attr>
+		<attr>
+			<name>problemText</name>
+			<value>Illegal Logon Attempts made</value>
+		</attr>
+		<attr>
+			<name>disableAlarmFilter</name>
+			<value>NO</value>
+		</attr>
+		<attr>
+			<name>ceaseDuration</name>
+			<value>900</value>
+		</attr>
+	</object>
+
+  <object class="USASupervison">
+    <dn>usaSupervisonId=8,usaSupervisonConfigId=1</dn>
+    <attr>
+      <name>object</name>
+      <value>login</value>
+    </attr>
+    <attr>
+      <name>scope</name>
+      <value>60</value>
+    </attr>
+    <attr>
+      <name>maxAllowed</name>
+      <value>0</value>
+    </attr>
+    <attr>
+      <name>matchType</name>
+      <value>pattern</value>
+    </attr>
+    <attr>
+      <name>pattern</name>
+      <value>FAILED LOGIN SESSION</value>
+    </attr>
+    <attr>
+      <name>specificProblem</name>
+      <value>8799</value>
+    </attr>
+    <attr>
+      <name>perceivedSeverity</name>
+      <value>EVENT</value>
+    </attr>
+    <attr>
+      <name>probableCause</name>
+      <value>ILLEGAL LOGON ATTEMPTS</value>
+    </attr>
+    <attr>
+      <name>objectOfRefSuffix</name>
+      <value>login</value>
+    </attr>
+    <attr>
+      <name>problemText</name>
+      <value>Illegal Logon Attempts made</value>
+    </attr>
+    <attr>
+      <name>disableAlarmFilter</name>
+      <value>NO</value>
+    </attr>
+    <attr>
+      <name>ceaseDuration</name>
+      <value>900</value>
+    </attr>
+  </object>
+
+  <object class="USASupervison">
+    <dn>usaSupervisonId=9,usaSupervisonConfigId=1</dn>
+    <attr>
+      <name>object</name>
+      <value>smartd</value>
+    </attr>
+    <attr>
+      <name>scope</name>
+      <value>60</value>
+    </attr>
+    <attr>
+      <name>maxAllowed</name>
+      <value>0</value>
+    </attr>
+    <attr>
+      <name>matchType</name>
+      <value>pattern</value>
+    </attr>
+    <attr>
+      <name>pattern</name>
+      <value>Self-Test Log error count increased</value>
+    </attr>
+    <attr>
+      <name>specificProblem</name>
+      <value>8798</value>
+    </attr>
+    <attr>
+      <name>perceivedSeverity</name>
+      <value>EVENT</value>
+    </attr>
+    <attr>
+      <name>probableCause</name>
+      <value>AP FAULT</value>
+    </attr>
+    <attr>
+      <name>objectOfRefSuffix</name>
+      <value>smartd</value>
+    </attr>
+    <attr>
+      <name>problemText</name>
+      <value>SYSTEM DISK FAULTY</value>
+    </attr>
+    <attr>
+      <name>disableAlarmFilter</name>
+      <value>NO</value>
+    </attr>
+    <attr>
+      <name>ceaseDuration</name>
+      <value>900</value>
+    </attr>
+  </object>
+
+ <object class="USASupervison">
+    <dn>usaSupervisonId=10,usaSupervisonConfigId=1</dn>
+    <attr>
+      <name>object</name>
+      <value>smartd</value>
+    </attr>
+    <attr>
+      <name>scope</name>
+      <value>3600</value>
+    </attr>
+    <attr>
+      <name>maxAllowed</name>
+      <value>1</value>
+  </attr>
+    <attr>
+      <name>matchType</name>
+      <value>pattern</value>
+    </attr>
+    <attr>
+      <name>pattern</name>
+      <value>SMART Failure</value>
+    </attr>
+    <attr>
+      <name>specificProblem</name>
+      <value>8798</value>
+    </attr>
+    <attr>
+      <name>perceivedSeverity</name>
+      <value>EVENT</value>
+    </attr>
+    <attr>
+      <name>probableCause</name>
+      <value>AP FAULT</value>
+    </attr>
+    <attr>
+      <name>objectOfRefSuffix</name>
+      <value>smartd</value>
+    </attr>
+    <attr>
+      <name>problemText</name>
+      <value>SYSTEM DISK FAULTY</value>
+    </attr>
+    <attr>
+      <name>disableAlarmFilter</name>
+      <value>NO</value>
+    </attr>
+    <attr>
+      <name>ceaseDuration</name>
+      <value>900</value>
+    </attr>
+ </object>
+
+<object class="USASupervison">
+    <dn>usaSupervisonId=11,usaSupervisonConfigId=1</dn>
+    <attr>
+      <name>object</name>
+      <value>mcs_adhd</value>
+    </attr>
+    <attr>
+      <name>scope</name>
+      <value>60</value>
+    </attr>
+    <attr>
+      <name>maxAllowed</name>
+      <value>3</value>
+  </attr>
+    <attr>
+      <name>matchType</name>
+      <value>pattern</value>
+    </attr>
+    <attr>
+      <name>pattern</name>
+      <value>Error response received from LDAP client : -1</value>
+    </attr>
+    <attr>
+      <name>specificProblem</name>
+      <value>8797</value>
+    </attr>
+    <attr>
+      <name>perceivedSeverity</name>
+      <value>A1</value>
+    </attr>
+    <attr>
+      <name>probableCause</name>
+      <value>AP LDAP COMMUNICATION FAULT</value>
+    </attr>
+    <attr>
+      <name>objectOfRefSuffix</name>
+      <value>mcs_adhd</value>
+    </attr>
+    <attr>
+      <name>problemText</name>
+      <value>LDAP Authorization Failed</value>
+    </attr>
+    <attr>
+      <name>disableAlarmFilter</name>
+      <value>NO</value>
+    </attr>
+    <attr>
+      <name>ceaseDuration</name>
+      <value>900</value>
+    </attr>
+ </object>
+<object class="USASupervison">
+    <dn>usaSupervisonId=12,usaSupervisonConfigId=1</dn>
+    <attr>
+      <name>object</name>
+      <value>com</value>
+    </attr>
+    <attr>
+      <name>scope</name>
+      <value>60</value>
+    </attr>
+    <attr>
+      <name>maxAllowed</name>
+      <value>3</value>
+  </attr>
+    <attr>
+      <name>matchType</name>
+      <value>pattern</value>
+    </attr>
+    <attr>
+      <name>pattern</name>
+      <value>Error response received from LDAP client : -1</value>
+    </attr>
+    <attr>
+      <name>specificProblem</name>
+      <value>8797</value>
+    </attr>
+    <attr>
+      <name>perceivedSeverity</name>
+      <value>A1</value>
+    </attr>
+    <attr>
+      <name>probableCause</name>
+      <value>AP LDAP COMMUNICATION FAULT</value>
+    </attr>
+    <attr>
+      <name>objectOfRefSuffix</name>
+      <value>com</value>
+    </attr>
+    <attr>
+      <name>problemText</name>
+      <value>LDAP Authorization Failed</value>
+    </attr>
+    <attr>
+      <name>disableAlarmFilter</name>
+      <value>NO</value>
+    </attr>
+    <attr>
+      <name>ceaseDuration</name>
+      <value>900</value>
+    </attr>
+ </object>
+
+
+	<object class="USAConfig">
+		<dn>usaConfigId=1,usaSupervisonConfigId=1</dn>
+	</object>
+
+	<object class="USAZombieConfig">
+		<dn>usaZombieConfigId=1,usaSupervisonConfigId=1</dn>
+	</object>
+
+	<object class="USACPULoadAvgConfig">
+		<dn>USACPULoadAvgConfigId=1,usaSupervisonConfigId=1</dn>
+	</object>
+
+</imm:IMM-contents>
+

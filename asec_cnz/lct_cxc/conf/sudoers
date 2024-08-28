@@ -1,0 +1,58 @@
+#
+# Sample /etc/sudoers file.
+#
+# This file MUST be edited with the 'visudo' command as root.
+#
+# See the sudoers man page for the details on how to write a sudoers file.
+#
+
+##
+# User alias specification
+##
+
+##
+# Runas alias specification
+##
+
+##
+# Host alias specification
+##
+
+##
+# Cmnd alias specification
+##
+
+Cmnd_Alias ADMINGROUPLIST = /usr/bin/addtsuser, /usr/bin/pwdresettsuser, /usr/bin/removetsuser, /usr/bin/modtsuser, /usr/bin/vi, /usr/bin/immcfg, /usr/bin/amf-adm, /usr/bin/raidmgmt, /opt/coremw/bin/cmw-node-lock
+Cmnd_Alias TSGROUPLIST =  /usr/bin/listtsuser,/opt/ap/apos/bin/clusterconf/clusterconf,/usr/bin/csadm,/usr/bin/configap,/usr/bin/prcstate,/opt/ap/acs/bin/eventCreate,/usr/bin/tail,/usr/bin/integrityap,/usr/bin/less,/bin/more,/bin/cat,/usr/bin/tail,/usr/sbin/tcpdump,/usr/sbin/traceroute,/usr/bin/immlist,/usr/bin/immfind,/usr/bin/top,/usr/bin/mml,/usr/bin/prcstate,/usr/bin/ssh,/usr/bin/prcboot,/usr/bin/amf-state,/opt/coremw/bin/cmw-status,/usr/bin/ping,/usr/bin/emfcopy,/usr/sbin/smartctl
+
+##
+# Override built-in defaults
+##
+
+Defaults always_set_home
+Defaults env_reset
+# Change env_reset to !env_reset in previous line to keep all environment variables
+# Following list will no longer be necessary after this change
+
+Defaults env_keep = "LANG LC_ADDRESS LC_CTYPE LC_COLLATE LC_IDENTIFICATION LC_MEASUREMENT LC_MESSAGES LC_MONETARY LC_NAME LC_NUMERIC LC_PAPER LC_TELEPHONE LC_TIME LC_ALL LANGUAGE LINGUAS XDG_SESSION_COOKIE"
+# Comment out the preceding line and uncomment the following one if you need
+# to use special input methods. This may allow users to compromise  the root
+# account if they are allowed to run commands without authentication.
+#Defaults env_keep = "LANG LC_ADDRESS LC_CTYPE LC_COLLATE LC_IDENTIFICATION LC_MEASUREMENT LC_MESSAGES \
+#LC_MONETARY LC_NAME LC_NUMERIC LC_PAPER LC_TELEPHONE LC_TIME LC_ALL LANGUAGE LINGUAS XDG_SESSION_COOKIE XMODIFIERS GTK_IM_MODULE QT_IM_MODULE QT_IM_SWITCHER"
+
+Defaults logfile=/var/log/sudo.log
+
+##
+# User specification
+##
+
+# root can run anything on any machine as any user
+root		ALL = (ALL) ALL
+
+# TS Group can run following on any machine as any user
+%tsgroup	ALL = (root) NOPASSWD: TSGROUPLIST
+
+# Administrator Group can run following on any machine as any user
+%tsadmin	ALL = (root) NOPASSWD: ADMINGROUPLIST, TSGROUPLIST
+
